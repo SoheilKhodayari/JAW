@@ -11,7 +11,7 @@ $ python3 -m wpg_construction.api <path> --js=<program.js> --import=<bool> --hyb
 
 For help regarding the meaning of each option in the above command, please use the help CLI provided with the graph construction API:
 ```sh
-$ python -m wpg_construction.api -h
+$ python3 -m wpg_construction.api -h
 ```
 
 To build a WPG for a given JavaScript file, you can run:
@@ -25,11 +25,11 @@ $ neo4j-admin import --mode=csv --database=graph.db --nodes=nodes.csv --relation
 
 Alternatively, you can import a WPG (in one step) using the provided API:
 ```bash
-$ python -m wpg_neo4j.wpg_import <path-to-the-folder-of-the-csv-files> --nodes=nodes.csv --edges=rels.csv
+$ python3 -m wpg_neo4j.wpg_import <path-to-the-folder-of-the-csv-files> --nodes=nodes.csv --edges=rels.csv
 ```
 Help CLI:
 ```bash
-$ python -m wpg_neo4j.wpg_import -h
+$ python3 -m wpg_neo4j.wpg_import -h
 ```
 
 

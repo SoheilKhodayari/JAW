@@ -127,7 +127,7 @@ $ python3 -m wpg_construction.api <path> --js=<program.js> --import=<bool> --hyb
 
 For help regarding the meaning of each option in the above command, please use the help CLI provided with the graph construction API:
 ```sh
-$ python -m wpg_construction.api -h
+$ python3 -m wpg_construction.api -h
 ```
 
 Alternatively, you can use the following two steps. This is especially suited for debugging purposes.
@@ -148,11 +148,11 @@ $ node wpg_construction/main.js -js wpg_construction/test-inputs/test.js -o myfo
 
 In the project root directory, run:
 ```sh
-$ python -m wpg_neo4j.wpg_import <path-to-the-folder-of-the-csv-files> --nodes=nodes.csv --edges=rels.csv
+$ python3 -m wpg_neo4j.wpg_import <path-to-the-folder-of-the-csv-files> --nodes=nodes.csv --edges=rels.csv
 ```
 Help CLI:
 ```sh
-$ python -m wpg_neo4j.wpg_import -h
+$ python3 -m wpg_neo4j.wpg_import -h
 
 ```
 
@@ -161,8 +161,8 @@ You can use Cypher Queries or the NeoModel ORM to query the WPGs. The NeoModel O
 You should place and run your queries in `wpg_analysis/<ANALYSIS_NAME>`. For further details, see the example query files provided: `example.orm.py` and `example.py` in the `wpg_analysis/example` folder.
 
 ```sh
-$ python -m wpg_analysis.example.example
-$ python -m wpg_analysis.example.exampleorm  
+$ python3 -m wpg_analysis.example.example
+$ python3 -m wpg_analysis.example.exampleorm  
 ```
 
 
