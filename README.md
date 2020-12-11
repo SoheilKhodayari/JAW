@@ -158,11 +158,11 @@ $ python -m wpg_neo4j.wpg_import -h
 
 ### Step 2: Graph Traversals and Declarative Queries
 You can use Cypher Queries or the NeoModel ORM to query the WPGs. The NeoModel ORM Schema is defined in `wpg_neo4j/orm.py`.
-You should place and run your queries in `wpg_analysis/queries`. For further details, see the example query files provided: `example.orm.py` and `example.py` in the `wpg_analysis/queries` folder.
+You should place and run your queries in `wpg_analysis/<ANALYSIS_NAME>`. For further details, see the example query files provided: `example.orm.py` and `example.py` in the `wpg_analysis/example` folder.
 
 ```sh
-$ python -m wpg_analysis.queries.example
-$ python -m wpg_analysis.queries.exampleorm  
+$ python -m wpg_analysis.example.example
+$ python -m wpg_analysis.example.exampleorm  
 ```
 
 

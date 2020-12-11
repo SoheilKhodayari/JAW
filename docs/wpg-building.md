@@ -3,6 +3,17 @@
 
 ## Building with Command Line
 
+In order to create a property graph and import it to an active neo4j database, you can use the following command:
+
+```sh
+$ python3 -m wpg_construction.api <path> --js=<program.js> --import=<bool> --hybrid=<bool> --reqs=<requests.out> --evts=<events.out> --cookies=<cookies.pkl> --html=<html_snapshot.html>
+```
+
+For help regarding the meaning of each option in the above command, please use the help CLI provided with the graph construction API:
+```sh
+$ python -m wpg_construction.api -h
+```
+
 To build a WPG for a given JavaScript file, you can run:
 ```bash
 $ node wpg_construction/main.js -js <RELATIVE_PATH_TO_INPUT> -o <OUTPUT_FOLDER_NAME>
