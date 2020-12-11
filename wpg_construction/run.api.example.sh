@@ -1,0 +1,1 @@
+python3 -m wpg_construction.api /Users/soheilkhodayari/Desktop/projects/WPGMasterGitlab/wpg-gitlab/wpg_construction/outputs/debug --hybrid=true

@@ -1,0 +1,646 @@
+[
+    {
+        "id": "40727",
+        "location": "{start:{line:10080,column:13},end:{line:10102,column:2}}",
+        "type": "FunctionExpression",
+        "function": "bindEvents",
+        "label": "E-REGISTER"
+    },
+    {
+        "id": "31404",
+        "location": "{start:{line:7518,column:0},end:{line:7520,column:1}}",
+        "type": "FunctionDeclaration",
+        "function": "addListener",
+        "label": "E-REGISTER",
+        "params": [
+            "node",
+            "type",
+            "listener"
+        ]
+    },
+    {
+        "id": "38252",
+        "location": "{start:{line:9364,column:13},end:{line:9385,column:2}}",
+        "type": "FunctionExpression",
+        "function": "initialize",
+        "label": "E-REGISTER"
+    },
+    {
+        "id": "38056",
+        "location": "{start:{line:9303,column:12},end:{line:9359,column:2}}",
+        "type": "FunctionExpression",
+        "function": "construct",
+        "label": "E-REGISTER",
+        "params": [
+            "item",
+            "config"
+        ]
+    },
+    {
+        "id": "39159",
+        "location": "{start:{line:9596,column:8},end:{line:9599,column:2}}",
+        "type": "FunctionExpression",
+        "function": "reset",
+        "label": "E-REGISTER"
+    },
+    {
+        "id": "39175",
+        "location": "{start:{line:9601,column:9},end:{line:9667,column:2}}",
+        "type": "FunctionExpression",
+        "function": "update",
+        "label": "E-REGISTER",
+        "params": [
+            "config"
+        ]
+    },
+    {
+        "id": "20971",
+        "location": "{start:{line:4870,column:13},end:{line:4886,column:2}}",
+        "type": "FunctionExpression",
+        "function": "initialize",
+        "label": "E-REGISTER"
+    },
+    {
+        "id": "58702",
+        "location": "{start:{line:14358,column:13},end:{line:14361,column:2}}",
+        "type": "FunctionExpression",
+        "function": "initialize",
+        "label": "E-REGISTER"
+    },
+    {
+        "id": "37861",
+        "location": "{start:{line:9248,column:0},end:{line:9267,column:1}}",
+        "type": "FunctionDeclaration",
+        "function": "updateConfig",
+        "label": "E-REGISTER",
+        "params": [
+            "chart"
+        ]
+    },
+    {
+        "id": "14973",
+        "location": "{start:{line:3321,column:14},end:{line:3324,column:1}}",
+        "type": "FunctionExpression",
+        "function": "Element",
+        "label": "E-REGISTER",
+        "params": [
+            "configuration"
+        ]
+    },
+    {
+        "id": "15893",
+        "location": "{start:{line:3617,column:24},end:{line:3619,column:1}}",
+        "type": "FunctionExpression",
+        "function": "DatasetController",
+        "label": "E-REGISTER",
+        "params": [
+            "chart",
+            "datasetIndex"
+        ]
+    },
+    {
+        "id": "38032",
+        "location": "{start:{line:9294,column:12},end:{line:9297,column:1}}",
+        "type": "FunctionExpression",
+        "function": "Chart",
+        "label": "E-REGISTER",
+        "params": [
+            "item",
+            "config"
+        ]
+    },
+    {
+        "id": "40573",
+        "location": "{start:{line:10038,column:10},end:{line:10061,column:2}}",
+        "type": "FunctionExpression",
+        "function": "destroy",
+        "label": "E-REGISTER"
+    },
+    {
+        "id": "40523",
+        "location": "{start:{line:10027,column:21},end:{line:10036,column:2}}",
+        "type": "FunctionExpression",
+        "function": "destroyDatasetMeta",
+        "label": "E-REGISTER",
+        "params": [
+            "datasetIndex"
+        ]
+    },
+    {
+        "id": "38948",
+        "location": "{start:{line:9546,column:27},end:{line:9580,column:2}}",
+        "type": "FunctionExpression",
+        "function": "buildOrUpdateControllers",
+        "label": "E-REGISTER"
+    },
+    {
+        "id": "37338",
+        "location": "{start:{line:9097,column:14},end:{line:9133,column:2}}",
+        "type": "FunctionExpression",
+        "function": "handleEvent",
+        "label": "E-REGISTER",
+        "params": [
+            "e"
+        ]
+    },
+    {
+        "id": "38336",
+        "location": "{start:{line:9398,column:9},end:{line:9437,column:2}}",
+        "type": "FunctionExpression",
+        "function": "resize",
+        "label": "E-REGISTER",
+        "params": [
+            "silent"
+        ]
+    },
+    {
+        "id": "39382",
+        "location": "{start:{line:9674,column:15},end:{line:9706,column:2}}",
+        "type": "FunctionExpression",
+        "function": "updateLayout",
+        "label": "E-REGISTER"
+    },
+    {
+        "id": "16527",
+        "location": "{start:{line:3828,column:10},end:{line:3833,column:2}}",
+        "type": "FunctionExpression",
+        "function": "_update",
+        "label": "E-REGISTER",
+        "params": [
+            "reset"
+        ]
+    },
+    {
+        "id": "23282",
+        "location": "{start:{line:5383,column:11},end:{line:5397,column:3}}",
+        "type": "FunctionExpression",
+        "function": "onClick",
+        "label": "E-REGISTER",
+        "params": [
+            "e",
+            "legendItem"
+        ]
+    },
+    {
+        "id": "58721",
+        "location": "{start:{line:14363,column:9},end:{line:14381,column:2}}",
+        "type": "FunctionExpression",
+        "function": "update",
+        "label": "E-REGISTER"
+    },
+    {
+        "id": "26890",
+        "location": "{start:{line:6201,column:11},end:{line:6212,column:3}}",
+        "type": "FunctionExpression",
+        "function": "onClick",
+        "label": "E-REGISTER",
+        "params": [
+            "e",
+            "legendItem"
+        ]
+    },
+    {
+        "id": "62118",
+        "location": "{start:{line:15139,column:11},end:{line:15149,column:3}}",
+        "type": "FunctionExpression",
+        "function": "onClick",
+        "label": "E-REGISTER",
+        "params": [
+            "e",
+            "legendItem"
+        ]
+    },
+    {
+        "id": "30783",
+        "location": "{start:{line:7279,column:9},end:{line:7371,column:2}}",
+        "type": "FunctionExpression",
+        "function": "update",
+        "label": "E-REGISTER",
+        "params": [
+            "chart",
+            "width",
+            "height"
+        ]
+    },
+    {
+        "id": "30247",
+        "location": "{start:{line:7120,column:0},end:{line:7147,column:1}}",
+        "type": "FunctionDeclaration",
+        "function": "fitBoxes",
+        "label": "E-REGISTER",
+        "params": [
+            "boxes",
+            "chartArea",
+            "params"
+        ]
+    },
+    {
+        "id": "40943",
+        "location": "{start:{line:10139,column:15},end:{line:10184,column:2}}",
+        "type": "FunctionExpression",
+        "function": "eventHandler",
+        "label": "E-REGISTER",
+        "params": [
+            "e"
+        ]
+    },
+    {
+        "id": "64538",
+        "location": "{start:{line:15746,column:13},end:{line:15751,column:2}}",
+        "type": "FunctionExpression",
+        "function": "afterEvent",
+        "label": "E-REGISTER",
+        "params": [
+            "chart",
+            "e"
+        ]
+    },
+    {
+        "id": "40744",
+        "location": "{start:{line:10083,column:17},end:{line:10085,column:3}}",
+        "type": "FunctionExpression",
+        "function": "listener",
+        "label": "E-REGISTER"
+    },
+    {
+        "id": "40815",
+        "location": "{start:{line:10107,column:15},end:{line:10118,column:2}}",
+        "type": "FunctionExpression",
+        "function": "unbindEvents",
+        "label": "E-REGISTER"
+    },
+    {
+        "id": "32306",
+        "location": "{start:{line:7803,column:19},end:{line:7818,column:2}}",
+        "type": "FunctionExpression",
+        "function": "addEventListener",
+        "label": "E-REGISTER",
+        "params": [
+            "chart",
+            "type",
+            "listener"
+        ]
+    },
+    {
+        "id": "32384",
+        "location": "{start:{line:7820,column:22},end:{line:7836,column:2}}",
+        "type": "FunctionExpression",
+        "function": "removeEventListener",
+        "label": "E-REGISTER",
+        "params": [
+            "chart",
+            "type",
+            "listener"
+        ]
+    },
+    {
+        "id": "15675",
+        "location": "{start:{line:3552,column:0},end:{line:3587,column:1}}",
+        "type": "FunctionDeclaration",
+        "function": "listenArrayEvents",
+        "label": "E-REGISTER",
+        "params": [
+            "array",
+            "listener"
+        ]
+    },
+    {
+        "id": "15821",
+        "location": "{start:{line:3593,column:0},end:{line:3614,column:1}}",
+        "type": "FunctionDeclaration",
+        "function": "unlistenArrayEvents",
+        "label": "E-REGISTER",
+        "params": [
+            "array",
+            "listener"
+        ]
+    },
+    {
+        "id": "31418",
+        "location": "{start:{line:7522,column:0},end:{line:7524,column:1}}",
+        "type": "FunctionDeclaration",
+        "function": "removeListener",
+        "label": "E-REGISTER",
+        "params": [
+            "node",
+            "type",
+            "listener"
+        ]
+    },
+    {
+        "id": "31835",
+        "location": "{start:{line:7637,column:0},end:{line:7672,column:1}}",
+        "type": "FunctionDeclaration",
+        "function": "addResizeListener",
+        "label": "E-REGISTER",
+        "params": [
+            "node",
+            "listener",
+            "chart"
+        ]
+    },
+    {
+        "id": "31786",
+        "location": "{start:{line:7622,column:0},end:{line:7635,column:1}}",
+        "type": "FunctionDeclaration",
+        "function": "unwatchForRender",
+        "label": "E-REGISTER",
+        "params": [
+            "node"
+        ]
+    },
+    {
+        "id": "31959",
+        "location": "{start:{line:7674,column:0},end:{line:7684,column:1}}",
+        "type": "FunctionDeclaration",
+        "function": "removeResizeListener",
+        "label": "E-REGISTER",
+        "params": [
+            "node"
+        ]
+    },
+    {
+        "id": "16397",
+        "location": "{start:{line:3785,column:24},end:{line:3808,column:2}}",
+        "type": "FunctionExpression",
+        "function": "buildOrUpdateElements",
+        "label": "E-REGISTER"
+    },
+    {
+        "id": "16203",
+        "location": "{start:{line:3740,column:10},end:{line:3744,column:2}}",
+        "type": "FunctionExpression",
+        "function": "destroy",
+        "label": "E-REGISTER"
+    },
+    {
+        "id": "31592",
+        "location": "{start:{line:7567,column:0},end:{line:7597,column:1}}",
+        "type": "FunctionDeclaration",
+        "function": "createResizer",
+        "label": "E-REGISTER",
+        "params": [
+            "handler"
+        ]
+    },
+    {
+        "id": "31716",
+        "location": "{start:{line:7600,column:0},end:{line:7620,column:1}}",
+        "type": "FunctionDeclaration",
+        "function": "watchForRender",
+        "label": "E-REGISTER",
+        "params": [
+            "node",
+            "handler"
+        ]
+    },
+    {
+        "id": "39540",
+        "location": "{start:{line:9732,column:16},end:{line:9747,column:2}}",
+        "type": "FunctionExpression",
+        "function": "updateDataset",
+        "label": "E-REGISTER",
+        "params": [
+            "index"
+        ]
+    },
+    {
+        "id": "16193",
+        "location": "{start:{line:3733,column:8},end:{line:3735,column:2}}",
+        "type": "FunctionExpression",
+        "function": "reset",
+        "label": "E-REGISTER"
+    },
+    {
+        "id": "39488",
+        "location": "{start:{line:9713,column:17},end:{line:9725,column:2}}",
+        "type": "FunctionExpression",
+        "function": "updateDatasets",
+        "label": "E-REGISTER"
+    },
+    {
+        "id": "39125",
+        "location": "{start:{line:9586,column:16},end:{line:9591,column:2}}",
+        "type": "FunctionExpression",
+        "function": "resetElements",
+        "label": "E-REGISTER"
+    },
+    {
+        "id": "21078",
+        "location": "{start:{line:4888,column:9},end:{line:4898,column:2}}",
+        "type": "FunctionExpression",
+        "function": "update",
+        "label": "E-REGISTER",
+        "params": [
+            "reset"
+        ]
+    },
+    {
+        "id": "21136",
+        "location": "{start:{line:4900,column:16},end:{line:4926,column:2}}",
+        "type": "FunctionExpression",
+        "function": "updateElement",
+        "label": "E-REGISTER",
+        "params": [
+            "rectangle",
+            "index",
+            "reset"
+        ]
+    },
+    {
+        "id": "21283",
+        "location": "{start:{line:4931,column:25},end:{line:4947,column:2}}",
+        "type": "FunctionExpression",
+        "function": "_updateElementGeometry",
+        "label": "E-REGISTER",
+        "params": [
+            "rectangle",
+            "index",
+            "reset",
+            "options"
+        ]
+    },
+    {
+        "id": "22523",
+        "location": "{start:{line:5216,column:9},end:{line:5225,column:2}}",
+        "type": "FunctionExpression",
+        "function": "update",
+        "label": "E-REGISTER",
+        "params": [
+            "reset"
+        ]
+    },
+    {
+        "id": "22563",
+        "location": "{start:{line:5230,column:16},end:{line:5262,column:2}}",
+        "type": "FunctionExpression",
+        "function": "updateElement",
+        "label": "E-REGISTER",
+        "params": [
+            "point",
+            "index",
+            "reset"
+        ]
+    },
+    {
+        "id": "23511",
+        "location": "{start:{line:5466,column:9},end:{line:5526,column:2}}",
+        "type": "FunctionExpression",
+        "function": "update",
+        "label": "E-REGISTER",
+        "params": [
+            "reset"
+        ]
+    },
+    {
+        "id": "24054",
+        "location": "{start:{line:5528,column:16},end:{line:5580,column:2}}",
+        "type": "FunctionExpression",
+        "function": "updateElement",
+        "label": "E-REGISTER",
+        "params": [
+            "arc",
+            "index",
+            "reset"
+        ]
+    },
+    {
+        "id": "25223",
+        "location": "{start:{line:5871,column:9},end:{line:5915,column:2}}",
+        "type": "FunctionExpression",
+        "function": "update",
+        "label": "E-REGISTER",
+        "params": [
+            "reset"
+        ]
+    },
+    {
+        "id": "25437",
+        "location": "{start:{line:5917,column:16},end:{line:5958,column:2}}",
+        "type": "FunctionExpression",
+        "function": "updateElement",
+        "label": "E-REGISTER",
+        "params": [
+            "point",
+            "index",
+            "reset"
+        ]
+    },
+    {
+        "id": "27051",
+        "location": "{start:{line:6261,column:9},end:{line:6286,column:2}}",
+        "type": "FunctionExpression",
+        "function": "update",
+        "label": "E-REGISTER",
+        "params": [
+            "reset"
+        ]
+    },
+    {
+        "id": "27341",
+        "location": "{start:{line:6306,column:16},end:{line:6350,column:2}}",
+        "type": "FunctionExpression",
+        "function": "updateElement",
+        "label": "E-REGISTER",
+        "params": [
+            "arc",
+            "index",
+            "reset"
+        ]
+    },
+    {
+        "id": "27963",
+        "location": "{start:{line:6489,column:9},end:{line:6526,column:2}}",
+        "type": "FunctionExpression",
+        "function": "update",
+        "label": "E-REGISTER",
+        "params": [
+            "reset"
+        ]
+    },
+    {
+        "id": "28128",
+        "location": "{start:{line:6528,column:16},end:{line:6562,column:2}}",
+        "type": "FunctionExpression",
+        "function": "updateElement",
+        "label": "E-REGISTER",
+        "params": [
+            "point",
+            "index",
+            "reset"
+        ]
+    },
+    {
+        "id": "16363",
+        "location": "{start:{line:3779,column:21},end:{line:3783,column:2}}",
+        "type": "FunctionExpression",
+        "function": "addElementAndReset",
+        "label": "E-REGISTER",
+        "params": [
+            "index"
+        ]
+    },
+    {
+        "id": "17495",
+        "location": "{start:{line:4067,column:17},end:{line:4071,column:2}}",
+        "type": "FunctionExpression",
+        "function": "insertElements",
+        "label": "E-REGISTER",
+        "params": [
+            "start",
+            "count"
+        ]
+    },
+    {
+        "id": "17427",
+        "location": "{start:{line:4050,column:17},end:{line:4062,column:2}}",
+        "type": "FunctionExpression",
+        "function": "resyncElements",
+        "label": "E-REGISTER"
+    },
+    {
+        "id": "17520",
+        "location": "{start:{line:4076,column:13},end:{line:4079,column:2}}",
+        "type": "FunctionExpression",
+        "function": "onDataPush",
+        "label": "E-REGISTER"
+    },
+    {
+        "id": "17574",
+        "location": "{start:{line:4098,column:15},end:{line:4101,column:2}}",
+        "type": "FunctionExpression",
+        "function": "onDataSplice",
+        "label": "E-REGISTER",
+        "params": [
+            "start",
+            "count"
+        ]
+    },
+    {
+        "id": "17603",
+        "location": "{start:{line:4106,column:16},end:{line:4108,column:2}}",
+        "type": "FunctionExpression",
+        "function": "onDataUnshift",
+        "label": "E-REGISTER"
+    },
+    {
+        "id": "41082",
+        "location": "{start:{line:10192,column:14},end:{line:10234,column:2}}",
+        "type": "FunctionExpression",
+        "function": "handleEvent",
+        "label": "E-REGISTER",
+        "params": [
+            "e"
+        ]
+    },
+    {
+        "id": "64238",
+        "location": "{start:{line:15653,column:14},end:{line:15692,column:2}}",
+        "type": "FunctionExpression",
+        "function": "handleEvent",
+        "label": "E-REGISTER",
+        "params": [
+            "e"
+        ]
+    }
+]

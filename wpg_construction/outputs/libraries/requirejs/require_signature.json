@@ -1,0 +1,242 @@
+[
+    {
+        "id": "5335",
+        "location": "{start:{line:1127,column:15},end:{line:1159,column:5}}",
+        "type": "FunctionExpression",
+        "function": "load",
+        "label": "E-REGISTER",
+        "params": [
+            "context",
+            "moduleName",
+            "url"
+        ]
+    },
+    {
+        "id": "2297",
+        "location": "{start:{line:524,column:19},end:{line:540,column:13}}",
+        "type": "FunctionExpression",
+        "function": "fetch",
+        "label": "E-REGISTER"
+    },
+    {
+        "id": "2386",
+        "location": "{start:{line:541,column:18},end:{line:547,column:13}}",
+        "type": "FunctionExpression",
+        "function": "load",
+        "label": "E-REGISTER"
+    },
+    {
+        "id": "2748",
+        "location": "{start:{line:608,column:24},end:{line:701,column:13}}",
+        "type": "FunctionExpression",
+        "function": "callPlugin",
+        "label": "E-REGISTER"
+    },
+    {
+        "id": "4889",
+        "location": "{start:{line:1040,column:18},end:{line:1042,column:13}}",
+        "type": "FunctionExpression",
+        "function": "load",
+        "label": "E-REGISTER",
+        "params": [
+            "id",
+            "url"
+        ]
+    },
+    {
+        "id": "528",
+        "location": "{start:{line:140,column:4},end:{line:1062,column:5}}",
+        "type": "FunctionDeclaration",
+        "function": "newContext",
+        "label": "E-REGISTER",
+        "params": [
+            "contextName"
+        ]
+    },
+    {
+        "id": "2421",
+        "location": "{start:{line:548,column:19},end:{line:607,column:13}}",
+        "type": "FunctionExpression",
+        "function": "check",
+        "label": "E-REGISTER"
+    },
+    {
+        "id": "2150",
+        "location": "{start:{line:494,column:18},end:{line:516,column:13}}",
+        "type": "FunctionExpression",
+        "function": "init",
+        "label": "E-REGISTER",
+        "params": [
+            "depMaps",
+            "factory",
+            "errback",
+            "options"
+        ]
+    },
+    {
+        "id": "3226",
+        "location": "{start:{line:702,column:20},end:{line:739,column:13}}",
+        "type": "FunctionExpression",
+        "function": "enable",
+        "label": "E-REGISTER"
+    },
+    {
+        "id": "1735",
+        "location": "{start:{line:404,column:8},end:{line:424,column:9}}",
+        "type": "FunctionDeclaration",
+        "function": "breakCycle",
+        "label": "E-REGISTER",
+        "params": [
+            "mod",
+            "traced",
+            "processed"
+        ]
+    },
+    {
+        "id": "3721",
+        "location": "{start:{line:806,column:23},end:{line:874,column:13}}",
+        "type": "FunctionExpression",
+        "function": "configure",
+        "label": "E-REGISTER",
+        "params": [
+            "cfg"
+        ]
+    },
+    {
+        "id": "4048",
+        "location": "{start:{line:875,column:29},end:{line:884,column:13}}",
+        "type": "FunctionExpression",
+        "function": "makeShimExports",
+        "label": "E-REGISTER",
+        "params": [
+            "value"
+        ]
+    },
+    {
+        "id": "4089",
+        "location": "{start:{line:885,column:25},end:{line:969,column:13}}",
+        "type": "FunctionExpression",
+        "function": "makeRequire",
+        "label": "E-REGISTER",
+        "params": [
+            "relMap",
+            "options"
+        ]
+    },
+    {
+        "id": "3524",
+        "location": "{start:{line:757,column:8},end:{line:761,column:9}}",
+        "type": "FunctionDeclaration",
+        "function": "callGetModule",
+        "label": "E-REGISTER",
+        "params": [
+            "args"
+        ]
+    },
+    {
+        "id": "4051",
+        "location": "{start:{line:876,column:16},end:{line:882,column:17}}",
+        "type": "FunctionDeclaration",
+        "function": "fn",
+        "label": "E-REGISTER"
+    },
+    {
+        "id": "4099",
+        "location": "{start:{line:888,column:16},end:{line:925,column:17}}",
+        "type": "FunctionDeclaration",
+        "function": "localRequire",
+        "label": "E-REGISTER",
+        "params": [
+            "deps",
+            "callback",
+            "errback"
+        ]
+    },
+    {
+        "id": "4526",
+        "location": "{start:{line:976,column:26},end:{line:1006,column:13}}",
+        "type": "FunctionExpression",
+        "function": "completeLoad",
+        "label": "E-REGISTER",
+        "params": [
+            "moduleName"
+        ]
+    },
+    {
+        "id": "3635",
+        "location": "{start:{line:783,column:8},end:{line:794,column:9}}",
+        "type": "FunctionDeclaration",
+        "function": "intakeDefines",
+        "label": "E-REGISTER"
+    },
+    {
+        "id": "4918",
+        "location": "{start:{line:1046,column:26},end:{line:1052,column:13}}",
+        "type": "FunctionExpression",
+        "function": "onScriptLoad",
+        "label": "E-REGISTER",
+        "params": [
+            "evt"
+        ]
+    },
+    {
+        "id": "3590",
+        "location": "{start:{line:773,column:8},end:{line:781,column:9}}",
+        "type": "FunctionDeclaration",
+        "function": "getScriptData",
+        "label": "E-REGISTER",
+        "params": [
+            "evt"
+        ]
+    },
+    {
+        "id": "4962",
+        "location": "{start:{line:1053,column:27},end:{line:1058,column:13}}",
+        "type": "FunctionExpression",
+        "function": "onScriptError",
+        "label": "E-REGISTER",
+        "params": [
+            "evt"
+        ]
+    },
+    {
+        "id": "379",
+        "location": "{start:{line:91,column:4},end:{line:95,column:5}}",
+        "type": "FunctionDeclaration",
+        "function": "bind",
+        "label": "E-REGISTER",
+        "params": [
+            "obj",
+            "fn"
+        ]
+    },
+    {
+        "id": "1405",
+        "location": "{start:{line:320,column:8},end:{line:335,column:9}}",
+        "type": "FunctionDeclaration",
+        "function": "on",
+        "label": "E-REGISTER",
+        "params": [
+            "depMap",
+            "name",
+            "fn"
+        ]
+    },
+    {
+        "id": "4502",
+        "location": "{start:{line:970,column:20},end:{line:975,column:13}}",
+        "type": "FunctionExpression",
+        "function": "enable",
+        "label": "E-REGISTER",
+        "params": [
+            "depMap"
+        ]
+    },
+    {
+        "id": "1840",
+        "location": "{start:{line:426,column:8},end:{line:482,column:9}}",
+        "type": "FunctionDeclaration",
+        "function": "checkLoaded",
+        "label": "E-REGISTER"
+    }
+]

@@ -1,0 +1,16 @@
+{
+  "name": "dom-points-to",
+  "version": "1.0.0",
+  "description": "",
+  "main": "template.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "domino": "^2.1.6",
+    "fs": "0.0.1-security"
+  }
+}

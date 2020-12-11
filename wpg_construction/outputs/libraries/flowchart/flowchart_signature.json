@@ -1,0 +1,241 @@
+[
+    {
+        "id": "386",
+        "location": "{start:{line:131,column:8},end:{line:184,column:9}}",
+        "type": "FunctionDeclaration",
+        "function": "Symbol",
+        "label": "E-REGISTER",
+        "params": [
+            "chart",
+            "options",
+            "symbol"
+        ]
+    },
+    {
+        "id": "7238",
+        "location": "{start:{line:775,column:8},end:{line:824,column:9}}",
+        "type": "FunctionDeclaration",
+        "function": "Condition",
+        "label": "E-REGISTER",
+        "params": [
+            "chart",
+            "options"
+        ]
+    },
+    {
+        "id": "8236",
+        "location": "{start:{line:867,column:8},end:{line:888,column:9}}",
+        "type": "FunctionDeclaration",
+        "function": "Parallel",
+        "label": "E-REGISTER",
+        "params": [
+            "chart",
+            "options"
+        ]
+    },
+    {
+        "id": "10609",
+        "location": "{start:{line:1088,column:8},end:{line:1091,column:9}}",
+        "type": "FunctionDeclaration",
+        "function": "End",
+        "label": "E-REGISTER",
+        "params": [
+            "chart",
+            "options"
+        ]
+    },
+    {
+        "id": "10681",
+        "location": "{start:{line:1100,column:8},end:{line:1133,column:9}}",
+        "type": "FunctionDeclaration",
+        "function": "InputOutput",
+        "label": "E-REGISTER",
+        "params": [
+            "chart",
+            "options"
+        ]
+    },
+    {
+        "id": "11100",
+        "location": "{start:{line:1154,column:8},end:{line:1157,column:9}}",
+        "type": "FunctionDeclaration",
+        "function": "Operation",
+        "label": "E-REGISTER",
+        "params": [
+            "chart",
+            "options"
+        ]
+    },
+    {
+        "id": "11162",
+        "location": "{start:{line:1166,column:8},end:{line:1169,column:9}}",
+        "type": "FunctionDeclaration",
+        "function": "Start",
+        "label": "E-REGISTER",
+        "params": [
+            "chart",
+            "options"
+        ]
+    },
+    {
+        "id": "11234",
+        "location": "{start:{line:1178,column:8},end:{line:1203,column:9}}",
+        "type": "FunctionDeclaration",
+        "function": "Subroutine",
+        "label": "E-REGISTER",
+        "params": [
+            "chart",
+            "options"
+        ]
+    },
+    {
+        "id": "5944",
+        "location": "{start:{line:637,column:25},end:{line:689,column:17}}",
+        "type": "FunctionExpression",
+        "function": "drawSVG",
+        "label": "E-REGISTER",
+        "params": [
+            "container",
+            "options"
+        ]
+    },
+    {
+        "id": "5728",
+        "location": "{start:{line:614,column:8},end:{line:766,column:9}}",
+        "type": "FunctionDeclaration",
+        "function": "parse",
+        "label": "E-REGISTER",
+        "params": [
+            "input"
+        ]
+    },
+    {
+        "id": "5948",
+        "location": "{start:{line:638,column:20},end:{line:673,column:21}}",
+        "type": "FunctionDeclaration",
+        "function": "getDisplaySymbol",
+        "label": "E-REGISTER",
+        "params": [
+            "s"
+        ]
+    },
+    {
+        "id": "9501",
+        "location": "{start:{line:960,column:37},end:{line:981,column:9}}",
+        "type": "FunctionExpression",
+        "function": "handle",
+        "label": "E-REGISTER",
+        "params": [
+            "symbol"
+        ]
+    },
+    {
+        "id": "11583",
+        "location": "{start:{line:1219,column:26},end:{line:1224,column:21}}",
+        "type": "FunctionExpression",
+        "function": "init",
+        "label": "E-REGISTER",
+        "params": [
+            "options"
+        ]
+    },
+    {
+        "id": "11626",
+        "location": "{start:{line:1225,column:41},end:{line:1242,column:21}}",
+        "type": "FunctionExpression",
+        "function": "setFlowStateByParam",
+        "label": "E-REGISTER",
+        "params": [
+            "param",
+            "paramValue",
+            "newFlowState"
+        ]
+    },
+    {
+        "id": "11781",
+        "location": "{start:{line:1243,column:36},end:{line:1252,column:21}}",
+        "type": "FunctionExpression",
+        "function": "clearFlowState",
+        "label": "E-REGISTER"
+    },
+    {
+        "id": "11844",
+        "location": "{start:{line:1254,column:33},end:{line:1256,column:17}}",
+        "type": "FunctionExpression",
+        "function": "flowChart",
+        "label": "E-REGISTER",
+        "params": [
+            "methodOrOptions"
+        ]
+    },
+    {
+        "id": "9538",
+        "location": "{start:{line:963,column:63},end:{line:966,column:13}}",
+        "type": "FunctionExpression",
+        "function": "yes",
+        "label": "E-REGISTER",
+        "params": [
+            "nextSymbol"
+        ]
+    },
+    {
+        "id": "9567",
+        "location": "{start:{line:966,column:27},end:{line:969,column:13}}",
+        "type": "FunctionExpression",
+        "function": "no",
+        "label": "E-REGISTER",
+        "params": [
+            "nextSymbol"
+        ]
+    },
+    {
+        "id": "9601",
+        "location": "{start:{line:969,column:62},end:{line:972,column:13}}",
+        "type": "FunctionExpression",
+        "function": "path1",
+        "label": "E-REGISTER",
+        "params": [
+            "nextSymbol"
+        ]
+    },
+    {
+        "id": "9630",
+        "location": "{start:{line:972,column:30},end:{line:975,column:13}}",
+        "type": "FunctionExpression",
+        "function": "path2",
+        "label": "E-REGISTER",
+        "params": [
+            "nextSymbol"
+        ]
+    },
+    {
+        "id": "9659",
+        "location": "{start:{line:975,column:30},end:{line:978,column:13}}",
+        "type": "FunctionExpression",
+        "function": "path3",
+        "label": "E-REGISTER",
+        "params": [
+            "nextSymbol"
+        ]
+    },
+    {
+        "id": "9688",
+        "location": "{start:{line:978,column:31},end:{line:980,column:13}}",
+        "type": "FunctionExpression",
+        "function": "then",
+        "label": "E-REGISTER",
+        "params": [
+            "nextSymbol"
+        ]
+    },
+    {
+        "id": "9716",
+        "location": "{start:{line:981,column:43},end:{line:983,column:9}}",
+        "type": "FunctionExpression",
+        "function": "startWith",
+        "label": "E-REGISTER",
+        "params": [
+            "symbol"
+        ]
+    }
+]

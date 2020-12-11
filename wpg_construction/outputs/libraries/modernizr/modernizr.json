@@ -1,0 +1,256 @@
+[
+    {
+        "id": "113",
+        "location": "{start:{line:52,column:30},end:{line:89,column:5}}",
+        "type": "FunctionExpression",
+        "function": "injectElementWithStyles",
+        "params": [
+            "rule",
+            "callback",
+            "nodes",
+            "testnames"
+        ],
+        "labels": "['out ~ nodes, testnames']"
+    },
+    {
+        "id": "397",
+        "location": "{start:{line:119,column:6},end:{line:143,column:7}}",
+        "type": "FunctionDeclaration",
+        "function": "isEventSupported",
+        "params": [
+            "eventName",
+            "element"
+        ],
+        "labels": "['out ~ element, eventName']"
+    },
+    {
+        "id": "728",
+        "location": "{start:{line:220,column:4},end:{line:228,column:5}}",
+        "type": "FunctionDeclaration",
+        "function": "testProps",
+        "params": [
+            "props",
+            "prefixed"
+        ],
+        "labels": "['out ~ prefixed']"
+    },
+    {
+        "id": "767",
+        "location": "{start:{line:230,column:4},end:{line:245,column:5}}",
+        "type": "FunctionDeclaration",
+        "function": "testDOMProps",
+        "params": [
+            "props",
+            "obj",
+            "elem"
+        ],
+        "labels": "['out ~ elem']"
+    },
+    {
+        "id": "818",
+        "location": "{start:{line:247,column:4},end:{line:259,column:5}}",
+        "type": "FunctionDeclaration",
+        "function": "testPropsAll",
+        "params": [
+            "prop",
+            "prefixed",
+            "elem"
+        ],
+        "labels": "['out ~ prefixed']"
+    },
+    {
+        "id": "2298",
+        "location": "{start:{line:600,column:25},end:{line:625,column:6}}",
+        "type": "FunctionExpression",
+        "function": "Modernizr.addTest",
+        "params": [
+            "feature",
+            "test"
+        ],
+        "labels": "['out ~ feature, test']"
+    },
+    {
+        "id": "2627",
+        "location": "{start:{line:692,column:8},end:{line:713,column:7}}",
+        "type": "FunctionDeclaration",
+        "function": "createElement",
+        "params": [
+            "nodeName",
+            "ownerDocument",
+            "data"
+        ],
+        "labels": "['out ~ ownerDocument, data, nodeName']"
+    },
+    {
+        "id": "2734",
+        "location": "{start:{line:715,column:8},end:{line:731,column:7}}",
+        "type": "FunctionDeclaration",
+        "function": "createDocumentFragment",
+        "params": [
+            "ownerDocument",
+            "data"
+        ],
+        "labels": "['out ~ ownerDocument']"
+    },
+    {
+        "id": "2801",
+        "location": "{start:{line:733,column:8},end:{line:759,column:7}}",
+        "type": "FunctionDeclaration",
+        "function": "shivMethods",
+        "params": [
+            "ownerDocument",
+            "data"
+        ],
+        "labels": "['out ~ data']"
+    },
+    {
+        "id": "2922",
+        "location": "{start:{line:759,column:15},end:{line:775,column:7}}",
+        "type": "FunctionDeclaration",
+        "function": "shivDocument",
+        "params": [
+            "ownerDocument"
+        ],
+        "labels": "['out ~ ownerDocument']"
+    },
+    {
+        "id": "3095",
+        "location": "{start:{line:816,column:30},end:{line:822,column:5}}",
+        "type": "FunctionExpression",
+        "function": "Modernizr.prefixed",
+        "params": [
+            "prop",
+            "obj",
+            "elem"
+        ],
+        "labels": "['out ~ obj']"
+    },
+    {
+        "id": "3148",
+        "location": "{start:{line:833,column:1},end:{line:833,column:3721}}",
+        "type": "FunctionExpression",
+        "function": "document",
+        "params": [
+            "a",
+            "b",
+            "c"
+        ],
+        "labels": "['out ~ a, b, c']"
+    },
+    {
+        "id": "3258",
+        "location": "{start:{line:833,column:317},end:{line:833,column:860}}",
+        "type": "FunctionDeclaration",
+        "function": "i",
+        "params": [
+            "a",
+            "c",
+            "d",
+            "e",
+            "f",
+            "i",
+            "j"
+        ],
+        "labels": "['out ~ a, c']"
+    },
+    {
+        "id": "3268",
+        "location": "{start:{line:833,column:343},end:{line:833,column:542}}",
+        "type": "FunctionDeclaration",
+        "function": "k",
+        "params": [
+            "b"
+        ],
+        "labels": "['out ~ b']"
+    },
+    {
+        "id": "3492",
+        "location": "{start:{line:833,column:860},end:{line:833,column:987}}",
+        "type": "FunctionDeclaration",
+        "function": "j",
+        "params": [
+            "a",
+            "b",
+            "c",
+            "d",
+            "f"
+        ],
+        "labels": "['out ~ a, b']"
+    },
+    {
+        "id": "3724",
+        "location": "{start:{line:833,column:1476},end:{line:833,column:2860}}",
+        "type": "FunctionExpression",
+        "function": "B",
+        "params": [
+            "a"
+        ],
+        "labels": "['out ~ a']"
+    },
+    {
+        "id": "3827",
+        "location": "{start:{line:833,column:1688},end:{line:833,column:2128}}",
+        "type": "FunctionDeclaration",
+        "function": "g",
+        "params": [
+            "a",
+            "e",
+            "f",
+            "g",
+            "h"
+        ],
+        "labels": "['out ~ e']"
+    },
+    {
+        "id": "4026",
+        "location": "{start:{line:833,column:2128},end:{line:833,column:2693}}",
+        "type": "FunctionDeclaration",
+        "function": "h",
+        "params": [
+            "a",
+            "b"
+        ],
+        "labels": "['out ~ a']"
+    },
+    {
+        "id": "4031",
+        "location": "{start:{line:833,column:2144},end:{line:833,column:2591}}",
+        "type": "FunctionDeclaration",
+        "function": "c",
+        "params": [
+            "a",
+            "c"
+        ],
+        "labels": "['out ~ a']"
+    },
+    {
+        "id": "4439",
+        "location": "{start:{line:833,column:3197},end:{line:833,column:3511}}",
+        "type": "FunctionExpression",
+        "function": "a.yepnope.injectJs",
+        "params": [
+            "a",
+            "c",
+            "d",
+            "e",
+            "i",
+            "j"
+        ],
+        "labels": "['out ~ j, i']"
+    },
+    {
+        "id": "4564",
+        "location": "{start:{line:833,column:3532},end:{line:833,column:3720}}",
+        "type": "FunctionExpression",
+        "function": "a.yepnope.injectCss",
+        "params": [
+            "a",
+            "c",
+            "d",
+            "e",
+            "g",
+            "i"
+        ],
+        "labels": "['out ~ i']"
+    }
+]

@@ -1,0 +1,1 @@
+node main.js -js ./unit_tests/debug2.js -o debug2

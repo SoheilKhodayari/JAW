@@ -1,0 +1,12 @@
+[
+    {
+        "id": "653",
+        "location": "{start:{line:142,column:4},end:{line:164,column:5}}",
+        "type": "FunctionDeclaration",
+        "function": "s",
+        "label": "E-REGISTER",
+        "params": [
+            "Y"
+        ]
+    }
+]

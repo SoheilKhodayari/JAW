@@ -1,0 +1,575 @@
+[
+    {
+        "id": "83",
+        "location": "{start:{line:29,column:1},end:{line:78,column:1}}",
+        "type": "FunctionExpression",
+        "function": "jQuery",
+        "params": [
+            "$"
+        ],
+        "labels": "['out <-- $', 'out ~ $']"
+    },
+    {
+        "id": "252",
+        "location": "{start:{line:72,column:14},end:{line:74,column:7}}",
+        "type": "FunctionExpression",
+        "function": "handle",
+        "params": [
+            "e"
+        ],
+        "labels": "['out <-- e', 'out ~ e']"
+    },
+    {
+        "id": "280",
+        "location": "{start:{line:89,column:1},end:{line:173,column:1}}",
+        "type": "FunctionExpression",
+        "function": "jQuery",
+        "params": [
+            "$"
+        ],
+        "labels": "['out ~ $']"
+    },
+    {
+        "id": "326",
+        "location": "{start:{line:104,column:26},end:{line:137,column:3}}",
+        "type": "FunctionExpression",
+        "function": "Alert.prototype.close",
+        "params": [
+            "e"
+        ],
+        "labels": "['out ~ e']"
+    },
+    {
+        "id": "464",
+        "location": "{start:{line:143,column:2},end:{line:151,column:3}}",
+        "type": "FunctionDeclaration",
+        "function": "Plugin",
+        "params": [
+            "option"
+        ],
+        "labels": "['out ~ option']"
+    },
+    {
+        "id": "581",
+        "location": "{start:{line:184,column:1},end:{line:299,column:1}}",
+        "type": "FunctionExpression",
+        "function": "jQuery",
+        "params": [
+            "$"
+        ],
+        "labels": "['out ~ $']"
+    },
+    {
+        "id": "643",
+        "location": "{start:{line:202,column:30},end:{line:224,column:3}}",
+        "type": "FunctionExpression",
+        "function": "Button.prototype.setState",
+        "params": [
+            "state"
+        ],
+        "labels": "['out ~ state']"
+    },
+    {
+        "id": "933",
+        "location": "{start:{line:252,column:2},end:{line:263,column:3}}",
+        "type": "FunctionDeclaration",
+        "function": "Plugin",
+        "params": [
+            "option"
+        ],
+        "labels": "['out ~ option']"
+    },
+    {
+        "id": "1057",
+        "location": "{start:{line:284,column:63},end:{line:294,column:5}}",
+        "type": "FunctionExpression",
+        "function": "$(document).on",
+        "params": [
+            "e"
+        ],
+        "labels": "['out ~ e']"
+    },
+    {
+        "id": "1152",
+        "location": "{start:{line:310,column:1},end:{line:537,column:1}}",
+        "type": "FunctionExpression",
+        "function": "jQuery",
+        "params": [
+            "$"
+        ],
+        "labels": "['out <-- $', 'out ~ $']"
+    },
+    {
+        "id": "1322",
+        "location": "{start:{line:344,column:31},end:{line:353,column:3}}",
+        "type": "FunctionExpression",
+        "function": "Carousel.prototype.keydown",
+        "params": [
+            "e"
+        ],
+        "labels": "['out ~ e']"
+    },
+    {
+        "id": "1431",
+        "location": "{start:{line:367,column:36},end:{line:370,column:3}}",
+        "type": "FunctionExpression",
+        "function": "Carousel.prototype.getItemIndex",
+        "params": [
+            "item"
+        ],
+        "labels": "['out <-- item']"
+    },
+    {
+        "id": "1466",
+        "location": "{start:{line:372,column:43},end:{line:380,column:3}}",
+        "type": "FunctionExpression",
+        "function": "Carousel.prototype.getItemForDirection",
+        "params": [
+            "direction",
+            "active"
+        ],
+        "labels": "['out <-- direction, active', 'out ~ direction']"
+    },
+    {
+        "id": "1550",
+        "location": "{start:{line:382,column:26},end:{line:392,column:3}}",
+        "type": "FunctionExpression",
+        "function": "Carousel.prototype.to",
+        "params": [
+            "pos"
+        ],
+        "labels": "['out <-- pos', 'out ~ pos']"
+    },
+    {
+        "id": "1754",
+        "location": "{start:{line:417,column:29},end:{line:470,column:3}}",
+        "type": "FunctionExpression",
+        "function": "Carousel.prototype.slide",
+        "params": [
+            "type",
+            "next"
+        ],
+        "labels": "['out ~ type']"
+    },
+    {
+        "id": "2054",
+        "location": "{start:{line:476,column:2},end:{line:488,column:3}}",
+        "type": "FunctionDeclaration",
+        "function": "Plugin",
+        "params": [
+            "option"
+        ],
+        "labels": "['out ~ option']"
+    },
+    {
+        "id": "2364",
+        "location": "{start:{line:549,column:1},end:{line:750,column:1}}",
+        "type": "FunctionExpression",
+        "function": "jQuery",
+        "params": [
+            "$"
+        ],
+        "labels": "['out <-- $', 'out ~ $']"
+    },
+    {
+        "id": "2372",
+        "location": "{start:{line:555,column:17},end:{line:569,column:3}}",
+        "type": "FunctionExpression",
+        "function": "Collapse",
+        "params": [
+            "element",
+            "options"
+        ],
+        "labels": "['out ~ options']"
+    },
+    {
+        "id": "3083",
+        "location": "{start:{line:708,column:2},end:{line:718,column:3}}",
+        "type": "FunctionDeclaration",
+        "function": "Plugin",
+        "params": [
+            "option"
+        ],
+        "labels": "['out ~ option']"
+    },
+    {
+        "id": "3285",
+        "location": "{start:{line:761,column:1},end:{line:916,column:1}}",
+        "type": "FunctionExpression",
+        "function": "jQuery",
+        "params": [
+            "$"
+        ],
+        "labels": "['out ~ $']"
+    },
+    {
+        "id": "3382",
+        "location": "{start:{line:788,column:2},end:{line:807,column:3}}",
+        "type": "FunctionDeclaration",
+        "function": "clearMenus",
+        "params": [
+            "e"
+        ],
+        "labels": "['out ~ e']"
+    },
+    {
+        "id": "3516",
+        "location": "{start:{line:809,column:30},end:{line:843,column:3}}",
+        "type": "FunctionExpression",
+        "function": "Dropdown.prototype.toggle",
+        "params": [
+            "e"
+        ],
+        "labels": "['out ~ e']"
+    },
+    {
+        "id": "3653",
+        "location": "{start:{line:845,column:31},end:{line:875,column:3}}",
+        "type": "FunctionExpression",
+        "function": "Dropdown.prototype.keydown",
+        "params": [
+            "e"
+        ],
+        "labels": "['out ~ e']"
+    },
+    {
+        "id": "3831",
+        "location": "{start:{line:881,column:2},end:{line:889,column:3}}",
+        "type": "FunctionDeclaration",
+        "function": "Plugin",
+        "params": [
+            "option"
+        ],
+        "labels": "['out ~ option']"
+    },
+    {
+        "id": "3986",
+        "location": "{start:{line:927,column:1},end:{line:1256,column:1}}",
+        "type": "FunctionExpression",
+        "function": "jQuery",
+        "params": [
+            "$"
+        ],
+        "labels": "['out ~ $']"
+    },
+    {
+        "id": "3994",
+        "location": "{start:{line:933,column:14},end:{line:951,column:3}}",
+        "type": "FunctionExpression",
+        "function": "Modal",
+        "params": [
+            "element",
+            "options"
+        ],
+        "labels": "['out ~ options']"
+    },
+    {
+        "id": "4272",
+        "location": "{start:{line:988,column:52},end:{line:990,column:7}}",
+        "type": "FunctionExpression",
+        "function": "that.$element.one",
+        "params": [
+            "e"
+        ],
+        "labels": "['out ~ e']"
+    },
+    {
+        "id": "4437",
+        "location": "{start:{line:1026,column:25},end:{line:1054,column:3}}",
+        "type": "FunctionExpression",
+        "function": "Modal.prototype.hide",
+        "params": [
+            "e"
+        ],
+        "labels": "['out ~ e']"
+    },
+    {
+        "id": "4587",
+        "location": "{start:{line:1059,column:38},end:{line:1065,column:7}}",
+        "type": "FunctionExpression",
+        "function": "$.proxy",
+        "params": [
+            "e"
+        ],
+        "labels": "['out ~ e']"
+    },
+    {
+        "id": "4815",
+        "location": "{start:{line:1102,column:29},end:{line:1152,column:3}}",
+        "type": "FunctionExpression",
+        "function": "Modal.prototype.backdrop",
+        "params": [
+            "callback"
+        ],
+        "labels": "['out ~ callback']"
+    },
+    {
+        "id": "4892",
+        "location": "{start:{line:1113,column:57},end:{line:1122,column:7}}",
+        "type": "FunctionExpression",
+        "function": "$.proxy",
+        "params": [
+            "e"
+        ],
+        "labels": "['out ~ e']"
+    },
+    {
+        "id": "5336",
+        "location": "{start:{line:1209,column:2},end:{line:1219,column:3}}",
+        "type": "FunctionDeclaration",
+        "function": "Plugin",
+        "params": [
+            "option",
+            "_relatedTarget"
+        ],
+        "labels": "['out ~ option']"
+    },
+    {
+        "id": "5561",
+        "location": "{start:{line:1247,column:33},end:{line:1252,column:5}}",
+        "type": "FunctionExpression",
+        "function": "$target.one",
+        "params": [
+            "showEvent"
+        ],
+        "labels": "['out ~ showEvent']"
+    },
+    {
+        "id": "5602",
+        "location": "{start:{line:1268,column:1},end:{line:1777,column:1}}",
+        "type": "FunctionExpression",
+        "function": "jQuery",
+        "params": [
+            "$"
+        ],
+        "labels": "['out ~ $']"
+    },
+    {
+        "id": "5725",
+        "location": "{start:{line:1306,column:27},end:{line:1337,column:3}}",
+        "type": "FunctionExpression",
+        "function": "Tooltip.prototype.init",
+        "params": [
+            "type",
+            "element",
+            "options"
+        ],
+        "labels": "['out ~ options']"
+    },
+    {
+        "id": "6036",
+        "location": "{start:{line:1343,column:33},end:{line:1354,column:3}}",
+        "type": "FunctionExpression",
+        "function": "Tooltip.prototype.getOptions",
+        "params": [
+            "options"
+        ],
+        "labels": "['out ~ options']"
+    },
+    {
+        "id": "6120",
+        "location": "{start:{line:1360,column:43},end:{line:1362,column:5}}",
+        "type": "FunctionExpression",
+        "function": "this._options",
+        "params": [
+            "key",
+            "value"
+        ],
+        "labels": "['out ~ key, value']"
+    },
+    {
+        "id": "6145",
+        "location": "{start:{line:1367,column:28},end:{line:1394,column:3}}",
+        "type": "FunctionExpression",
+        "function": "Tooltip.prototype.enter",
+        "params": [
+            "obj"
+        ],
+        "labels": "['out ~ obj']"
+    },
+    {
+        "id": "6343",
+        "location": "{start:{line:1404,column:28},end:{line:1428,column:3}}",
+        "type": "FunctionExpression",
+        "function": "Tooltip.prototype.leave",
+        "params": [
+            "obj"
+        ],
+        "labels": "['out ~ obj']"
+    },
+    {
+        "id": "6945",
+        "location": "{start:{line:1506,column:37},end:{line:1554,column:3}}",
+        "type": "FunctionExpression",
+        "function": "Tooltip.prototype.applyPlacement",
+        "params": [
+            "offset",
+            "placement"
+        ],
+        "labels": "['out ~ placement']"
+    },
+    {
+        "id": "7205",
+        "location": "{start:{line:1556,column:35},end:{line:1560,column:3}}",
+        "type": "FunctionExpression",
+        "function": "Tooltip.prototype.replaceArrow",
+        "params": [
+            "delta",
+            "dimension",
+            "isVertical"
+        ],
+        "labels": "['out ~ isVertical']"
+    },
+    {
+        "id": "7645",
+        "location": "{start:{line:1634,column:42},end:{line:1640,column:3}}",
+        "type": "FunctionExpression",
+        "function": "Tooltip.prototype.getCalculatedOffset",
+        "params": [
+            "placement",
+            "pos",
+            "actualWidth",
+            "actualHeight"
+        ],
+        "labels": "['out ~ placement']"
+    },
+    {
+        "id": "7767",
+        "location": "{start:{line:1642,column:47},end:{line:1668,column:3}}",
+        "type": "FunctionExpression",
+        "function": "Tooltip.prototype.getViewportAdjustedDelta",
+        "params": [
+            "placement",
+            "pos",
+            "actualWidth",
+            "actualHeight"
+        ],
+        "labels": "['out ~ placement']"
+    },
+    {
+        "id": "8013",
+        "location": "{start:{line:1681,column:29},end:{line:1685,column:3}}",
+        "type": "FunctionExpression",
+        "function": "Tooltip.prototype.getUID",
+        "params": [
+            "prefix"
+        ],
+        "labels": "['out ~ prefix']"
+    },
+    {
+        "id": "8164",
+        "location": "{start:{line:1713,column:29},end:{line:1730,column:3}}",
+        "type": "FunctionExpression",
+        "function": "Tooltip.prototype.toggle",
+        "params": [
+            "e"
+        ],
+        "labels": "['out ~ e']"
+    },
+    {
+        "id": "8359",
+        "location": "{start:{line:1751,column:2},end:{line:1761,column:3}}",
+        "type": "FunctionDeclaration",
+        "function": "Plugin",
+        "params": [
+            "option"
+        ],
+        "labels": "['out ~ option']"
+    },
+    {
+        "id": "8479",
+        "location": "{start:{line:1788,column:1},end:{line:1886,column:1}}",
+        "type": "FunctionExpression",
+        "function": "jQuery",
+        "params": [
+            "$"
+        ],
+        "labels": "['out ~ $']"
+    },
+    {
+        "id": "8784",
+        "location": "{start:{line:1860,column:2},end:{line:1870,column:3}}",
+        "type": "FunctionDeclaration",
+        "function": "Plugin",
+        "params": [
+            "option"
+        ],
+        "labels": "['out ~ option']"
+    },
+    {
+        "id": "8904",
+        "location": "{start:{line:1897,column:1},end:{line:2059,column:1}}",
+        "type": "FunctionExpression",
+        "function": "jQuery",
+        "params": [
+            "$"
+        ],
+        "labels": "['out ~ $']"
+    },
+    {
+        "id": "8909",
+        "location": "{start:{line:1903,column:2},end:{line:1916,column:3}}",
+        "type": "FunctionDeclaration",
+        "function": "ScrollSpy",
+        "params": [
+            "element",
+            "options"
+        ],
+        "labels": "['out ~ element']"
+    },
+    {
+        "id": "9533",
+        "location": "{start:{line:2023,column:2},end:{line:2032,column:3}}",
+        "type": "FunctionDeclaration",
+        "function": "Plugin",
+        "params": [
+            "option"
+        ],
+        "labels": "['out ~ option']"
+    },
+    {
+        "id": "9897",
+        "location": "{start:{line:2126,column:27},end:{line:2172,column:3}}",
+        "type": "FunctionExpression",
+        "function": "Tab.prototype.activate",
+        "params": [
+            "element",
+            "container",
+            "callback"
+        ],
+        "labels": "['out ~ element']"
+    },
+    {
+        "id": "10069",
+        "location": "{start:{line:2178,column:2},end:{line:2186,column:3}}",
+        "type": "FunctionDeclaration",
+        "function": "Plugin",
+        "params": [
+            "option"
+        ],
+        "labels": "['out ~ option']"
+    },
+    {
+        "id": "10329",
+        "location": "{start:{line:2256,column:29},end:{line:2276,column:3}}",
+        "type": "FunctionExpression",
+        "function": "Affix.prototype.getState",
+        "params": [
+            "scrollHeight",
+            "height",
+            "offsetTop",
+            "offsetBottom"
+        ],
+        "labels": "['out ~ offsetTop, scrollHeight, offsetBottom']"
+    },
+    {
+        "id": "10787",
+        "location": "{start:{line:2335,column:2},end:{line:2344,column:3}}",
+        "type": "FunctionDeclaration",
+        "function": "Plugin",
+        "params": [
+            "option"
+        ],
+        "labels": "['out ~ option']"
+    }
+]

@@ -1,0 +1,443 @@
+[
+    {
+        "id": "274",
+        "location": "{start:{line:43,column:2},end:{line:55,column:3}}",
+        "type": "FunctionDeclaration",
+        "function": "getIteratorFn",
+        "params": [
+            "maybeIterable"
+        ],
+        "labels": "['out ~ maybeIterable']"
+    },
+    {
+        "id": "334",
+        "location": "{start:{line:67,column:2},end:{line:73,column:3}}",
+        "type": "FunctionDeclaration",
+        "function": "toObject",
+        "params": [
+            "val"
+        ],
+        "labels": "['out ~ val']"
+    },
+    {
+        "id": "637",
+        "location": "{start:{line:180,column:2},end:{line:210,column:3}}",
+        "type": "FunctionDeclaration",
+        "function": "describeComponentFrame",
+        "params": [
+            "name",
+            "source",
+            "ownerName"
+        ],
+        "labels": "['out ~ source, ownerName']"
+    },
+    {
+        "id": "747",
+        "location": "{start:{line:213,column:2},end:{line:215,column:3}}",
+        "type": "FunctionDeclaration",
+        "function": "refineResolvedLazyComponent",
+        "params": [
+            "lazyComponent"
+        ],
+        "labels": "['out ~ lazyComponent']"
+    },
+    {
+        "id": "797",
+        "location": "{start:{line:222,column:2},end:{line:294,column:3}}",
+        "type": "FunctionDeclaration",
+        "function": "getComponentName",
+        "params": [
+            "type"
+        ],
+        "labels": "['out ~ type']"
+    },
+    {
+        "id": "1472",
+        "location": "{start:{line:551,column:33},end:{line:559,column:3}}",
+        "type": "FunctionExpression",
+        "function": "Component.prototype.setState",
+        "params": [
+            "partialState",
+            "callback"
+        ],
+        "labels": "['out ~ partialState']"
+    },
+    {
+        "id": "1726",
+        "location": "{start:{line:657,column:2},end:{line:669,column:3}}",
+        "type": "FunctionDeclaration",
+        "function": "hasValidRef",
+        "params": [
+            "config"
+        ],
+        "labels": "['out ~ config']"
+    },
+    {
+        "id": "1765",
+        "location": "{start:{line:671,column:2},end:{line:683,column:3}}",
+        "type": "FunctionDeclaration",
+        "function": "hasValidKey",
+        "params": [
+            "config"
+        ],
+        "labels": "['out ~ config']"
+    },
+    {
+        "id": "1904",
+        "location": "{start:{line:721,column:2},end:{line:733,column:3}}",
+        "type": "FunctionDeclaration",
+        "function": "warnIfStringRefCannotBeAutoConverted",
+        "params": [
+            "config"
+        ],
+        "labels": "['out ~ config']"
+    },
+    {
+        "id": "2105",
+        "location": "{start:{line:814,column:2},end:{line:894,column:3}}",
+        "type": "FunctionDeclaration",
+        "function": "createElement",
+        "params": [
+            "type",
+            "config",
+            "children"
+        ],
+        "labels": "['out ~ config, type']"
+    },
+    {
+        "id": "2405",
+        "location": "{start:{line:904,column:2},end:{line:974,column:3}}",
+        "type": "FunctionDeclaration",
+        "function": "cloneElement",
+        "params": [
+            "element",
+            "config",
+            "children"
+        ],
+        "labels": "['out ~ element, config']"
+    },
+    {
+        "id": "2857",
+        "location": "{start:{line:1064,column:2},end:{line:1155,column:3}}",
+        "type": "FunctionDeclaration",
+        "function": "traverseAllChildrenImpl",
+        "params": [
+            "children",
+            "nameSoFar",
+            "callback",
+            "traverseContext"
+        ],
+        "labels": "['out ~ children, nameSoFar']"
+    },
+    {
+        "id": "3153",
+        "location": "{start:{line:1174,column:2},end:{line:1180,column:3}}",
+        "type": "FunctionDeclaration",
+        "function": "traverseAllChildren",
+        "params": [
+            "children",
+            "callback",
+            "traverseContext"
+        ],
+        "labels": "['out ~ children']"
+    },
+    {
+        "id": "3173",
+        "location": "{start:{line:1190,column:2},end:{line:1200,column:3}}",
+        "type": "FunctionDeclaration",
+        "function": "getComponentKey",
+        "params": [
+            "component",
+            "index"
+        ],
+        "labels": "['out ~ component']"
+    },
+    {
+        "id": "3234",
+        "location": "{start:{line:1221,column:2},end:{line:1229,column:3}}",
+        "type": "FunctionDeclaration",
+        "function": "forEachChildren",
+        "params": [
+            "children",
+            "forEachFunc",
+            "forEachContext"
+        ],
+        "labels": "['out ~ children']"
+    },
+    {
+        "id": "3266",
+        "location": "{start:{line:1231,column:2},end:{line:1251,column:3}}",
+        "type": "FunctionDeclaration",
+        "function": "mapSingleChildIntoContext",
+        "params": [
+            "bookKeeping",
+            "child",
+            "childKey"
+        ],
+        "labels": "['out ~ child']"
+    },
+    {
+        "id": "3373",
+        "location": "{start:{line:1253,column:2},end:{line:1263,column:3}}",
+        "type": "FunctionDeclaration",
+        "function": "mapIntoWithKeyPrefixInternal",
+        "params": [
+            "children",
+            "array",
+            "prefix",
+            "func",
+            "context"
+        ],
+        "labels": "['out ~ prefix']"
+    },
+    {
+        "id": "3417",
+        "location": "{start:{line:1279,column:2},end:{line:1287,column:3}}",
+        "type": "FunctionDeclaration",
+        "function": "mapChildren",
+        "params": [
+            "children",
+            "func",
+            "context"
+        ],
+        "labels": "['out ~ children']"
+    },
+    {
+        "id": "3478",
+        "location": "{start:{line:1335,column:2},end:{line:1343,column:3}}",
+        "type": "FunctionDeclaration",
+        "function": "onlyChild",
+        "params": [
+            "children"
+        ],
+        "labels": "['out ~ children']"
+    },
+    {
+        "id": "3495",
+        "location": "{start:{line:1345,column:2},end:{line:1451,column:3}}",
+        "type": "FunctionDeclaration",
+        "function": "createContext",
+        "params": [
+            "defaultValue",
+            "calculateChangedBits"
+        ],
+        "labels": "['out ~ calculateChangedBits']"
+    },
+    {
+        "id": "3861",
+        "location": "{start:{line:1503,column:2},end:{line:1526,column:3}}",
+        "type": "FunctionDeclaration",
+        "function": "forwardRef",
+        "params": [
+            "render"
+        ],
+        "labels": "['out ~ render']"
+    },
+    {
+        "id": "4061",
+        "location": "{start:{line:1533,column:2},end:{line:1545,column:3}}",
+        "type": "FunctionDeclaration",
+        "function": "memo",
+        "params": [
+            "type",
+            "compare"
+        ],
+        "labels": "['out ~ type, compare']"
+    },
+    {
+        "id": "4124",
+        "location": "{start:{line:1559,column:2},end:{line:1581,column:3}}",
+        "type": "FunctionDeclaration",
+        "function": "useContext",
+        "params": [
+            "Context",
+            "unstable_observedBits"
+        ],
+        "labels": "['out ~ unstable_observedBits, Context']"
+    },
+    {
+        "id": "4437",
+        "location": "{start:{line:1664,column:2},end:{line:1711,column:3}}",
+        "type": "FunctionDeclaration",
+        "function": "checkPropTypes",
+        "params": [
+            "typeSpecs",
+            "values",
+            "location",
+            "componentName",
+            "getStack"
+        ],
+        "labels": "['out ~ typeSpecs, getStack']"
+    },
+    {
+        "id": "4663",
+        "location": "{start:{line:1744,column:2},end:{line:1752,column:3}}",
+        "type": "FunctionDeclaration",
+        "function": "getSourceInfoErrorAddendum",
+        "params": [
+            "source"
+        ],
+        "labels": "['out ~ source']"
+    },
+    {
+        "id": "4701",
+        "location": "{start:{line:1754,column:2},end:{line:1760,column:3}}",
+        "type": "FunctionDeclaration",
+        "function": "getSourceInfoErrorAddendumForProps",
+        "params": [
+            "elementProps"
+        ],
+        "labels": "['out ~ elementProps']"
+    },
+    {
+        "id": "4726",
+        "location": "{start:{line:1770,column:2},end:{line:1782,column:3}}",
+        "type": "FunctionDeclaration",
+        "function": "getCurrentComponentErrorInfo",
+        "params": [
+            "parentType"
+        ],
+        "labels": "['out ~ parentType']"
+    },
+    {
+        "id": "4768",
+        "location": "{start:{line:1796,column:2},end:{line:1826,column:3}}",
+        "type": "FunctionDeclaration",
+        "function": "validateExplicitKey",
+        "params": [
+            "element",
+            "parentType"
+        ],
+        "labels": "['out ~ element']"
+    },
+    {
+        "id": "4868",
+        "location": "{start:{line:1838,column:2},end:{line:1874,column:3}}",
+        "type": "FunctionDeclaration",
+        "function": "validateChildKeys",
+        "params": [
+            "node",
+            "parentType"
+        ],
+        "labels": "['out ~ node']"
+    },
+    {
+        "id": "5130",
+        "location": "{start:{line:1925,column:2},end:{line:1946,column:3}}",
+        "type": "FunctionDeclaration",
+        "function": "validateFragmentProps",
+        "params": [
+            "fragment"
+        ],
+        "labels": "['out ~ fragment']"
+    },
+    {
+        "id": "5200",
+        "location": "{start:{line:1947,column:2},end:{line:2009,column:3}}",
+        "type": "FunctionDeclaration",
+        "function": "createElementWithValidation",
+        "params": [
+            "type",
+            "props",
+            "children"
+        ],
+        "labels": "['out ~ type']"
+    },
+    {
+        "id": "5841",
+        "location": "{start:{line:2172,column:21},end:{line:2185,column:5}}",
+        "type": "FunctionExpression",
+        "function": "forceFrameRate",
+        "params": [
+            "fps"
+        ],
+        "labels": "['out ~ fps']"
+    },
+    {
+        "id": "6112",
+        "location": "{start:{line:2270,column:2},end:{line:2287,column:3}}",
+        "type": "FunctionDeclaration",
+        "function": "siftUp",
+        "params": [
+            "heap",
+            "node",
+            "i"
+        ],
+        "labels": "['out ~ node']"
+    },
+    {
+        "id": "6169",
+        "location": "{start:{line:2289,column:2},end:{line:2318,column:3}}",
+        "type": "FunctionDeclaration",
+        "function": "siftDown",
+        "params": [
+            "heap",
+            "node",
+            "i"
+        ],
+        "labels": "['out ~ node']"
+    },
+    {
+        "id": "6949",
+        "location": "{start:{line:2520,column:2},end:{line:2545,column:3}}",
+        "type": "FunctionDeclaration",
+        "function": "advanceTimers",
+        "params": [
+            "currentTime"
+        ],
+        "labels": "['out ~ currentTime']"
+    },
+    {
+        "id": "7170",
+        "location": "{start:{line:2612,column:2},end:{line:2667,column:3}}",
+        "type": "FunctionDeclaration",
+        "function": "workLoop",
+        "params": [
+            "hasTimeRemaining",
+            "initialTime"
+        ],
+        "labels": "['out ~ hasTimeRemaining']"
+    },
+    {
+        "id": "7489",
+        "location": "{start:{line:2754,column:2},end:{line:2823,column:3}}",
+        "type": "FunctionDeclaration",
+        "function": "unstable_scheduleCallback",
+        "params": [
+            "priorityLevel",
+            "callback",
+            "options"
+        ],
+        "labels": "['out ~ options']"
+    },
+    {
+        "id": "7723",
+        "location": "{start:{line:2840,column:2},end:{line:2853,column:3}}",
+        "type": "FunctionDeclaration",
+        "function": "unstable_cancelCallback",
+        "params": [
+            "task"
+        ],
+        "labels": "['out ~ task']"
+    },
+    {
+        "id": "8291",
+        "location": "{start:{line:3040,column:38},end:{line:3046,column:11}}",
+        "type": "FunctionExpression",
+        "function": "wrappedInteractions.forEach",
+        "params": [
+            "interaction"
+        ],
+        "labels": "['out ~ interaction']"
+    },
+    {
+        "id": "8350",
+        "location": "{start:{line:3062,column:36},end:{line:3068,column:9}}",
+        "type": "FunctionExpression",
+        "function": "wrappedInteractions.forEach",
+        "params": [
+            "interaction"
+        ],
+        "labels": "['out ~ interaction']"
+    }
+]
