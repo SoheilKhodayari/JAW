@@ -14,5 +14,5 @@ requests==2.24.0
 selenium==3.141.0
 tld==0.12.2
 urllib3==1.25.10
-argparse==3.9.0
+argparse==1.4.0
 pandas==1.1.5
