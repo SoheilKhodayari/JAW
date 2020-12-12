@@ -19,7 +19,7 @@
 	Normalize a given JavaScript program. This includes, among others:
 		- Beautifying the JavaScript code
 		- De-obfusecation
-		- Instrumenting code to handle dynamic constructs with constant string parameters  
+		- Pre-instrumenting code to handle dynamic constructs with constant string parameters  
 
 
 	Usage:
@@ -30,18 +30,22 @@
 
 
 import jsbeautifier
-from utils.logging import logger
+import os
+import utils.utility as utilityModule
 import constants as constantsModule
+from utils.logging import logger
+
 
 class Normalizer:
 
 	@staticmethod
-	def beautify_js_program(file_path_name, create_new_file = False):
+	def beautify_js_program(file_path_name, create_new_file = False, new_file_name=constantsModule.NAME_JS_PROGRAM_INSTRUMENTED):
 		
 		"""
 		@param {string} file_path_name: input system path to a JS code
-		@param {bool} create_new_file: if set to False, overwrites the input JS file with the beautify version, 
-				otherwise, it creates a new file with the name set in constantsModule.NAME_JS_PROGRAM_INSTRUMENTED
+		@param {bool} create_new_file: if set to False, overwrites the input JS file with the beautified version, 
+				otherwise, it creates a new file with the name set in the new_file_name field
+		@param {string} new_file_name
 		@description: beautifies a given JS program
 		@return None
 		"""
@@ -55,7 +59,7 @@ class Normalizer:
 
 		if beautified_out_is_not_corrupted:
 			if create_new_file:
-				output = constantsModule.NAME_JS_PROGRAM_INSTRUMENTED
+				output = utilityModule.get_directory_without_last_part(file_path_name) + new_file_name
 			else:
 				output = file_path_name
 
@@ -65,19 +69,48 @@ class Normalizer:
 
 
 	@staticmethod
-	def deobfusecate_js_program(file_path_name, create_new_file = False): 
-		pass
+	def instrument_for_dynamic_js_constructs(file_path_name, create_new_file = False, new_file_name=constantsModule.NAME_JS_PROGRAM_INSTRUMENTED):
 
+		"""
+		@param {string} file_path_name: input system path to a JS code
+		@param {bool} create_new_file: if set to False, overwrites the input JS file with the normalized version, 
+				otherwise, it creates a new file with the name set in the new_file_name field
+		@param {string} new_file_name
+		@description: beautifies a given JS program
+		@return None
+		"""
 
+		if create_new_file:
+			output = utilityModule.get_directory_without_last_part(file_path_name) + new_file_name
+		else:
+			output = file_path_name
+
+		driver_path = os.path.join(constantsModule.BASE_DIR, 'wpg_construction/lib/jaw/normalization/dynamic.js')
+		cmd = 'node %s %s %s'%(driver_path, file_path_name, output)
+		utilityModule.run_os_command(cmd)
 
 
 	@staticmethod
-	def instrument_for_dynamic_js_constructs(file_path_name, create_new_file = False):
+	def deobfusecate_js_program(file_path_name, create_new_file = False): 
+		logger.warning('Not Implemented.')
 		pass
 
 
+if __name__ == '__main__':
 
+	tests = os.path.join(constantsModule.BASE_DIR, 'wpg_construction/lib/jaw/normalization/tests')
 
+	test_1 = os.path.join(tests, 'dynamic.test1.js')
+	test_1_out = 'out.dynamic.test1.js'
+	Normalizer.instrument_for_dynamic_js_constructs(test_1, create_new_file=True, new_file_name=test_1_out)
+
+	test_2 = os.path.join(tests, 'dynamic.test2.js')
+	test_2_out = 'out.dynamic.test2.js'
+	Normalizer.instrument_for_dynamic_js_constructs(test_2, create_new_file=True, new_file_name=test_2_out)
+
+	test_3 = os.path.join(tests, 'dynamic.test3.js')
+	test_3_out = 'out.dynamic.test3.js'
+	Normalizer.instrument_for_dynamic_js_constructs(test_3, create_new_file=True, new_file_name=test_3_out)
 
 
 

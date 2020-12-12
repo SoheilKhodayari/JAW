@@ -29,21 +29,20 @@
 var esprima = require('esprima');
 
 /*
- * Use walkes to traverse the graph
+ * Use walkes/estraverse to traverse the graph
  */
-var walkes = require('walkes');
-
+var estraverse = require('estraverse');
 
 /*
  * Use escodegen to convert back AST to code
  */
 var escodegen = require('escodegen');  // API: escodegen.generate(node);
 
-
 /*
  * Reading source files
  */
 var fs = require('fs');
+
 
 /**
  * Parse the code to AST
@@ -66,40 +65,81 @@ var parseAST = function (code, options) {
 };
 
 
-// var main = async function(){
+var normalizeDynamicConstructs = async function(input_program_path, output_program_path){
 
-// 	var program_path = process.argv[2];
-// 	var program = '' + fs.readFileSync(program_path);
-// 	var ast = await parseAST(program);
+	// read the source
+	var program = '' + fs.readFileSync(input_program_path);
 
-//     await walkes(ast, {
-//         CallExpression: function (node, recurse) {
-//         	if(node.callee && node.callee.name === 'eval'){
-//         		if(node.arguments && node.arguments.length){
-//         			if(node.arguments[0].type === 'Literal'){
-//         				var value = node.arguments[0].value; // replace the AST of this with top-level node
-//         				var newASTPiece = parseAST(value);
-//         				// var newASTNode = (newASTPiece.type == 'Program' )? newASTPiece.body: newASTPiece;
-//         				node = newASTPiece.body[0];
-//         				// recurse(newASTPiece);
-//         				console.log(node);
-//         				return node
-//         			}
-//         		}
-//         	}
+	// parse to AST
+	var ast = await parseAST(program);
 
-//         },
-//     });
+	// traverse and replace
+	estraverse.replace(ast, {
+		enter: function (node, parent) {
 
-//     var code = await escodegen.generate(ast);
-//     fs.writeFileSync(__dirname+'/example.dynamic.out', code);
-// }
+			/* remove empty statements, i.e., semi-colon only statements */
+			if(node.type === 'EmptyStatement'){
+				return this.remove();
+			}
+
+			if(node.callee && node.callee.name === 'eval'){
+				if(node.arguments && node.arguments.length){
+					if(node.arguments[0].type === 'Literal'){
+
+						 // replace the AST of the string value with top-level node
+						var stringValue = node.arguments[0].value;
+						var newAST = parseAST(stringValue);
+						var newNode = {
+							type: esprima.Syntax.Program,
+							body: newAST.body,
+						};
+						return newNode; 
+					}
+				}
+			}
+
+			if(node.callee && node.callee.name === 'setTimeout'){
+				if(node.arguments && node.arguments.length){
+					if(node.arguments[0].type === 'Literal'){
+
+						// replace setTimeout('code', time) to setTimeout(function(){ code }, time)
+						// or just code
+						var stringValue = node.arguments[0].value;
+						var newAST = parseAST(stringValue);
+
+						// var newArgumentNode = {
+						// 	type: esprima.Syntax.FunctionExpression,
+						// 	id: null,
+						// 	params: [],
+						// 	body: newAST.body,
+						// };
+						// var newNode = node;
+						// newNode.arguments[0] = newArgumentNode;
+						// return newNode;
+						
+						var newNode = {
+							type: esprima.Syntax.Program,
+							body: newAST.body,
+						};
+						return newNode; 
+					}
+				}
+			}
+
+		}
+	});
+
+	var code = await escodegen.generate(ast);
+	fs.writeFileSync(output_program_path, code);
+}
 
 
-// /*
-//  * Invoke the main
-//  */
-// main()
+/*
+ * Invoke the normalizer
+ */
+var input = process.argv[2];
+var output = process.argv[3];
+normalizeDynamicConstructs(input, output)
 
 
 
