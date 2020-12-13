@@ -2,14 +2,14 @@
 - [Web Crawler](crawler.md)
 
 ### Data Model of Hybrid Property Graphs (PG)
-- [Property Graph Nodes](pg-nodes.md)
+- [Property Graph Nodes](hpg-nodes.md)
 - [Grammer and Syntax Tree](syntax-tree.md)
-- [Property Graph Edges](pg-edges.md)
+- [Property Graph Edges](hpg-edges.md)
 
 ### Graph Construction
 
-- [Building a Property Graph](wpg-building.md)
+- [Building a Property Graph](hpg-building.md)
 
 ### Graph Traversals
 
-- [Running Queries Over Property Graphs](wpg-querying.md)
+- [Running Queries Over Property Graphs](hpg-querying.md)

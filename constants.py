@@ -82,10 +82,10 @@ RELS_INPUT_FILE_NAME = 'rels.csv'
 CACHE_PATH = os.path.join(BASE_DIR, "cache")
 
 # analyzer driver program
-ANALYZER_DRIVER_PATH = os.path.join(os.path.join(BASE_DIR, "wpg_construction"), "main.js")
+ANALYZER_DRIVER_PATH = os.path.join(os.path.join(BASE_DIR, "hpg_construction"), "main.js")
 
 # path to store the node and csv files 
-OUTPUT_NODES_RELS_PATH = os.path.join(os.path.join(BASE_DIR, "wpg_construction"), "outputs")
+OUTPUT_NODES_RELS_PATH = os.path.join(os.path.join(BASE_DIR, "hpg_construction"), "outputs")
 
 # path to store the webpage JS for static analysis
 OUTPUT_ANALYSIS_PATH = OUTPUT_NODES_RELS_PATH
@@ -96,12 +96,12 @@ OUTPUT_CRAWLER_DATA = OUTPUT_NODES_RELS_PATH
 # the unit-test inputs folder
 UNIT_TESTS_FOLDER_NAME = "unit_tests"
 # path to the unit-test inputs
-UNIT_TEST_BASE_PATH =  os.path.join(os.path.join(BASE_DIR, "wpg_construction"), UNIT_TESTS_FOLDER_NAME)
+UNIT_TEST_BASE_PATH =  os.path.join(os.path.join(BASE_DIR, "hpg_construction"), UNIT_TESTS_FOLDER_NAME)
 # path to the unit tests output
 UNIT_TEST_OUTPUT_PATH = os.path.join(OUTPUT_NODES_RELS_PATH, UNIT_TESTS_FOLDER_NAME)
 
 # sites directory
-SITES_DIRECTORY = os.path.join(os.path.join(BASE_DIR, "wpg_crawler"), "sites")
+SITES_DIRECTORY = os.path.join(os.path.join(BASE_DIR, "hpg_crawler"), "sites")
 
 # file name for static analyzer important template outputs: window.loc dependecies 
 STATIC_ANALYZER_WIN_LOC_TEMPLATE_FILE_NAME = 'static.out'

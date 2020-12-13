@@ -27,7 +27,7 @@ import sys, re
 from bs4 import BeautifulSoup
 from utils import requester as RequesterModule
 from utils import selenium_utility as seleniumModule
-from wpg_crawler.sites import sitesmap as sitesMapConfig
+from hpg_crawler.sites import sitesmap as sitesMapConfig
 import constants as constantsModule 
 import uuid
 # ----------------------------------------------------------------------- #

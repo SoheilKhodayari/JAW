@@ -1,1 +1,0 @@
-python3 -m wpg_construction.lib.jaw.normalization.normalizer

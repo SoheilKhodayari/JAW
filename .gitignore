@@ -90,8 +90,8 @@ typings/
 analyzer/outputs/out-*/*
 analyzer/outputs/test/*
 #analyzer/outputs/*
-wpg_construction/outputs/*
-!wpg_construction/outputs/libraries
+hpg_construction/outputs/*
+!hpg_construction/outputs/libraries
 
 # Neo4j import log
 import.report
@@ -137,5 +137,5 @@ test.py
 
 snippets
 
-wpg_construction/lib/jaw/dom-points-to/template.js
-wpg_construction/lib/jaw/dom-points-to/resolution.out
+hpg_construction/lib/jaw/dom-points-to/template.js
+hpg_construction/lib/jaw/dom-points-to/resolution.out

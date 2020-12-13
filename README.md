@@ -28,17 +28,17 @@ $ pip3 install -r requirements.txt
 ### Step 2: Installing Node Modules
 In the project root directory, run:
 ```sh
-$ cd wpg_construction
+$ cd hpg_construction
 $ npm install
 ```
 Then:
 ```sh
-$ cd wpg_construction/lib/jaw/dom-points-to
+$ cd hpg_construction/lib/jaw/dom-points-to
 $ npm install
 ```
 Finally:
 ```sh
-$ cd wpg_construction/lib/jaw/normalization
+$ cd hpg_construction/lib/jaw/normalization
 $ npm install
 ```
 
@@ -115,18 +115,18 @@ $ export NEO4J_HOME="/usr/local/Cellar/neo4j/3.5.9/libexec"
 
 
 # Using JAW in 2 Steps
-You can create WPGs, import them into a neo4j database, and query the database as follows:
+You can create hpgs, import them into a neo4j database, and query the database as follows:
 
 ## Step 1: Graph Construction
 In order to create a property graph and import it to an active neo4j database, you can use the following command:
 
 ```sh
-$ python3 -m wpg_construction.api <path> --js=<program.js> --import=<bool> --hybrid=<bool> --reqs=<requests.out> --evts=<events.out> --cookies=<cookies.pkl> --html=<html_snapshot.html>
+$ python3 -m hpg_construction.api <path> --js=<program.js> --import=<bool> --hybrid=<bool> --reqs=<requests.out> --evts=<events.out> --cookies=<cookies.pkl> --html=<html_snapshot.html>
 ```
 
 For help regarding the meaning of each option in the above command, please use the help CLI provided with the graph construction API:
 ```sh
-$ python3 -m wpg_construction.api -h
+$ python3 -m hpg_construction.api -h
 ```
 
 Alternatively, you can use the following two steps. This is especially suited for debugging purposes.
@@ -136,32 +136,32 @@ The javascript analyzer modules creates the `nodes.csv` and `rels.csv` files for
 
 In the project root directory, try:
 ```sh
-$ node wpg_construction/main.js -js <RELATIVE_PATH_TO_TEST_FILE> -o <OUTPUT_FOLDER_NAME>
+$ node hpg_construction/main.js -js <RELATIVE_PATH_TO_TEST_FILE> -o <OUTPUT_FOLDER_NAME>
 ```
 For example:
 ```sh
-$ node wpg_construction/main.js -js wpg_construction/test-inputs/test.js -o myfolder
+$ node hpg_construction/main.js -js hpg_construction/test-inputs/test.js -o myfolder
 ```
 
 ### Importing into Neo4j
 
 In the project root directory, run:
 ```sh
-$ python3 -m wpg_neo4j.wpg_import <path-to-the-folder-of-the-csv-files> --nodes=nodes.csv --edges=rels.csv
+$ python3 -m hpg_neo4j.hpg_import <path-to-the-folder-of-the-csv-files> --nodes=nodes.csv --edges=rels.csv
 ```
 Help CLI:
 ```sh
-$ python3 -m wpg_neo4j.wpg_import -h
+$ python3 -m hpg_neo4j.hpg_import -h
 
 ```
 
 ### Step 2: Graph Traversals and Declarative Queries
-You can use Cypher Queries or the NeoModel ORM to query the property graph. The NeoModel ORM Schema is defined in `wpg_neo4j/orm.py`.
-You should place and run your queries in `wpg_analysis/<ANALYSIS_NAME>`. For further details, see the example query files provided: `example.orm.py` and `example.py` in the `wpg_analysis/example` folder.
+You can use Cypher Queries or the NeoModel ORM to query the property graph. The NeoModel ORM Schema is defined in `hpg_neo4j/orm.py`.
+You should place and run your queries in `hpg_analysis/<ANALYSIS_NAME>`. For further details, see the example query files provided: `example.orm.py` and `example.py` in the `hpg_analysis/example` folder.
 
 ```sh
-$ python3 -m wpg_analysis.example.example
-$ python3 -m wpg_analysis.example.exampleorm  
+$ python3 -m hpg_analysis.example.example
+$ python3 -m hpg_analysis.example.exampleorm  
 ```
 
 
@@ -170,12 +170,12 @@ This will build the property graph, creates a neo4j database and queries the dat
 
 **Note**: Please change or set the appropriate run mode in `main.py` for debugging purposes!
 ```sh
-$ python3 -m wpg_analysis.cs_csrf.main
+$ python3 -m hpg_analysis.cs_csrf.main
 ```
 
 
 # Web Crawling and Websites Under Test (Inputs)
-The site inital address and its `state scripts` are **inputs** of the tool. The file `wpg_crawler/sites/sitemap.py` contains the list of sites for testing. 
+The site inital address and its `state scripts` are **inputs** of the tool. The file `hpg_crawler/sites/sitemap.py` contains the list of sites for testing. 
 - Each site is given a `site_id` which specifies the folder name used to store the site `state scripts` (e.g., login as admininstrator, login as user 1, login as user 2, logout, etc). 
 - To create a new site entry, copy the `sites/template` and rename it to `sites/<SITE_ID>` where <SITE_ID> is the integer you set in `sitemap.py`.
 - Change the template `state script` in `sites/<SITE_ID>/scripts/Auth.py` via your implementaion for your own site.
@@ -183,7 +183,7 @@ The site inital address and its `state scripts` are **inputs** of the tool. The 
 ## How to Run URL Crawler Module?
 In order to start the crawler and collect the sites data, run the driver program for data collection module in root directory:
 ```sh
-$ cd wpg_crawler
+$ cd hpg_crawler
 $ python3 driver.py <site-id>
 ``` 
 For more information about the web crawler of JAW, see [here](docs/crawler.md).
@@ -197,17 +197,16 @@ For more information, visit our wiki page [here](docs/jaw.md). Below is a table 
 - [Web Crawler](crawler.md)
 
 ### Data Model of Hybrid Property Graphs (PG)
-- [Property Graph Nodes](pg-nodes.md)
+- [Property Graph Nodes](hpg-nodes.md)
 - [Grammer and Syntax Tree](syntax-tree.md)
-- [Property Graph Edges](pg-edges.md)
+- [Property Graph Edges](hpg-edges.md)
 
 ### Graph Construction
 
-- [Building a Property Graph](wpg-building.md)
+- [Building a Property Graph](hpg-building.md)
 
 ### Graph Traversals
 
-- [Running Queries Over Property Graphs](wpg-querying.md)
-
+- [Running Queries Over Property Graphs](hpg-querying.md)
 
 

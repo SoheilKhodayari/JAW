@@ -6,12 +6,12 @@ JAW includes a JavaScript-enabled, chrome-based web crawler. This Wiki describes
 
 The crawler takes as inputs the list of sites to test, and a state script for each web site. 
 
-**Testbed.** The list of input sites are specified in `wpg_crawler/sites/sitemap.py`. Each site is assigned a id and a name.
+**Testbed.** The list of input sites are specified in `hpg_crawler/sites/sitemap.py`. Each site is assigned a id and a name.
 
-**Login State.** The state script loads different user states inside the browser (e.g., login as user1, login as user2, etc). The state script of each file must be placed inside `wpg_crawler/sites/<site-id>` where <site-id> is the id specified in `wpg_crawler/sites/sitemap.py`.
+**Login State.** The state script loads different user states inside the browser (e.g., login as user1, login as user2, etc). The state script of each file must be placed inside `hpg_crawler/sites/<site-id>` where <site-id> is the id specified in `hpg_crawler/sites/sitemap.py`.
 
 **Template.**
-A template/example state script is provided in `wpg_crawler/sites/template/Auth.py`.
+A template/example state script is provided in `hpg_crawler/sites/template/Auth.py`.
 If you do not want to load any user states before the crawling session, disable this option (set the `USE_STATE_SCRIPTS` in the crawler configuration to false).
 
 
@@ -19,7 +19,7 @@ If you do not want to load any user states before the crawling session, disable 
 
 - `OUTPUT_DATA_DIRECTORY`:
 
-	Specifies the output directory of the crawler. By default, the data is stored in the `wpg_construction/outputs` folder.
+	Specifies the output directory of the crawler. By default, the data is stored in the `hpg_construction/outputs` folder.
 
 - `PLATFORM`*:
 
@@ -76,7 +76,7 @@ If you do not want to load any user states before the crawling session, disable 
 
 ## Output
 
-By default, the crawled data is stored in the `wpg_construction/outputs` folder. The data of each site is in a folder named `<site-id>` where <site-id> is specified in the input file `wpg_crawler/sites/sitemap.py`. For each URL found, there is a folder corresponding to the SHA256 hash of the URL. Inside each folder, the following files exists:
+By default, the crawled data is stored in the `hpg_construction/outputs` folder. The data of each site is in a folder named `<site-id>` where <site-id> is specified in the input file `hpg_crawler/sites/sitemap.py`. For each URL found, there is a folder corresponding to the SHA256 hash of the URL. Inside each folder, the following files exists:
 
 - `js_program.js`: a single JavaScript file containing the entire custom JavaScript of the web page.
 - `navigation_url.out`: contains the URL of the page.
