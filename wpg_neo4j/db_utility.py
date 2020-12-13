@@ -141,7 +141,7 @@ def API_neo4j_prepare(csv_absolute_path, nodes_name=constantsModule.NODE_INPUT_F
 	run_os_command(START_NEO4J_COMMAND)
 
 	if constantsModule.DEBUG_PRINTS:
-		logger.info("Neo4J DB setup successful.")
+		logger.info("Neo4J DB setup in progress. Waiting for 10 seconds.")
 
 	time.sleep(10)
 

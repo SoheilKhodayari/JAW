@@ -1,3 +1,29 @@
+
+"""
+	Copyright (C) 2020  Soheil Khodayari, CISPA
+	This program is free software: you can redistribute it and/or modify
+	it under the terms of the GNU Affero General Public License as published by
+	the Free Software Foundation, either version 3 of the License, or
+	(at your option) any later version.
+	This program is distributed in the hope that it will be useful,
+	but WITHOUT ANY WARRANTY; without even the implied warranty of
+	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+	GNU Affero General Public License for more details.
+	You should have received a copy of the GNU Affero General Public License
+	along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+
+	Description:
+	------------
+	Constants and Global Configuration
+
+
+	Usage:
+	------------
+	> import constants as constantsModule
+
+"""
+
 import os, sys
 
 BASE_DIR= os.path.dirname(os.path.realpath(__file__))
@@ -224,17 +250,18 @@ LOCAL_ARGUMENT_TAG_FOR_FUNC = 'LOCAL_FUNCTION_ARGUMENT'
 
 FUNCTION_CALL_DEFINITION_BODY = '<< FUNCTION_CALL_DEFINITION >>'
 
-# static analyzer output tags
-
-TAG_NON_REACHABLE = 'NON-REACH' 		  # not reading from anywhere
-TAG_DOM_READ = 'DOM-READ' 			  # read from DOM, e.g., by document.getElementById('..').value
+# analyzer output semantic types
+TAG_NON_REACHABLE = 'NON-REACH' 		# not reading from any specific semantic type
+TAG_DOM_READ = 'DOM-READ' 			    # read from DOM attributes
 TAG_LOCAL_STORAGE_READ = 'STORAGE-READ' # read from localStorage or sessionStorage
-TAG_COOKIE_READ = 'COOKIE-READ' 		  # read from document.cookie
-TAG_WINDOW_LOC = 'WIN.LOC' 			  # read from window.location properties
+TAG_COOKIE_READ = 'COOKIE-READ' 		# read from document.cookie
+TAG_WINDOW_LOC = 'WIN.LOC' 			    # read from window.location properties
+TAG_WINDOW_NAME= 'WIN.NAME'				# read from window.name
 TAG_HTML_FORM_FIELD = 'HTML-FORM-FIELD' # read from a form or one of its fields in HTML
-TAG_REFERRER= 'DOCUMENT.REFERRER'
-TAG_WINDOW_NAME= 'WIN.NAME'
-TAG_POST_MESSAGE = 'POST.MESSAGE'
+TAG_REFERRER= 'DOCUMENT.REFERRER'		# read from document.referrer
+TAG_POST_MESSAGE = 'POST.MESSAGE'		# read from postMessages
+
+
 
 # @see: 
 # 1. https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects

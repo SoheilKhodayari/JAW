@@ -1,1 +1,1 @@
-python3 -m wpg_construction.api /Users/soheilkhodayari/Desktop/projects/WPGRelease/wpg-release/wpg_construction/outputs/debug --hybrid=true
+python3 -m wpg_construction.api /Users/soheilkhodayari/Desktop/projects/WPGRelease/wpg-release/wpg_construction/outputs/test_1 --hybrid=false

@@ -43,12 +43,13 @@ import constants as constantsModule
 import utils.utility as utilityModule
 import wpg_neo4j.db_utility as neo4jDatabaseUtilityModule
 import wpg_neo4j.query_utility as neo4jQueryUtilityModule
-import wpg_symbolic_modeling.win_loc_access_functions as WinAccessAnalysisModule
 import utils.cache_decorator as cacheDecoratorModule
+from utils.logging import logger
 from neo4j import GraphDatabase
 from datetime import datetime
 import pickle
 import functools
+
 
 # ----------------------------------------------------------------------- #
 #				Run Config
@@ -58,37 +59,39 @@ import functools
 ENUM_TEST_WEB_PAGE = 0
 ENUM_TEST_WEB_SITE = 1
 ENUM_UNIT_TEST = 2
+# by default, this file will run a set of unit-tests 
 ACTIVE_MODE = ENUM_UNIT_TEST
+
 
 # ----------------------------------------------------------------------- #
 #			Cypher Activate Query Types
 # ----------------------------------------------------------------------- #
 
-# @DEPRECATED: a set of deprecated queries for fuzzing the url
-# Default: False
-SYNTACTIC_QUERIES = False
+# ----
+# @Syntactic queries (deprecated)
+# a set of queries for syntactic matching
+SYNTACTIC_QUERIES_ACTIVE = False
+
+# ----
+# @Ad-hoc queries: expensive for large property graphs 
 
 # pure query-based PDG analsis of 1-Level only;
-# Default: False
-QUERY_1_ACTIVE = False
+AD_HOC_QUERY_1_ACTIVE = False
 
 # query support for value flow and dependency, simple function resolutions with argument support, events 
-# Default: True 
-QUERY_2_ACTIVE = False 
+AD_HOC_QUERY_2_ACTIVE = False 
 
 # support for pointsTo & aliasing
-# Default: True 
-QUERY_3_ACTIVE = False 
+AD_HOC_QUERY_3_ACTIVE = False 
 
 # more support for pointsTo & aliasing
-# Default: True 
-QUERY_4_ACTIVE = False 
+AD_HOC_QUERY_4_ACTIVE = False 
 
-# detect what parts of the xhr url are constructed from which parts of the program
-# this will help us to eliminate cases where the xhr data can not be tainted
-# and to know how much control the attacker has over the xhr
-# Default: True
-QUERY_5_ACTIVE = True
+# ----
+# @Main queries:
+# detect what parts of the xhr data are tainted from which parts of the program
+# detection through forward or backward type propagation and program slicing.
+MAIN_QUERY_ACTIVE = True
 
 # ----------------------------------------------------------------------- #
 #				Globals
@@ -102,6 +105,7 @@ SITE_ID = -1
 
 
 def _unquote_url(url):
+	
 	"""
 	@param {string} url
 	@return {string} decoded url
@@ -112,6 +116,7 @@ def _unquote_url(url):
 	return out
 
 def _get_all_occurences(needle, haystack):
+	
 	"""
 	@param {string} needle
 	@param {string haystack
@@ -123,6 +128,7 @@ def _get_all_occurences(needle, haystack):
 
 
 def _get_current_timestamp():
+	
 	"""
 	@return {string} current date and time string
 	"""
@@ -131,6 +137,7 @@ def _get_current_timestamp():
 	return dt_string
 
 def _get_unique_list(lst):
+	
 	"""
 	@param {list} lst
 	@return remove duplicates from list and return the resulting array
@@ -139,6 +146,7 @@ def _get_unique_list(lst):
 
 
 def _get_orderd_unique_list(lst):
+	
 	"""
 	@param {list} lst
 	@return remove duplicates from list and return the resulting array maintaining the original list order
@@ -150,6 +158,7 @@ def _get_orderd_unique_list(lst):
 	return final_list 
 
 def _get_line_of_location(esprima_location_str):
+	
 	"""
 	@param esprima_location_str
 	@return start line numnber of esprima location object
@@ -160,6 +169,7 @@ def _get_line_of_location(esprima_location_str):
 	return out
 
 def _get_location_part(nid_string):
+	
 	"""
 	@param {string} nid_string: string containing node id and location
 	@return {string} node id string
@@ -168,6 +178,7 @@ def _get_location_part(nid_string):
 	return nid_string[start_index:]
 
 def _get_node_id_part(nid_string):
+	
 	"""
 	@param {string} nid_string: string containing node id and location
 	@return {string} location string
@@ -183,6 +194,7 @@ def _get_node_id_part(nid_string):
 
 
 def _get_function_name_part(nid_string):
+	
 	"""
 	@param {string} nid_string: string containing node id and location
 	@return {string} function_name string
@@ -192,92 +204,10 @@ def _get_function_name_part(nid_string):
 
 
 
-def _get_analysis_tag(program_slices, num_slices, document_vars, find_endpoint_tags=False):
-	"""
-	@param {list} program_slices: slices of JS program
-	@param {int} num_slices: length of program_slices list
-	@param {list} document_vars: fields in HTML forms accessbile by 'document' DOM API
-	@return static analysis tag
-	"""
-	tag = constantsModule.TAG_NON_REACHABLE
-	tags = []
-
-	if find_endpoint_tags:
-			code = program_slices
-			for var in document_vars:
-				if var in code:
-					tag = constantsModule.TAG_HTML_FORM_FIELD
-					tags.append(tag)
-			# handle aliasing by partial comparison
-			# handle jquery DOM read
-			if 'document.getElement' in code or '.getElementBy' in code or '.getElementsBy' in code \
-				or '$(' in code or 'jQuery' in code or '.attr(' in code or '.getAttribute(' in code or '.readAttribute(' in code: 
-				tag = constantsModule.TAG_DOM_READ
-				tags.append(tag)
-			elif 'window.location' in code or '.location' in code or 'location.href' in code or 'location.hash' in code or 'YAHOO.util.History.getBookmarkedState' in code:
-				tag = constantsModule.TAG_WINDOW_LOC
-				tags.append(tag)
-
-			if 'localStorage' in code or 'sessionStorage' in code:
-				tag = constantsModule.TAG_STORAGE_READ
-				tags.append(tag)
-			if 'document.cookie' in code or ('cookie' in code and not code.startswith("\"") and not code.endswith("\"")):
-				tag = constantsModule.TAG_COOKIE_READ
-				tags.append(tag)
-
-	else:
-		for i in range(num_slices):
-			program_slice = program_slices[i]
-			code = program_slice[0]
-			idents = program_slice[2]
-
-
-			for var in document_vars:
-				if var in code:
-					tag = constantsModule.TAG_HTML_FORM_FIELD
-					tags.append(tag)
-			# handle aliasing by partial comparison
-			# handle jquery DOM read
-			if 'document.getElement' in code or '.getElementBy' in code or '.getElementsBy' in code \
-				or '$(' in code or 'jQuery' in code or '.attr(' in code or '.getAttribute(' in code or '.readAttribute(' in code:
-				tag = constantsModule.TAG_DOM_READ
-				tags.append(tag)
-			elif 'window.location' in code or '.location' in code or 'location.href' in code or 'location.hash' in code or 'YAHOO.util.History.getBookmarkedState' in code:
-				tag = constantsModule.TAG_WINDOW_LOC
-				tags.append(tag)
-
-			for identifier in idents:
-
-				if 'localStorage' in identifier or 'sessionStorage' in identifier:
-					tag = constantsModule.TAG_STORAGE_READ
-					tags.append(tag)
-				elif 'document.cookie' in code or ('cookie' in code and not code.startswith("\"") and not code.endswith("\"")):
-					tag = constantsModule.TAG_COOKIE_READ
-					tags.append(tag)
-
-	if len(tags):
-		return tags
-	return [constantsModule.TAG_NON_REACHABLE]
-
-def _get_analysis_tag_set(tag_list):
-	"""
-	@param {list} tag_list: list of tags that may include duplicates or extra NON-REACH
-	@return {list} unique tag_list
-	"""
-	tag_list = _get_unique_list(tag_list)
-	if len(tag_list) > 1:
-		if constantsModule.TAG_NON_REACHABLE in tag_list:
-			tag_list.remove(constantsModule.TAG_NON_REACHABLE)
-		return tag_list		
-	elif len(tag_list) == 1:
-		return tag_list
-	else:
-		return [constantsModule.TAG_NON_REACHABLE]
-
-
 def _get_value_of_identifer_or_literal(node):
 	"""
-	gets the value of a node (identifer or literal)
+	@param {PGNode} node
+	@return {list} returns the pair of the value of a node and the node type  (identifer or literal)
 	"""
 	if node['Type'] == 'Identifier':
 		return [node['Code'], node['Type']]
@@ -293,704 +223,457 @@ def _get_value_of_identifer_or_literal(node):
 
 
 # ----------------------------------------------------------------------- #
-#				End Utils
+#			Experimental Utils
 # ----------------------------------------------------------------------- #
 
-
-def API_neo4j_query_graph_for_ajax_triggering_url(analysis_url, analyzer_template_output_path, document_vars_pathname, document_vars=[], unit_test_mode=False, folder_name_of_url='xxx'):
+def getValueOf(tx, varname, rootContextNode):
 	"""
-	@param {string} analysis_url :base url to modify for triggering ajax requests
-	@param {string} analyzer_template_output_path: path to save static analyzer template
-	@param {string} document_vars_pathname: absolute pathname to the location of the 'document' accessible properties 
-	@param {list} document_vars: fields in HTML forms accessbile by 'document' DOM API
-	@param {boolean} unit_test_mode: set parameter for test run of function
-	@description query the graph database and find the potential ajax triggering versions of the input url
-	@return {array} a list of candidate xhr triggering urls (fuzzed versions of analysis_url)
+	@param tx {pointer} neo4j transaction pointer
+	@param varname {string} variable whose value is to be resolved
+	@rootContextNode {node object} context of the given variable to resolve
+	@return {list} an array of triple elemenets containing information regarding inferred variable values, their literals and identifiers
 	"""
 
-	document_props = document_vars
-	if len(document_vars) == 0 and not unit_test_mode:
-		fp = open(document_vars_pathname, 'r')
-		document_props = fp.read().strip().strip('\n').strip()
-		try:
-			document_props = eval(document_props)
-		except:
-			print('Warning: error when evaling document DOM API properties in HTMl')
-			document_props = document_vars
+	outValues = [] #list of values (its a list due to potential assigments of different values in (dynamic-valued) if-conditions)
+	PROGRAM_NODE_INDEX = '1' # program node
 
-	if constantsModule.DEBUG_PRINTS:
-		print("[+] Running Cypher Queries...")
+	# for PDG relations
+	query = """
+	MATCH (n_s { Id: '%s' })<-[:PDG_parentOf { Arguments: '%s' }]-(n_t) RETURN collect(distinct n_t) AS resultset
+	"""%(rootContextNode['Id'], varname)
 
-	out = []
-	hash_or_amp_params = []
-	neo_driver = GraphDatabase.driver(constantsModule.NEO4J_CONN_STRING, auth=(constantsModule.NEO4J_USER, constantsModule.NEO4J_PASS))
-	with neo_driver.session() as session:
-		with session.begin_transaction() as tx:
-
+	results = tx.run(query)
+	for item in results: 
+		childNodes = item['resultset'] 
+		for childNode in childNodes:
+			tree = getChildsOf(tx, childNode)
+			contextNode = tree['node']
+			if contextNode['Id'] == PROGRAM_NODE_INDEX: 
+				continue
+			ex = getCodeExpression(tree)
+			[code_expr, literals, idents] = ex
+			outValues.append(ex)
 			
-			# -------------------------------------------------------------------------- #
-			#		Syntactic Queries 
-			# -------------------------------------------------------------------------- #
-			## @Deprecteed: these will not run by default. 
-			## remains here for ideas lator on.
-			if SYNTACTIC_QUERIES:
-				query="""
-				MATCH (n {Type: 'Literal'})
-				WHERE (n.Value =~ '(?i).*ajax.*loc.*' OR n.Value =~ '(?i).*loc.*ajax.*')
-				RETURN n
-				"""
-				results = tx.run(query)
-				for record in results: 
-					string_param = record['n']['Value']
-					if "line" in string_param and "column" in string_param and "type" in string_param and "}" in string_param and "{" in string_param:
-						continue
-					if string_param not in hash_or_amp_params:
-							hash_or_amp_params.append(string_param)
-
-				query = """
-				MATCH (n)
-				WHERE n.Code='window' OR n.Code='location' OR n.Code='hash'
-				WITH collect(DISTINCT n) AS networkNodes
-				UNWIND networkNodes AS x
-				UNWIND networkNodes AS y
-				MATCH p=(x)-[*3]-(y)
-				WHERE x <> y
-				WITH collect(DISTINCT x) AS pNodes
-				UNWIND pNodes AS n2
-				MATCH (n1 {Type: 'Literal'})-[*1]-(n2)
-				WHERE n1.Value=~'.*#.*'
-				RETURN n1
-				"""
-				results = tx.run(query)
-				for record in results: 
-					string_param = record['n1']['Value']
-					if string_param not in hash_or_amp_params:
-						hash_or_amp_params.append(string_param)
-
-				query = """
-				MATCH p=(n1)-[*5]-(n2) 
-				WHERE n1.Type='Literal'
-				AND n1.Value=~'.*#.*' 
-				AND (n2.Code='window' OR n2.Code='location')
-				RETURN n1
-				"""
-				results = tx.run(query)
-				for record in results: 
-					string_param = record['n1']['Value']
-					if string_param not in hash_or_amp_params:
-						hash_or_amp_params.append(string_param)
-
-
-
-				query = """
-				MATCH p=(n1)-[*5]-(n2)
-				WHERE n1.Type='Literal'
-				AND n1.Value=~'.*#.*'
-				AND n2.Value=~'.*(asyncRequest|ajax|xhr|request|open|conn|fetch|XMLHttpRequest|send).*'
-				RETURN n1
-				"""
-				results = tx.run(query)
-				for record in results: 
-					string_param = record['n1']['Value']
-					if string_param not in hash_or_amp_params:
-						hash_or_amp_params.append(string_param)
-
-				# PDG_parentOf Relations: check IfStatements that depend on a variable whose value is like .*#.*
-				query = """
-				MATCH p=(n1 {Type: 'Literal'} )-[*3]-(n2 {Type: 'IfStatement'}) 
-				WHERE n1.Value=~'.*#.*' 
-				AND any(r in relationships(p) WHERE n2.Code CONTAINS r.Arguments)
-				Return n1
-				"""
-				results = tx.run(query)
-				for record in results: 
-					string_param = record['n1']['Value']
-					if string_param not in hash_or_amp_params:
-						hash_or_amp_params.append(string_param)
-
-			# -------------------------------------------------------------------------- #
-			#		End Syntactic Queries
-			# -------------------------------------------------------------------------- #
-
-
-
-			# @ID: Query Nr. 1
-			# @Description: Finds all the relationship between sink and source where:
-			#		*sink* = AssignmentExpression with left handside operand of window.location.hash, 
-			#				   and right handside operand of identifier or literal (in case of identifier, the value is derived by PDG analysis up to 1 Level)
-			#		*source* = ExpressionStatement or Variable Declaration that contains ajax-request sending keywords
-			# @Unit-Tests: checked with unit-tests/test1.js, test2.js
-			if QUERY_1_ACTIVE:
-				query="""
-				MATCH (w {Code: 'window'})<-[:AST_parentOf{RelationType: 'object'}]-(p {Type: 'MemberExpression'})-[:AST_parentOf{RelationType: 'property'}]->(l {Code: 'location'}), 
-				(p)<-[:AST_parentOf{RelationType: 'object'}]-(gp {Type: 'MemberExpression'})-[:AST_parentOf{RelationType: 'property'}]->(h {Code: 'hash'}), 
-				(gp)<-[:AST_parentOf {RelationType: 'left'}]-(t {Type: 'AssignmentExpression'})-[:AST_parentOf{RelationType: 'right'}]->(v),
-				(t)<-[:AST_parentOf {RelationType: 'expression'}]-(topsource {Type: 'ExpressionStatement'}),
-				(n {Type: 'Identifier'})<-[:AST_parentOf  {RelationType: 'property'}]-(parent)<-[:AST_parentOf*1..3]-(topsink)
-				WHERE v.Type = 'Identifier' OR v.Type = 'Literal'	 
-				AND n.Code =~ '.*(ajax|open|fetch|XMLHttpRequest|send).*' AND (topsink.Type = 'ExpressionStatement' OR topsink.Type = 'VariableDeclaration')
-				WITH  v AS val, topsink AS si, topsource AS sc 
-				MATCH (topsource)<-[:PDG_parentOf*1..100 {Arguments: val.Code}]-(vv {Type: 'VariableDeclaration'})-[:AST_parentOf]->(decl {Type: 'VariableDeclarator'})-[:AST_parentOf {RelationType: 'init'}]->(lit {Type: 'Literal'}) 
-				WHERE val.Type = 'Identifier'
-				RETURN
-				CASE EXISTS( (sc)-[:CFG_parentOf|:PDG_parentOf*1..100]->(si) )
-				WHEN True Then
-					 CASE val.Type
-					 WHEN 'Identifier' Then collect (distinct lit)
-					 ELSE collect (distinct val)
-					 END
-				WHEN False Then null
-				END AS res
-				"""
-				results = tx.run(query)
-				for record in results: 
-					nodes = record['res']
-					if nodes is None: continue
-					for node in nodes:
-						value = node['Value']
-						hash_or_amp_params.append(value)
-
-
-
-			# @ID: Query Nr. 2
-			# @Description: Finds all the relationship between sink and source where:
-			#		*sink* = AssignmentExpression with left handside operand of window.location.hash, 
-			#				   and right handside operand of identifier or literal (in case of identifier, the value is derived by PDG analysis up to N levels)
-			#		*source* = ExpressionStatement or Variable Declaration that contains ajax-request sending keywords
-			# @Unit-Tests: checked with unit-tests/test3.js, test4.js + test1.js, test2.js + test5.js (resolve functions) + test6.js (multi-line complexer functions)
-			# 			   + test7.js (events)
-			#@CHECK should v.Type = 'CallExpression' be added?
-			if QUERY_2_ACTIVE:
-				query="""
-				MATCH (w {Code: 'window'})<-[:AST_parentOf{RelationType: 'object'}]-(p {Type: 'MemberExpression'})-[:AST_parentOf{RelationType: 'property'}]->(l {Code: 'location'}), 
-				(p)<-[:AST_parentOf{RelationType: 'object'}]-(gp {Type: 'MemberExpression'})-[:AST_parentOf{RelationType: 'property'}]->(h {Code: 'hash'}), 
-				(gp)<-[:AST_parentOf {RelationType: 'left'}]-(t {Type: 'AssignmentExpression'})-[:AST_parentOf{RelationType: 'right'}]->(v),
-				(t)<-[:AST_parentOf {RelationType: 'expression'}]-(topsource {Type: 'ExpressionStatement'}),
-				(n {Type: 'Identifier'})<-[:AST_parentOf  {RelationType: 'property'}]-(parent)<-[:AST_parentOf*1..3]-(topsink)
-				WHERE v.Type = 'Identifier' OR v.Type = 'Literal' OR v.Type = 'CallExpression'
-				AND n.Code =~ '.*(ajax|open|fetch|XMLHttpRequest|send).*' AND (topsink.Type = 'ExpressionStatement' OR topsink.Type = 'VariableDeclaration')
-				WITH  v AS val, topsink AS si, topsource AS sc 
-				RETURN
-				CASE EXISTS( (sc)-[:CFG_parentOf|:PDG_parentOf|:ERDG|:EDG_parentOf*1..100]->(si) )
-				WHEN True Then [val, sc]
-				WHEN False Then null
-				END AS res
-				"""
-				results = tx.run(query)
-				visited = []
-				for record in results: 
-					item = record['res']
-					if item is None: continue
-					else:
-						node = item[0]
-						topElement = item[1]
-						if node['Id'] not in visited:
-							visited.append(node['Id'])
-							if node['Type'] == 'Literal':
-								resolved = node['Value']
-								hash_or_amp_params.append(resolved)
-							elif node['Type'] == 'Identifier':
-								# Identifier to be resolved from top node context
-								context = topElement
-								values = resolveValueOf(tx, node['Code'], context)
-								for o in values:
-									if o not in hash_or_amp_params:
-										hash_or_amp_params.append(o)
-							elif node['Type'] == 'CallExpression':
-								context = topElement
-								callExpressionWrapperNode = getChildsOf(tx, node)
-								codeExpr = getCodeExpression(callExpressionWrapperNode)
-								varname = codeExpr[0]
-								values = resolveValueOf(tx, varname, context)
-								for o in values:
-									if o not in hash_or_amp_params:
-										hash_or_amp_params.append(o)
-
-
-			# @ID: Query Nr. 3
-			# @Description: pointToAnalysis for window.location.hash
-			#		There are 2 different cases:
-			# 			CASE 1 Example: wlh = wl.hash ; wlh = '#value'; -> Our query: (find target identifier=wlh and look for its value v in an AssignmentExpression)
-			# 			CASE 2 Example: wl.hash = '#value'
-			#		** This query only addresses CASE 1 ** 
-			# @Unit-Tests: unit-tests/test8.js
-			##@Note obj {Type: 'Identifier'} - here the value Type is not specified to both capture any number of member expressions: e.g.,
-			# window.location.hash (2 member expression) and wl.hash (1 member expression)
-			if QUERY_3_ACTIVE:
-				query="""
-				MATCH (obj)<-[:AST_parentOf {RelationType: 'object'}]-(wl {Type: 'MemberExpression'})-[:AST_parentOf {RelationType: 'property'}]->(wlh {Type: 'Identifier', Code: 'hash'}), 
-				(wl)<-[r1:AST_parentOf]-(p)-[r2:AST_parentOf]->(tIdent {Type: 'Identifier'}),
-				(targetIdent {Type: 'Identifier'})<-[:AST_parentOf {RelationType: 'left'}]-(t {Type: 'AssignmentExpression'})-[:AST_parentOf{RelationType: 'right'}]->(v),
-				(t)<-[:AST_parentOf {RelationType: 'expression'}]-(topsource {Type: 'ExpressionStatement'}),
-				(n {Type: 'Identifier'})<-[:AST_parentOf  {RelationType: 'property'}]-(parent)<-[:AST_parentOf*1..3]-(topsink)
-				WHERE (p.Type = 'AssignmentExpression' OR p.Type = 'VariableDeclarator') AND 
-					  (r1.RelationType = 'init' or r1.RelationType = 'right') AND
-					  (r2.RelationType = 'left' OR r2.RelationType = 'id') AND
-					  (targetIdent.Code = tIdent.Code) AND
-					  (v.Type = 'Identifier' OR v.Type = 'Literal' OR v.Type = 'CallExpression') AND
-					  (n.Code =~ '.*(ajax|open|fetch|XMLHttpRequest|send).*') AND
-					  (topsink.Type = 'ExpressionStatement' OR topsink.Type = 'VariableDeclaration')
-				WITH  v AS val, topsink AS si, topsource AS sc 
-				RETURN
-				CASE EXISTS( (sc)-[:CFG_parentOf|:PDG_parentOf|:ERDG|:EDG_parentOf*1..100]->(si) )
-				WHEN True Then [val, sc]
-				WHEN False Then null
-				END AS res
-				"""
-				results = tx.run(query)
-				visited = []
-				for record in results: 
-					item = record['res']
-					if item is None: continue
-					else:
-						node = item[0]
-						topElement = item[1]
-						if node['Id'] not in visited:
-							visited.append(node['Id'])
-							if node['Type'] == 'Literal':
-								resolved = node['Value']
-								hash_or_amp_params.append(resolved)
-							elif node['Type'] == 'Identifier':
-								# Identifier to be resolved from top node context
-								context = topElement
-								values = resolveValueOf(tx, node['Code'], context)
-								for o in values:
-									if o not in hash_or_amp_params:
-										hash_or_amp_params.append(o)
-							elif node['Type'] == 'CallExpression':
-								context = topElement
-								callExpressionWrapperNode = getChildsOf(tx, node)
-								codeExpr = getCodeExpression(callExpressionWrapperNode)
-								varname = codeExpr[0]
-								values = resolveValueOf(tx, varname, context)
-								for o in values:
-									if o not in hash_or_amp_params:
-										hash_or_amp_params.append(o)
-
-			# @ID: Query Nr. 4
-			# @Description: pointToAnalysis for window.location.hash
-			#		There are 2 different cases:
-			# 			CASE 1 Example: wlh = wl.hash ; wlh = '#value';
-			# 			CASE 2 Example: wl.hash = '#value'
-			#		** This query only addresses CASE 2 ** 
-			# @Unit-Tests: unit-tests/test9.js, test10.js
-			if QUERY_4_ACTIVE:
-				query="""
-				MATCH (obj)<-[:AST_parentOf {RelationType: 'object'}]-(wl {Type: 'MemberExpression'})-[:AST_parentOf {RelationType: 'property'}]->(wlh {Type: 'Identifier', Code: 'hash'}), 
-				(wl)<-[:AST_parentOf {RelationType: 'left'}]-(p {Type: 'AssignmentExpression'})-[:AST_parentOf {RelationType: 'right'}]->(v),
-				(p)<-[:AST_parentOf {RelationType: 'expression'}]-(topsource {Type: 'ExpressionStatement'}),
-				(n {Type: 'Identifier'})<-[:AST_parentOf  {RelationType: 'property'}]-(parent)<-[:AST_parentOf*1..3]-(topsink)
-				WHERE
-					(v.Type = 'Literal' or v.Type = 'Identifier' or v.Type = 'CallExpression') AND
-					(n.Code =~ '.*(ajax|open|fetch|XMLHttpRequest|send).*') AND
-					(topsink.Type = 'ExpressionStatement' OR topsink.Type = 'VariableDeclaration')
-				WITH  v AS val, topsink AS si, topsource AS sc 
-				RETURN
-				CASE EXISTS( (sc)-[:CFG_parentOf|:PDG_parentOf|:ERDG|:EDG_parentOf*1..100]->(si) )
-				WHEN True Then [val, sc]
-				WHEN False Then null
-				END AS res
-				"""
-				results = tx.run(query)
-				visited = []
-				for record in results: 
-					item = record['res']
-					if item is None: continue
-					else:
-						node = item[0]
-						topElement = item[1]
-						if node['Id'] not in visited:
-							visited.append(node['Id'])
-							if node['Type'] == 'Literal':
-								resolved = node['Value']
-								hash_or_amp_params.append(resolved)
-							elif node['Type'] == 'Identifier':
-								# Identifier to be resolved from top node context
-								context = topElement
-								values = resolveValueOf(tx, node['Code'], context)
-								for o in values:
-									if o not in hash_or_amp_params:
-										hash_or_amp_params.append(o)
-							elif node['Type'] == 'CallExpression':
-								context = topElement
-								callExpressionWrapperNode = getChildsOf(tx, node)
-								codeExpr = getCodeExpression(callExpressionWrapperNode)
-								varname = codeExpr[0]
-								values = resolveValueOf(tx, varname, context)
-								for o in values:
-									if o not in hash_or_amp_params:
-										hash_or_amp_params.append(o)
-
-			# @ID: Query Nr. 5
-			# @Description: 
-			#	Finds all Xhr Calls (fetch, $.ajax, open), and their corresponding endpoint value or structure (sink)
-			#	Approach: is any sink value traces back to "window.location"-related properties?
-			# @Unit-Tests: unit-tests/test12.js
-			if QUERY_5_ACTIVE:
-				r1 = getXhrOpenCallExpressions(tx)
-				r2 = getFetchCallExpressions(tx)
-				r3 = getAjaxCallExpressions(tx)
-				r4 = getAsyncRequestCallExpressions(tx)
-				r5 = getSetFormCallExpressions(tx)
-				r6 = getPageSpeedExpressions(tx)
-				r7 = getWindowOpenCallExpressions(tx)
-				r8 = xhrPostCallExpressions(tx)
-				r9 = getAjaxSettingObjectExpressions(tx)
-
-				# WinLocAccessFunctionsDictionary = WinAccessAnalysisModule.get_win_loc_access_functions()
-
-				request_storage = {}   # key: call_expression_id, value: structure of request url for that call expression
-
-				for call_expr in r1:
-					n = call_expr['n'] # call expression
-					a = call_expr['a'] # argument: Literal, Identifier, BinaryExpression, etc
-					t = call_expr['t'] # top level expression statement
-					request_fn = 'XMLHttpRequest.open'
-
-					wrapper_node_top_expression = getChildsOf(tx, t)
-					top_expression_code = getAdvancedCodeExpression(wrapper_node_top_expression)[0]
-
-					if 'function(' in top_expression_code:
-						top_expression_code = jsbeautifier.beautify(top_expression_code)
-
-					wrapper_node= getChildsOf(tx, a)
-					ce = getAdvancedCodeExpression(wrapper_node)
-					nid = request_fn + '__nid=' + n['Id'] + '__Loc=' + str(n['Location'])
-					request_storage[nid] = {'reachability':[], 'endpoint_code': ce[0], 'expected_values': {}, 'top_expression': top_expression_code, 'id_set': {'TopExpression': t['Id'], 'CallExpression': n['Id'], 'Argument': a['Id']}}
-					for ident, ident_id in ce[2].items():
-						if ident in ce[0]:
-							vals = getValueOfWithLocationChain(tx, ident, t)
-							request_storage[nid]['expected_values'][ident] = vals
-
-
-				for call_expr in r2:
-					n = call_expr['n'] # call expression
-					a = call_expr['a'] # argument: Literal, Identifier, BinaryExpression, etc
-					t = call_expr['t'] # top level expression statement
-					request_fn = 'Fetch'
-
-					wrapper_node_top_expression = getChildsOf(tx, t)
-					top_expression_code = getAdvancedCodeExpression(wrapper_node_top_expression)[0]
-					if 'function(' in top_expression_code:
-						top_expression_code = jsbeautifier.beautify(top_expression_code)
-
-					wrapper_node= getChildsOf(tx, a)
-					ce = getAdvancedCodeExpression(wrapper_node)
-					nid = request_fn + '__nid=' + n['Id'] + '__Loc=' + str(n['Location'])
-					request_storage[nid] = {'reachability':[], 'endpoint_code': ce[0], 'expected_values': {}, 'top_expression': top_expression_code, 'id_set': {'TopExpression': t['Id'], 'CallExpression': n['Id'], 'Argument': a['Id']}}
-					for ident, ident_id in ce[2].items():
-						if ident in ce[0]:
-							vals = getValueOfWithLocationChain(tx, ident, t)
-							request_storage[nid]['expected_values'][ident] = vals
-
-				for call_expr in r3:
-					n = call_expr['n'] # call expression
-					a = call_expr['a'] # argument: Literal, Identifier, BinaryExpression, etc
-					t = call_expr['t'] # top level expression statement
-					aa = call_expr['aa']
-					request_fn = 'ajax'
-
-					# override arg a if aa is object expression to take the ajax url properly
-					if aa is not None and a is not None:
-						if a["Type"] == "ObjectExpression":
-							a = aa
-
-					wrapper_node_top_expression = getChildsOf(tx, t)
-					top_expression_code = getAdvancedCodeExpression(wrapper_node_top_expression)[0]
-
-
-					if 'function(' in top_expression_code:
-						top_expression_code = jsbeautifier.beautify(top_expression_code)
-
-					wrapper_node= getChildsOf(tx, a)
-					ce = getAdvancedCodeExpression(wrapper_node)
-					nid = request_fn + '__nid=' + n['Id'] + '__Loc=' + str(n['Location'])
-					request_storage[nid] = {'reachability':[], 'endpoint_code': ce[0], 'expected_values': {}, 'top_expression': top_expression_code, 'id_set': {'TopExpression': t['Id'], 'CallExpression': n['Id'], 'Argument': a['Id']}}
-					for ident, ident_id in ce[2].items():
-						if ident in ce[0]:
-							
-							vals = getValueOfWithLocationChain(tx, ident, t)
-							request_storage[nid]['expected_values'][ident] = vals
-
-
-				for call_expr in r4:
-					n = call_expr['n'] # call expression
-					a = call_expr['a'] # argument: Literal, Identifier, BinaryExpression, etc
-					t = call_expr['t'] # top level expression statement
-					tt = call_expr['tt']
-					request_fn = 'YAHOO.util.Connect.asyncRequest'
-					if tt is not None:
-						t = tt # fix the actual top level from VariableDeclarator to VariableDeclaration
-
-					wrapper_node_top_expression = getChildsOf(tx, t)
-					top_expression_code = getAdvancedCodeExpression(wrapper_node_top_expression)[0]
-
-					if 'function(' in top_expression_code:
-						top_expression_code = jsbeautifier.beautify(top_expression_code)
-
-					wrapper_node= getChildsOf(tx, a)
-					ce = getAdvancedCodeExpression(wrapper_node)
-					nid =  request_fn + '__nid=' + n['Id'] + '__Loc=' + str(n['Location'])
-					request_storage[nid] = {'reachability':[] ,'endpoint_code': ce[0], 'expected_values': {}, 'top_expression': top_expression_code, 'id_set': {'TopExpression': t['Id'], 'CallExpression': n['Id'], 'Argument': a['Id']}}
-					for ident, ident_id in ce[2].items():
-
-						vals = getValueOfWithLocationChain(tx, ident, t)
-						request_storage[nid]['expected_values'][ident] = vals
-
-
-
-				for call_expr in r5:
-					n = call_expr['n'] # call expression
-					a = call_expr['a'] # argument: Literal, Identifier, BinaryExpression, etc
-					t = call_expr['t'] # top level expression statement
-					tt = call_expr['tt']
-					request_fn = 'YAHOO.util.Connect.setForm'
-
-					if tt is not None:
-						t = tt # fix the actual top level
-
-					wrapper_node_top_expression = getChildsOf(tx, t)
-					top_expression_code = getAdvancedCodeExpression(wrapper_node_top_expression)[0]
-					if 'function(' in top_expression_code:
-						top_expression_code = jsbeautifier.beautify(top_expression_code)
-
-					wrapper_node= getChildsOf(tx, a)
-					ce = getAdvancedCodeExpression(wrapper_node)
-					nid =  request_fn + '__nid=' + n['Id'] + '__Loc=' + str(n['Location'])
-					request_storage[nid] = {'reachability':[], 'endpoint_code': ce[0], 'expected_values': {}, 'top_expression': top_expression_code, 'id_set': {'TopExpression': t['Id'], 'CallExpression': n['Id'], 'Argument': a['Id']}}
-
-					for ident, ident_id in ce[2].items():
-						vals = getValueOfWithLocationChain(tx, ident, t)
-						request_storage[nid]['expected_values'][ident] = vals
-
-				for call_expr in r6:
-					n = call_expr['n'] # call expression
-					a = call_expr['a'] # argument: Literal, Identifier, BinaryExpression, etc
-					t = call_expr['t'] # top level expression statement
-					request_fn = 'pagespeed.CriticalImages.Run'
-
-
-					wrapper_node_top_expression = getChildsOf(tx, t)
-					top_expression_code = getAdvancedCodeExpression(wrapper_node_top_expression)[0]
-					if 'function(' in top_expression_code:
-						top_expression_code = jsbeautifier.beautify(top_expression_code)
-
-					wrapper_node= getChildsOf(tx, a)
-					ce = getAdvancedCodeExpression(wrapper_node)
-					nid =  request_fn + '__nid=' + n['Id'] + '__Loc=' + str(n['Location'])
-					request_storage[nid] = {'reachability':[], 'endpoint_code': ce[0], 'expected_values': {}, 'top_expression': top_expression_code, 'id_set': {'TopExpression': t['Id'], 'CallExpression': n['Id'], 'Argument': a['Id']}}
-
-					for ident, ident_id in ce[2].items():
-						vals = getValueOfWithLocationChain(tx, ident, t)
-						request_storage[nid]['expected_values'][ident] = vals
-
-
-				for call_expr in r7:
-					n = call_expr['n'] # call expression
-					a = call_expr['a'] # argument: Literal, Identifier, BinaryExpression, etc
-					t = call_expr['t'] # top level expression statement
-					request_fn = 'window.open'
-
-					wrapper_node_top_expression = getChildsOf(tx, t)
-					top_expression_code = getAdvancedCodeExpression(wrapper_node_top_expression)[0]
-
-					if 'function(' in top_expression_code:
-						top_expression_code = jsbeautifier.beautify(top_expression_code)
-
-					wrapper_node= getChildsOf(tx, a)
-					ce = getAdvancedCodeExpression(wrapper_node)
-					nid = request_fn + '__nid=' + n['Id'] + '__Loc=' + str(n['Location'])
-					request_storage[nid] = {'reachability':[], 'endpoint_code': ce[0], 'expected_values': {}, 'top_expression': top_expression_code, 'id_set': {'TopExpression': t['Id'], 'CallExpression': n['Id'], 'Argument': a['Id']}}
-					for ident, ident_id in ce[2].items():
-						if ident in ce[0]:
-							vals = getValueOfWithLocationChain(tx, ident, t)
-							request_storage[nid]['expected_values'][ident] = vals
-
-
-				for call_expr in r8:
-					n = call_expr['n'] 
-					a = call_expr['a'] 
-					t = call_expr['t'] 
-					request_fn = 'xhrPost'
-
-					wrapper_node_top_expression = getChildsOf(tx, t)
-					top_expression_code = getAdvancedCodeExpression(wrapper_node_top_expression)[0]
-					if 'function(' in top_expression_code:
-						top_expression_code = jsbeautifier.beautify(top_expression_code)
-
-					wrapper_node= getChildsOf(tx, a)
-					ce = getAdvancedCodeExpression(wrapper_node)
-					nid = request_fn + '__nid=' + n['Id'] + '__Loc=' + str(n['Location'])
-					request_storage[nid] = {'reachability':[], 'endpoint_code': ce[0], 'expected_values': {}, 'top_expression': top_expression_code, 'id_set': {'TopExpression': t['Id'], 'CallExpression': n['Id'], 'Argument': a['Id']}}
-					for ident, ident_id in ce[2].items():
-						if ident in ce[0]:
-							vals = getValueOfWithLocationChain(tx, ident, t)
-							request_storage[nid]['expected_values'][ident] = vals
-
-
-				for call_expr in r9:
-					n = call_expr['n'] 
-					a = call_expr['a'] 
-					t = call_expr['t'] 
-					request_fn = 'Ajax'
-
-					wrapper_node_top_expression = getChildsOf(tx, t)
-					top_expression_code = getAdvancedCodeExpression(wrapper_node_top_expression)[0]
-					if 'function(' in top_expression_code:
-						top_expression_code = jsbeautifier.beautify(top_expression_code)
-
-					wrapper_node= getChildsOf(tx, a)
-					ce = getAdvancedCodeExpression(wrapper_node)
-					nid = request_fn + '__nid=' + n['Id'] + '__Loc=' + str(n['Location'])
-					request_storage[nid] = {'reachability':[], 'endpoint_code': ce[0], 'expected_values': {}, 'top_expression': top_expression_code, 'id_set': {'TopExpression': t['Id'], 'CallExpression': n['Id'], 'Argument': a['Id']}}
-					for ident, ident_id in ce[2].items():
-						if ident in ce[0]:
-							vals = getValueOfWithLocationChain(tx, ident, t)
-							request_storage[nid]['expected_values'][ident] = vals
-
-
-				# path to store the general template file for WIN.LOC dependencies of all URLs			
-				general_template_output_path = utilityModule.get_directory_without_last_part(analyzer_template_output_path.rstrip('/'))
-				general_template_output_pathname = os.path.join(general_template_output_path, constantsModule.STATIC_ANALYZER_WIN_LOC_TEMPLATE_FILE_NAME)
-
-				# path to store all templates of the current URL
-				template_output_pathname = os.path.join(analyzer_template_output_path, constantsModule.TEMPLATE_OUTPUT_SLUG)
-				with open(general_template_output_pathname, 'a+') as gt_fd:
-					with open(template_output_pathname, "w+") as fd:
-						timestamp = _get_current_timestamp()
-						sep = utilityModule.get_output_header_sep()
-						sep_templates = utilityModule.get_output_subheader_sep()
-						fd.write(sep)
-						fd.write('[timestamp] generated on %s\n'%timestamp)
-						fd.write(sep+'\n')
-						fd.write('[*] NavigationURL: %s\n\n'%analysis_url)
-
-						for each_request_key in request_storage:
-							node_id = _get_node_id_part(each_request_key) # node id of 'CallExpression' node
-							location = _get_location_part(each_request_key)
-							location = _get_line_of_location(location)
-							request_fn = _get_function_name_part(each_request_key)
-
-							program = request_storage[each_request_key]
-							request_variable = program['endpoint_code']
-							program_slices_keypair = program['expected_values']
-							request_top_expression_code = program['top_expression']
-							id_set = program['id_set']
-							reachability_results = program['reachability']
-							request_tags = []
-							print_buffer = []
-
-							endpoint_tags = _get_analysis_tag(request_variable, 0, document_props, find_endpoint_tags=True)
-							request_tags.extend(endpoint_tags)
-
-							counter = 1
-							for each_identifier in program_slices_keypair.keys():
-								program_slices = program_slices_keypair[each_identifier]
-								num_slices = len(program_slices)
-								
-								if num_slices == 0: # if each_identifier can not be resolved locally, apply heuristics ##@TODO: check this throughly to eliminate non-relevant stuff!
-									do_heuristic_search = True  # changed to false for typo3 crm
-									if do_heuristic_search:
-										identifier_heurisitc_values = getIdentifierLocalAndGlobalValues(tx, each_identifier)
-										program_slices = getProgramSliceFormat(identifier_heurisitc_values)
-										num_slices = len(program_slices)
-
-								tags = _get_analysis_tag(program_slices, num_slices, document_props)
-								tags = _get_unique_list(tags)
-								request_tags.extend(tags)
-
-								for i in range(num_slices):
-									program_slice = program_slices[i]
-									loc = _get_line_of_location(program_slice[3])
-									code = program_slice[0]
-
-									if 'function(' in code:
-										code = jsbeautifier.beautify(code) # pretty print function calls
-
-									c = None
-									# for key in WinLocAccessFunctionsDictionary.keys():
-									# 	if key in code:
-									# 		lib_function = WinLocAccessFunctionsDictionary[key]
-									# 		c = '\n\t----(lib module) ---\n\t[x] %s:  %s\n\t[x] Reads:%s\n\t[x] Description:%s\n'%(lib_function['tags'], lib_function['signature'], lib_function['important_reads'], lib_function['description'])
-
-									if i == 0 and each_identifier in code:
-
-										a = '\n%s:%s variable=%s\n'%(counter, str(tags), each_identifier)
-										counter = counter + 1
-										b = """(loc:%s)- %s\n"""%(loc,code)
-										if c is not None:
-											print_buffer += [a, b, c]
-										else:
-											print_buffer+= [a, b]
-
-									else:
-										a = """(loc:%s)- %s\n"""%(loc,code)
-										if c is not None:
-											print_buffer += [a, c]
-										else:
-											print_buffer += [a]
-
-							print_buffer = _get_orderd_unique_list(print_buffer) # remove duplicates, if any
-							tag_set = _get_analysis_tag_set(request_tags)
-							if not ( len(tag_set) == 1 and constantsModule.TAG_NON_REACHABLE in tag_set ):
-								fd.write(sep_templates)
-								fd.write('[*] Tags: %s\n'%(str(tag_set)))
-								fd.write('[*] NodeId: %s\n'%str(id_set))
-								fd.write('[*] Location: %s\n'%location)
-								fd.write('[*] Function: %s\n'%request_fn)
-								fd.write('[*] Template: %s\n'%(request_variable))
-								fd.write('[*] Top Expression: %s\n'%(request_top_expression_code))
-
-
-								gt_fd.write(sep_templates)
-								gt_fd.write('[*] NavigationURL: %s\n'%analysis_url)
-								gt_fd.write('[*] Hash: %s\n'%folder_name_of_url)
-								gt_fd.write('[*] Tags: %s\n'%(str(tag_set)))
-								gt_fd.write('[*] NodeId: %s\n'%str(id_set))
-								gt_fd.write('[*] Location: %s\n'%location)
-								gt_fd.write('[*] Function: %s\n'%request_fn)
-								gt_fd.write('[*] Template: %s\n'%(request_variable))
-								gt_fd.write('[*] Top Expression: %s\n'%(request_top_expression_code))
-								i = 0
-								for item in print_buffer:
-									if item.startswith('(loc:'):
-										item = '\t%s '%(i) + item
-										i = i + 1
-									else:
-										i = 0
-									fd.write(item)
-									gt_fd.write(item)
-								fd.write(sep_templates+'\n') # add two newlines
-								gt_fd.write(sep_templates)
-							else:
-								fd.write(sep_templates)
-								fd.write('[*] Tags: %s\n'%(str(tag_set)))
-								fd.write('[*] NodeId: %s\n'%str(id_set))
-								fd.write('[*] Location: %s\n'%location)
-								fd.write('[*] Function: %s\n'%request_fn)
-								fd.write('[*] Template: %s\n'%(request_variable))
-								fd.write('[*] Top Expression: %s\n'%(request_top_expression_code))
-
-								i = 0
-								for item in print_buffer:
-									if item.startswith('(loc:'):
-										item = '\t%s '%(i) + item
-										i = i + 1
-									else:
-										i = 0
-									fd.write(item)
-								fd.write(sep_templates+'\n') # add two newlines
-
+			new_varnames = _get_unique_list(list(idents)) 
+			for new_varname in new_varnames:
+				if new_varname == varname: continue
+				v = getValueOf(tx, new_varname, contextNode)
+				outValues.extend(v)	
+
+	return outValues
+
+
+def wrapTryExceptOn(statement):
+	"""
+	@param {string} statement
+	@return {string} statement wrapped over try/except block
+	"""
+	code = """try:\t%s\nexcept:\n\tpass\n"""%(statement)
+	return code
+
+def resolveValueOf(tx, varname, rootContextNode):
+	"""
+	@param tx {pointer} neo4j transaction pointer
+	@param varname {string} variable whose value is to be resolved
+	@rootContextNode {node object} context of the given variable to resolve
+	@return {list} an array of inferred variable values
+	"""
+
+	outValues = []
+	bases = []
+	extensions = []
+	values = getValueOf(tx, varname, rootContextNode)
+
+	if constantsModule.DEV_DEBUG: print("getValueOf: %s "%values)
+	values = getResolvedPointsTo(values)
+	if constantsModule.DEV_DEBUG: print("getResolvedPointsTo: %s "%values)
+	values = getFunctionResolvedValues(values)
+	if constantsModule.DEV_DEBUG: print("getFunctionResolvedValues: %s "%values)
+
+	if len(values):
+		ordered_expr = values[::-1]
+		program = [element[0] for element in ordered_expr]
+		p = itertools.permutations(program)
+
+		## @TODO: run-time improvement!
+		# this way of exec per statement correctly ignores unknown methods or functions & is slow!
+		for perm in p:
+			exec('%s=\"\"'%varname) # reset varname
+			new_perm = [wrapTryExceptOn(st) for st in perm]
+			new_code = '\n'.join(new_perm)
+			try:
+				exec(new_code)
+				v = eval(varname)
+				if v not in outValues:
+					outValues.append(v)
+			except Exception as e:
+				print("type error: " + str(e))
+
+	return outValues
+
+
+
+def getResolvedPointsTo(values):
+	"""
+	@param {list} values
+	@return {list} pointTo resolved array
+	"""
+	new_values = []
+	to_resolve = []
+	resolve_names = []
+	resolved = []
+	for ii in range(len(values)):
+		item = values[ii]
+		expr = item[0]
+		lits = item[1]
+		idents = item[2]
+		if '.' in expr:
+			parts = expr.split(" ")
+			for part in parts:
+				if '.' in part:
+					members = part.split('.')
+					for k in range(len(members)-1): # do not resolve the last one as it is already resolved
+						stripped_member = members[k].strip()
+						to_resolve.append([ii, stripped_member])
+						resolve_names.append(stripped_member)
+
+	for jj in range(len(values)):
+		resolver = values[jj]
+		resolver_expr = resolver[0]
+		cont = True
+		for o in resolve_names:
+			if o in resolver_expr:
+				cont = False
+				break
+		if cont: 
+			continue
+
+		# at this point resolver_expr can resolve values of to_resolve list
+		assignmentSymbol = "="
+		assignmentIndex = resolver_expr.index(assignmentSymbol)
+		left = resolver_expr[:assignmentIndex].strip()
+		right =resolver_expr[assignmentIndex+1:].strip()
+
+		for item in to_resolve:
+			item_idx = item[0]
+			item_name = item[1]
+			if item_name == left:
+				new = values[item_idx][0].replace(" "+left+ ".", " "+right+".") # disallow replace within word-parts
+				values[item_idx][0] = new
+				values[item_idx][2].append(right) # add the new identifier
+
+	return values
+
+
+def getFunctionResolvedValues(values):
+	"""
+	@param {list} values:  resolved values, the result of 'resolveValueOf' function
+	@return {list} values with the function calls resolved as variables
+	"""
+	vals = []
+	functions = []
+	for idx in range(len(values)):
+		value = values[idx]
+		literals = value[1]
+		idents = value[2]
+		parts = value[0].split(" ")
+		
+		done = False
+
+		resolve_func = []
+		arg_stack = []
+		new_parts = []
+		for i in range(len(parts)-1):
+			if not (parts[i] in idents and parts[i+1] in idents):
+				new_parts.append(parts[i])
+		i = 0
+		while not done:
+			if new_parts[i] in literals:
+				arg_stack.append(new_parts[i])
+			if new_parts[i] in idents and new_parts[i-1] in literals and i >=1: # @Note functions without values would be treated like identifiers, so the middle condition does not (correctly) check that case!
+				resolve_func.append([new_parts[i], arg_stack[::-1]])
+				arg_stack = []
+			if i == len(new_parts)-1:
+				done = True
+				break
+			i = i + 1
+
+		if len(resolve_func):
+			functions.append([idx, resolve_func])
+
+
+	toIgnoreIndexes =  [] # modified statements containing function calls + function definitions
+	# resolve the value and add its result
+	for j in range(len(values)):
+		v = values[j]
+		resolveExpression = v[0]
+		name = resolveExpression.split(" ")[0]
+		for funcItem in functions:
+			resolveIndex = funcItem[0]
+			funcDescriptions = funcItem[1]
+			for func in funcDescriptions:
+				# @Note: multiple functions of the same expr to be resolved
+				funcName = func[0]
+				if  name == funcName:
+					callParams = func[1]
+					border = len(resolveExpression) - 2*len(callParams)
+					positionalArguments = resolveExpression[border:].split(" ")[::-1]
+					resolveExpression = resolveExpression[:border] #remove positional arguments
+					for k in range(len(callParams)):
+						resolveExpression = resolveExpression.replace(positionalArguments[k], callParams[k])
+					idss = values[resolveIndex][2]
+					litss = values[resolveIndex][1]
+
+					# 1. append the function body with the arguments replaced with passed params
+					new_ids = v[2] + idss
+					for arg in positionalArguments:
+						new_ids = list(filter(lambda e: e != arg, new_ids)) # remove the positional args from identifiers list in of function body
+					vals.append([resolveExpression, v[1] + litss, new_ids]) 
+					toIgnoreIndexes.append(j)
+
+					# 2. append the original expr contating function calls with removing the function params and treat it as a variable
+					original_expr = values[resolveIndex][0]
+					for arg in callParams:
+						original_expr = original_expr.replace(arg, "")
+					vals.append([original_expr, litss, idss])
+					toIgnoreIndexes.append(resolveIndex)
+
+	for p in range(len(values)):
+		if p not in toIgnoreIndexes:
+			item = values[p]
+			vals.append(item)
+
+	# break the 'assignment' statements if a function body;
+	# Note: this will not break other things like method invocations, etc, as not required
+	outVals = []
+	for qq in range(len(vals)):
+		item = vals[qq]
+		item_expr = item[0]
+		item_literals = item[1]
+		item_idents = item[2]
+		item_expr_list = item_expr.split(" ")
+		break_indexes = []
+		for q in range(len(item_expr_list)-1):
+			# two idents or literals or their combination must not occur next to each other in the list without an operator in between them!
+			if  (item_expr_list[q] in item_idents or item_expr_list[q] in item_literals) and \
+				(item_expr_list[q+1] in item_idents or item_expr_list[q+1] in item_literals):
+				breaked = True
+				break_indexes.append(q)
+		
+		rest = []
+		for iii in range(len(break_indexes)):
+			if iii == 0:
+				subexpression = item_expr_list[:break_indexes[iii]+1]
+				rest = item_expr_list[break_indexes[iii]+1:]
 	
-	hashSymbol = "#"
-	if not analysis_url.endswith(hashSymbol):
-		analysis_url = analysis_url+ hashSymbol
-	for each_candidate_param in hash_or_amp_params:
-		each_candidate_param = each_candidate_param.lstrip(hashSymbol)
-		out.append(analysis_url+each_candidate_param)
+			elif len(break_indexes) >=2:
+				subexpression = item_expr_list[break_indexes[iii-1]+1: break_indexes[iii]+1]
+				rest = item_expr_list[break_indexes[iii]+1:]
 
-	return out
+			outVals.append([' '.join(subexpression), item_literals, item_idents])
 
+		if len(break_indexes):
+			if len(rest):
+				outVals.append([' '.join(rest), item_literals, item_idents])
+		else:
+			outVals.append(item)
+
+	return outVals
+
+# ----------------------------------------------------------------------- #
+#		Semantic Type Association to Program Slices 
+# ----------------------------------------------------------------------- #
+
+def _get_semantic_type(program_slices, num_slices, document_vars, find_endpoint_tags=False):
+	
+	"""
+	@param {list} program_slices: slices of JS program
+	@param {int} num_slices: length of program_slices list
+	@param {list} document_vars: fields in HTML forms accessbile by the 'document' DOM API
+	@return {list} the semantic types associated with the given program slices.
+	"""
+	
+	semantic_type = constantsModule.TAG_NON_REACHABLE
+	semantic_types = []
+
+	# API patterns to match to asscoiate a program slice string to a semantic type
+	WEB_STORAGE_STRINGS = [
+		'localStorage',
+		'sessionStorage'
+	]
+
+	WIN_LOC_STRINGS = [
+		'window.location',
+		'location.href',
+		'location.hash',
+		'History.getBookmarkedState'
+	]
+
+	WIN_NAME_STRINGS = [
+		'window.name'
+	]
+
+	DOM_READ_STRINGS = [
+		'document.getElement',
+		'.getElementBy',
+		'.getElementsBy',
+		'$(',
+		'jQuery(',
+		'.attr(',
+		'.getAttribute(',
+		'.readAttribute('
+	]
+
+	DOM_READ_COOKIE_STRINGS = [
+		'document.cookie'
+	]
+
+	PM_STRINGS = [
+		'event.data', 
+		'evt.data'
+	]
+
+	DOC_REF_STRINGS = [
+		'document.referrer'
+	]
+
+	if find_endpoint_tags:
+			code = program_slices
+			for var in document_vars:
+				if var in code:
+					semantic_type = constantsModule.TAG_HTML_FORM_FIELD
+					semantic_types.append(semantic_type)
+					break
+
+			for item in WEB_STORAGE_STRINGS:
+				if item in code:
+					semantic_type = constantsModule.TAG_STORAGE_READ
+					semantic_types.append(semantic_type)
+					break
+
+			for item in WIN_LOC_STRINGS:
+				if item in code:
+					semantic_type = constantsModule.TAG_WINDOW_LOC
+					semantic_types.append(semantic_type)
+					break
+
+			for item in WIN_NAME_STRINGS:
+				if item in code:
+					semantic_type = constantsModule.TAG_WINDOW_NAME
+					semantic_types.append(semantic_type)
+					break
+
+			for item in DOC_REF_STRINGS:
+				if item in code:
+					semantic_type = constantsModule.TAG_REFERRER
+					semantic_types.append(semantic_type)
+					break
+
+			for item in DOM_READ_COOKIE_STRINGS:
+				if item in code:
+					semantic_type = constantsModule.TAG_COOKIE_READ
+					semantic_types.append(semantic_type)
+					break
+
+			for item in DOM_READ_STRINGS:
+				if item in code:
+					semantic_type = constantsModule.TAG_DOM_READ
+					semantic_types.append(semantic_type)
+					break
+
+			for item in PM_STRINGS:
+				if item in code:
+					semantic_type = constantsModule.TAG_POST_MESSAGE
+					semantic_types.append(semantic_type)
+					break
+
+
+	else:
+		for i in range(num_slices):
+			program_slice = program_slices[i]
+			code = program_slice[0]
+			idents = program_slice[2]
+
+
+			for var in document_vars:
+				if var in code:
+					semantic_type = constantsModule.TAG_HTML_FORM_FIELD
+					semantic_types.append(semantic_type)
+
+			for item in WIN_LOC_STRINGS:
+				if item in code:
+					semantic_type = constantsModule.TAG_WINDOW_LOC
+					semantic_types.append(semantic_type)
+					break
+
+			for item in DOM_READ_STRINGS:
+				if item in code:
+					semantic_type = constantsModule.TAG_DOM_READ
+					semantic_types.append(semantic_type)
+					break
+
+
+			for identifier in idents:
+
+				for item in WEB_STORAGE_STRINGS:
+					if item in identifier:
+						semantic_type = constantsModule.TAG_STORAGE_READ
+						semantic_types.append(semantic_type)
+						break
+
+				for item in DOM_READ_COOKIE_STRINGS:
+					if item in identifier:
+						semantic_type = constantsModule.TAG_COOKIE_READ
+						semantic_types.append(semantic_type)
+						break
+
+				for item in WIN_NAME_STRINGS:
+					if item in identifier:
+						semantic_type = constantsModule.TAG_WINDOW_NAME
+						semantic_types.append(semantic_type)
+						break
+
+				for item in DOC_REF_STRINGS:
+					if item in identifier:
+						semantic_type = constantsModule.TAG_REFERRER
+						semantic_types.append(semantic_type)
+						break
+
+				for item in PM_STRINGS:
+					if item in identifier:
+						semantic_type = constantsModule.TAG_POST_MESSAGE
+						semantic_types.append(semantic_type)
+						break
+
+	if len(semantic_types):
+		return semantic_types
+
+	return [constantsModule.TAG_NON_REACHABLE]
+
+
+def _get_semantic_type_set(semantic_type_list):
+	
+	"""
+	@param {list} semantic_type_list: list of types that may include duplicate semantic types
+	@return {list} a unique semantic type list
+	"""
+
+	semantic_type_list = _get_unique_list(semantic_type_list)
+	if len(semantic_type_list) > 1:
+		if constantsModule.TAG_NON_REACHABLE in semantic_type_list:
+			semantic_type_list.remove(constantsModule.TAG_NON_REACHABLE)
+		return semantic_type_list	
+
+	elif len(semantic_type_list) == 1:
+		return semantic_type_list
+
+	else:
+		return [constantsModule.TAG_NON_REACHABLE]
+
+
+# ----------------------------------------------------------------------- #
+#				End Utils
+# ----------------------------------------------------------------------- #
 
 def getWindowOpenCallExpressions(tx):
 	
@@ -1053,19 +736,9 @@ def getAjaxCallExpressions(tx):
 	@return bolt result (t, n, a): where t= top level exp statement, n = callExpression, a=URL argument of the $.ajax() function
 	"""
 
-	# query1="""
-	# MATCH (t {Type: 'ExpressionStatement'})-[:AST_parentOf {RelationType: 'expression'}]->(n {Type: 'CallExpression'})-[:AST_parentOf {RelationType: 'callee'}]-> (n1 {Type: 'MemberExpression'})-[:AST_parentOf {RelationType: 'property'}]->(req {Type: 'Identifier', Code: 'ajax'}),
-	# (n1)-[:AST_parentOf {RelationType: 'object'}]->(n2 {Type: 'Identifier' }),
-	# (n)-[:AST_parentOf {RelationType: 'arguments', Arguments: '{\"arg\":0}'}]->(n3 {Type: 'ObjectExpression'})-[:AST_parentOf {RelationType: 'properties'}]->(n4 {Type: 'Property'})-[:AST_parentOf {RelationType: 'key'}]->(n5 {Type: 'Identifier', Code: 'url'}),
-	# (n4)-[:AST_parentOf {RelationType: 'value'}]->(a)
-	# RETURN t, n, a
-	# """
-	# results1 = tx.run(query1)
-
-
 	# argument a can be ObjectExpression, Identifier, or MemberExpression
 	# variable relation length will capture function chains, e.g., $.ajax({}).done().success().failure() etc.
-	query2="""
+	query="""
 	MATCH (t {Type: 'ExpressionStatement'})-[:AST_parentOf*1..10]->(n {Type: 'CallExpression'})-[:AST_parentOf {RelationType: 'callee'}]-> (n1 {Type: 'MemberExpression'})-[:AST_parentOf {RelationType: 'property'}]->(req {Type: 'Identifier', Code: 'ajax'}),
 	(n1)-[:AST_parentOf {RelationType: 'object'}]->(n2 {Type: 'Identifier' }),
 	(n)-[:AST_parentOf {RelationType: 'arguments', Arguments: '{\"arg\":0}'}]->(a)
@@ -1073,9 +746,9 @@ def getAjaxCallExpressions(tx):
 	(n4)-[:AST_parentOf {RelationType: 'value'}]->(aa)
 	RETURN t, n, a, aa
 	"""
-	results2 = tx.run(query2)
+	results = tx.run(query)
 
-	return results2
+	return results
 
 
 def xhrPostCallExpressions(tx):
@@ -1758,13 +1431,6 @@ def isVariableAFunctionArgumentInCurrentScope(tx, varname, varname_nid):
 	@return {tuple<bool,list>} boolean + the top function if true + function_name
 	"""
 
-	# @Note: we find the first top level function which has this argument.
-	# such function may not be its immediate parent function, if that function
-	# does not include the argument we are looking for, but maybe its grand parent function
-	# @FUTURE_NOTE:  variables may be passed from grand parent functions to parent functions (intact or through another clone variable)
-	# hence the real value of a variable may be resolved by resolving the call arguments for grand parents in this case
-
-
 	# Case 1: Function Expression as Variable Decleration, e.g., var f = function(varname) { ... }
 	query1 = """
 	MATCH (fname {Type: 'Identifier'})<-[:AST_parentOf {RelationType: 'id'}]-(vd {Type: 'VariableDeclarator'})-[:AST_parentOf {RelationType: 'init'}]->(n {Type:'FunctionExpression'})-[:AST_parentOf {RelationType: 'params'}]-(arg { Type:'Identifier', Code: '%s'}),
@@ -2044,6 +1710,9 @@ def getThisPointerResolution(tx, this_node):
 	return out
 
 
+# ----------------------------------------------------------------------- #
+#			Main: Taint Analsis
+# ----------------------------------------------------------------------- #
 
 @functools.lru_cache(maxsize=512)
 def getValueOfWithLocationChain(tx, varname, rootContextNode, recurse_counter=0, PDG_on_variable_declarations_only=False, context_scope=''):
@@ -2051,10 +1720,10 @@ def getValueOfWithLocationChain(tx, varname, rootContextNode, recurse_counter=0,
 	@param tx {pointer} neo4j transaction pointer
 	@param varname {string} variable whose value is to be resolved
 	@rootContextNode {node object} context of the given variable to resolve
-	@return {list} an array of triple elemenets containing information regarding inferred variable values, their literals and identifiers
+	@return {list} an array of 3D elements containing information regarding the inferred variable values, their literals and identifiers
 	"""
 
-	# list of values (its a list due to potential assigments of different values in (dynamic-valued) if-conditions)
+	# list of values (return a list due to potential assigments of different values in conditional branches)
 	out_values = [] 
 
 	# stores a map: funcDef id -->> getFunctionCallValuesOfFunctionDefinitions(funcDef)
@@ -2271,7 +1940,7 @@ def getValueOfWithLocationChain(tx, varname, rootContextNode, recurse_counter=0,
 								out_values.append(out)				
 
 
-								## @TODO: check if PDG is required for identifiers (in theory, it maybe be required, e.g., arguments of call expressions, etc)
+								## check if further PDG analysis is required for these identifiers (e.g., arguments of call expressions)
 								# call_expr_id = _get_node_id_part(nid)
 								# context_id_of_call_scope = '[scope-id=%s]'%call_expr_id  
 								# additional_identifiers = each_argument['ResolveIdentifiers']
@@ -2281,8 +1950,8 @@ def getValueOfWithLocationChain(tx, varname, rootContextNode, recurse_counter=0,
 								# 	out_values.extend(recurse)	
 
 
-							## ThisExpression Pointer Analysis
-							## NOTE: this code block must be executed for ALL branches, so we have to place it outside of all conditional branches
+							# ThisExpression Pointer Analysis
+							# NOTE: this code block must be executed for ALL branches, so we have to place it outside of all conditional branches
 							additional_identifiers = each_argument['ResolveIdentifiers']
 							if additional_identifiers is not None:
 								if 'ThisExpression' in additional_identifiers:
@@ -2575,265 +2244,690 @@ def do_reachability_analysis(tx, node, input_is_top=False):
 				return UNREACHABLE
 
 
-
-
 # ----------------------------------------------------------------------- #
-#			Experimental Utils
+#			Main: Detection
 # ----------------------------------------------------------------------- #
 
-def getValueOf(tx, varname, rootContextNode):
+def API_neo4j_query_graph_for_cs_csrf(analysis_url, analyzer_template_output_path, document_vars_pathname, document_vars=[], unit_test_mode=False, folder_name_of_url='xxx'):
 	"""
-	@param tx {pointer} neo4j transaction pointer
-	@param varname {string} variable whose value is to be resolved
-	@rootContextNode {node object} context of the given variable to resolve
-	@return {list} an array of triple elemenets containing information regarding inferred variable values, their literals and identifiers
+	@param {string} analysis_url: base url to test 
+	@param {string} analyzer_template_output_path: path to save analyzer template
+	@param {string} document_vars_pathname: absolute pathname to the location of the 'document' accessible properties 
+	@param {list} document_vars: fields in HTML forms accessbile by the 'document' DOM API
+	@param {boolean} unit_test_mode: set parameter for test run of the function
+	@description query the graph database and finds the potential forgeable client-side requests
+	@return {array} a list of candidate forgeable HTTP requests
 	"""
 
-	outValues = [] #list of values (its a list due to potential assigments of different values in (dynamic-valued) if-conditions)
-	PROGRAM_NODE_INDEX = '1' # program node
+	document_props = document_vars
+	if len(document_vars) == 0 and not unit_test_mode:
+		fp = open(document_vars_pathname, 'r')
+		document_props = fp.read().strip().strip('\n').strip()
+		try:
+			document_props = eval(document_props)
+		except:
+			logger.warning('error when evaling document DOM API properties in HTMl')
+			document_props = document_vars
 
-	# for PDG relations
-	query = """
-	MATCH (n_s { Id: '%s' })<-[:PDG_parentOf { Arguments: '%s' }]-(n_t) RETURN collect(distinct n_t) AS resultset
-	"""%(rootContextNode['Id'], varname)
+	if constantsModule.DEBUG_PRINTS:
+		logger.info("Running Cypher Queries...")
 
-	results = tx.run(query)
-	for item in results: 
-		childNodes = item['resultset'] 
-		for childNode in childNodes:
-			tree = getChildsOf(tx, childNode)
-			contextNode = tree['node']
-			if contextNode['Id'] == PROGRAM_NODE_INDEX: 
-				continue
-			ex = getCodeExpression(tree)
-			[code_expr, literals, idents] = ex
-			outValues.append(ex)
+	out = []
+	hash_or_amp_params = []
+	neo_driver = GraphDatabase.driver(constantsModule.NEO4J_CONN_STRING, auth=(constantsModule.NEO4J_USER, constantsModule.NEO4J_PASS))
+	with neo_driver.session() as session:
+		with session.begin_transaction() as tx:
+
 			
-			new_varnames = _get_unique_list(list(idents)) 
-			for new_varname in new_varnames:
-				if new_varname == varname: continue
-				v = getValueOf(tx, new_varname, contextNode)
-				outValues.extend(v)	
+			# -------------------------------------------------------------------------- #
+			#		Syntactic Queries 
+			# -------------------------------------------------------------------------- #
+			## @Deprecteed: these will not run by default. 
+			## remains here for ideas for lator.
+			if SYNTACTIC_QUERIES_ACTIVE:
+				query="""
+				MATCH (n {Type: 'Literal'})
+				WHERE (n.Value =~ '(?i).*ajax.*loc.*' OR n.Value =~ '(?i).*loc.*ajax.*')
+				RETURN n
+				"""
+				results = tx.run(query)
+				for record in results: 
+					string_param = record['n']['Value']
+					if "line" in string_param and "column" in string_param and "type" in string_param and "}" in string_param and "{" in string_param:
+						continue
+					if string_param not in hash_or_amp_params:
+							hash_or_amp_params.append(string_param)
 
-	return outValues
+				query = """
+				MATCH (n)
+				WHERE n.Code='window' OR n.Code='location' OR n.Code='hash'
+				WITH collect(DISTINCT n) AS networkNodes
+				UNWIND networkNodes AS x
+				UNWIND networkNodes AS y
+				MATCH p=(x)-[*3]-(y)
+				WHERE x <> y
+				WITH collect(DISTINCT x) AS pNodes
+				UNWIND pNodes AS n2
+				MATCH (n1 {Type: 'Literal'})-[*1]-(n2)
+				WHERE n1.Value=~'.*#.*'
+				RETURN n1
+				"""
+				results = tx.run(query)
+				for record in results: 
+					string_param = record['n1']['Value']
+					if string_param not in hash_or_amp_params:
+						hash_or_amp_params.append(string_param)
 
-
-def wrapTryExceptOn(statement):
-	"""
-	@param {string} statement
-	@return {string} statement wrapped over try/except block
-	"""
-	code = """try:\t%s\nexcept:\n\tpass\n"""%(statement)
-	return code
-
-def resolveValueOf(tx, varname, rootContextNode):
-	"""
-	@param tx {pointer} neo4j transaction pointer
-	@param varname {string} variable whose value is to be resolved
-	@rootContextNode {node object} context of the given variable to resolve
-	@return {list} an array of inferred variable values
-	"""
-
-	outValues = []
-	bases = []
-	extensions = []
-	values = getValueOf(tx, varname, rootContextNode)
-
-	if constantsModule.DEV_DEBUG: print("getValueOf: %s "%values)
-	values = getResolvedPointsTo(values)
-	if constantsModule.DEV_DEBUG: print("getResolvedPointsTo: %s "%values)
-	values = getFunctionResolvedValues(values)
-	if constantsModule.DEV_DEBUG: print("getFunctionResolvedValues: %s "%values)
-
-	if len(values):
-		ordered_expr = values[::-1]
-		program = [element[0] for element in ordered_expr]
-		p = itertools.permutations(program)
-
-		## @TODO: run-time improvement!
-		# this way of exec per statement correctly ignores unknown methods or functions & is slow!
-		for perm in p:
-			exec('%s=\"\"'%varname) # reset varname
-			new_perm = [wrapTryExceptOn(st) for st in perm]
-			new_code = '\n'.join(new_perm)
-			try:
-				exec(new_code)
-				v = eval(varname)
-				if v not in outValues:
-					outValues.append(v)
-			except Exception as e:
-				print("type error: " + str(e))
-
-	return outValues
+				query = """
+				MATCH p=(n1)-[*5]-(n2) 
+				WHERE n1.Type='Literal'
+				AND n1.Value=~'.*#.*' 
+				AND (n2.Code='window' OR n2.Code='location')
+				RETURN n1
+				"""
+				results = tx.run(query)
+				for record in results: 
+					string_param = record['n1']['Value']
+					if string_param not in hash_or_amp_params:
+						hash_or_amp_params.append(string_param)
 
 
 
-def getResolvedPointsTo(values):
-	"""
-	@param {list} values
-	@return {list} pointTo resolved array
-	"""
-	new_values = []
-	to_resolve = []
-	resolve_names = []
-	resolved = []
-	for ii in range(len(values)):
-		item = values[ii]
-		expr = item[0]
-		lits = item[1]
-		idents = item[2]
-		if '.' in expr:
-			parts = expr.split(" ")
-			for part in parts:
-				if '.' in part:
-					members = part.split('.')
-					for k in range(len(members)-1): # do not resolve the last one as it is already resolved
-						stripped_member = members[k].strip()
-						to_resolve.append([ii, stripped_member])
-						resolve_names.append(stripped_member)
+				query = """
+				MATCH p=(n1)-[*5]-(n2)
+				WHERE n1.Type='Literal'
+				AND n1.Value=~'.*#.*'
+				AND n2.Value=~'.*(asyncRequest|ajax|xhr|request|open|conn|fetch|XMLHttpRequest|send).*'
+				RETURN n1
+				"""
+				results = tx.run(query)
+				for record in results: 
+					string_param = record['n1']['Value']
+					if string_param not in hash_or_amp_params:
+						hash_or_amp_params.append(string_param)
 
-	for jj in range(len(values)):
-		resolver = values[jj]
-		resolver_expr = resolver[0]
-		cont = True
-		for o in resolve_names:
-			if o in resolver_expr:
-				cont = False
-				break
-		if cont: 
-			continue
+				# PDG_parentOf Relations: check IfStatements that depend on a variable whose value is like .*#.*
+				query = """
+				MATCH p=(n1 {Type: 'Literal'} )-[*3]-(n2 {Type: 'IfStatement'}) 
+				WHERE n1.Value=~'.*#.*' 
+				AND any(r in relationships(p) WHERE n2.Code CONTAINS r.Arguments)
+				Return n1
+				"""
+				results = tx.run(query)
+				for record in results: 
+					string_param = record['n1']['Value']
+					if string_param not in hash_or_amp_params:
+						hash_or_amp_params.append(string_param)
 
-		# at this point resolver_expr can resolve values of to_resolve list
-		assignmentSymbol = "="
-		assignmentIndex = resolver_expr.index(assignmentSymbol)
-		left = resolver_expr[:assignmentIndex].strip()
-		right =resolver_expr[assignmentIndex+1:].strip()
-
-		for item in to_resolve:
-			item_idx = item[0]
-			item_name = item[1]
-			if item_name == left:
-				new = values[item_idx][0].replace(" "+left+ ".", " "+right+".") # disallow replace within word-parts
-				values[item_idx][0] = new
-				values[item_idx][2].append(right) # add the new identifier
-
-	return values
+			# -------------------------------------------------------------------------- #
+			#		End Syntactic Queries
+			# -------------------------------------------------------------------------- #
 
 
-def getFunctionResolvedValues(values):
-	"""
-	@param {list} values:  resolved values, the result of 'resolveValueOf' function
-	@return {list} values with the function calls resolved as variables
-	"""
-	vals = []
-	functions = []
-	for idx in range(len(values)):
-		value = values[idx]
-		literals = value[1]
-		idents = value[2]
-		parts = value[0].split(" ")
-		
-		done = False
 
-		resolve_func = []
-		arg_stack = []
-		new_parts = []
-		for i in range(len(parts)-1):
-			if not (parts[i] in idents and parts[i+1] in idents):
-				new_parts.append(parts[i])
-		i = 0
-		while not done:
-			if new_parts[i] in literals:
-				arg_stack.append(new_parts[i])
-			if new_parts[i] in idents and new_parts[i-1] in literals and i >=1: # @Note functions without values would be treated like identifiers, so the middle condition does not (correctly) check that case!
-				resolve_func.append([new_parts[i], arg_stack[::-1]])
-				arg_stack = []
-			if i == len(new_parts)-1:
-				done = True
-				break
-			i = i + 1
+			# @ID: Query Nr. 1
+			# @Description: Finds all the relationship between sink and source where:
+			#		*sink* = AssignmentExpression with left handside operand of window.location.hash, 
+			#				   and right handside operand of identifier or literal (in case of identifier, the value is derived by PDG analysis up to 1 Level)
+			#		*source* = ExpressionStatement or Variable Declaration that contains ajax-request sending keywords
+			if AD_HOC_QUERY_1_ACTIVE:
+				query="""
+				MATCH (w {Code: 'window'})<-[:AST_parentOf{RelationType: 'object'}]-(p {Type: 'MemberExpression'})-[:AST_parentOf{RelationType: 'property'}]->(l {Code: 'location'}), 
+				(p)<-[:AST_parentOf{RelationType: 'object'}]-(gp {Type: 'MemberExpression'})-[:AST_parentOf{RelationType: 'property'}]->(h {Code: 'hash'}), 
+				(gp)<-[:AST_parentOf {RelationType: 'left'}]-(t {Type: 'AssignmentExpression'})-[:AST_parentOf{RelationType: 'right'}]->(v),
+				(t)<-[:AST_parentOf {RelationType: 'expression'}]-(topsource {Type: 'ExpressionStatement'}),
+				(n {Type: 'Identifier'})<-[:AST_parentOf  {RelationType: 'property'}]-(parent)<-[:AST_parentOf*1..3]-(topsink)
+				WHERE v.Type = 'Identifier' OR v.Type = 'Literal'	 
+				AND n.Code =~ '.*(ajax|open|fetch|XMLHttpRequest|send).*' AND (topsink.Type = 'ExpressionStatement' OR topsink.Type = 'VariableDeclaration')
+				WITH  v AS val, topsink AS si, topsource AS sc 
+				MATCH (topsource)<-[:PDG_parentOf*1..100 {Arguments: val.Code}]-(vv {Type: 'VariableDeclaration'})-[:AST_parentOf]->(decl {Type: 'VariableDeclarator'})-[:AST_parentOf {RelationType: 'init'}]->(lit {Type: 'Literal'}) 
+				WHERE val.Type = 'Identifier'
+				RETURN
+				CASE EXISTS( (sc)-[:CFG_parentOf|:PDG_parentOf*1..100]->(si) )
+				WHEN True Then
+					 CASE val.Type
+					 WHEN 'Identifier' Then collect (distinct lit)
+					 ELSE collect (distinct val)
+					 END
+				WHEN False Then null
+				END AS res
+				"""
+				results = tx.run(query)
+				for record in results: 
+					nodes = record['res']
+					if nodes is None: continue
+					for node in nodes:
+						value = node['Value']
+						hash_or_amp_params.append(value)
 
-		if len(resolve_func):
-			functions.append([idx, resolve_func])
 
 
-	toIgnoreIndexes =  [] # modified statements containing function calls + function definitions
-	# resolve the value and add its result
-	for j in range(len(values)):
-		v = values[j]
-		resolveExpression = v[0]
-		name = resolveExpression.split(" ")[0]
-		for funcItem in functions:
-			resolveIndex = funcItem[0]
-			funcDescriptions = funcItem[1]
-			for func in funcDescriptions:
-				# @Note: multiple functions of the same expr to be resolved
-				funcName = func[0]
-				if  name == funcName:
-					callParams = func[1]
-					border = len(resolveExpression) - 2*len(callParams)
-					positionalArguments = resolveExpression[border:].split(" ")[::-1]
-					resolveExpression = resolveExpression[:border] #remove positional arguments
-					for k in range(len(callParams)):
-						resolveExpression = resolveExpression.replace(positionalArguments[k], callParams[k])
-					idss = values[resolveIndex][2]
-					litss = values[resolveIndex][1]
+			# @ID: Query Nr. 2
+			# @Description: Finds all the relationship between sink and source where:
+			#		*sink* = AssignmentExpression with left handside operand of window.location.hash, 
+			#				   and right handside operand of identifier or literal (in case of identifier, the value is derived by PDG analysis up to N levels)
+			#		*source* = ExpressionStatement or Variable Declaration that contains ajax-request sending keywords
+			if AD_HOC_QUERY_2_ACTIVE:
+				query="""
+				MATCH (w {Code: 'window'})<-[:AST_parentOf{RelationType: 'object'}]-(p {Type: 'MemberExpression'})-[:AST_parentOf{RelationType: 'property'}]->(l {Code: 'location'}), 
+				(p)<-[:AST_parentOf{RelationType: 'object'}]-(gp {Type: 'MemberExpression'})-[:AST_parentOf{RelationType: 'property'}]->(h {Code: 'hash'}), 
+				(gp)<-[:AST_parentOf {RelationType: 'left'}]-(t {Type: 'AssignmentExpression'})-[:AST_parentOf{RelationType: 'right'}]->(v),
+				(t)<-[:AST_parentOf {RelationType: 'expression'}]-(topsource {Type: 'ExpressionStatement'}),
+				(n {Type: 'Identifier'})<-[:AST_parentOf  {RelationType: 'property'}]-(parent)<-[:AST_parentOf*1..3]-(topsink)
+				WHERE v.Type = 'Identifier' OR v.Type = 'Literal' OR v.Type = 'CallExpression'
+				AND n.Code =~ '.*(ajax|open|fetch|XMLHttpRequest|send).*' AND (topsink.Type = 'ExpressionStatement' OR topsink.Type = 'VariableDeclaration')
+				WITH  v AS val, topsink AS si, topsource AS sc 
+				RETURN
+				CASE EXISTS( (sc)-[:CFG_parentOf|:PDG_parentOf|:ERDG|:EDG_parentOf*1..100]->(si) )
+				WHEN True Then [val, sc]
+				WHEN False Then null
+				END AS res
+				"""
+				results = tx.run(query)
+				visited = []
+				for record in results: 
+					item = record['res']
+					if item is None: continue
+					else:
+						node = item[0]
+						topElement = item[1]
+						if node['Id'] not in visited:
+							visited.append(node['Id'])
+							if node['Type'] == 'Literal':
+								resolved = node['Value']
+								hash_or_amp_params.append(resolved)
+							elif node['Type'] == 'Identifier':
+								# Identifier to be resolved from top node context
+								context = topElement
+								values = resolveValueOf(tx, node['Code'], context)
+								for o in values:
+									if o not in hash_or_amp_params:
+										hash_or_amp_params.append(o)
+							elif node['Type'] == 'CallExpression':
+								context = topElement
+								callExpressionWrapperNode = getChildsOf(tx, node)
+								codeExpr = getCodeExpression(callExpressionWrapperNode)
+								varname = codeExpr[0]
+								values = resolveValueOf(tx, varname, context)
+								for o in values:
+									if o not in hash_or_amp_params:
+										hash_or_amp_params.append(o)
 
-					# 1. append the function body with the arguments replaced with passed params
-					new_ids = v[2] + idss
-					for arg in positionalArguments:
-						new_ids = list(filter(lambda e: e != arg, new_ids)) # remove the positional args from identifiers list in of function body
-					vals.append([resolveExpression, v[1] + litss, new_ids]) 
-					toIgnoreIndexes.append(j)
 
-					# 2. append the original expr contating function calls with removing the function params and treat it as a variable
-					original_expr = values[resolveIndex][0]
-					for arg in callParams:
-						original_expr = original_expr.replace(arg, "")
-					vals.append([original_expr, litss, idss])
-					toIgnoreIndexes.append(resolveIndex)
+			# @ID: Query Nr. 3
+			# @Description: pointToAnalysis for window.location.hash
+			#		There are 2 different cases:
+			# 			CASE 1 Example: wlh = wl.hash ; wlh = '#value'; -> Our query: (find target identifier=wlh and look for its value v in an AssignmentExpression)
+			# 			CASE 2 Example: wl.hash = '#value'
+			#		** This query only addresses CASE 1 ** 
+			##@Note obj {Type: 'Identifier'} - here the value Type is not specified to both capture any number of member expressions: e.g.,
+			# window.location.hash (2 member expression) and wl.hash (1 member expression)
+			if AD_HOC_QUERY_3_ACTIVE:
+				query="""
+				MATCH (obj)<-[:AST_parentOf {RelationType: 'object'}]-(wl {Type: 'MemberExpression'})-[:AST_parentOf {RelationType: 'property'}]->(wlh {Type: 'Identifier', Code: 'hash'}), 
+				(wl)<-[r1:AST_parentOf]-(p)-[r2:AST_parentOf]->(tIdent {Type: 'Identifier'}),
+				(targetIdent {Type: 'Identifier'})<-[:AST_parentOf {RelationType: 'left'}]-(t {Type: 'AssignmentExpression'})-[:AST_parentOf{RelationType: 'right'}]->(v),
+				(t)<-[:AST_parentOf {RelationType: 'expression'}]-(topsource {Type: 'ExpressionStatement'}),
+				(n {Type: 'Identifier'})<-[:AST_parentOf  {RelationType: 'property'}]-(parent)<-[:AST_parentOf*1..3]-(topsink)
+				WHERE (p.Type = 'AssignmentExpression' OR p.Type = 'VariableDeclarator') AND 
+					  (r1.RelationType = 'init' or r1.RelationType = 'right') AND
+					  (r2.RelationType = 'left' OR r2.RelationType = 'id') AND
+					  (targetIdent.Code = tIdent.Code) AND
+					  (v.Type = 'Identifier' OR v.Type = 'Literal' OR v.Type = 'CallExpression') AND
+					  (n.Code =~ '.*(ajax|open|fetch|XMLHttpRequest|send).*') AND
+					  (topsink.Type = 'ExpressionStatement' OR topsink.Type = 'VariableDeclaration')
+				WITH  v AS val, topsink AS si, topsource AS sc 
+				RETURN
+				CASE EXISTS( (sc)-[:CFG_parentOf|:PDG_parentOf|:ERDG|:EDG_parentOf*1..100]->(si) )
+				WHEN True Then [val, sc]
+				WHEN False Then null
+				END AS res
+				"""
+				results = tx.run(query)
+				visited = []
+				for record in results: 
+					item = record['res']
+					if item is None: continue
+					else:
+						node = item[0]
+						topElement = item[1]
+						if node['Id'] not in visited:
+							visited.append(node['Id'])
+							if node['Type'] == 'Literal':
+								resolved = node['Value']
+								hash_or_amp_params.append(resolved)
+							elif node['Type'] == 'Identifier':
+								# Identifier to be resolved from top node context
+								context = topElement
+								values = resolveValueOf(tx, node['Code'], context)
+								for o in values:
+									if o not in hash_or_amp_params:
+										hash_or_amp_params.append(o)
+							elif node['Type'] == 'CallExpression':
+								context = topElement
+								callExpressionWrapperNode = getChildsOf(tx, node)
+								codeExpr = getCodeExpression(callExpressionWrapperNode)
+								varname = codeExpr[0]
+								values = resolveValueOf(tx, varname, context)
+								for o in values:
+									if o not in hash_or_amp_params:
+										hash_or_amp_params.append(o)
 
-	for p in range(len(values)):
-		if p not in toIgnoreIndexes:
-			item = values[p]
-			vals.append(item)
+			# @ID: Query Nr. 4
+			# @Description: pointToAnalysis for window.location.hash
+			#		There are 2 different cases:
+			# 			CASE 1 Example: wlh = wl.hash ; wlh = '#value';
+			# 			CASE 2 Example: wl.hash = '#value'
+			#		** This query only addresses CASE 2 ** 
+			if AD_HOC_QUERY_4_ACTIVE:
+				query="""
+				MATCH (obj)<-[:AST_parentOf {RelationType: 'object'}]-(wl {Type: 'MemberExpression'})-[:AST_parentOf {RelationType: 'property'}]->(wlh {Type: 'Identifier', Code: 'hash'}), 
+				(wl)<-[:AST_parentOf {RelationType: 'left'}]-(p {Type: 'AssignmentExpression'})-[:AST_parentOf {RelationType: 'right'}]->(v),
+				(p)<-[:AST_parentOf {RelationType: 'expression'}]-(topsource {Type: 'ExpressionStatement'}),
+				(n {Type: 'Identifier'})<-[:AST_parentOf  {RelationType: 'property'}]-(parent)<-[:AST_parentOf*1..3]-(topsink)
+				WHERE
+					(v.Type = 'Literal' or v.Type = 'Identifier' or v.Type = 'CallExpression') AND
+					(n.Code =~ '.*(ajax|open|fetch|XMLHttpRequest|send).*') AND
+					(topsink.Type = 'ExpressionStatement' OR topsink.Type = 'VariableDeclaration')
+				WITH  v AS val, topsink AS si, topsource AS sc 
+				RETURN
+				CASE EXISTS( (sc)-[:CFG_parentOf|:PDG_parentOf|:ERDG|:EDG_parentOf*1..100]->(si) )
+				WHEN True Then [val, sc]
+				WHEN False Then null
+				END AS res
+				"""
+				results = tx.run(query)
+				visited = []
+				for record in results: 
+					item = record['res']
+					if item is None: continue
+					else:
+						node = item[0]
+						topElement = item[1]
+						if node['Id'] not in visited:
+							visited.append(node['Id'])
+							if node['Type'] == 'Literal':
+								resolved = node['Value']
+								hash_or_amp_params.append(resolved)
+							elif node['Type'] == 'Identifier':
+								# Identifier to be resolved from top node context
+								context = topElement
+								values = resolveValueOf(tx, node['Code'], context)
+								for o in values:
+									if o not in hash_or_amp_params:
+										hash_or_amp_params.append(o)
+							elif node['Type'] == 'CallExpression':
+								context = topElement
+								callExpressionWrapperNode = getChildsOf(tx, node)
+								codeExpr = getCodeExpression(callExpressionWrapperNode)
+								varname = codeExpr[0]
+								values = resolveValueOf(tx, varname, context)
+								for o in values:
+									if o not in hash_or_amp_params:
+										hash_or_amp_params.append(o)
 
-	# break the 'assignment' statements if a function body;
-	# Note: this will not break other things like method invocations, etc, as not required
-	outVals = []
-	for qq in range(len(vals)):
-		item = vals[qq]
-		item_expr = item[0]
-		item_literals = item[1]
-		item_idents = item[2]
-		item_expr_list = item_expr.split(" ")
-		break_indexes = []
-		for q in range(len(item_expr_list)-1):
-			# two idents or literals or their combination must not occur next to each other in the list without an operator in between them!
-			if  (item_expr_list[q] in item_idents or item_expr_list[q] in item_literals) and \
-				(item_expr_list[q+1] in item_idents or item_expr_list[q+1] in item_literals):
-				breaked = True
-				break_indexes.append(q)
-		
-		rest = []
-		for iii in range(len(break_indexes)):
-			if iii == 0:
-				subexpression = item_expr_list[:break_indexes[iii]+1]
-				rest = item_expr_list[break_indexes[iii]+1:]
+			# @ID: Query Nr. 5
+			# @Description: 
+			#	Finds asynchronous HTTP requests (sinks) and associates a semantic type to them
+			#	i.e., is any sink value traces back to the defined semantic types
+			if MAIN_QUERY_ACTIVE:
+				r1 = getXhrOpenCallExpressions(tx)
+				r2 = getFetchCallExpressions(tx)
+				r3 = getAjaxCallExpressions(tx)
+				r4 = getAsyncRequestCallExpressions(tx)
+				r5 = getSetFormCallExpressions(tx)
+				r6 = getPageSpeedExpressions(tx)
+				r7 = getWindowOpenCallExpressions(tx)
+				r8 = xhrPostCallExpressions(tx)
+				r9 = getAjaxSettingObjectExpressions(tx)
+
+
+				request_storage = {}   # key: call_expression_id, value: structure of request url for that call expression
+
+				for call_expr in r1:
+					n = call_expr['n'] # call expression
+					a = call_expr['a'] # argument: Literal, Identifier, BinaryExpression, etc
+					t = call_expr['t'] # top level expression statement
+					request_fn = 'XMLHttpRequest.open'
+
+					wrapper_node_top_expression = getChildsOf(tx, t)
+					top_expression_code = getAdvancedCodeExpression(wrapper_node_top_expression)[0]
+
+					if 'function(' in top_expression_code:
+						top_expression_code = jsbeautifier.beautify(top_expression_code)
+
+					wrapper_node= getChildsOf(tx, a)
+					ce = getAdvancedCodeExpression(wrapper_node)
+					nid = request_fn + '__nid=' + n['Id'] + '__Loc=' + str(n['Location'])
+					request_storage[nid] = {'reachability':[], 'endpoint_code': ce[0], 'expected_values': {}, 'top_expression': top_expression_code, 'id_set': {'TopExpression': t['Id'], 'CallExpression': n['Id'], 'Argument': a['Id']}}
+					for ident, ident_id in ce[2].items():
+						if ident in ce[0]:
+							vals = getValueOfWithLocationChain(tx, ident, t)
+							request_storage[nid]['expected_values'][ident] = vals
+
+
+				for call_expr in r2:
+					n = call_expr['n']
+					a = call_expr['a'] 
+					t = call_expr['t'] 
+					request_fn = 'Fetch'
+
+					wrapper_node_top_expression = getChildsOf(tx, t)
+					top_expression_code = getAdvancedCodeExpression(wrapper_node_top_expression)[0]
+					if 'function(' in top_expression_code:
+						top_expression_code = jsbeautifier.beautify(top_expression_code)
+
+					wrapper_node= getChildsOf(tx, a)
+					ce = getAdvancedCodeExpression(wrapper_node)
+					nid = request_fn + '__nid=' + n['Id'] + '__Loc=' + str(n['Location'])
+					request_storage[nid] = {'reachability':[], 'endpoint_code': ce[0], 'expected_values': {}, 'top_expression': top_expression_code, 'id_set': {'TopExpression': t['Id'], 'CallExpression': n['Id'], 'Argument': a['Id']}}
+					for ident, ident_id in ce[2].items():
+						if ident in ce[0]:
+							vals = getValueOfWithLocationChain(tx, ident, t)
+							request_storage[nid]['expected_values'][ident] = vals
+
+				for call_expr in r3:
+					n = call_expr['n'] 
+					a = call_expr['a'] 
+					t = call_expr['t'] 
+					aa = call_expr['aa']
+					request_fn = 'ajax'
+
+					# override arg a if aa is object expression to take the ajax url properly
+					if aa is not None and a is not None:
+						if a["Type"] == "ObjectExpression":
+							a = aa
+
+					wrapper_node_top_expression = getChildsOf(tx, t)
+					top_expression_code = getAdvancedCodeExpression(wrapper_node_top_expression)[0]
+
+
+					if 'function(' in top_expression_code:
+						top_expression_code = jsbeautifier.beautify(top_expression_code)
+
+					wrapper_node= getChildsOf(tx, a)
+					ce = getAdvancedCodeExpression(wrapper_node)
+					nid = request_fn + '__nid=' + n['Id'] + '__Loc=' + str(n['Location'])
+					request_storage[nid] = {'reachability':[], 'endpoint_code': ce[0], 'expected_values': {}, 'top_expression': top_expression_code, 'id_set': {'TopExpression': t['Id'], 'CallExpression': n['Id'], 'Argument': a['Id']}}
+					for ident, ident_id in ce[2].items():
+						if ident in ce[0]:
+							
+							vals = getValueOfWithLocationChain(tx, ident, t)
+							request_storage[nid]['expected_values'][ident] = vals
+
+
+				for call_expr in r4:
+					n = call_expr['n'] 
+					a = call_expr['a'] 
+					t = call_expr['t'] 
+					tt = call_expr['tt']
+					request_fn = 'Connect.asyncRequest'
+					if tt is not None:
+						t = tt # fix the actual top level from VariableDeclarator to VariableDeclaration
+
+					wrapper_node_top_expression = getChildsOf(tx, t)
+					top_expression_code = getAdvancedCodeExpression(wrapper_node_top_expression)[0]
+
+					if 'function(' in top_expression_code:
+						top_expression_code = jsbeautifier.beautify(top_expression_code)
+
+					wrapper_node= getChildsOf(tx, a)
+					ce = getAdvancedCodeExpression(wrapper_node)
+					nid =  request_fn + '__nid=' + n['Id'] + '__Loc=' + str(n['Location'])
+					request_storage[nid] = {'reachability':[] ,'endpoint_code': ce[0], 'expected_values': {}, 'top_expression': top_expression_code, 'id_set': {'TopExpression': t['Id'], 'CallExpression': n['Id'], 'Argument': a['Id']}}
+					for ident, ident_id in ce[2].items():
+
+						vals = getValueOfWithLocationChain(tx, ident, t)
+						request_storage[nid]['expected_values'][ident] = vals
+
+
+
+				for call_expr in r5:
+					n = call_expr['n'] 
+					a = call_expr['a'] 
+					t = call_expr['t'] 
+					tt = call_expr['tt']
+					request_fn = 'Connect.setForm'
+
+					if tt is not None:
+						t = tt # fix the actual top level
+
+					wrapper_node_top_expression = getChildsOf(tx, t)
+					top_expression_code = getAdvancedCodeExpression(wrapper_node_top_expression)[0]
+					if 'function(' in top_expression_code:
+						top_expression_code = jsbeautifier.beautify(top_expression_code)
+
+					wrapper_node= getChildsOf(tx, a)
+					ce = getAdvancedCodeExpression(wrapper_node)
+					nid =  request_fn + '__nid=' + n['Id'] + '__Loc=' + str(n['Location'])
+					request_storage[nid] = {'reachability':[], 'endpoint_code': ce[0], 'expected_values': {}, 'top_expression': top_expression_code, 'id_set': {'TopExpression': t['Id'], 'CallExpression': n['Id'], 'Argument': a['Id']}}
+
+					for ident, ident_id in ce[2].items():
+						vals = getValueOfWithLocationChain(tx, ident, t)
+						request_storage[nid]['expected_values'][ident] = vals
+
+				for call_expr in r6:
+					n = call_expr['n'] 
+					a = call_expr['a'] 
+					t = call_expr['t'] 
+					request_fn = 'pagespeed.CriticalImages.Run'
+
+
+					wrapper_node_top_expression = getChildsOf(tx, t)
+					top_expression_code = getAdvancedCodeExpression(wrapper_node_top_expression)[0]
+					if 'function(' in top_expression_code:
+						top_expression_code = jsbeautifier.beautify(top_expression_code)
+
+					wrapper_node= getChildsOf(tx, a)
+					ce = getAdvancedCodeExpression(wrapper_node)
+					nid =  request_fn + '__nid=' + n['Id'] + '__Loc=' + str(n['Location'])
+					request_storage[nid] = {'reachability':[], 'endpoint_code': ce[0], 'expected_values': {}, 'top_expression': top_expression_code, 'id_set': {'TopExpression': t['Id'], 'CallExpression': n['Id'], 'Argument': a['Id']}}
+
+					for ident, ident_id in ce[2].items():
+						vals = getValueOfWithLocationChain(tx, ident, t)
+						request_storage[nid]['expected_values'][ident] = vals
+
+
+				for call_expr in r7:
+					n = call_expr['n'] 
+					a = call_expr['a'] 
+					t = call_expr['t'] 
+					request_fn = 'window.open'
+
+					wrapper_node_top_expression = getChildsOf(tx, t)
+					top_expression_code = getAdvancedCodeExpression(wrapper_node_top_expression)[0]
+
+					if 'function(' in top_expression_code:
+						top_expression_code = jsbeautifier.beautify(top_expression_code)
+
+					wrapper_node= getChildsOf(tx, a)
+					ce = getAdvancedCodeExpression(wrapper_node)
+					nid = request_fn + '__nid=' + n['Id'] + '__Loc=' + str(n['Location'])
+					request_storage[nid] = {'reachability':[], 'endpoint_code': ce[0], 'expected_values': {}, 'top_expression': top_expression_code, 'id_set': {'TopExpression': t['Id'], 'CallExpression': n['Id'], 'Argument': a['Id']}}
+					for ident, ident_id in ce[2].items():
+						if ident in ce[0]:
+							vals = getValueOfWithLocationChain(tx, ident, t)
+							request_storage[nid]['expected_values'][ident] = vals
+
+
+				for call_expr in r8:
+					n = call_expr['n'] 
+					a = call_expr['a'] 
+					t = call_expr['t'] 
+					request_fn = 'xhrPost'
+
+					wrapper_node_top_expression = getChildsOf(tx, t)
+					top_expression_code = getAdvancedCodeExpression(wrapper_node_top_expression)[0]
+					if 'function(' in top_expression_code:
+						top_expression_code = jsbeautifier.beautify(top_expression_code)
+
+					wrapper_node= getChildsOf(tx, a)
+					ce = getAdvancedCodeExpression(wrapper_node)
+					nid = request_fn + '__nid=' + n['Id'] + '__Loc=' + str(n['Location'])
+					request_storage[nid] = {'reachability':[], 'endpoint_code': ce[0], 'expected_values': {}, 'top_expression': top_expression_code, 'id_set': {'TopExpression': t['Id'], 'CallExpression': n['Id'], 'Argument': a['Id']}}
+					for ident, ident_id in ce[2].items():
+						if ident in ce[0]:
+							vals = getValueOfWithLocationChain(tx, ident, t)
+							request_storage[nid]['expected_values'][ident] = vals
+
+
+				for call_expr in r9:
+					n = call_expr['n'] 
+					a = call_expr['a'] 
+					t = call_expr['t'] 
+					request_fn = 'Ajax'
+
+					wrapper_node_top_expression = getChildsOf(tx, t)
+					top_expression_code = getAdvancedCodeExpression(wrapper_node_top_expression)[0]
+					if 'function(' in top_expression_code:
+						top_expression_code = jsbeautifier.beautify(top_expression_code)
+
+					wrapper_node= getChildsOf(tx, a)
+					ce = getAdvancedCodeExpression(wrapper_node)
+					nid = request_fn + '__nid=' + n['Id'] + '__Loc=' + str(n['Location'])
+					request_storage[nid] = {'reachability':[], 'endpoint_code': ce[0], 'expected_values': {}, 'top_expression': top_expression_code, 'id_set': {'TopExpression': t['Id'], 'CallExpression': n['Id'], 'Argument': a['Id']}}
+					for ident, ident_id in ce[2].items():
+						if ident in ce[0]:
+							vals = getValueOfWithLocationChain(tx, ident, t)
+							request_storage[nid]['expected_values'][ident] = vals
+
+
+				# path to store the general template file for WIN.LOC dependencies of all URLs			
+				general_template_output_path = utilityModule.get_directory_without_last_part(analyzer_template_output_path.rstrip('/'))
+				general_template_output_pathname = os.path.join(general_template_output_path, constantsModule.STATIC_ANALYZER_WIN_LOC_TEMPLATE_FILE_NAME)
+
+				# path to store all templates of the current URL
+				template_output_pathname = os.path.join(analyzer_template_output_path, constantsModule.TEMPLATE_OUTPUT_SLUG)
+				with open(general_template_output_pathname, 'a+') as gt_fd:
+					with open(template_output_pathname, "w+") as fd:
+						timestamp = _get_current_timestamp()
+						sep = utilityModule.get_output_header_sep()
+						sep_templates = utilityModule.get_output_subheader_sep()
+						fd.write(sep)
+						fd.write('[timestamp] generated on %s\n'%timestamp)
+						fd.write(sep+'\n')
+						fd.write('[*] NavigationURL: %s\n\n'%analysis_url)
+
+						for each_request_key in request_storage:
+							node_id = _get_node_id_part(each_request_key) # node id of 'CallExpression' node
+							location = _get_location_part(each_request_key)
+							location = _get_line_of_location(location)
+							request_fn = _get_function_name_part(each_request_key)
+
+							program = request_storage[each_request_key]
+							request_variable = program['endpoint_code']
+							program_slices_keypair = program['expected_values']
+							request_top_expression_code = program['top_expression']
+							id_set = program['id_set']
+							reachability_results = program['reachability']
+							request_tags = []
+							print_buffer = []
+
+							endpoint_tags = _get_semantic_type(request_variable, 0, document_props, find_endpoint_tags=True)
+							request_tags.extend(endpoint_tags)
+
+							counter = 1
+							for each_identifier in program_slices_keypair.keys():
+								program_slices = program_slices_keypair[each_identifier]
+								num_slices = len(program_slices)
+								
+								if num_slices == 0: # if each_identifier can not be resolved locally, apply heuristics ##@TODO: check this throughly to eliminate non-relevant stuff!
+									do_heuristic_search = True  # changed to false for typo3 crm
+									if do_heuristic_search:
+										identifier_heurisitc_values = getIdentifierLocalAndGlobalValues(tx, each_identifier)
+										program_slices = getProgramSliceFormat(identifier_heurisitc_values)
+										num_slices = len(program_slices)
+
+								tags = _get_semantic_type(program_slices, num_slices, document_props)
+								tags = _get_unique_list(tags)
+								request_tags.extend(tags)
+
+								for i in range(num_slices):
+									program_slice = program_slices[i]
+									loc = _get_line_of_location(program_slice[3])
+									code = program_slice[0]
+
+									if 'function(' in code:
+										code = jsbeautifier.beautify(code) # pretty print function calls
+
+									c = None
+									if i == 0 and each_identifier in code:
+
+										a = '\n%s:%s variable=%s\n'%(counter, str(tags), each_identifier)
+										counter = counter + 1
+										b = """(loc:%s)- %s\n"""%(loc,code)
+										if c is not None:
+											print_buffer += [a, b, c]
+										else:
+											print_buffer+= [a, b]
+
+									else:
+										a = """(loc:%s)- %s\n"""%(loc,code)
+										if c is not None:
+											print_buffer += [a, c]
+										else:
+											print_buffer += [a]
+
+							print_buffer = _get_orderd_unique_list(print_buffer) # remove duplicates, if any
+							tag_set = _get_semantic_type_set(request_tags)
+							if not ( len(tag_set) == 1 and constantsModule.TAG_NON_REACHABLE in tag_set ):
+								fd.write(sep_templates)
+								fd.write('[*] Tags: %s\n'%(str(tag_set)))
+								fd.write('[*] NodeId: %s\n'%str(id_set))
+								fd.write('[*] Location: %s\n'%location)
+								fd.write('[*] Function: %s\n'%request_fn)
+								fd.write('[*] Template: %s\n'%(request_variable))
+								fd.write('[*] Top Expression: %s\n'%(request_top_expression_code))
+
+
+								gt_fd.write(sep_templates)
+								gt_fd.write('[*] NavigationURL: %s\n'%analysis_url)
+								gt_fd.write('[*] Hash: %s\n'%folder_name_of_url)
+								gt_fd.write('[*] Tags: %s\n'%(str(tag_set)))
+								gt_fd.write('[*] NodeId: %s\n'%str(id_set))
+								gt_fd.write('[*] Location: %s\n'%location)
+								gt_fd.write('[*] Function: %s\n'%request_fn)
+								gt_fd.write('[*] Template: %s\n'%(request_variable))
+								gt_fd.write('[*] Top Expression: %s\n'%(request_top_expression_code))
+								i = 0
+								for item in print_buffer:
+									if item.startswith('(loc:'):
+										item = '\t%s '%(i) + item
+										i = i + 1
+									else:
+										i = 0
+									fd.write(item)
+									gt_fd.write(item)
+								fd.write(sep_templates+'\n') # add two newlines
+								gt_fd.write(sep_templates)
+							else:
+								fd.write(sep_templates)
+								fd.write('[*] Tags: %s\n'%(str(tag_set)))
+								fd.write('[*] NodeId: %s\n'%str(id_set))
+								fd.write('[*] Location: %s\n'%location)
+								fd.write('[*] Function: %s\n'%request_fn)
+								fd.write('[*] Template: %s\n'%(request_variable))
+								fd.write('[*] Top Expression: %s\n'%(request_top_expression_code))
+
+								i = 0
+								for item in print_buffer:
+									if item.startswith('(loc:'):
+										item = '\t%s '%(i) + item
+										i = i + 1
+									else:
+										i = 0
+									fd.write(item)
+								fd.write(sep_templates+'\n') # add two newlines
+
 	
-			elif len(break_indexes) >=2:
-				subexpression = item_expr_list[break_indexes[iii-1]+1: break_indexes[iii]+1]
-				rest = item_expr_list[break_indexes[iii]+1:]
+	hashSymbol = "#"
+	if not analysis_url.endswith(hashSymbol):
+		analysis_url = analysis_url+ hashSymbol
+	for each_candidate_param in hash_or_amp_params:
+		each_candidate_param = each_candidate_param.lstrip(hashSymbol)
+		out.append(analysis_url+each_candidate_param)
 
-			outVals.append([' '.join(subexpression), item_literals, item_idents])
-
-		if len(break_indexes):
-			if len(rest):
-				outVals.append([' '.join(rest), item_literals, item_idents])
-		else:
-			outVals.append(item)
-
-	return outVals
+	return out
 
 
 
@@ -2851,25 +2945,29 @@ def driver_program_unit_test(test_file_name=None):
 	if test_file_name is not None:
 		test_files = [test_file_name]
 	else:
-		# find all test_* files in wpg_construction/unit_tests/
-		test_files = [f for f in os.listdir(constantsModule.UNIT_TEST_BASE_PATH) if f.startswith('test_') and f.endswith('.js') and os.path.isfile(os.path.join(constantsModule.UNIT_TEST_BASE_PATH, f))]
+		# find all test_* files in wpg_construction/unit_tests/cs_csrf
+		unit_test_base_path = os.path.join(constantsModule.UNIT_TEST_BASE_PATH, 'cs_csrf')
+		test_files = [f for f in os.listdir(unit_test_base_path) if f.startswith('test_') and f.endswith('.js') and os.path.isfile(os.path.join(unit_test_base_path, f))]
 	
 	for _test_file_name in test_files:
 
-		### set of variables for debug purposes
+		logger.info('Starting Test: %s'%(_test_file_name))
+		### set of variables for debugging purposes
 		analyze = True
-		build = False 
-		query = False 
+		build = True 
+		query = True 
 		
-		analysis_folder_name = _test_file_name.rstrip('.js')
+		analysis_folder_name = os.path.join('cs_csrf', _test_file_name.rstrip('.js'))
 		absolute_program_folder_name = os.path.join(constantsModule.UNIT_TEST_OUTPUT_PATH, analysis_folder_name)
 		if analyze:
-			[program_folder_name, absolute_input_program_folder_name] = neo4jDatabaseUtilityModule.API_build_property_graph_for_unit_test(_test_file_name)
+			[program_folder_name, absolute_input_program_folder_name] = neo4jDatabaseUtilityModule.API_build_property_graph_for_unit_test(analysis_folder_name+'.js')
 
 		if build:
 			nodes_file = os.path.join(absolute_program_folder_name, constantsModule.NODE_INPUT_FILE_NAME)
 			rels_file =  os.path.join(absolute_program_folder_name, constantsModule.RELS_INPUT_FILE_NAME)
 			if not (os.path.exists(nodes_file) and os.path.exists(rels_file)):
+				print(nodes_file)
+				print('here')
 				return -1
 			db_name = analysis_folder_name + '.db'
 			neo4jDatabaseUtilityModule.API_neo4j_prepare(absolute_program_folder_name)
@@ -2878,9 +2976,9 @@ def driver_program_unit_test(test_file_name=None):
 		if query:
 			try:
 				with utilityModule.Timeout(30*60): # 30 x 60 seconds = 30 min 
-					API_neo4j_query_graph_for_ajax_triggering_url('', absolute_program_folder_name, '', folder_name_of_url=analysis_folder_name, unit_test_mode=True)
+					API_neo4j_query_graph_for_cs_csrf('', absolute_program_folder_name, '', folder_name_of_url=analysis_folder_name, unit_test_mode=True)
 			except utilityModule.Timeout.Timeout:
-				print("Timedout NEO4J_ANALYSIS: <test_name=%s>"%(_test_file_name))
+				logger.warning("Timedout NEO4J_ANALYSIS: <test_name=%s>"%(_test_file_name))
 				time.sleep(3)
 				return -1
 
@@ -2936,9 +3034,9 @@ def driver_program_web_page(site_identifier, navigation_url):
 			try:
 				with utilityModule.Timeout(30*60): # 30 x 60 seconds = 30 min 
 					document_vars_pathname = os.path.join(absolute_program_folder_name, constantsModule.DOCUMENT_OUTPUT_VAR_NAMES_MACHINE)
-					API_neo4j_query_graph_for_ajax_triggering_url(navigation_url, absolute_program_folder_name, document_vars_pathname, folder_name_of_url=folder_name_of_url)
+					API_neo4j_query_graph_for_cs_csrf(navigation_url, absolute_program_folder_name, document_vars_pathname, folder_name_of_url=folder_name_of_url)
 			except utilityModule.Timeout.Timeout:
-				print("Timedout NEO4J_ANALYSIS: <site_id=%s - hash=%s>"%(site_id, folder_name_of_url))
+				logger.warning("Timedout NEO4J_ANALYSIS: <site_id=%s - hash=%s>"%(site_id, folder_name_of_url))
 				time.sleep(3)
 				return -1
 
@@ -2958,7 +3056,7 @@ def driver_program_web_site(site_identifier=None):
 
 		for navigation_url in navigation_urls:
 			if constantsModule.DEBUG_PRINTS:
-				print("[+] URL: %s"%(navigation_url))
+				logger.info("[+] URL: %s"%(navigation_url))
 			driver_program_web_page(site_identifier, navigation_url)
 
 
@@ -2970,22 +3068,12 @@ if __name__ == "__main__":
 
 	elif ACTIVE_MODE == ENUM_TEST_WEB_PAGE:
 		site_identifier = 1
+		# TODO: change the target URL for testing here
 		url = 'https://s2.demo.opensourcecms.com/sugarcrm/index.php?module=Home&action=index'
 		driver_program_web_page(site_identifier, url)
 
 	elif ACTIVE_MODE == ENUM_UNIT_TEST:
 		driver_program_unit_test()
 
-	####### DEBUG RUN: to be deleted everything below:
-	# siteId = '1'
-	# analysis_url = 'https://s2.demo.opensourcecms.com/sugarcrm/index.php?module=Home&action=index'
-
-	# # @DEBUG: mock values
-	# analyzer_absolute_path = os.path.join(os.path.join(constantsModule.OUTPUT_NODES_RELS_PATH, "sugarcrm"), 'sugarcrm_d768123f4fdd7f546350ed1aa084da95efcb837605ad65e3133f89be53b0438f')
-	# document_vars_pathname = os.path.join(analyzer_absolute_path, constantsModule.DOCUMENT_OUTPUT_VAR_NAMES_MACHINE)
-	# # API_neo4j_prepare(analyzer_absolute_path)
-	# # time.sleep(3)
-	# # query for candidate xhr triggering versions of the given url 
-	# ajax_triggering_urls = API_neo4j_query_graph_for_ajax_triggering_url(analysis_url, analyzer_absolute_path, document_vars_pathname)
 
 
