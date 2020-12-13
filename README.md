@@ -1,10 +1,9 @@
 # JAW
 
-
 [![Build Status](https://travis-ci.org/boennemann/badges.svg?branch=master)](https://travis-ci.org/boennemann/badges) [![Node](https://img.shields.io/badge/node%40latest-%3E%3D%206.0.0-brightgreen.svg)](https://img.shields.io/badge/node%40latest-%3E%3D%206.0.0-brightgreen.svg) [![Dependency Status](https://david-dm.org/boennemann/badges.svg)](https://david-dm.org/boennemann/badges) [![Platform](https://img.shields.io/badge/platform-windows%20%7C%20macos%20%7C%20linux-lightgrey.svg)](https://img.shields.io/badge/platform-windows%20%7C%20macos%20%7C%20linux-lightgrey.svg) [![Open Source Love](https://badges.frapsoft.com/os/v1/open-source.svg?v=103)](https://github.com/ellerbrock/open-source-badges/)
 
 
-An open-source, prototype implementation of property graphs for javascript based on the [esprima](https://github.com/jquery/esprima/tree/master/src) parser, and the [Mozilla SpiderMonkey API Syntax](https://developer.mozilla.org/en-US/docs/Mozilla/Projects/SpiderMonkey/Parser_API).
+An open-source, prototype implementation of property graphs for javascript based on the [esprima](https://github.com/jquery/esprima/tree/master/src) parser, and the [Mozilla SpiderMonkey Parser API](https://developer.mozilla.org/en-US/docs/Mozilla/Projects/SpiderMonkey/Parser_API).
 This project is licensed under `GNU AFFERO GENERAL PUBLIC LICENSE V3.0`. See [here](LICENSE) for more information.
 
 # Setup
@@ -157,7 +156,7 @@ $ python3 -m wpg_neo4j.wpg_import -h
 ```
 
 ### Step 2: Graph Traversals and Declarative Queries
-You can use Cypher Queries or the NeoModel ORM to query the WPGs. The NeoModel ORM Schema is defined in `wpg_neo4j/orm.py`.
+You can use Cypher Queries or the NeoModel ORM to query the property graph. The NeoModel ORM Schema is defined in `wpg_neo4j/orm.py`.
 You should place and run your queries in `wpg_analysis/<ANALYSIS_NAME>`. For further details, see the example query files provided: `example.orm.py` and `example.py` in the `wpg_analysis/example` folder.
 
 ```sh
@@ -195,25 +194,20 @@ For more information about the web crawler of JAW, see [here](docs/crawler.md).
 For more information, visit our wiki page [here](docs/jaw.md). Below is a table of contents for quick access.
 
 ### The Web Crawler of JAW
-- [Web Crawler](docs/crawler.md)
+- [Web Crawler](crawler.md)
 
-### Data Model of Web Property Graphs (WPG)
-- [WPG Nodes and Syntax Tree](docs/nodes.md)
-- [WPG Properties](docs/properties.md)
-- [WPG Edges](docs/edges.md)
+### Data Model of Hybrid Property Graphs (PG)
+- [Property Graph Nodes](pg-nodes.md)
+- [Grammer and Syntax Tree](syntax-tree.md)
+- [Property Graph Edges](pg-edges.md)
 
-### WPG Construction
+### Graph Construction
 
-- [Building a WPG](docs/wpg-building.md)
+- [Building a Property Graph](wpg-building.md)
 
-### WPG Querying
+### Graph Traversals
 
-- [Running Queries over WPGs](docs/wpg-querying.md)
-
-You can start creating and running your queries [here](wpg_analysis/wpg_analysis.md).
-
-
-
+- [Running Queries Over Property Graphs](wpg-querying.md)
 
 
 

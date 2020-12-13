@@ -1,4 +1,4 @@
-# Building a Web Property Graph
+# Building a Hybrid Property Graph
 
 
 ## Building with Command Line
@@ -45,16 +45,20 @@ import wpg_neo4j.query_utility as neo4jQueryUtilityModule
 import wpg_crawler.sites.sitesmap as sitesMapConfig 
 
 def build_wpg(site_id, url):
+	"""
+	@param {string} site_id: the site identifier to test as specified in the crawler sitemap config
+	@param {string} url: the url of the web page to test
+	"""
 	if site_id in sitesMapConfig.SITES_MAP:
-		## setup the path to the input program
+		# setup the path to the input program
 		siteConfig = sitesMapConfig.SITES_MAP[site_id] 
 		folder_name_of_url = siteConfig[0] + "_" + utilityModule._hash(url)
 		absolute_program_folder_name = os.path.join(os.path.join(constantsModule.OUTPUT_NODES_RELS_PATH, siteConfig[0]), folder_name_of_url)
 	
-		## build a web property graph
+		# build a property graph
 		[program_folder_name, absolute_program_folder_name] = neo4jDatabaseUtilityModule.API_build_property_graph(site_id, url)
 
-		## import the graph into neo4j
+		# import the graph into neo4j
 		nodes_file = os.path.join(absolute_program_folder_name, constantsModule.NODE_INPUT_FILE_NAME)
 		rels_file =  os.path.join(absolute_program_folder_name, constantsModule.RELS_INPUT_FILE_NAME)
 		db_name = folder_name_of_url + '.db'
@@ -73,11 +77,11 @@ For this, you can use the `wpg_neo4j` module, as shown below.
 ```python
 def query_active_wpg():
     try:
-	## set a timeout for the query
+	# set a timeout for the query
 	with utilityModule.Timeout(30*60): # 30 x 60 seconds = 30 min 
-	    ### query the graph
+	    # query the graph
 	    query_results = neo4jDatabaseUtilityModule.exec_fn_within_transaction(my_query_function)
-	    ### process the query results here
+	    # process the query results here
     except utilityModule.Timeout.Timeout:
 	print("Timedout NEO4J_ANALYSIS")
 

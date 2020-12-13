@@ -21,8 +21,9 @@
 
 	Usage:
 	------------
-	> example:
-	> element = DOMUtils.resolve_dom_query("document.getElementsByTagName('div')[0]")
+	example:
+		> from wpg_analysis.general.dom_points_to import DOMUtils
+		> element = DOMUtils.resolve_dom_query("document.getElementsByTagName('div')[0]")
 
 
 

@@ -28,16 +28,16 @@
 		https://github.com/neo4j-contrib/neomodel/tree/master/neomodel
 """
 
-import wpg_neo4j.orm as WPG
+import wpg_neo4j.orm as ORM
 import neomodel
 
 
 # get all nodes
-nodes = WPG.ASTNode.nodes.all()
+nodes = ORM.ASTNode.nodes.all()
 print(nodes)
 
 
 # get node with a specific id
-n10 = WPG.ASTNode.nodes.get_or_none(Id='10')
+n10 = ORM.ASTNode.nodes.get_or_none(Id='10')
 print(n10)
 

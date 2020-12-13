@@ -1,16 +1,16 @@
-# WPG Nodes and Syntax Tree
+# Syntax Tree
 
-JAW uses the Esprima syntax tree format, which is derived from the original version of [Mozilla Parser API](https://developer.mozilla.org/en-US/docs/Mozilla/Projects/SpiderMonkey/Parser_API), and then formalized and expanded as the [ESTree specification](https://github.com/estree/estree).
+JAW uses the Esprima syntax tree format, which is derived from the original version of the [Mozilla Parser API](https://developer.mozilla.org/en-US/docs/Mozilla/Projects/SpiderMonkey/Parser_API), and then formalized and expanded as the [ESTree specification](https://github.com/estree/estree).
 
 
-## WPG Nodes
+## Abstract Syntax Tree: PGNodes 
 
-Each `WPGNode` contains at its base the following parameters. Depending on the `type` of the node, certain properties will have a value or will be empty. These properties include: `raw`, `value`, `code`, `semanticType`, and `kind`. Each property is shown in the corresponding `WPGNode` type. For example, `kind` shows the type of a `VariableDeclarator` (i.e, `const`, `let` or `var`). The rest of the properties are detailed next.
+Each AST `PGNode` contains at its base the following parameters. Depending on the `type` of the node, certain properties will have a value or will be empty. These properties include: `raw`, `value`, `code`, `semanticType`, and `kind`. Each property is shown in the corresponding `PGNode` type. For example, `kind` shows the type of a `VariableDeclarator` (i.e, `const`, `let` or `var`). The rest of the properties are detailed next.
 
 
 
 ```js
-WPGNode Node {
+PGNode Node {
   id: int;
   type: string;
   range?: [number, number];
@@ -60,7 +60,7 @@ type Expression = ThisExpression | Identifier | Literal |
 ### Array Pattern
 
 ```js
-WPGNode ArrayPattern {
+PGNode ArrayPattern {
     type: 'ArrayPattern';
     elements: ArrayPatternElement[];
 }
@@ -71,7 +71,7 @@ with
 ```js
 type ArrayPatternElement = AssignmentPattern | Identifier | BindingPattern | RestElement | null;
 
-WPGNode RestElement {
+PGNode RestElement {
     type: 'RestElement';
     argument: Identifier | BindingPattern;
 }
@@ -80,7 +80,7 @@ WPGNode RestElement {
 ### Assignment Pattern
 
 ```js
-WPGNode AssignmentPattern {
+PGNode AssignmentPattern {
     type: 'AssignmentPattern';
     left: Identifier | BindingPattern;
     right: Expression;
@@ -90,7 +90,7 @@ WPGNode AssignmentPattern {
 ### Object Pattern
 
 ```js
-WPGNode ObjectPattern {
+PGNode ObjectPattern {
     type: 'ObjectPattern';
     properties: Property[];
 }
@@ -99,7 +99,7 @@ WPGNode ObjectPattern {
 ### This Expression
 
 ```js
-WPGNode ThisExpression {
+PGNode ThisExpression {
     type: 'ThisExpression';
 }
 ```
@@ -107,7 +107,7 @@ WPGNode ThisExpression {
 ### Identifier
 
 ```js
-WPGNode Identifier {
+PGNode Identifier {
     type: 'Identifier';
     code: string;
 }
@@ -116,7 +116,7 @@ WPGNode Identifier {
 ### Literal
 
 ```js
-WPGNode Literal {
+PGNode Literal {
     type: 'Literal';
     value: boolean | number | string | RegExp | null;
     raw: string;
@@ -129,7 +129,7 @@ The `regex` property only applies to regular expression literals.
 ### Array Expression
 
 ```js
-WPGNode ArrayExpression {
+PGNode ArrayExpression {
     type: 'ArrayExpression';
     elements: ArrayExpressionElement[];
 }
@@ -144,7 +144,7 @@ type ArrayExpressionElement = Expression | SpreadElement;
 ### Object Expression
 
 ```js
-WPGNode ObjectExpression {
+PGNode ObjectExpression {
     type: 'ObjectExpression';
     properties: Property[];
 }
@@ -153,7 +153,7 @@ WPGNode ObjectExpression {
 where
 
 ```js
-WPGNode Property {
+PGNode Property {
     type: 'Property';
     key: Expression;
     computed: boolean;
@@ -167,7 +167,7 @@ WPGNode Property {
 ### Function Expression
 
 ```js
-WPGNode FunctionExpression {
+PGNode FunctionExpression {
     type: 'FunctionExpression';
     id: Identifier | null;
     params: FunctionParameter[];
@@ -189,7 +189,7 @@ The value of `generator` is true for a generator expression.
 ### Arrow Function Expression
 
 ```js
-WPGNode ArrowFunctionExpression {
+PGNode ArrowFunctionExpression {
     type: 'ArrowFunctionExpression';
     id: Identifier | null;
     params: FunctionParameter[];
@@ -203,7 +203,7 @@ WPGNode ArrowFunctionExpression {
 ### Class Expression
 
 ```js
-WPGNode ClassExpression {
+PGNode ClassExpression {
     type: 'ClassExpression';
     id: Identifier | null;
     superClass: Identifier | null;
@@ -214,12 +214,12 @@ WPGNode ClassExpression {
 with
 
 ```js
-WPGNode ClassBody {
+PGNode ClassBody {
     type: 'ClassBody';
     body: MethodDefinition[];
 }
 
-WPGNode MethodDefinition {
+PGNode MethodDefinition {
     type: 'MethodDefinition';
     key: Expression | null;
     computed: boolean;
@@ -232,7 +232,7 @@ WPGNode MethodDefinition {
 ### Tagged Template Expression
 
 ```js
-WPGNode TaggedTemplateExpression {
+PGNode TaggedTemplateExpression {
     type: 'TaggedTemplateExpression';
     readonly tag: Expression;
     readonly quasi: TemplateLiteral;
@@ -242,13 +242,13 @@ WPGNode TaggedTemplateExpression {
 with
 
 ```js
-WPGNode TemplateElement {
+PGNode TemplateElement {
     type: 'TemplateElement';
     value: { cooked: string; raw: string };
     tail: boolean;
 }
 
-WPGNode TemplateLiteral {
+PGNode TemplateLiteral {
     type: 'TemplateLiteral';
     quasis: TemplateElement[];
     expressions: Expression[];
@@ -258,7 +258,7 @@ WPGNode TemplateLiteral {
 ### Member Expression
 
 ```js
-WPGNode MemberExpression {
+PGNode MemberExpression {
     type: 'MemberExpression';
     computed: boolean;
     object: Expression;
@@ -269,7 +269,7 @@ WPGNode MemberExpression {
 ### Super
 
 ```js
-WPGNode Super {
+PGNode Super {
     type: 'Super';
 }
 ```
@@ -277,7 +277,7 @@ WPGNode Super {
 ### MetaProperty
 
 ```js
-WPGNode MetaProperty {
+PGNode MetaProperty {
     type: 'MetaProperty';
     meta: Identifier;
     property: Identifier;
@@ -287,13 +287,13 @@ WPGNode MetaProperty {
 ### Call and New Expressions
 
 ```js
-WPGNode CallExpression {
+PGNode CallExpression {
     type: 'CallExpression';
     callee: Expression | Import;
     arguments: ArgumentListElement[];
 }
 
-WPGNode NewExpression {
+PGNode NewExpression {
     type: 'NewExpression';
     callee: Expression;
     arguments: ArgumentListElement[];
@@ -303,13 +303,13 @@ WPGNode NewExpression {
 with
 
 ```js
-WPGNode Import {
+PGNode Import {
     type: 'Import';
 }
 
 type ArgumentListElement = Expression | SpreadElement;
 
-WPGNode SpreadElement {
+PGNode SpreadElement {
     type: 'SpreadElement';
     argument: Expression;
 }
@@ -318,7 +318,7 @@ WPGNode SpreadElement {
 ### Update Expression
 
 ```js
-WPGNode UpdateExpression {
+PGNode UpdateExpression {
     type: 'UpdateExpression';
     operator: '++' | '--';
     argument: Expression;
@@ -329,7 +329,7 @@ WPGNode UpdateExpression {
 ### Await Expression
 
 ```js
-WPGNode AwaitExpression {
+PGNode AwaitExpression {
     type: 'AwaitExpression';
     argument: Expression;
 }
@@ -338,7 +338,7 @@ WPGNode AwaitExpression {
 ### Unary Expression
 
 ```js
-WPGNode UnaryExpression {
+PGNode UnaryExpression {
     type: 'UnaryExpression';
     operator: '+' | '-' | '~' | '!' | 'delete' | 'void' | 'typeof';
     argument: Expression;
@@ -349,7 +349,7 @@ WPGNode UnaryExpression {
 ### Binary Expression
 
 ```js
-WPGNode BinaryExpression {
+PGNode BinaryExpression {
     type: 'BinaryExpression';
     operator: 'instanceof' | 'in' | '+' | '-' | '*' | '/' | '%' | '**' |
         '|' | '^' | '&' | '==' | '!=' | '===' | '!==' |
@@ -362,7 +362,7 @@ WPGNode BinaryExpression {
 ### Logical Expression
 
 ```js
-WPGNode LogicalExpression {
+PGNode LogicalExpression {
     type: 'LogicalExpression';
     operator: '||' | '&&';
     left: Expression;
@@ -373,7 +373,7 @@ WPGNode LogicalExpression {
 ### Conditional Expression
 
 ```js
-WPGNode ConditionalExpression {
+PGNode ConditionalExpression {
     type: 'ConditionalExpression';
     test: Expression;
     consequent: Expression;
@@ -384,7 +384,7 @@ WPGNode ConditionalExpression {
 ### Yield Expression
 
 ```js
-WPGNode YieldExpression {
+PGNode YieldExpression {
     type: 'YieldExpression';
     argument: Expression | null;
     delegate: boolean;
@@ -394,7 +394,7 @@ WPGNode YieldExpression {
 ### Assignment Expression
 
 ```js
-WPGNode AssignmentExpression {
+PGNode AssignmentExpression {
     type: 'AssignmentExpression';
     operator: '=' | '*=' | '**=' | '/=' | '%=' | '+=' | '-=' |
         '<<=' | '>>=' | '>>>=' | '&=' | '^=' | '|=';
@@ -406,7 +406,7 @@ WPGNode AssignmentExpression {
 ### Sequence Expression
 
 ```js
-WPGNode SequenceExpression {
+PGNode SequenceExpression {
     type: 'SequenceExpression';
     expressions: Expression[];
 }
@@ -443,7 +443,7 @@ type StatementListItem = Declaration | Statement;
 A series of statements enclosed by a pair of curly braces form a block statement:
 
 ```js
-WPGNode BlockStatement {
+PGNode BlockStatement {
     type: 'BlockStatement';
     body: StatementListItem[];
 }
@@ -452,7 +452,7 @@ WPGNode BlockStatement {
 ### Break Statement
 
 ```js
-WPGNode BreakStatement {
+PGNode BreakStatement {
     type: 'BreakStatement';
     label: Identifier | null;
 }
@@ -461,7 +461,7 @@ WPGNode BreakStatement {
 ### Class Declaration
 
 ```js
-WPGNode ClassDeclaration {
+PGNode ClassDeclaration {
     type: 'ClassDeclaration';
     id: Identifier | null;
     superClass: Identifier | null;
@@ -472,7 +472,7 @@ WPGNode ClassDeclaration {
 ### Continue Statement
 
 ```js
-WPGNode ContinueStatement {
+PGNode ContinueStatement {
     type: 'ContinueStatement';
     label: Identifier | null;
 }
@@ -481,7 +481,7 @@ WPGNode ContinueStatement {
 ### Debugger Statement
 
 ```js
-WPGNode DebuggerStatement {
+PGNode DebuggerStatement {
     type: 'DebuggerStatement';
 }
 ```
@@ -489,7 +489,7 @@ WPGNode DebuggerStatement {
 ### Do-While Statement
 
 ```js
-WPGNode DoWhileStatement {
+PGNode DoWhileStatement {
     type: 'DoWhileStatement';
     body: Statement;
     test: Expression;
@@ -499,7 +499,7 @@ WPGNode DoWhileStatement {
 ### Empty Statement
 
 ```js
-WPGNode EmptyStatement {
+PGNode EmptyStatement {
     type: 'EmptyStatement';
 }
 ```
@@ -507,7 +507,7 @@ WPGNode EmptyStatement {
 ### Expression Statement
 
 ```js
-WPGNode ExpressionStatement {
+PGNode ExpressionStatement {
     type: 'ExpressionStatement';
     expression: Expression;
     directive?: string;
@@ -519,7 +519,7 @@ When the expression statement represents a directive (such as `"use strict"`), t
 ### For Statement
 
 ```js
-WPGNode ForStatement {
+PGNode ForStatement {
     type: 'ForStatement';
     init: Expression | VariableDeclaration | null;
     test: Expression | null;
@@ -531,7 +531,7 @@ WPGNode ForStatement {
 ### For-In Statement
 
 ```js
-WPGNode ForInStatement {
+PGNode ForInStatement {
     type: 'ForInStatement';
     left: Expression | VariableDeclaration;
     right: Expression;
@@ -543,7 +543,7 @@ WPGNode ForInStatement {
 ### For-Of Statement
 
 ```js
-WPGNode ForOfStatement {
+PGNode ForOfStatement {
     type: 'ForOfStatement';
     await: boolean;
     left: Expression | VariableDeclaration;
@@ -555,7 +555,7 @@ WPGNode ForOfStatement {
 ### Function Declaration
 
 ```js
-WPGNode FunctionDeclaration {
+PGNode FunctionDeclaration {
     type: 'FunctionDeclaration';
     id: Identifier | null;
     params: FunctionParameter[];
@@ -575,7 +575,7 @@ type FunctionParameter = AssignmentPattern | Identifier | BindingPattern;
 ### If Statement
 
 ```js
-WPGNode IfStatement {
+PGNode IfStatement {
     type: 'IfStatement';
     test: Expression;
     consequent: Statement;
@@ -588,7 +588,7 @@ WPGNode IfStatement {
 A statement prefixed by a label becomes a labelled statement:
 
 ```js
-WPGNode LabeledStatement {
+PGNode LabeledStatement {
     type: 'LabeledStatement';
     label: Identifier;
     body: Statement;
@@ -598,7 +598,7 @@ WPGNode LabeledStatement {
 ### Return Statement
 
 ```js
-WPGNode ReturnStatement {
+PGNode ReturnStatement {
     type: 'ReturnStatement';
     argument: Expression | null;
 }
@@ -607,7 +607,7 @@ WPGNode ReturnStatement {
 ### Switch Statement
 
 ```js
-WPGNode SwitchStatement {
+PGNode SwitchStatement {
     type: 'SwitchStatement';
     discriminant: Expression;
     cases: SwitchCase[];
@@ -617,7 +617,7 @@ WPGNode SwitchStatement {
 with
 
 ```js
-WPGNode SwitchCase {
+PGNode SwitchCase {
     type: 'SwitchCase';
     test: Expression | null;
     consequent: Statement[];
@@ -627,7 +627,7 @@ WPGNode SwitchCase {
 ### Throw Statement
 
 ```js
-WPGNode ThrowStatement {
+PGNode ThrowStatement {
     type: 'ThrowStatement';
     argument: Expression;
 }
@@ -636,7 +636,7 @@ WPGNode ThrowStatement {
 ### Try Statement
 
 ```js
-WPGNode TryStatement {
+PGNode TryStatement {
     type: 'TryStatement';
     block: BlockStatement;
     handler: CatchClause | null;
@@ -647,7 +647,7 @@ WPGNode TryStatement {
 with
 
 ```js
-WPGNode CatchClause {
+PGNode CatchClause {
     type: 'CatchClause';
     param: Identifier | BindingPattern;
     body: BlockStatement;
@@ -657,7 +657,7 @@ WPGNode CatchClause {
 ### Variable Declaration
 
 ```js
-WPGNode VariableDeclaration {
+PGNode VariableDeclaration {
     type: 'VariableDeclaration';
     declarations: VariableDeclarator[];
     kind: 'var' | 'const' | 'let';
@@ -667,7 +667,7 @@ WPGNode VariableDeclaration {
 with
 
 ```js
-WPGNode VariableDeclarator {
+PGNode VariableDeclarator {
     type: 'VariableDeclarator';
     id: Identifier | BindingPattern;
     init: Expression | null;
@@ -677,7 +677,7 @@ WPGNode VariableDeclarator {
 ### While Statement
 
 ```js
-WPGNode WhileStatement {
+PGNode WhileStatement {
     type: 'WhileStatement';
     test: Expression;
     body: Statement;
@@ -687,7 +687,7 @@ WPGNode WhileStatement {
 ### With Statement
 
 ```js
-WPGNode WithStatement {
+PGNode WithStatement {
     type: 'WithStatement';
     object: Expression;
     body: Statement;
@@ -699,13 +699,13 @@ WPGNode WithStatement {
 A program can be either a script or a module.
 
 ```js
-WPGNode Program {
+PGNode Program {
   type: 'Program';
   sourceType: 'script';
   body: StatementListItem[];
 }
 
-WPGNode Program {
+PGNode Program {
   type: 'Program';
   sourceType: 'module';
   body: ModuleItem[];
@@ -732,7 +732,7 @@ type ImportDeclaration {
 with
 
 ```js
-WPGNode ImportSpecifier {
+PGNode ImportSpecifier {
     type: 'ImportSpecifier' | 'ImportDefaultSpecifier' | 'ImportNamespaceSpecifier';
     local: Identifier;
     imported?: Identifier;
@@ -750,17 +750,17 @@ type ExportDeclaration = ExportAllDeclaration | ExportDefaultDeclaration | Expor
 Each possible export declaration is described as follows:
 
 ```js
-WPGNode ExportAllDeclaration {
+PGNode ExportAllDeclaration {
     type: 'ExportAllDeclaration';
     source: Literal;
 }
 
-WPGNode ExportDefaultDeclaration {
+PGNode ExportDefaultDeclaration {
     type: 'ExportDefaultDeclaration';
     declaration: Identifier | BindingPattern | ClassDeclaration | Expression | FunctionDeclaration;
 }
 
-WPGNode ExportNamedDeclaration {
+PGNode ExportNamedDeclaration {
     type: 'ExportNamedDeclaration';
     declaration: ClassDeclaration | FunctionDeclaration | VariableDeclaration;
     specifiers: ExportSpecifier[];
@@ -771,7 +771,7 @@ WPGNode ExportNamedDeclaration {
 with
 
 ```js
-WPGNode ExportSpecifier {
+PGNode ExportSpecifier {
     type: 'ExportSpecifier';
     exported: Identifier;
     local: Identifier;
