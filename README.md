@@ -210,3 +210,7 @@ For more information, visit our wiki page [here](docs/jaw.md). Below is a table 
 - [Running Queries Over Property Graphs](docs/hpg-querying.md)
 
 
+# Contribution and Code Of Conduct
+Pull requests are welcomed. Please see the contributor [code of conduct](CODE_OF_CONDUCT.md). 
+
+
