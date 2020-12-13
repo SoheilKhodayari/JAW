@@ -194,19 +194,19 @@ For more information about the web crawler of JAW, see [here](docs/crawler.md).
 For more information, visit our wiki page [here](docs/jaw.md). Below is a table of contents for quick access.
 
 ### The Web Crawler of JAW
-- [Web Crawler](crawler.md)
+- [Web Crawler](docs/crawler.md)
 
 ### Data Model of Hybrid Property Graphs (PG)
-- [Property Graph Nodes](hpg-nodes.md)
-- [Grammer and Syntax Tree](syntax-tree.md)
-- [Property Graph Edges](hpg-edges.md)
+- [Property Graph Nodes](docs/hpg-nodes.md)
+- [Grammer and Syntax Tree](docs/syntax-tree.md)
+- [Property Graph Edges](docs/hpg-edges.md)
 
 ### Graph Construction
 
-- [Building a Property Graph](hpg-building.md)
+- [Building a Property Graph](docs/hpg-building.md)
 
 ### Graph Traversals
 
-- [Running Queries Over Property Graphs](hpg-querying.md)
+- [Running Queries Over Property Graphs](docs/hpg-querying.md)
 
 
