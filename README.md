@@ -166,7 +166,8 @@ $ python3 -m hpg_analysis.example.exampleorm
 
 
 ## Graph Traversals and Analysis of Client-side CSRF
-This will build the property graph, creates a neo4j database and queries the database. 
+This will build the property graph, creates a neo4j database and queries the database. By default, this process
+is done for the unit tests specified under `hpg_construction/unit_tests/cs_csrf`. 
 
 **Note**: Please change or set the appropriate run mode in `main.py` for debugging purposes!
 ```sh
