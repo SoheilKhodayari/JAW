@@ -1,82 +1,20 @@
-// var oldAddEventListener = EventTarget.prototype.addEventListener;
-// EventTarget.prototype.addEventListener = function(eventName, eventHandler, capture=undefined)
-// {
-// 	console.log('here');
-//   if(capture){
-// 	   oldAddEventListener.call(this, eventName, function(event) {
-// 	    console.log('captured click before passing to event handler')
-// 	    eventHandler(event);
-// 	  }, capture); 	
-//   }else{
-//   	  oldAddEventListener.call(this, eventName, function(event) {
-// 	    console.log('captured click before passing to event handler')
-// 	    eventHandler(event);
-// 	  }, false); 	
-//   }
-
-// };
-
-
-  // chrome.runtime.onMessage.addListener(function(message, callback) {
-  // 	console.log(message.data);
-  // });
-
-
-
-  /*
-
-function getAllEventTypes(){
-
-  if(location.href !='https://developer.mozilla.org/en-US/docs/Web/Events') return;
-
-  var types = {};
-  $('.standard-table:eq(0) tr').find('td:eq(1)').map(function(){
-    var type = $.trim(this.innerText) || 'OtherEvent';
-    types[type] = types[type] || [];     
-    var event = $.trim(this.previousElementSibling.innerText);
-    if(event) types[type].push(event);
-  });
-  for(var t in types) types[t] = types[t].join(' ');
-  return "var DOMEvents = "+JSON.stringify(types, null, 4).replace(/"(\w+)\":/ig, '$1:');
-}
-
-*/
-
-
 /*
-* Method 1: overwriting the 
-* addEventListener, and its callback
-* can also override createEvent and dispatch in similar fashion
-*/
-/*
-var myEventManager = (function() {
-    var old = EventTarget.prototype.addEventListener,
-        listeners = [],
-        events = [];
-
-    EventTarget.prototype.addEventListener = function(type, listener) {
-
-        function new_listener(listener) {
-            return function(e) {
-                events.push(e);                  // remember event
-                return listener.call(this, e);   // call original listener
-            };
-        }
-
-        listeners.push([type, listener]);        // remember call
-        return old.call(this, type, new_listener(listener));  // call original
-    };
-
-    return {
-        get_events: function() { return events; },
-        get_listeners: function() {return listeners; }
-    };
-
-}());
+  Copyright (C) 2020  Soheil Khodayari, CISPA
+  This program is free software: you can redistribute it and/or modify
+  it under the terms of the GNU Affero General Public License as published by
+  the Free Software Foundation, either version 3 of the License, or
+  (at your option) any later version.
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU Affero General Public License for more details.
+  You should have received a copy of the GNU Affero General Public License
+  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 
-// Method 2
+
+// Method 1
 var DOMEvents = {
 UIEvent: "abort DOMActivate error load resize scroll select unload",
 ProgressEvent: "abort error load loadend loadstart progress progress timeout",
@@ -126,19 +64,77 @@ for(DOMEvent in DOMEvents){
       RecentlyLoggedDOMEventTypes[DOMEventCategory] = true;
       setTimeout(function(){ RecentlyLoggedDOMEventTypes[DOMEventCategory] = false }, 5000); /* minimum time before same event type can trigger agains */
       var isActive = e.target==document.activeElement;
-	      if(isActive) {
-	        console.info(DOMEventCategory, 
-	          ' target=', e.target, 
-	          ' active=', document.activeElement, 
-	          ' isActive=', true );
-	      } else {
-	        console.log(DOMEventCategory, 
-	          ' target=', e.target,
-	          ' active=', document.activeElement, 
-	          ' isActive=', false );
-	      }  	
+        if(isActive) {
+          console.info(DOMEventCategory, 
+            ' target=', e.target, 
+            ' active=', document.activeElement, 
+            ' isActive=', true );
+        } else {
+          console.log(DOMEventCategory, 
+            ' target=', e.target,
+            ' active=', document.activeElement, 
+            ' isActive=', false );
+        }   
       
     }, true);
   });
-
 }
+
+
+/*
+* Method 2: overwriting the 
+* addEventListener, and its callback
+* can also override createEvent and dispatch in similar fashion
+*/
+/*
+var oldAddEventListener = EventTarget.prototype.addEventListener;
+EventTarget.prototype.addEventListener = function(eventName, eventHandler, capture=undefined)
+{
+	console.log('here');
+  if(capture){
+	   oldAddEventListener.call(this, eventName, function(event) {
+	    console.log('captured click before passing to event handler')
+	    eventHandler(event);
+	  }, capture); 	
+  }else{
+  	  oldAddEventListener.call(this, eventName, function(event) {
+	    console.log('captured click before passing to event handler')
+	    eventHandler(event);
+	  }, false); 	
+  }
+
+};
+
+  chrome.runtime.onMessage.addListener(function(message, callback) {
+  	console.log(message.data);
+  });
+*/
+
+/*
+var myEventManager = (function() {
+    var old = EventTarget.prototype.addEventListener,
+        listeners = [],
+        events = [];
+
+    EventTarget.prototype.addEventListener = function(type, listener) {
+
+        function new_listener(listener) {
+            return function(e) {
+                events.push(e);                  // remember event
+                return listener.call(this, e);   // call original listener
+            };
+        }
+
+        listeners.push([type, listener]);        // remember call
+        return old.call(this, type, new_listener(listener));  // call original
+    };
+
+    return {
+        get_events: function() { return events; },
+        get_listeners: function() {return listeners; }
+    };
+
+}());
+*/
+
+

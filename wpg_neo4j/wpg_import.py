@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 """
 
 	Copyright (C) 2020  Soheil Khodayari, CISPA
@@ -27,6 +29,8 @@
 	Help Command:
 	---------------
 	python -m wpg_neo4j.wpg_import -h
+
+
 """
 
 

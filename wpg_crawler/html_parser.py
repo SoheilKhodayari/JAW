@@ -1,8 +1,23 @@
 
-
 """
+	Copyright (C) 2020  Soheil Khodayari, CISPA
+	This program is free software: you can redistribute it and/or modify
+	it under the terms of the GNU Affero General Public License as published by
+	the Free Software Foundation, either version 3 of the License, or
+	(at your option) any later version.
+	This program is distributed in the hope that it will be useful,
+	but WITHOUT ANY WARRANTY; without even the implied warranty of
+	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+	GNU Affero General Public License for more details.
+	You should have received a copy of the GNU Affero General Public License
+	along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+
+	Description:
+	-------------
 	HTML Parser Module
 	:process HTML of a web page
+	
 """
 
 
@@ -89,18 +104,6 @@ def get_document_properties_from_html(soup_content):
 	out = get_absolute_variable_names(form_dictionary)
 
 	return out
-
-
-def unit_test_file():
-	
-	import os
-	base = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
-	# path to the test html file
-	path = base + '/analyzer/test-inputs/sugarcrm/sugarcrm_94f2c37f284b336769d776a4457694829f9aa203093a34d2d0f1be69bd1f23af.html'
-	with open(path, 'r') as fp:
-		soup_content = BeautifulSoup(fp.read().strip(),'html.parser')
-		out = get_document_properties_from_html(soup_content)
-		print(out)
 
 
 

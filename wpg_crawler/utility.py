@@ -1,13 +1,23 @@
 
 """
-	Description: 
-	--------------
-		Crawler Utility Module:
-		this module collects data (HTML pages, form elements, JS programs, libraries, etc) from a given URL
+	Copyright (C) 2020  Soheil Khodayari, CISPA
+	This program is free software: you can redistribute it and/or modify
+	it under the terms of the GNU Affero General Public License as published by
+	the Free Software Foundation, either version 3 of the License, or
+	(at your option) any later version.
+	This program is distributed in the hope that it will be useful,
+	but WITHOUT ANY WARRANTY; without even the implied warranty of
+	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+	GNU Affero General Public License for more details.
+	You should have received a copy of the GNU Affero General Public License
+	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-	Author: 
-	--------------
-		Soheil K.
+
+	Description:
+	-------------
+	Crawler Utility Module:
+	this module collects data (HTML pages, form elements, JS programs, libraries, etc) from a given URL
+	
 """
 
 
@@ -17,7 +27,6 @@ import html_parser as HTMLParserModule
 import config as CrawlerConfig
 import sites.sitesmap as sitesmapModule
 import requester as RequesterModule
-
 import jsbeautifier
 import os
 import re
@@ -46,6 +55,9 @@ def get_current_timestamp():
 
 
 def get_output_header_sep():
+	"""
+	output formatting
+	"""
 
 	sep = '====================================================\n'
 	return sep
@@ -53,6 +65,10 @@ def get_output_header_sep():
 
 def get_output_subheader_sep():
 
+	"""
+	output formatting
+	"""
+	
 	subsep = '----------------------------------------------------\n'
 	return subsep
 

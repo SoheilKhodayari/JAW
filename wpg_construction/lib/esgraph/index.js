@@ -1,10 +1,23 @@
+
 /*
- * From the repository: esgraph (https://github.com/Swatinem/esgraph)
- * @license LGPLv3 (http://www.gnu.org/licenses/lgpl-3.0-standalone.html)
- * @author Swatinem (arpad.borsos@googlemail.com)
- * @lastmodifiedBy Soheil K.
- * @lastmodifiedDate 10.2019
- */
+	Copyright (C) 2020  Soheil Khodayari, CISPA
+	This program is free software: you can redistribute it and/or modify
+	it under the terms of the GNU Affero General Public License as published by
+	the Free Software Foundation, either version 3 of the License, or
+	(at your option) any later version.
+	This program is distributed in the hope that it will be useful,
+	but WITHOUT ANY WARRANTY; without even the implied warranty of
+	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+	GNU Affero General Public License for more details.
+	You should have received a copy of the GNU Affero General Public License
+	along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+
+	Description:
+	------------
+	Control Flow Graph
+*/
+
 var walker = require('walkes'),
 	factoryFlowNode = require('./flownodefactory'),
 	FlowNode = require('./flownode');
@@ -14,15 +27,6 @@ module.exports.dot = require('./dot');
 module.exports.FlowNode = FlowNode;
 module.exports.factoryFlowNode = factoryFlowNode;
 
-// FIXME: switch/case with default before other cases?
-// FIXME: catch creates a new scope, so should somehow be handled differently
-
-// TODO: try/finally: finally follows try, but does not return to normal flow?
-
-// TODO: labeled break/continue
-// TODO: WithStatement
-
-// TODO: avoid adding and deleting properties on ast nodes
 
 
 /*

@@ -1,7 +1,6 @@
 /*
  * From the repository: esgraph (https://github.com/Swatinem/esgraph)
  * @license LGPLv3 (http://www.gnu.org/licenses/lgpl-3.0-standalone.html)
- * @author Swatinem (arpad.borsos@googlemail.com)
  */
 var FlowNode = require('./flownode');
 module.exports = dot;
