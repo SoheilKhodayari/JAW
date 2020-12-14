@@ -52,12 +52,26 @@ Follow the tutorial [here](https://www.digitalocean.com/community/tutorials/how-
 **2- Install Neo4j.**
 
 This prototype have been tested with `Neo4j 3.5.9`, community edition.
+You can download the `3.5.x` version from the [neo4j download center](https://neo4j.com/download-center/#community).
+You can also install it, among others, via `apt-get` or `homebrew`, as shown below.
 
+2.1- Installing for Linux
 ```sh
+$ cd installation
 $ chmod +x neo4j_installation.sh
 $ ./neo4j_installation.sh
 ```
-For more information, see [](https://www.alibabacloud.com/blog/installing-neo4j-on-ubuntu-16-04_594570).
+For more information, see [here](https://www.alibabacloud.com/blog/installing-neo4j-on-ubuntu-16-04_594570).
+
+2.2- Installing For MacOS
+```sh
+$ cd installation
+$ brew install ./neo4j.rb
+```
+
+**Note:** the graph import commands and database activation may slightly differ across neo4j versions. 
+If you want to use another version of neo4j, you need to change the graph import command (i.e., `NEO4J_IMPORT_COMMAND`), as well as the database activation logic (i.e., `dbms.active_database`) in `API_neo4j_prepare` function
+of `hpg_neo4j/db_utility` package.
 
 
 **3- Set the intitial Neo4j Password.**
