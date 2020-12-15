@@ -369,10 +369,9 @@ However, the analysis script has three different run modes:
 The active run mode can be adjusted by changing the hardcoded value of the `ACTIVE_MODE` parameter at the top of the script.
 
 ``` python
-ENUM_TEST_WEB_PAGE = 0 		 # case (i)
-ENUM_TEST_WEB_SITE = 1		 # case (ii)
-ENUM_UNIT_TEST = 2			 # case (iii)
-
+ENUM_TEST_WEB_PAGE = 0 	# case (i)
+ENUM_TEST_WEB_SITE = 1	# case (ii)
+ENUM_UNIT_TEST = 2	# case (iii)
 ACTIVE_MODE = ENUM_UNIT_TEST # change this value to change the active run mode of the script
 
 ```
