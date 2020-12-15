@@ -87,39 +87,47 @@ def get_site_urls(site_id):
 def main_data_collection():
 
 	args = sys.argv
+
 	if len(args) > 1:
-		site_id = args[1]
-		# 1. get saved URLs or find URLs if needed
-		urls = get_site_urls(site_id)
+		low = int(args[1])
+		high = low
+		if len(args) > 2:
+			high = int(args[2])
 
-		# 2. collect js and data of the site, for each URL found
-		if CrawlerConfig.PLATFORM == "linux":
-			display = Display(visible=0, size=(800, 600))
-			display.start()
+		for i in range(low, high+1):
 
-		driver= seleniumModule.get_new_browser(xhr_logger=True, event_logger=True, headless_mode=False)
+			site_id = args[1]
+			# 1. get saved URLs or find URLs if needed
+			urls = get_site_urls(site_id)
 
-		## load predefined states into the browser (e.g., login)
-		driver = CrawlerModule.get_logged_driver(driver, site_id)
+			# 2. collect js and data of the site, for each URL found
+			if CrawlerConfig.PLATFORM == "linux":
+				display = Display(visible=0, size=(800, 600))
+				display.start()
 
-		for navigation_url in urls:
-			# crawlerUtilityModule.collect_site_data(site_id, navigation_url, driver)
+			driver= seleniumModule.get_new_browser(xhr_logger=True, event_logger=True, headless_mode=False)
 
-			d = RequesterModule.requester(navigation_url)
-			## check if the site base address is reachable 
-			if RequesterModule.is_http_response_valid(d):
-				try:
-					crawlerUtilityModule.collect_site_data(site_id, navigation_url, driver)
-				except BaseException as error:
-					print('chrome runinto error for site: %s'%site_id)
-					driver= seleniumModule.get_new_browser(xhr_logger=True, event_logger=True, headless_mode=False)
+			## load predefined states into the browser (e.g., login)
+			driver = CrawlerModule.get_logged_driver(driver, site_id)
+
+			for navigation_url in urls:
+				# crawlerUtilityModule.collect_site_data(site_id, navigation_url, driver)
+
+				d = RequesterModule.requester(navigation_url)
+				## check if the site base address is reachable 
+				if RequesterModule.is_http_response_valid(d):
+					try:
+						crawlerUtilityModule.collect_site_data(site_id, navigation_url, driver)
+					except BaseException as error:
+						print('chrome runinto error for site: %s'%site_id)
+						driver= seleniumModule.get_new_browser(xhr_logger=True, event_logger=True, headless_mode=False)
+						continue
+				else:
 					continue
-			else:
-				continue
 
 
-		if CrawlerConfig.PLATFORM == "linux":
-			display.stop()
+			if CrawlerConfig.PLATFORM == "linux":
+				display.stop()
 
 if __name__ == "__main__":
 	main_data_collection()

@@ -2,9 +2,64 @@
 
 [![Build Status](https://travis-ci.org/boennemann/badges.svg?branch=master)](https://travis-ci.org/boennemann/badges) [![Node](https://img.shields.io/badge/node%40latest-%3E%3D%206.0.0-brightgreen.svg)](https://img.shields.io/badge/node%40latest-%3E%3D%206.0.0-brightgreen.svg) [![Platform](https://img.shields.io/badge/platform-windows%20%7C%20macos%20%7C%20linux-lightgrey.svg)](https://img.shields.io/badge/platform-windows%20%7C%20macos%20%7C%20linux-lightgrey.svg) [![Open Source Love](https://badges.frapsoft.com/os/v1/open-source.svg?v=103)](https://github.com/ellerbrock/open-source-badges/)
 
-
-An open-source, prototype implementation of property graphs for javascript based on the [esprima](https://github.com/jquery/esprima/tree/master/src) parser, and the [Mozilla SpiderMonkey Parser API](https://developer.mozilla.org/en-US/docs/Mozilla/Projects/SpiderMonkey/Parser_API).
+An open-source, prototype implementation of property graphs for JavaScript based on the [esprima](https://github.com/jquery/esprima/tree/master/src) parser, and the [Mozilla SpiderMonkey Parser API](https://developer.mozilla.org/en-US/docs/Mozilla/Projects/SpiderMonkey/Parser_API). JAW can be used for analyzing the client-side of web applications and JavaScript-based programs.
 This project is licensed under `GNU AFFERO GENERAL PUBLIC LICENSE V3.0`. See [here](LICENSE) for more information.
+
+
+# Content
+
+1. [Overview of the JAW Architecture](#overview-of-the-jaw-architecture)
+	1.1 [Inputs and Data Collection](#inputs-and-data-collection)
+	1.2 [HPG Construction](#hpg-construction)
+	1.3 [Analysis and Outputs](#analysis-and-outputs)
+2. [Setup](#setup)
+	2.1. [Prerequisites](#prerequisites)
+	2.2. [Installation](#installation)
+3. [Quick Start](#quickstart)
+	3.1. [Data Collection](#data-collection)
+	&nbsp;&nbsp;&nbsp;&nbsp;- [Inputs for Web Crawling](#inputs-for-web-crawling)
+	&nbsp;&nbsp;&nbsp;&nbsp;- [How to Start the Web Crawler?](#how-to-start-the-web-crawler?)
+	3.2. [Graph Construction](#graph-construction)
+	&nbsp;&nbsp;&nbsp;&nbsp;- [HPG construction for a JavaScript Program](#hpg-construction-for-a-javascript-program)
+	&nbsp;&nbsp;&nbsp;&nbsp;- [HPG construction for the Crawler Output](#hpg-construction-for-the-crawler-output)
+	3.3. [Analysis](#analysis)
+	&nbsp;&nbsp;&nbsp;&nbsp;- [Detecting Client-side CSRF](#detecting-client-side-csrf)
+	&nbsp;&nbsp;&nbsp;&nbsp;- [Running Custom Graph traversals](#running-custom-graph-traversals)
+4. [Detailed Documentation](#detailed-documentation)
+5. [Contribution and Code of Conduct](#contribution-and-code-of-conduct)
+
+# Overview of the JAW Architecture
+
+![Architecure](docs/assets/architecture.png)
+
+## Inputs and Data Collection
+
+JAW can be used in two distinct ways, as detailed below.
+
+**Option 1:** First, one can model and analyze an arbitrary JavaScript program using JAW. In this case, the only input to the tool is the `path` of the target JavaScript program in the file system. 
+
+
+**Option 2:** JAW can be used to test a web application given a single `seed URL` of the application. 
+JAW has a stand-alone, JavaScript-enabled web crawler (based on `chromium`) that can collect the application web resources, and use them for analysis.
+Optionally, a so-called `test case` script or a `state` script can be provided together with the seed URL of the application in order for the crawler to reach a certain, pre-defined state (e.g., logged in state) before the crawling session starts. 
+For more information about how to create such `state` script, see [here](docs/crawler.md).
+The crawler outputs the `JavaScript` code as well as the `State Values` for each web page found.
+
+- `JavaScript Code`: for each web page found, JAW creates a single JavaScript file preseving the execution order of the program.
+- `State Values`: state values are a collection of concrete values observed during the execution of a web page. These include the snapshot of the initial and rendered HTML page, fired events, HTTP requests and responses, and cookies. Optionally, the crawler can collect any JavaScript property accessible within the web page. 
+
+## HPG Construction
+JavaScript code and state values collected are next used to
+build a HPG. The built graph is imported into a [Neo4j](https://neo4j.com/)
+database.
+Alternatively, the graph is built for the (arbitrary) JavaScript program given as the input by the tester
+
+**Optional Input:** the HPG construction module can optionally be provided with a mapping of semantic types to arbitrary, tester-defined JavaScript language tokens. For example, a semantic type `REQ` can be assigned to all low-level, JavaScript functions that send an HTTP request (e.g., the Fetch API, or XMLHttpRequest). For more information, see [here](docs/hpg-building.md).
+
+## Analysis and Outputs
+Finally, the constructed `Neo4j` graph database can be queried for analysis.
+JAW provides a series of utility traversals for data flow analysis, control flow and reachability analysis, or pattern matching, which can be leveraged for writing custom traversals for security analyses. Also, JAW includes traversals to detect client-side CSRF vulnerabilities.
+
 
 # Setup
 
@@ -127,26 +182,79 @@ Environment configuration on OS X:
 $ export NEO4J_HOME="/usr/local/Cellar/neo4j/3.5.9/libexec"
 ```
 
+# Quick Start
 
-# Using JAW in 2 Steps
-You can create hpgs, import them into a neo4j database, and query the database as follows:
+## Data Collection
+This module collects the data (i.e., JavaScript code and state values of web pages) needed for testing. If you want to test a specific JavaScipt file that you already have on your file system, you can **skip** this section. 
 
-## Step 1: Graph Construction
-In order to create a property graph and import it to an active neo4j database, you can use the following command:
+### Inputs for Web Crawling
+JAW can crawl and collect the web resources for a given set of web application.
+The inputs to the tool are thus a list of sites' `seed URLs`, and an optional `test case` or `state` script for each site under test.
+
+**Action 1:** Specify the set of sites for testing by adding new entries in the `SITES_MAP` dictionary in `hpg_crawler/sites/sitemap.py`.
+As shown below, you should assign each site an **integer** id, a name, and a seed URL.
+
+
+```json
+{
+	'1': ('example-name-1', 'https://example1.com', ),
+	'2': ('example-name-2', 'https://example2.com', ),
+}
+
+```
+
+**Action 2 (Optional):** For each site specified, you can input a custom `test case` or `state` script that gives instructions to the crawler to reach a certain state of the application (e.g., logged in) before the crawling session starts.
+
+- To create a new `state` script for a site, copy the `sites/template` folder and rename it to `sites/<site-id>` where `<site-id>` is the id you set in `sitemap.py` for that site, e.g., `sites/1`.
+- Add your `selenium-based` state functions in `sites/<SITE_ID>/scripts/Auth.py` for the target site. See the example `Auth.py` file for more information.
+
+### How to Start the Web Crawler?
+In order to start the crawler for a given `<site-id>`, run:
+```sh
+$ cd hpg_crawler
+$ python3 driver.py <site-id>
+``` 
+Alternatively, you can run the crawler for a list of sites, i.e., from an integer `<start-site-id>` to the integer `<end-site-id>` (inclusive), according to the integer id values specified in `hpg_crawler/sites/sitemap.py`. Thus, you can run:
+```sh
+$ cd hpg_crawler
+$ python3 driver.py <start-site-id> <end-site-id>
+``` 
+For example, `python3 driver.py 1 5` crawls websites with id one to five from `hpg_crawler/sites/sitemap.py`.
+For more information about the web crawler of JAW, see [here](docs/crawler.md).
+
+
+## Graph Construction
+
+In order to create a hybrid property graph for the output of the crawler or a given JavaScript program, you can use the following general command:
 
 ```sh
 $ python3 -m hpg_construction.api <path> --js=<program.js> --import=<bool> --hybrid=<bool> --reqs=<requests.out> --evts=<events.out> --cookies=<cookies.pkl> --html=<html_snapshot.html>
 ```
 
-For help regarding the meaning of each option in the above command, please use the help CLI provided with the graph construction API:
+**Specification of Parameters:**
+
+- Parameter `<path>`: base path to the folder containing the program files for analysis (must be under the `hpg_construction/outputs` folder).
+- Optional Parameter `--js=<program.js>`: name of the JavaScript program for analysis (default: `js_program.js`).
+- Optional Parameter `--import=<bool>`: whether the constructed property graph should be imported to an active neo4j database (default: true).
+- Optional Parameter `--hybrid=bool`: whether the hybrid mode is enabled (default: `false`). This implies that the tester wants to enrich the property graph by inputing files for any of the HTML snapshot, fired events, HTTP requests and cookies, as collected by the JAW crawler.
+- Optional Parameter `--reqs=<requests.out>`: for hybrid mode only, name of the file containing the sequence of obsevered network requests, pass the string `false` to exclude (default: `request_logs_short.out`).
+- Optional Parameter `--evts=<events.out>`: for hybrid mode only, name of the file containing the sequence of fired events, pass the string `false` to exclude (default: `events.out`).
+- Optional Parameter `--cookies=<cookies.pkl>`: for hybrid mode only, name of the file containing the cookies, pass the string `false` to exclude (default: `cookies.pkl`).
+- Optional Parameter `--html=<html_snapshot.html>`: for hybrid mode only, name of the file containing the DOM tree snapshot, pass the string `false` to exclude (default: `html_rendered.html`).
+
+
+For more information, you can use the help CLI provided with the graph construction API:
 ```sh
 $ python3 -m hpg_construction.api -h
 ```
 
-Alternatively, you can use the following two steps. This is especially suited for debugging purposes.
+**Note:** To add and assign custom semantic types to JavaScript language tokens (suitable for the specific type of analysis you are doing), you can input them in `hpg_construction/lib/jaw/semantictypes.js`.
+
+
+**Note:** Alternatively, one can use the following two steps for graph construction, which is more suited for debugging purposes.
 
 ### Building the Graph CSV Files
-The javascript analyzer modules creates the `nodes.csv` and `rels.csv` files for analysis (the web property graph).
+The javascript analyzer modules creates the `nodes.csv` and `rels.csv` files for analysis (the property graph).
 
 In the project root directory, try:
 ```sh
@@ -163,45 +271,115 @@ In the project root directory, run:
 ```sh
 $ python3 -m hpg_neo4j.hpg_import <path-to-the-folder-of-the-csv-files> --nodes=nodes.csv --edges=rels.csv
 ```
-Help CLI:
+Run the help CLI command for more information:
 ```sh
 $ python3 -m hpg_neo4j.hpg_import -h
 
 ```
 
-### Step 2: Graph Traversals and Declarative Queries
-You can use Cypher Queries or the NeoModel ORM to query the property graph. The NeoModel ORM Schema is defined in `hpg_neo4j/orm.py`.
-You should place and run your queries in `hpg_analysis/<ANALYSIS_NAME>`. For further details, see the example query files provided: `example.orm.py` and `example.py` in the `hpg_analysis/example` folder.
+### HPG construction for a JavaScript Program
+To construct a HPG for an arbitrary JavaScript file, simply run:
+```sh
+$ python3 -m hpg_construction.api <path> --js=<program.js>
+```
+In the above command, the parameter `<path>` is the base path to the folder containing the program files for analysis (must be under the `hpg_construction/outputs` folder), and the 
+parameter `--js=<program.js>` specifies the name of the JavaScript program for analysis.
+
+
+### HPG construction for the Crawler Output
+To construct a HPG for a given web page output by the crawler, simply run:
+```sh
+$ python3 -m hpg_construction.api <path>
+```
+In the above command, the `<path>` parameter is the location of the folder containing the target web page for analysis (output by the crawler), e.g., `<BASE_PATH>/hpg_construction/outputs/example-app/example-page`.
+
+
+
+
+## Analysis
+
+The constructed HPG can then be queried using [Cypher]() or the [NeoModel ORM]().
+
+
+### Detecting Client-side CSRF
+
+#### How to Run the Analysis Script?
+In the root directory, run
+```sh
+$ python3 -m hpg_analysis.cs_csrf.main
+```
+This will build the property graph, creates a neo4j database and queries the database for client-side CSRF vulnerabilities. 
+
+**Note:** By default, the testing process
+is done for the unit tests specified under `hpg_construction/unit_tests/cs_csrf`. However, the analysis script has three different run modes:
+(i) Detecting vulnerabilities in a specific web page
+(i) Detecting vulnerabilities in a specific web site, i.e., all web pages of that site
+(iii) Detecting vulnerabilities in unit test files
+
+The active run mode can be adjusted by changing the hardcoded value of the `ACTIVE_MODE` parameter at the top of the script.
+
+``` python
+ENUM_TEST_WEB_PAGE = 0 		 # case (i)
+ENUM_TEST_WEB_SITE = 1		 # case (ii)
+ENUM_UNIT_TEST = 2			 # case (iii)
+
+ACTIVE_MODE = ENUM_UNIT_TEST # change this value to change the active run mode of the script
+
+```
+
+For case (i) and (ii), to specify the exact site or URL to test, modify the hardcoded `site_identifer` and `url` variables at the end of the file.
+
+#### How to Interpret the Output of the Analysis?
+The outputs will be stored in a file called `template.out` in the same folder as that of the input. For each HTTP request detected, JAW outputs an entry marking the set of semantic types (a.k.a, semantic tags or labels) associated with the elements constructing the request (i.e., the program slices). For example, an HTTP request marked with the semantic type `['WIN.LOC']` is forgeable through the `window.location` injection point. However, a request marked with `['NON-REACH']` is not forgeable.
+
+ An example output entry is shown below:
+ 
+```
+[*] Tags: ['WIN.LOC']
+[*] NodeId: {'TopExpression': '86', 'CallExpression': '87', 'Argument': '94'}
+[*] Location: 29
+[*] Function: ajax
+[*] Template: ajaxloc + "/bearer1234/"
+[*] Top Expression: $.ajax({ xhrFields: { withCredentials: "true" }, url: ajaxloc + "/bearer1234/" })
+
+1:['WIN.LOC'] variable=ajaxloc
+	0 (loc:6)- var ajaxloc = window.location.href
+
+```
+
+This entry shows that on line 29, there is a `$.ajax` call expression, and this call expression triggers an `ajax` request with the url template value of `ajaxloc + "/bearer1234/`, where the parameter `ajaxloc` is a program slice reading its value at line 6 from `window.location.href`, thus forgeable through `['WIN.LOC']`.
+
+
+### Running Custom Graph traversals
+You should place and run your queries in `hpg_analysis/<ANALYSIS_NAME>`.
+
+#### Option 1: Using the NeoModel ORM
+You can use the (NeoModel ORM)[https://neomodel.readthedocs.io/en/latest/properties.html] to query the HPG. To write a query:
+
+(1) Check out the [HPG data model](docs/hpg-nodes.md) and [syntax tree](docs/syntax-tree.md).
+(2) Check out the [ORM model](https://github.com/SoheilKhodayari/JAW/blob/master/hpg_neo4j/orm.py) for HPGs 
+(3) See the example query file provided; `exampleorm.py` in the `hpg_analysis/example` folder.
 
 ```sh
-$ python3 -m hpg_analysis.example.example
 $ python3 -m hpg_analysis.example.exampleorm  
 ```
 
 
-## Graph Traversals and Analysis of Client-side CSRF
-This will build the property graph, creates a neo4j database and queries the database. By default, this process
-is done for the unit tests specified under `hpg_construction/unit_tests/cs_csrf`. 
+For more information, please see [here](docs/hpg-querying.md).
 
-**Note**: Please change or set the appropriate run mode in `main.py` for debugging purposes!
+#### Option 2: Using Cypher Queries
+
+You can use (cypher)[https://neo4j.com/docs/cypher-manual/3.5/] to write custom queries. For this:
+
+(1) Check out the [HPG data model](docs/hpg-nodes.md) and [syntax tree](docs/syntax-tree.md).
+(2) See the example query file provided; `example.py` in the `hpg_analysis/example` folder.
+
 ```sh
-$ python3 -m hpg_analysis.cs_csrf.main
+$ python3 -m hpg_analysis.example.example
 ```
 
+For more information, please see [here](docs/hpg-querying.md).
 
-# Web Crawling and Websites Under Test (Inputs)
-The site inital address and its `state scripts` are **inputs** of the tool. The file `hpg_crawler/sites/sitemap.py` contains the list of sites for testing. 
-- Each site is given a `site_id` which specifies the folder name used to store the site `state scripts` (e.g., login as admininstrator, login as user 1, login as user 2, logout, etc). 
-- To create a new site entry, copy the `sites/template` and rename it to `sites/<SITE_ID>` where <SITE_ID> is the integer you set in `sitemap.py`.
-- Change the template `state script` in `sites/<SITE_ID>/scripts/Auth.py` via your implementaion for your own site.
-
-## How to Run URL Crawler Module?
-In order to start the crawler and collect the sites data, run the driver program for data collection module in root directory:
-```sh
-$ cd hpg_crawler
-$ python3 driver.py <site-id>
-``` 
-For more information about the web crawler of JAW, see [here](docs/crawler.md).
 
 
 # Detailed Documentation.
