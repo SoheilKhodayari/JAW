@@ -61,7 +61,7 @@ $ cd installation
 $ chmod +x neo4j_installation.sh
 $ ./neo4j_installation.sh
 ```
-For more information, see [here](https://www.alibabacloud.com/blog/installing-neo4j-on-ubuntu-16-04_594570).
+For more information, see [here](https://www.alibabacloud.com/blog/installing-neo4j-on-ubuntu-16-04_594570), or [here](https://neo4j.com/developer/kb/using-apt-get-to-download-a-specific-neo4j-debian-package/).
 
 2.2- Installing For MacOS
 ```sh
@@ -213,7 +213,7 @@ For more information, visit our wiki page [here](docs/jaw.md). Below is a table 
 
 ### Data Model of Hybrid Property Graphs (PG)
 - [Property Graph Nodes](docs/hpg-nodes.md)
-- [Grammer and Syntax Tree](docs/syntax-tree.md)
+- [Grammar and Syntax Tree](docs/syntax-tree.md)
 - [Property Graph Edges](docs/hpg-edges.md)
 
 ### Graph Construction

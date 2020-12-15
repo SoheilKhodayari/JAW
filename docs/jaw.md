@@ -3,7 +3,7 @@
 
 ### Data Model of Hybrid Property Graphs (PG)
 - [Property Graph Nodes](hpg-nodes.md)
-- [Grammer and Syntax Tree](syntax-tree.md)
+- [Grammar and Syntax Tree](syntax-tree.md)
 - [Property Graph Edges](hpg-edges.md)
 
 ### Graph Construction
