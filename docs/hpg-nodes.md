@@ -134,7 +134,7 @@ In order to conduct a path sensitive control flow analysis, cookies observed dur
 The meaning of each property of a `PGNode` of label `CookieNode` is as follows. 
 
 ```javascript
-RequestNode: PGNode {
+CookieNode: PGNode {
   // the id of an CookieNode: a uuid string 
   Property: Id,  
 
@@ -159,7 +159,7 @@ The meaning of each property of a `PGNode` of label `DOMSnapshot` is as follows.
 
 
 ```javascript
-RequestNode: PGNode {
+DOMSnapshot: PGNode {
   // the id of an DOMSnapshot: a uuid string 
   Property: Id,  
 

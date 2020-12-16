@@ -86,19 +86,3 @@ For this, you can use JAW's DOM pointer analysis API provided in the `DOMUtils` 
 from hpg_analysis.general.dom_points_to import DOMUtils
 element = DOMUtils.resolve_dom_query("document.querySelector('div[id=x]')")
 ```
-
-Alternatively, you can use [BeautifulSoup](https://pypi.org/project/beautifulsoup4/) or [Domino](https://github.com/fgnass/domino).
-
-```javascript
-var domino = require('domino');
-var Element = domino.impl.Element; 
-
-html = 'a string containing the html snapshot taken by the crawler'
-
-var window = domino.createWindow(html);
-var document = window.document;
-
-var h1 = document.querySelector('h1');
-console.log(h1.innerHTML);
-```
-
