@@ -203,7 +203,7 @@ This module collects the data (i.e., JavaScript code and state values of web pag
 If you want to test a specific JavaScipt file that you already have on your file system, you can **skip** this step. 
 
 ### Inputs for Web Crawling
-JAW can crawl and collect the web resources for a given set of web application.
+JAW can crawl and collect the web resources for a given set of web applications.
 The inputs to the tool are thus a list of sites' `seed URLs`, and an optional `test case` or `state` script for each site under test.
 
 **Action 1:** Specify the set of sites for testing by adding new entries in the `SITES_MAP` dictionary in `hpg_crawler/sites/sitemap.py`.
