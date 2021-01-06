@@ -6,6 +6,7 @@ An open-source, prototype implementation of property graphs for JavaScript based
 
 This project is licensed under `GNU AFFERO GENERAL PUBLIC LICENSE V3.0`. See [here](LICENSE) for more information.
 
+JAW has a Github pages website available at <a href="https://soheilkhodayari.github.io/JAW/">https://soheilkhodayari.github.io/JAW/</a>.
 
 # Content
 
