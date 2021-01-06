@@ -150,19 +150,47 @@
       </div>
     </div>
   </section>
-  <section>
+  <section >
     <div class="container main-content">
       <div class="row">
         <div class="col-md-12">
 
-          <h2>What is JAW?</h2>
-          Cite our paper.
-          examples
-          features
+          <h2 class="pink"><b>Overview</b></h2>
+          <ul class="row text-container">
+            <li>JAW is a hybrid, scalable framework to analyze client-side JavaScript programs for the detection of client-side CSRF vulnerabilities. </li>
+             <li>JAW can be used to conduct interactive and exploratory analysis of JavaScript code</li>
+             <li>JAW can be used to design and perform custom security-related program analyses. For example:
+              <ul> 
+                  <li> data flow analysis between pre-defined JavaScript sources and sinks </li>
+                  <li> control flow and reachability analysis </li>
+                  <li> resolution of DOM query selectors leveraging DOM snapshots</li>
+                  <li> pattern matching via the abstract syntax tree</li>
+              </ul>
 
 
+           </li>
+
+          </ul>
         </div>
       </div>
+    </div>
+  </section>
+  <section >
+    <div class="container main-content">
+      <div class="row">
+        <div class="col-md-12">
+
+          <h2 class="pink"><b>How It Works?</b></h2>
+          <ul class="row text-container">
+            <li>JAW is based on property graphs and the <a href="https://neo4j.com/">neo4j</a> graph database. </li>
+            <li>It creates a graph database for the client-side JavaScript program under test, capturing both static and dynamic program behaviours.</li>
+            <li>JAW models vulnerability detection as a fine-grained path traversal within the neo4j database. </li>
+            <li>The path traversal query
+              can be performed using the <a href="https://neo4j.com/developer/cypher/">Cypher</a> query language.</li>
+          </ul>
+        </div>
+      </div>
+
     </div>
   </section>
   <div class="section">

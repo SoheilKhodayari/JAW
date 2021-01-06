@@ -140,6 +140,11 @@ section.dark {
   background-color:  #252525;
 }
 
+section.lightgreen {
+  background-color:  #002159;
+  color: white;
+}
+
 section.darker {
   background-color: #f5f5f5;
 }
