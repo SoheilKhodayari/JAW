@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>JAW</title>
+
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:400,300,700" />
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css" async defer>
+<link rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/styles/default.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/highlight.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="./style.css">
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+  <header>
+    <article class="code-preview">        
+    MATCH (w {
+      Code: 'window'
+    })<-[:AST_parentOf{RelationType: 'object'}]-(p {
+      Type: 'MemberExpression'
+    })-[:AST_parentOf{RelationType: 'property'}]->(l {
+      Code: 'location'
+    }),
+    (p)<-[:AST_parentOf{RelationType: 'object'}]-(gp {
+      Type: 'MemberExpression'
+    })-[:AST_parentOf{RelationType: 'property'}]->(h {
+      Code: 'hash'
+    }),
+    (gp)<-[:AST_parentOf {
+      RelationType: 'left'
+    }]-(t {
+      Type: 'AssignmentExpression'
+    })-[:AST_parentOf{RelationType: 'right'}]->(v),
+    (t)<-[:AST_parentOf {
+      RelationType: 'expression'
+    }]-(topsource {
+      Type: 'ExpressionStatement'
+    }),
+    (n {
+      Type: 'Identifier'
+    })<-[:AST_parentOf {
+      RelationType: 'property'
+    }]-(parent)<-[:AST_parentOf*1..3]-(topsink)
+    WHERE v.Type = 'Identifier' OR v.Type = 'Literal'
+    AND n.Code =~ '.*(ajax|open|fetch|XMLHttpRequest|send).*' AND (topsink.Type = 'ExpressionStatement' OR topsink.Type = 'VariableDeclaration')
+    WITH v AS val, topsink AS si, topsource AS sc
+    MATCH (topsource)<-[:PDG_parentOf*1..100 {
+      Arguments: val.Code
+    }]-(vv {
+      Type: 'VariableDeclaration'
+    })-[:AST_parentOf]->(decl {
+      Type: 'VariableDeclarator'
+    })-[:AST_parentOf {
+      RelationType: 'init'
+    }]->(lit {
+      Type: 'Literal'
+    })
+    WHERE val.Type = 'Identifier'
+    RETURN
+    CASE EXISTS( (sc)-[:CFG_parentOf|:PDG_parentOf*1..100]->(si) )
+    WHEN true Then
+    CASE val.Type
+    WHEN 'Identifier' Then collect ( DISTINCT lit)
+    ELSE collect ( DISTINCT val)
+    END
+    WHEN false Then null
+    END AS res
+    </article>
+    <h2 class="text-center text-logo animated hiding" data-animation="fadeInDown" data-delay="300">
+      <b class="jaw-title-j">J</b>
+      <b class="jaw-title-a">A</b>
+      <b class="jaw-title-w">W</b>
+    </h2>
+    <div class="container text-center animated hiding" data-animation="fadeIn" data-delay="600">
+      <img src="./jaw.png" alt="JAW">
+    </div>
+
+    <div class="row animated hiding" data-animation="fadeIn" data-delay="600">
+      <h2 class="text-center">A Graph-based Security <span class="jaw-title">A</span>nalysis Frame<span class="jaw-title">w</span>ork for 
+       <span class="jaw-title">J</span>avaScript and Client-side CSRF</h2>
+    </div>
+
+    <div class="row text-center animated hiding" data-animation="fadeIn" data-delay="600" id="arrow_row">
+      <div class="col-md-12">
+        <span id="nscroller">
+            <a id="nscroller_inner" href="#" onclick="scrollToElement('.main-content')" class="fa fa-angle-down fa-3x icon-cog" aria-hidden="true"></a>
+        </span>
+        <script type="text/javascript">
+
+                      var scrollToElement = function(el){
+                          $('html,body').animate({
+                              scrollTop: $(el).offset().top
+                          }, 1000);
+
+                          return false;
+                      }
+                  
+        </script>
+
+      </div>
+    </div>
+
+    <div class="row text-center animated hiding" data-animation="fadeIn" data-delay="600" >
+        <div class="col-lg-12">
+            <span id="arrow_text" onclick="scrollToElement('.main-content')">Get Started Now!</span>
+        </div>
+   </div>
+
+
+  </header>
+    <section class="dark">
+    <div class="container animated hiding" data-animation="fadeIn" data-delay="600">
+
+      <div class="row">
+        <div class="col-md-4"></div>
+        <div class="col-md-4 text-center">
+          <div class="row">
+          <a class="github-button" href="https://github.com/soheilkhodayari/jaw" data-color-scheme="no-preference: light; light: light; dark: dark;" data-size="large" data-show-count="true" aria-label="Star soheilkhodayari/jaw on GitHub">Star</a>
+          <a class="github-button" href="https://github.com/soheilkhodayari/jaw/subscription" data-color-scheme="no-preference: light; light: light; dark: dark;" data-size="large" data-show-count="true" aria-label="Watch soheilkhodayari/jaw on GitHub">Watch</a>
+            <a class="github-button" href="https://github.com/soheilkhodayari/jaw/fork" data-color-scheme="no-preference: light; light: light; dark: dark;" data-size="large" data-show-count="true" aria-label="Fork soheilkhodayari/jaw on GitHub">Fork</a>
+          </div>
+        </div>
+        <div class="col-md-4 text-center">
+        </div>
+      </div>
+
+    </div>
+  </section>
+  <div class="sep">
+  </div>     
+  <section class="darker">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-1"></div>
+        <div class="col-md-2"></div>
+        <div class="col-md-2 text-center">
+          <a href="https://github.com/SoheilKhodayari/JAW/releases" class="button"><i class="fa fa-code-fork" aria-hidden="true"></i> Download</a>
+        </div>
+        <div class="col-md-2 text-center">
+          <a href="https://github.com/SoheilKhodayari/JAW/" class="button"><i class="fa fa-github"></i> Github</a>
+        </div>
+        <div class="col-md-2 text-center">
+          <a href="https://github.com/SoheilKhodayari/JAW/blob/master/README.md" class="button"><i class="fa fa-book" aria-hidden="true"></i> Docs</a>
+        </div>
+        <div class="col-md-2"></div>
+      </div>
+    </div>
+  </section>
+  <section>
+    <div class="container main-content">
+      <div class="row">
+        <div class="col-md-12">
+
+          <h2>What is JAW?</h2>
+          Cite our paper.
+          examples
+          features
+
+
+        </div>
+      </div>
+    </div>
+  </section>
+  <div class="section">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-6">
+
+            <div class="row">
+
+                    <h2 class="pink"><b>Step 1: Graph Database Construction</b></h2>
+        Model your desired JavaScript program as a propery graph database in Neo4j.
+
+            </div>
+
+
+            <div class="row">
+
+              <pre>
+              <code class="lang-bash">$ python3 -m hpg_construction.api base-folder-path --js=file-name.js</code>
+              </pre>
+            </div>
+
+            <div class="row text-container ">
+              Learn more about the data model of the constructed property graph, including the 
+              <a href="https://github.com/SoheilKhodayari/JAW/blob/master/docs/hpg-nodes.md">nodes</a>,
+              <a href="https://github.com/SoheilKhodayari/JAW/blob/master/docs/hpg-edges.md">edges </a>, and the
+              <a href="https://github.com/SoheilKhodayari/JAW/blob/master/docs/syntax-tree.md">syntax tree </a>.
+
+            </div>
+
+
+        </div>
+        <div class="col-md-1"></div>
+        <div class="col-md-5">
+
+          <img width="500px" src="./graph.png">
+
+        </div>    
+      </div>
+      <div class="row pinksep">
+        <div class="col-md-12"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="container">
+      <div class="row">
+
+
+         <div class="col-md-6">
+
+          <div class="row"><img width="500px" src="./neo4j.png"></div>
+          <div class="row row-padding"></div>
+          <div class="row"> 
+            <div class="text-container col-md-10">
+                You can also try JAW's built-in client-side CSRF detection module, or other program analysis utility queries (e.g., data flow analysis, reachability analysis, pattern matching, etc). See <a href="https://github.com/SoheilKhodayari/JAW/blob/master/README.md">documentation</a> for more.
+            </div>
+          </div>
+
+        </div>  
+        <div class="col-md-6">
+
+            <div class="row">
+
+                    <h2 class="pink"><b>Step 2: Security Analysis</b></h2>
+                    Run your custom <a href="https://neo4j.com/developer/cypher/">Cypher</a> queries over the neo4j database.
+
+            </div>
+
+
+            <div class="row">
+              <pre>
+<code class="python">  #!/usr/bin/python3
+  from neo4j import GraphDatabase
+  import constants as constantsModule
+
+  # setup connection to the graph database
+  neo_driver = GraphDatabase.driver(constantsModule.NEO4J_CONN_STRING, 
+    auth=(constantsModule.NEO4J_USER, constantsModule.NEO4J_PASS))
+
+  # query the graph
+  with neo_driver.session() as session:
+    with session.begin_transaction() as tx:
+
+      # let's say we want to find all `fetch()` API calls and their URL arguments
+      # t= top level expression statement, n = callExpression, a= URL argument
+      query = """
+      MATCH (t {Type: 'ExpressionStatement'})-[:AST_parentOf {RelationType: 'expression'}]->(n {Type: 'CallExpression'})-[:AST_parentOf {RelationType: 'callee'}]-> (req {Type: 'Identifier', Code: 'fetch'}), 
+      (n)-[:AST_parentOf {RelationType: 'arguments', Arguments: '{\"arg\":0}'}]->(a)
+      RETURN t, n, a
+      """
+      # execute the query and print the results
+      results= tx.run(query)
+      for record in results:
+        print(record['n'])
+</code>
+              </pre>
+            </div>
+
+        </div>
+  
+      </div>
+      <div class="row pinksep">
+        <div class="col-md-12"></div>
+      </div>
+      
+      <div class="row">
+         <h2 class="pink"><b>Publication</b></h2>
+        Please support our work by citing our paper.
+        <br><br>
+      </div>
+       <b>BibTex</b>
+      <pre><code>
+@conference{JAW,
+  title = {{JAW: Studying Client-side CSRF with Hybrid Property Graphs and Declarative Traversals}},
+  author = {Soheil Khodayari and Giancarlo Pellegrino},
+  booktitle = {{Proceedings of the 30th USENIX Security Symposium}},
+  year = {2021}
+}
+    </code></pre>
+
+    </div>
+  </div>
+
+  <footer>
+    <div class="row">
+      <div class="col-md-12 text-center">
+      <img src="https://camo.githubusercontent.com/97d4586afa582b2dcec2fa8ed7c84d02977a21c2dd1578ade6d48ed82296eb10/68747470733a2f2f6261646765732e66726170736f66742e636f6d2f6f732f76312f6f70656e2d736f757263652e7376673f763d313033">
+    </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12 text-center">
+        <p class="text-center" style="margin-top: 5px;"><small>JAW is licensed under AGPL-3.0, open source and free to use.</small></p>
+    </div>
+    </div>
+     
+  </footer>
+   <!-- <div class="pinksepfooter"></div> -->
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.isotope/3.0.1/isotope.pkgd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.imagesloaded/4.1.1/imagesloaded.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-scrollTo/2.1.2/jquery.scrollTo.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-one-page-nav/3.0.0/jquery.nav.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.appear/0.3.3/jquery.appear.min.js"></script>
+    <script src="./main.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+
+</body>
+
+</html>
