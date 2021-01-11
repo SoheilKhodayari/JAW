@@ -248,7 +248,7 @@ div#arrow_row
   opacity: 1 !important;
   border-radius: 100%;
   position: absolute;
-  left: 3px;
+  left: 6px;
   color: #ea1d5d;
 }
 a#nscroller_inner:hover, a#nscroller_inner:focus

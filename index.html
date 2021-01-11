@@ -87,7 +87,7 @@
     <div class="row text-center animated hiding" data-animation="fadeIn" data-delay="600" id="arrow_row">
       <div class="col-md-12">
         <span id="nscroller">
-            <a id="nscroller_inner" href="#" onclick="scrollToElement('.main-content')" class="fa fa-angle-down fa-3x icon-cog" aria-hidden="true"></a>
+            <a id="nscroller_inner" href="#" onclick="scrollToElement('#get-started')" class="fa fa-angle-down fa-3x icon-cog" aria-hidden="true"></a>
         </span>
         <script type="text/javascript">
 
@@ -106,7 +106,7 @@
 
     <div class="row text-center animated hiding" data-animation="fadeIn" data-delay="600" >
         <div class="col-lg-12">
-            <span id="arrow_text" onclick="scrollToElement('.main-content')">Get Started Now!</span>
+            <span id="arrow_text" onclick="scrollToElement('#get-started')">Get Started Now!</span>
         </div>
    </div>
 
@@ -150,8 +150,33 @@
       </div>
     </div>
   </section>
-  <section >
-    <div class="container main-content">
+<section >
+  <div class="container main-content">
+
+      <div class="row">
+         <h2 class="pink"><b>Publication</b></h2>
+         This work is accepted at the <a href="https://www.usenix.org/conference/usenixsecurity21/">USENIX Security'21</a> conference. You can find a pre-print of our paper <a href="./JAW.pdf">here</a>.
+        <br><br>
+         Please consider supporting our work by citing our paper.
+        <br><br>
+      </div>
+       <b>BibTex</b>
+      <pre><code>
+@inproceedings{JAW,
+  title = {JAW: Studying Client-side CSRF with Hybrid Property Graphs and Declarative Traversals},
+  booktitle = {30th {USENIX} Security Symposium ({USENIX} Security 21)},
+  year = {2021},
+  address = {Vancouver, B.C.},
+  publisher = {{USENIX} Association},
+  month = aug,
+}
+    </code></pre>
+ 
+  </div>
+</section>
+<section style="margin-top: -50px;">
+    <div class="container main-content">  
+      
       <div class="row">
         <div class="col-md-12">
 
@@ -198,7 +223,7 @@
       <div class="row">
         <div class="col-md-6">
 
-            <div class="row">
+            <div class="row" id="get-started">
 
                     <h2 class="pink"><b>Step 1: Graph Database Construction</b></h2>
         Model your desired JavaScript program as a propery graph database in Neo4j.
@@ -294,25 +319,6 @@
         </div>
   
       </div>
-      <div class="row pinksep">
-        <div class="col-md-12"></div>
-      </div>
-      
-      <div class="row">
-         <h2 class="pink"><b>Publication</b></h2>
-        Please support our work by citing our paper.
-        <br><br>
-      </div>
-       <b>BibTex</b>
-      <pre><code>
-@conference{JAW,
-  title = {{JAW: Studying Client-side CSRF with Hybrid Property Graphs and Declarative Traversals}},
-  author = {Soheil Khodayari and Giancarlo Pellegrino},
-  booktitle = {{Proceedings of the 30th USENIX Security Symposium}},
-  year = {2021}
-}
-    </code></pre>
-
     </div>
   </div>
 
