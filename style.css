@@ -328,3 +328,22 @@ html, body {
 .blueback {
   background-color: #54C4DE;
 }
+
+
+
+.logo-cropper {
+  width: 130px;
+  height: 130px;
+  position: relative;
+  overflow: hidden;
+  border-radius: 50%;
+  left: 50%;
+  margin-left: -68px;
+}
+
+.logo {
+  display: inline;
+  margin: 0 auto;
+  height: 100%;
+  width: auto;
+}
