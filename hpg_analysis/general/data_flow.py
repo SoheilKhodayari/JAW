@@ -75,6 +75,33 @@ def pretty_print_program_slices(slices):
 # 	pretty_print_program_slices(slices)
 
 
+
+def _get_location_part(nid_string):
+	
+	"""
+	@param {string} nid_string: string containing node id and location
+	@return {string} node id string
+	"""
+	start_index = nid_string.index('__Loc=') + len('__Loc=')
+	return nid_string[start_index:]
+
+def _get_node_id_part(nid_string):
+	
+	"""
+	@param {string} nid_string: string containing node id and location
+	@return {string} location string
+	"""
+	start_index = nid_string.find('__nid=')
+	if start_index != -1:
+		start_index = start_index + len('__nid=')
+	else:
+		start_index = 0 # handle the case where function name is not stored at the begining
+
+	end_index = nid_string.index('__Loc=')
+	return nid_string[start_index:end_index]
+
+
+	
 ## ------------------------------------------------------------------------------- ## 
 ## Interface Functions
 ## ------------------------------------------------------------------------------- ## 

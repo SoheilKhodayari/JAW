@@ -41,7 +41,7 @@ def do_reachability_analysis(tx, node, input_is_top=False):
 	if input_is_top:
 		top_expression = node
 	else:
-		top_expression = QU.get_ast_topmost(tx, {'Id': node_id})
+		top_expression = QU.get_ast_topmost(tx, {'Id': node['Id']})
 	
 	query = """
 	MATCH (n { Id: '%s'})<-[:CFG_parentOf*]-(block_node)
