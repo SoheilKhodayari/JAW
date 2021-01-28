@@ -126,12 +126,21 @@ function ControlFlowGraph(astNode) {
 			node.cfg.connect(getExceptionTarget(node), FlowNode.EXCEPTION_CONNECTION_TYPE);
 		},
 		TryStatement: function (node, recurse) {
-			var handler = node.handlers[0] && node.handlers[0].cfg || getEntry(node.finalizer);
-			catchStack.push(handler);
-			recurse(node.block);
-			catchStack.pop();
 
-			if (node.handlers.length) {
+			// var handler = node.handlers[0] && node.handlers[0].cfg || getEntry(node.finalizer);
+			var handler = null;
+			if(node.handlers && node.handlers.length) {
+				var handler = node.handlers[0] && node.handlers[0].cfg ;
+			}else{
+				if (node.finalizer){
+					var handler = getEntry(node.finalizer);
+				}	
+			}
+			if(handler) catchStack.push(handler);
+			recurse(node.block);
+			if(handler) catchStack.pop();
+
+			if (node.handlers && node.handlers.length) {
 				recurse(node.handlers[0]);
 			}
 			if (node.finalizer) {

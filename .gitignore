@@ -139,3 +139,4 @@ snippets
 
 hpg_construction/lib/jaw/dom-points-to/template.js
 hpg_construction/lib/jaw/dom-points-to/resolution.out
+hpg_construction/run.test.sh
