@@ -1493,7 +1493,7 @@ Driver.prototype.writeInterProceduralAnalysisResultFiles = async function (relat
                                     fromId:  pair.second[0]._id,
                                     toId: pair.second[1]._id,
                                     relationLabel: "PDG_control",
-                                    relationType: pair.second[2], // predicate condition: true or false
+                                    relationType: pair.second[2]._id, // predicate condition: true or false
                                     args: key.toString()
                                 };
                                 fs.writeSync(fp_rels, getRelationLine(recordControl)); 

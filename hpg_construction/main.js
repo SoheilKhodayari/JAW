@@ -70,4 +70,5 @@ function main(){
     console.log('[+] started code property graph analyzer...');
     await main();
     console.log('[+] code property graph analyzer finished!');
+    process.exit()
 })();
