@@ -70,5 +70,9 @@ function main(){
     console.log('[+] started code property graph analyzer...');
     await main();
     console.log('[+] code property graph analyzer finished!');
-    process.exit()
+    
+    setTimeout(function(){
+        process.exit()
+    }, 10000); // wait 10 seconds before termination to flush the async data to the node and edges CSV files
+
 })();
