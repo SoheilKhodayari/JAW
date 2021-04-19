@@ -1,34 +1,51 @@
+/*
 
-let b = 'endpoint';
-let a = 10;
-let url = 'hello' + b;
-var ajaxloc = window.location.href;
-var data = {};
-
-fetch('/api/'+ url, {
-  method: 'POST', // *GET, POST, PUT, DELETE, etc.
-  mode: 'cors', // no-cors, *cors, same-origin
-  cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
-  credentials: 'same-origin', // include, *same-origin, omit
-  headers: {
-    'Content-Type': 'application/json'
-    // 'Content-Type': 'application/x-www-form-urlencoded',
-  },
-  redirect: 'follow', // manual, *follow, error
-  referrer: 'no-referrer', // no-referrer, *client
-  body: JSON.stringify(data) // body data type must match "Content-Type" header
-});
+  Copyright (C) 2020  Soheil Khodayari, CISPA
+  This program is free software: you can redistribute it and/or modify
+  it under the terms of the GNU Affero General Public License as published by
+  the Free Software Foundation, either version 3 of the License, or
+  (at your option) any later version.
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU Affero General Public License for more details.
+  You should have received a copy of the GNU Affero General Public License
+  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 
-let xhr = new XMLHttpRequest();
-if (a === 10){
-  xhr.open('GET', '/graphql/' + ajaxloc);
-}else {
+  Usage:
+  ------------
+  python3 -m hpg_analysis.cs_csrf.unit_test --js=test_1.js
 
-  $.ajax({
-     url: '/api-v2/'+ ajaxloc + '/bearer1234/',
-     xhrFields: {
-        withCredentials: true
-     }
-  });
-}
+
+  Output:
+  ------------
+  The following outputs will be located under the /hpg_construction/outputs/unit_tests/cs_csrf/ folder.
+    - the hpg model (nodes.csv, rels.csv)
+    - request templates (template.out)
+  
+
+  Description:
+  ------------
+  Unit Test file for the detection of client-side CSRF
+
+  
+  Source: window.location.hash
+  Sink:   window.open()
+  Type: Intra-Procedural
+  Checks: PDG Edges
+
+
+*/
+
+
+
+var path = window.location.hash;
+var domain = 'https://example.com/'
+var newPageUrl = domain + path;
+window.open(newPageUrl);
+
+
+
+
+

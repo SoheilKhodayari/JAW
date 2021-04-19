@@ -122,7 +122,10 @@ def API_neo4j_prepare(csv_absolute_path, nodes_name=constantsModule.NODE_INPUT_F
 	run_os_command(DELETE_OLD_DB_IF_EXISTS_COMMAND)
 
 	# import the data
-	NEO4J_IMPORT_COMMAND = """neo4j-admin import --mode=csv --database=%s.db --nodes=%s --relationships=%s --delimiter='¿'"""%(folder_name_as_db_name, nodes_path, rels_path)
+	if constantsModule.NEO4J_VERSION.startswith(constantsModule.NEOJ_VERSION_4X):
+		NEO4J_IMPORT_COMMAND = "neo4j-admin import --database=%s.db --nodes=%s --relationships=%s --delimiter='¿'"%(folder_name_as_db_name, nodes_path, rels_path)
+	else:
+		NEO4J_IMPORT_COMMAND = "neo4j-admin import --mode=csv --database=%s.db --nodes=%s --relationships=%s --delimiter='¿'"%(database_name, nodes_path, rels_path)
 	run_os_command(NEO4J_IMPORT_COMMAND)
 
 	# change the active db

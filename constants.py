@@ -64,6 +64,17 @@ if os.getenv('NEO4J_PASS') is not None:
 else:
 	NEO4J_PASS = 'root' # default pass is 'neo4j'
 
+
+NEOJ_VERSION_4X = '4.'
+NEOJ_VERSION_3X = '3.'
+if os.getenv('NEO4J_VERSION') is not None:
+	NEO4J_VERSION = os.getenv('NEO4J_VERSION')
+else:
+	NEO4J_VERSION = NEOJ_VERSION_4X
+
+
+
+
 # browser view on port 7474 with HTTP!
 NEO4J_CONN_STRING = "bolt://127.0.0.1:7687"
 

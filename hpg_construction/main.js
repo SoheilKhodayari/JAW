@@ -73,6 +73,7 @@ function main(){
     
     setTimeout(function(){
         process.exit()
+        console.log('[+] waiting for 10 seconds to flush async I/O.')
     }, 10000); // wait 10 seconds before termination to flush the async data to the node and edges CSV files
 
 })();

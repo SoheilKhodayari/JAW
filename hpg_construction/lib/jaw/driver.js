@@ -1509,5 +1509,772 @@ Driver.prototype.writeInterProceduralAnalysisResultFiles = async function (relat
 };
 
 
+// ----------------------------------------------------------------------------------------- //
+//      Version2:  Return nodes/edges rather than writing to files
+// ----------------------------------------------------------------------------------------- // 
+
+
+Driver.prototype.getInterProceduralModelNodesAndEdges = async function(semantic_types, options){
+
+
+    "use strict";
+    var theDriver = this;
+    var pageScopeTrees = scopeCtrl.pageScopeTrees;
+
+    // Add CFG "exit" nodes. 
+    // TODO: check if really needed as the exit can be implicity inferred from the ast too
+    var exitNodes = flowNodeFactory.generatedExits;
+    
+    // global nodes/edges to return
+    var g_nodes = exitNodes;
+    var g_edges = [];
+
+    // IPCG
+    var call_graph_alias_check = [];
+
+    await pageScopeTrees.forEach(async function (scopeTree, pageIndex) {
+
+        var pageModels = modelCtrl.getPageModels(scopeTree);
+
+        var intraProceduralModels = pageModels.intraProceduralModels;
+
+        var astList = []
+        await intraProceduralModels.forEach(async function (model, modelIndex) {
+            
+            // traverse once only for the whole global scope, rather than each function scope in the AST
+            if(modelIndex == 0)
+            {
+                /**
+                 *  Abstract Syntax Tree (AST)
+                 *  for each Scope
+                 *  main Scope has the full AST
+                 *  (subgoal) find initial function declarations 
+                 */
+                var ast = (scopeTree.scopes[modelIndex])? scopeTree.scopes[modelIndex].ast : undefined;
+                if(!ast) return;
+                // var ast = scopeTree.scopes[modelIndex].ast;
+                astList.push(ast);
+
+                var astRels = [];
+                var astNodes = [];
+                var preNod = null;
+
+                esprimaParser.traverseAST(ast, function(node){
+                    if(node && node._id){
+                        // store new nodes
+                        if(!astNodes.some(e => e._id == node._id)){
+                            astNodes.push(node);
+                        }
+                    }
+                    if(preNod){
+                        Object.keys(preNod).forEach((property) => {
+                            let n = preNod[property];
+                            if(Array.isArray(n)){
+                                for(let j=0; j< n.length; j++){
+                                    let item = n[j];
+                                    if(item && item._id) {
+                                        var record = {'fromId': preNod._id, 'toId': item._id, 'relationLabel': "AST_parentOf", 'relationType': property, 'args': {"arg":j} };
+                                        astRels.push(record);
+                                    }
+                                }
+                            }
+                            else if(n && n._id){
+                                var record = { 'fromId': preNod._id, 
+                                                'toId': n._id, 
+                                                'relationLabel': "AST_parentOf", 
+                                                'relationType': property, 
+                                                'args': {"kwarg": n.name? n.name: n.value} 
+                                            };
+                                astRels.push(record);
+                            }
+                        });
+                    }
+                    preNod = node;
+                    
+                    /**
+                    * TODO: Initial Semantic Type Assignment
+                    */
+                    // if(node && node.type === 'Identifier' && node.name){
+                    //     Object.keys(semanticTypes).forEach(t => {
+                    //         var sensitive_items = semanticTypes[t];
+                    //         for(var it=0; it<sensitive_items.length; it++){
+                    //             if(sensitive_items[it] == node.name){
+                    //                 node.semanticType = t;
+                    //                 break;
+                    //             }
+                    //         }
+                    //     });
+                    // }
+                    // END Semantic Type Assignment
+
+
+                    if(!disable_CG_analysis && modelIndex === 0){
+                        /**
+                         * Call Graph (CG)
+                         * Step 1: Function Map Generation
+                         */
+                        // CASE 1: function f(){}
+                        if(node && node.type === 'FunctionDeclaration'){
+                            if(node.id && node.id.name) {
+                                functionMap[node.id.name] = getCallGraphFieldsForASTNode(node);
+                                // CASE 5.1: handle the case where the function returns a object-expression (key,value) with values being the functions
+                                if(node.body && node.body.type === 'BlockStatement'){
+                                    var body = node.body.body;
+                                    for(var q=0; q<body.length; q++){
+                                        var expr = body[q];
+                                        if(expr && expr.type === 'ReturnStatement' && expr.argument && expr.argument.type === 'ObjectExpression'){
+                                            var props = expr.argument.properties;
+                                            findCallGraphObjectExpressionFunctions(props, '' + node.id.name + '(...)'); // TODO: how to handle this case??!!
+                                        }
+                                    }
+                                } // END CASE 5.1
+
+                            }
+
+                        } // CASE 2: var/let/const f = function(){}
+                        else if(node && node.type === 'VariableDeclaration'){
+                            if(node.declarations && node.declarations.length){
+                                for(var z=0; z<node.declarations.length; z++){
+                                    var variableDeclarator = node.declarations[z];
+                                    if(variableDeclarator && variableDeclarator.type === 'VariableDeclarator' &&
+                                    variableDeclarator.id && variableDeclarator.id.name && variableDeclarator.init){
+                                        
+                                        if(variableDeclarator.init.type === 'FunctionExpression'){
+                                            functionMap[variableDeclarator.id.name] = getCallGraphFieldsForASTNode(variableDeclarator.init); 
+                                        } // CASE 5.2 var/let/const dict = { k1: { f1: function(){} } }
+                                        else if(variableDeclarator.init.type == 'ObjectExpression' && variableDeclarator.init.properties && variableDeclarator.init.properties.length){
+                                            var props = variableDeclarator.init.properties;
+                                            findCallGraphObjectExpressionFunctions(props, variableDeclarator.id.name);
+
+                                        } // END CASE 5.2      
+                                    }
+                                } 
+                            }
+                        } // CASE 3: var obj = { f: function(){} } - Should we use obj.f as key for functionMap?  = already captured by CASE 5.2
+                        // else if(node && node.type === 'Property'){
+                        //     if(node.key && node.key.name && node.value && node.value.type === 'FunctionExpression'){
+                        //         functionMap[node.key.name] = node.value;
+                        //     }}
+                        // CASE 4: obj.f = function(){} or f = function(){}
+                        else if(node && node.type === 'AssignmentExpression' && node.right && node.right.type === 'FunctionExpression'){
+                            if(node.left){
+                                if(node.left.type === 'Identifier'){
+                                    functionMap[node.left.name] = getCallGraphFieldsForASTNode(node.right);
+                                }
+                                else if(node.left.type === 'MemberExpression' && node.left.property && node.left.property.type === 'Identifier' && node.left.property.name){
+                                    var key = node.left.property.name;
+                                    var n = node.left.object;
+                                    if(n && n.type == 'Identifier'){
+                                        key = n.name + '.' + key;
+                                    }
+                                    while(n && n.type === 'MemberExpression'){
+                                        key = n.property.name + '.'+ key;
+                                        n = n.object; // loop
+                                        if(n.type === 'Identifier'){
+                                            key = n.name + '.'+ key;
+                                            break;
+                                        }
+                                    }
+                                    functionMap[key] = getCallGraphFieldsForASTNode(node.right);
+                                }
+                            }
+                        } // CASE 5. obj1.obj2.dict={ k1: { f1: function(){} } } or dict={ k1: { f1: function(){} } }
+                        else if(node && node.type === 'AssignmentExpression' && node.right && node.right.type === 'ObjectExpression'){
+                            if(node.left && node.right && node.right.properties){
+                                if(node.left.type === 'Identifier'){
+                                    var props = node.right.properties;
+                                    findCallGraphObjectExpressionFunctions(props, node.left.name);
+                                }
+                                else if(node.left.type === 'MemberExpression' && node.left.property && node.left.property.type === 'Identifier' && node.left.property.name){
+                                    
+                                    var key = getMemberExpressionAsString(node.left);
+                                    var props = node.right.properties;
+                                    findCallGraphObjectExpressionFunctions(props, key);
+                                }
+                            }
+                        }
+                
+                        /* BEGIN: add function aliases to function Map */
+                        // CASE 1: var a = f1; or var a = obj1.f1;
+                        if(node && node.type === 'VariableDeclarator' && node.id && node.id.name && node.init){
+                            var function_alias_name = node.id.name;
+                            if(node.init.type === 'Identifier'){
+                                var function_actual_name = node.init.name;
+                                if(functionMap && functionMap.hasOwnProperty(function_actual_name) && !functionMap.hasOwnProperty(function_alias_name)){
+                                    functionMap[function_alias_name] = functionMap[function_actual_name];
+                                }else{
+                                    // checkFunctionMapForPartialAliasing(function_actual_name, function_alias_name)
+                                    call_graph_alias_check.push([function_actual_name, function_alias_name]);
+                                }
+                            }else if(node.init.type === 'MemberExpression'){
+
+                                var function_actual_name = getMemberExpressionAsString(node.init);
+                                if(functionMap && functionMap.hasOwnProperty(function_actual_name) && !functionMap.hasOwnProperty(function_alias_name)){
+                                    functionMap[function_alias_name] = functionMap[function_actual_name];
+                                }else{
+                                    // checkFunctionMapForPartialAliasing(function_actual_name, function_alias_name);
+                                    call_graph_alias_check.push([function_actual_name, function_alias_name]);
+                                }
+                            }
+                        } // CASE 2: obj1.obj2.alias = func;  or obj1.obj2.alias = a.b.func;
+                        else if(node && node.type === 'AssignmentExpression' && node.left && node.left.type === 'MemberExpression' && node.right){
+                            if(node.right.type === 'Identifier'){
+                                
+                                var actual_name = node.right.name;
+                                var alias_name = getMemberExpressionAsString(node.left)
+                                
+                                if(functionMap &&  functionMap.hasOwnProperty(actual_name) && !functionMap.hasOwnProperty(alias_name)){
+                                    functionMap[alias_name] = functionMap[actual_name];
+                                }else{
+                                    // consider the case where actual_name is part of a key in function map
+                                    // now node.right.name is aliased with the alias_name MemberExpression
+                                    // checkFunctionMapForPartialAliasing(actual_name, alias_name)
+                                    call_graph_alias_check.push([function_actual_name, function_alias_name]);
+                                }
+                            }else if(node.right.type === 'MemberExpression'){
+
+                                var actual_name = getMemberExpressionAsString(node.right);
+                                var alias_name = getMemberExpressionAsString(node.left);   
+
+                                if(functionMap && functionMap.hasOwnProperty(actual_name) && !functionMap.hasOwnProperty(alias_name)){
+                                    functionMap[alias_name] = functionMap[actual_name];
+                                }else{
+                                    // checkFunctionMapForPartialAliasing(actual_name, alias_name);
+                                    call_graph_alias_check.push([function_actual_name, function_alias_name]);
+                                } 
+                            }
+                        }/* END: add function aliases to function Map */
+
+                    } // END modelIndex=0 & CG analysis
+
+                }); // END esprimaParser.traverseAST
+            
+                /**
+                 *  Export AST nodes & rels
+                 */
+
+                for(var w = 0; w< astNodes.length; w++){
+                    g_nodes.push(astNodes[w]);
+                }
+                for(var w = 0; w< astRels.length; w++){
+                    g_edges.push(astRels[w]);
+                }
+            } // End modelIndex= 0
+
+
+            /**
+             *  Control Flow Graph (CFG)
+             *  for each intra-procedural AST scope
+             */
+
+            var cfg = model.graph;
+            if(cfg){  /* if no errors */
+                var dpairs = model.dupairs;
+
+                let allCFGNodes = cfg[2];
+                for(let index in allCFGNodes){
+                   let cfgNode = allCFGNodes[index];
+                   let normal_flow = false;
+                   if(cfgNode.true){
+                       normal_flow = true;
+                       let record = {
+                            fromId: cfgNode.uniqueId,
+                            toId: cfgNode.true.uniqueId,
+                            relationLabel: "CFG_parentOf",
+                            relationType: "Cond_True",
+                            args: cfgNode.true.type
+                       };
+                       g_edges.push(record);
+
+                   } if(cfgNode.false){
+                        normal_flow = true;
+                        let record = {
+                            fromId: cfgNode.uniqueId,
+                            toId: cfgNode.false.uniqueId,
+                            relationLabel: "CFG_parentOf",
+                            relationType: "Cond_False",
+                            args: cfgNode.false.type
+                       };
+                        g_edges.push(record);
+                   }
+                    if(cfgNode.normal) {
+                       /* normal flow */
+                        normal_flow = true;
+                       if(cfgNode.normal){
+                            let record = {
+                               fromId: cfgNode.uniqueId,
+                               toId: cfgNode.normal.uniqueId,
+                               relationLabel: "CFG_parentOf",
+                               relationType: "Epsilon",
+                               args: cfgNode.normal.type
+                           };
+                           g_edges.push(record);
+                       }
+                   }
+                    else if(cfgNode.exception && !normal_flow){
+                        /* only if no normal flow exists*/
+                        let record = {
+                             fromId: cfgNode.uniqueId,
+                             toId: cfgNode.exception.uniqueId,
+                             relationLabel: "CFG_parentOf",
+                             relationType: "Exit",
+                             args: cfgNode.exception.type // can be entry, exit or normal
+                        };
+                        g_edges.push(record);
+                    }
+                }
+
+                /**
+                 *  Program Dependence Graph (PDG)
+                 *  Def-Use Analysis for each intra-procedural AST scope
+                 */
+
+                dpairs.forEach(async (pairs, key)=> {
+                    await pairs.forEach(async (pair)=> {
+
+
+                        if(pair.first.uniqueId != 1) { /* remove DUPairs from Program Node */
+                            if(pair.first.uniqueId && pair.second.uniqueId){ 
+                            
+                                // @CASE 1
+                                // pair.first  FlowNode obj
+                                // pair.second FlowNode obj
+                                // pair.first ------ (Data_key) ----> pair.second
+                                let record = {
+                                    fromId: pair.first.uniqueId,
+                                    toId: pair.second.uniqueId,
+                                    relationLabel: "PDG_parentOf",
+                                    relationType: "DataFlow",
+                                    args: key.toString()
+                                };
+                                g_edges.push(record);               
+                            }
+                            else{
+                                // CASE 2
+                                // pair.first FlowNode obj
+                                // pair.second [ifstmt, block, condition_str]
+                                let record = {
+                                    fromId: pair.first.uniqueId,
+                                    toId: pair.second[0]._id,
+                                    relationLabel: "PDG_parentOf",
+                                    relationType: "DataFlow",
+                                    args: key.toString()
+                                };
+                                g_edges.push(record);     
+                                if(pair.second[1] && pair.second[1]._id){
+                                    // CASE 3: for PDG control edges, if consequent of ifstmt is not null
+                                    let recordConsequent= {
+                                        fromId:  pair.second[0]._id,
+                                        toId: pair.second[1]._id,
+                                        relationLabel: "PDG_control",
+                                        relationType: 'true', // predicate condition: true for ifStatement.consequent
+                                        args: key.toString()
+                                    };
+                                    g_edges.push(recordConsequent);   
+                                }
+                                if(pair.second[2] && pair.second[2]._id){
+                                    // CASE 4: for PDG control edges, if alternate of ifstmt is not null
+                                    let recordAlternate= {
+                                        fromId:  pair.second[0]._id,
+                                        toId: pair.second[1]._id,
+                                        relationLabel: "PDG_control",
+                                        relationType: 'false', // predicate condition: false for ifStatement.alternate
+                                        args: key.toString()
+                                    };
+                                    g_edges.push(recordAlternate);   
+
+                                }
+                            }
+                        } // end top-if
+
+                    })
+                });
+            } // end if cfg
+
+        });  /* END intraProceduralModels.forEach */
+
+
+        /**
+         *  1- Event Registration & Dispatch Graph (EDG)
+         *  Figure out which ast nodes register an event &
+         *             which ast nodes trigger an event
+         *  Denotes a scope change!
+         *
+         **
+         *
+         * 2- Call Graph (CG)
+         * Step 2: Connect CallExpression to Function Map
+         *
+         */
+        
+        if(options.erddg || options.ipcg) {
+
+            if (options.ipcg){
+                // check partial aliasing + 
+                // ALSO capture the verbtaim case when the position of the function definition in the code 
+                // is after the call/alias site 
+                await checkFunctionMapForPartialAliasing(call_graph_alias_check);
+            }
+        
+            if (options.erddg) {
+                var mainAST = astList[0];
+
+                var modelForPage = modelCtrl.getModelByMainlyRelatedScopeFromAPageModels(scopeTree, scopeTree.root);
+                var searchingEventHandlerModels = [];
+                var eventHandlerModels = [];
+                var intraPageModel = null;
+                if (!!modelForPage) {
+                    searchingEventHandlerModels.push(modelForPage);
+                    for (var index = 0; index < searchingEventHandlerModels.length; ++index) {
+                        var searchingModel = searchingEventHandlerModels[index];
+                        var modelGraph = searchingModel.graph;
+                        var foundEventHandlerModels = [];
+                        modelGraph[2].forEach(function (graphNode) {
+                            if (!!graphNode.astNode && graphNode.astNode.type === 'CallExpression') {
+                                var handlerScope = getRegisteredEventHandlerCallback(graphNode, scopeTree);
+                                var handlerModel = null;
+                                if (!!handlerScope) {
+                                    handlerModel = modelCtrl.getModelByMainlyRelatedScopeFromAPageModels(scopeTree, handlerScope);
+                                }
+                                if (!!handlerModel && foundEventHandlerModels.indexOf(handlerModel) === -1) {
+                                    foundEventHandlerModels.push(handlerModel);
+                                    /*
+                                    @DEBUG HELP
+                                    console.log(graphNode.astNode); // registration edge from here
+                                    console.log(handlerScope.ast); // to here
+                                    */
+                                    var eventName=''
+                                    var eventNameAstNode = (graphNode.astNode.arguments && graphNode.astNode.arguments.length>= 2)? graphNode.astNode.arguments[0]: null;
+                                    if(eventNameAstNode){
+                                        if(eventNameAstNode.type === 'Literal'){
+                                            eventName = eventNameAstNode.value;
+                                        }
+                                        else if(eventNameAstNode.type === 'Identifier'){
+                                            eventName = getEventNameAtRegistrationSite(graphNode, scopeTree);
+                                        }
+                                    }
+                                    var eventName= (eventName===null)? '': eventName;
+                                    let calleeVariable = graphNode.astNode.callee.object.name; // identifier name
+                                    let calleeVariableId = graphNode.astNode.callee.object._id;
+
+
+                                    // begin: store this event registration for mapping to dispatches
+                                    var eventRegistrationKey = calleeVariable + '___' + eventName;
+                                    if(eventRegistrationKey in eventRegistrationStatements){
+                                        eventRegistrationStatements[eventRegistrationKey].push(graphNode.astNode);
+                                    }else{
+                                        eventRegistrationStatements[eventRegistrationKey] = [graphNode.astNode];
+                                    }
+                                    // end: store this event registration for mapping to dispatches
+
+                                    let record = {
+                                        fromId: graphNode.astNode._id, // event registration site, call expression
+                                        toId: handlerScope.ast._id, // event handler function
+                                        relationLabel: "ERDDG_Registration",
+                                        relationType: eventName,
+                                        args: 'register_listener_on___' + calleeVariable+ '___' + calleeVariableId
+                                    };
+                                    g_edges.push(record);
+
+                                    /* add the respective ERDDG dependency Edges */
+                                    var dependencyEdges = createEventDependencyEdges(handlerScope.ast, eventName, record.args);
+                                    dependencyEdges.forEach((record)=> {
+                                        g_edges.push(record);
+                                    });
+
+                                }
+                            }
+                        });
+                        eventHandlerModels = eventHandlerModels.concat(foundEventHandlerModels);
+                        searchingEventHandlerModels = searchingEventHandlerModels.concat(foundEventHandlerModels);
+                    }
+                }
+                modelCtrl.addIntraPageModelToAPage(scopeTree, intraPageModel);
+            }
+
+            await esprimaParser.traverseAST(mainAST, async function(node) {
+                if(options.erddg && node && node.type === "ExpressionStatement"){
+
+                    if(node && node.expression && node.expression.type === "AssignmentExpression" &&
+                        node.expression.left.type === "MemberExpression" &&
+                        node.expression.left.object &&
+                        node.expression.left.property && 
+                        node.expression.left.property.name && node.expression.left.property.name.startsWith('on')){
+                        var onEvent = node.expression.left.property.name;
+                        var eventName = onEvent.substring(2, onEvent.length);
+                        var calleeVariable = node.expression.left.object.name;
+                        var calleeVariableId = (node.expression.left.object)? node.expression.left.object._id: 'xx';
+                        if(node.expression.right && node.expression.right.type == "FunctionExpression"){
+                            var eventHandlerNode = node.expression.right;
+                            g_nodes.push({
+                                 fromId: ''+ node._id,
+                                 toId: ''+ eventHandlerNode._id,
+                                 fromNode: node,
+                                 toNode: eventHandlerNode,
+                                 relationLabel: "ERDDG_Registration",
+                                 relationType: eventName,
+                                 args: 'register_listener_on___' + calleeVariable+ '___' + calleeVariableId  /* e.g., window.onerror = function(e){...} */
+                            });  
+                        }
+                    } 
+
+                    else if(node && node.expression && node.expression.type === "CallExpression" &&
+                        node.expression.callee && node.expression.callee.type === "MemberExpression" &&
+                        node.expression.callee.property.name === "dispatchEvent"){
+
+                        var calleeVariable =  node.expression.callee.object.name;
+                        var calleeVariableId = (node.expression.callee.object)? node.expression.callee.object._id: 'xx';
+                        var eventName = (node.expression.arguments[0].value)?(node.expression.arguments[0].value): ("resolve__" + node.expression.arguments[0].name);
+                        
+                        // begin: add dispatch edge
+                        var eventRegistrationKey = calleeVariable + '___' + eventName;
+                        if(eventRegistrationKey in eventRegistrationStatements){
+                            var registered_handlers_list = eventRegistrationStatements[eventRegistrationKey];
+                            registered_handlers_list.forEach(handler_node => {
+                                g_nodes.push({
+                                     fromId: ''+ node._id,
+                                     toId: ''+ handler_node._id,
+                                     fromNode: node,
+                                     toNode: handler_node,
+                                     relationLabel: "ERDDG_Dispatch",
+                                     relationType: eventName,
+                                     args: 'dispatch_event_on___' + calleeVariable+ '___' + calleeVariableId  /* e.g., button.dispatchEvent('click') */
+                                });
+
+                            });
+                        }
+                        else{
+                            
+                            /** 
+                            * check a different entry key at eventRegistrationStatements. 
+                            * in case the eventName was only unresolved, connect the dispatch site
+                            * to all potential registraion sites 
+                            */
+                            Object.keys(eventRegistrationStatements).forEach(function(key){
+                                
+                                if(key.startsWith(calleeVariable)){
+                                    var registered_handlers_list = eventRegistrationStatements[key];
+                                    registered_handlers_list.forEach(handler_node => {
+                                        g_nodes.push({
+                                             fromId: ''+ node._id,
+                                             toId: ''+ handler_node._id,
+                                             fromNode: node,
+                                             toNode: handler_node,
+                                             relationLabel: "ERDDG_Dispatch",
+                                             relationType: eventName,
+                                             args: 'dispatch_event_on___' + calleeVariable+ '___' + calleeVariableId  /* e.g., button.dispatchEvent('click') */
+                                        });
+
+                                    })
+                                }// end if key.startsWith;
+                            }); // end loop Object.keys();
+
+                        } // end: add dispatch edge
+
+                    }
+                    else if(node && node.expression && node.expression.type === "CallExpression" &&
+                        node.expression.callee && node.expression.callee.type === "MemberExpression" &&
+                            (
+                            constantsModule.EVENT_FUNCTION_NAMES.some(eventFunction=> eventFunction === node.expression.callee.property.name) || 
+                            constantsModule.eventExists(node.expression.callee.property.name)
+                            )
+                        ){
+
+                        var calleeVariable =  node.expression.callee.object.name;
+                        var calleeVariableId = (node.expression.callee.object)? node.expression.callee.object._id: 'xx';
+                        var eventName = node.expression.callee.property.name;
+
+                        // begin: add dispatch edge
+                        var eventRegistrationKey = calleeVariable + '___' + eventName;
+                        if(eventRegistrationKey in eventRegistrationStatements){
+                            var registered_handlers_list = eventRegistrationStatements[eventRegistrationKey];
+                            registered_handlers_list.forEach(handler_node => {
+                                g_nodes.push({
+                                     fromId: ''+ node._id,
+                                     toId: ''+ handler_node._id,
+                                     fromNode: node,
+                                     toNode: handler_node,
+                                     relationLabel: "ERDDG_Dispatch",
+                                     relationType: eventName,
+                                     args: 'dispatch_event_on___' + calleeVariable+ '___' + calleeVariableId  /* e.g., button.click(), xhrInstance.open() */
+                                });
+                            });
+                        }
+                        
+                    } 
+
+                } // END IF type==ExpressionStatement
+                /* BEGIN: connect caller (function call instance)--> callee (function definition) */
+                else if(options.ipcg && node && node.type === 'CallExpression' && node.callee){
+                    var callerName = await escodegen.generate(node.callee); // @DEBUG_NOTE: if the name/keyword is created wrong by our custom code, the relation is eliminated here because escodegen creates it correctly!
+                    if(functionMap && Object.hasOwnProperty.bind(functionMap)(''+callerName)){
+
+                        var functionDefinitionNode = functionMap[callerName];
+                        var args = {};
+                        for(var arg_i=0; arg_i<node.arguments.length; arg_i++){
+                            var argumentNode = node.arguments[arg_i];
+                            var argCode = escodegen.generate(argumentNode);
+                            args[arg_i] = argCode;
+                        }
+                        let edge = {
+                            fromId: '' + node._id,
+                            toId: '' + functionDefinitionNode._id,
+                            relationLabel: "CG_parentOf",
+                            relationType: "CallFlow",
+                            args: (node.arguments.length)? args: ''
+                        };
+                        g_edges.push(edge);
+                    }
+                }
+                /* END: caller-callee edges */
+
+            });
+        } // END options.ipcg || options.erddg
+
+        functionMap = {};
+        eventRegistrationStatements={};
+
+
+        // export other inter-procedural models too, e.g., setTimeout function call to function parameter binding.
+        var interProceduralModels = pageModels.interProceduralModels;
+        await interProceduralModels.forEach(async function (model, modelIndex) {
+
+            /**
+             *  Control Flow Graph (CFG)
+             *  for each Scope AST
+             */
+
+            var cfg = model.graph;
+            if(cfg){  /* if no errors */
+                var dpairs = model.dupairs;
+
+                let allCFGNodes = cfg[2];
+                for(let index in allCFGNodes){
+                   let cfgNode = allCFGNodes[index];
+                   let normal_flow = false;
+                   if(cfgNode.true){
+                       normal_flow = true;
+                       let record = {
+                            fromId: cfgNode.uniqueId,
+                            toId: cfgNode.true.uniqueId,
+                            relationLabel: "CFG_parentOf",
+                            relationType: "Cond_True",
+                            args: cfgNode.true.type
+                       };
+                       g_edges.push(record);
+
+                   } if(cfgNode.false){
+                        normal_flow = true;
+                        let record = {
+                            fromId: cfgNode.uniqueId,
+                            toId: cfgNode.false.uniqueId,
+                            relationLabel: "CFG_parentOf",
+                            relationType: "Cond_False",
+                            args: cfgNode.false.type
+                       };
+                        g_edges.push(record);
+                   }
+                    if(cfgNode.normal) {
+                       /* normal flow */
+                        normal_flow = true;
+                       if(cfgNode.normal){
+                            let record = {
+                               fromId: cfgNode.uniqueId,
+                               toId: cfgNode.normal.uniqueId,
+                               relationLabel: "CFG_parentOf",
+                               relationType: "Epsilon",
+                               args: cfgNode.normal.type
+                           };
+                           g_edges.push(record);
+                       }
+                   }
+                    else if(cfgNode.exception && !normal_flow){
+                        /* only if no normal flow exists*/
+                        let record = {
+                             fromId: cfgNode.uniqueId,
+                             toId: cfgNode.exception.uniqueId,
+                             relationLabel: "CFG_parentOf",
+                             relationType: "Exit",
+                             args: cfgNode.exception.type // can be entry, exit or normal
+                        };
+                        g_edges.push(record);
+                    }
+                }
+
+                /**
+                 *  Program Dependence Graph (PDG)
+                 *  Def-Use Analysis for each Scope AST
+                 */
+
+                dpairs.forEach(async (pairs, key)=> {
+                    await pairs.forEach(async (pair)=> {
+
+
+                        if(pair.first.uniqueId != 1) { /* remove DUPairs from Program Node */
+                            if(pair.first.uniqueId && pair.second.uniqueId){ 
+                            
+                                // @CASE 1
+                                // pair.first  FlowNode obj
+                                // pair.second FlowNode obj
+                                // pair.first ------ (Data_key) ----> pair.second
+                                let record = {
+                                    fromId: pair.first.uniqueId,
+                                    toId: pair.second.uniqueId,
+                                    relationLabel: "PDG_parentOf",
+                                    relationType: "DataFlow",
+                                    args: key.toString()
+                                };
+                                g_edges.push(record);               
+                            }
+                            else{
+                                // CASE 2
+                                // pair.first FlowNode obj
+                                // pair.second [ifstmt, block, condition_str]
+                                let record = {
+                                    fromId: pair.first.uniqueId,
+                                    toId: pair.second[0]._id,
+                                    relationLabel: "PDG_parentOf",
+                                    relationType: "DataFlow",
+                                    args: key.toString()
+                                };
+                                g_edges.push(record);     
+                                if(pair.second[1] && pair.second[1]._id){
+                                    // CASE 3: for PDG control edges, if consequent of ifstmt is not null
+                                    let recordConsequent= {
+                                        fromId:  pair.second[0]._id,
+                                        toId: pair.second[1]._id,
+                                        relationLabel: "PDG_control",
+                                        relationType: 'true', // predicate condition: true for ifStatement.consequent
+                                        args: key.toString()
+                                    };
+                                    g_edges.push(recordConsequent);   
+                                }
+                                if(pair.second[2] && pair.second[2]._id){
+                                    // CASE 4: for PDG control edges, if alternate of ifstmt is not null
+                                    let recordAlternate= {
+                                        fromId:  pair.second[0]._id,
+                                        toId: pair.second[1]._id,
+                                        relationLabel: "PDG_control",
+                                        relationType: 'false', // predicate condition: false for ifStatement.alternate
+                                        args: key.toString()
+                                    };
+                                    g_edges.push(recordAlternate);   
+
+                                }
+                            }
+                        } // end top-if
+                    })
+                });
+            } // end if cfg
+
+        }); // end inter-procedural models
+
+    });
+
+
+    return {'nodes': g_nodes, 'edges': g_edges };
+}
+
 var driver = new Driver();
 module.exports = driver;
+

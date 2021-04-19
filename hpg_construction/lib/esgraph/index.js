@@ -364,7 +364,10 @@ function ControlFlowGraph(astNode) {
 			for (var i = list.length - 1; i >= 0; i--) {
 				var child = list[i];
 				if (i < list.length - 1) {
-					child.cfg.nextSibling = getEntry(list[i + 1]);
+					if(child && child.cfg){
+						child.cfg.nextSibling = getEntry(list[i + 1]);
+					}
+					
 				}
 				recurse(child);
 			}

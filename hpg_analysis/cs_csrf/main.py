@@ -2942,23 +2942,33 @@ def driver_program_unit_test(test_file_name=None):
 
 	"""
 
+	# find all test_* files in hpg_construction/unit_tests/cs_csrf
+	unit_test_base_path = os.path.join(constantsModule.UNIT_TEST_BASE_PATH, 'cs_csrf')
+	all_test_files = [f for f in os.listdir(unit_test_base_path) if f.startswith('test_') and f.endswith('.js') and os.path.isfile(os.path.join(unit_test_base_path, f))]
+
 	if test_file_name is not None:
-		test_files = [test_file_name]
+		if test_file_name in all_test_files:
+			test_files = [test_file_name]
+			logger.info('Starting client-side CSRF Unit Test: %s'%(test_file_name))
+		else:
+			logger.error('Test file %s does not exists under the Unit Test folder hpg_construction/unit_tests/cs_csrf/'%(test_file_name))
+			sys.exit(1)
 	else:
-		# find all test_* files in hpg_construction/unit_tests/cs_csrf
-		unit_test_base_path = os.path.join(constantsModule.UNIT_TEST_BASE_PATH, 'cs_csrf')
-		test_files = [f for f in os.listdir(unit_test_base_path) if f.startswith('test_') and f.endswith('.js') and os.path.isfile(os.path.join(unit_test_base_path, f))]
+		test_files = all_test_files
+		logger.info('Starting all client-side CSRF Unit Tests.')
 	
 	for _test_file_name in test_files:
 
-		logger.info('Starting Test: %s'%(_test_file_name))
+		analysis_folder_name = os.path.join('cs_csrf', _test_file_name.rstrip('.js'))
+		absolute_program_folder_name = os.path.join(constantsModule.UNIT_TEST_OUTPUT_PATH, analysis_folder_name)
+
+
+		logger.info('Running Test: %s'%(_test_file_name))
 		### set of variables for debugging purposes
 		analyze = True
 		build = True 
 		query = True 
-		
-		analysis_folder_name = os.path.join('cs_csrf', _test_file_name.rstrip('.js'))
-		absolute_program_folder_name = os.path.join(constantsModule.UNIT_TEST_OUTPUT_PATH, analysis_folder_name)
+
 		if analyze:
 			[program_folder_name, absolute_input_program_folder_name] = neo4jDatabaseUtilityModule.API_build_property_graph_for_unit_test(analysis_folder_name+'.js')
 
@@ -2966,8 +2976,6 @@ def driver_program_unit_test(test_file_name=None):
 			nodes_file = os.path.join(absolute_program_folder_name, constantsModule.NODE_INPUT_FILE_NAME)
 			rels_file =  os.path.join(absolute_program_folder_name, constantsModule.RELS_INPUT_FILE_NAME)
 			if not (os.path.exists(nodes_file) and os.path.exists(rels_file)):
-				print(nodes_file)
-				print('here')
 				return -1
 			db_name = analysis_folder_name + '.db'
 			neo4jDatabaseUtilityModule.API_neo4j_prepare(absolute_program_folder_name)

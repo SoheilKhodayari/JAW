@@ -92,6 +92,7 @@ analyzer/outputs/test/*
 #analyzer/outputs/*
 hpg_construction/outputs/*
 !hpg_construction/outputs/libraries
+!hpg_construction/outputs/unit_tests
 
 # Neo4j import log
 import.report
