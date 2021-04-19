@@ -492,7 +492,8 @@ def _get_semantic_type(program_slices, num_slices, document_vars, find_endpoint_
 	@param {list} document_vars: fields in HTML forms accessbile by the 'document' DOM API
 	@return {list} the semantic types associated with the given program slices.
 	"""
-	
+
+
 	semantic_type = constantsModule.TAG_NON_REACHABLE
 	semantic_types = []
 
@@ -547,7 +548,7 @@ def _get_semantic_type(program_slices, num_slices, document_vars, find_endpoint_
 
 			for item in WEB_STORAGE_STRINGS:
 				if item in code:
-					semantic_type = constantsModule.TAG_STORAGE_READ
+					semantic_type = constantsModule.TAG_LOCAL_STORAGE_READ
 					semantic_types.append(semantic_type)
 					break
 
@@ -612,12 +613,41 @@ def _get_semantic_type(program_slices, num_slices, document_vars, find_endpoint_
 					semantic_types.append(semantic_type)
 					break
 
+			for item in WEB_STORAGE_STRINGS:
+				if item in code:
+					semantic_type = constantsModule.TAG_LOCAL_STORAGE_READ
+					semantic_types.append(semantic_type)
+					break
+
+			for item in DOM_READ_COOKIE_STRINGS:
+				if item in code:
+					semantic_type = constantsModule.TAG_COOKIE_READ
+					semantic_types.append(semantic_type)
+					break
+
+			for item in WIN_NAME_STRINGS:
+				if item in code:
+					semantic_type = constantsModule.TAG_WINDOW_NAME
+					semantic_types.append(semantic_type)
+					break
+
+			for item in DOC_REF_STRINGS:
+				if item in code:
+					semantic_type = constantsModule.TAG_REFERRER
+					semantic_types.append(semantic_type)
+					break
+
+			for item in PM_STRINGS:
+				if item in code:
+					semantic_type = constantsModule.TAG_POST_MESSAGE
+					semantic_types.append(semantic_type)
+					break
 
 			for identifier in idents:
 
 				for item in WEB_STORAGE_STRINGS:
 					if item in identifier:
-						semantic_type = constantsModule.TAG_STORAGE_READ
+						semantic_type = constantsModule.TAG_LOCAL_STORAGE_READ
 						semantic_types.append(semantic_type)
 						break
 
@@ -2935,7 +2965,7 @@ def API_neo4j_query_graph_for_cs_csrf(analysis_url, analyzer_template_output_pat
 #			Main: driver programs & tests
 # ----------------------------------------------------------------------- #
 
-def driver_program_unit_test(test_file_name=None):
+def driver_program_unit_test(test_file_name=None, re_analyze=True):
 
 	""" 
 	@param {string} test_file_name: the name of a specific unit-test to run, set None to test all files 
@@ -2965,7 +2995,7 @@ def driver_program_unit_test(test_file_name=None):
 
 		logger.info('Running Test: %s'%(_test_file_name))
 		### set of variables for debugging purposes
-		analyze = True
+		analyze = re_analyze
 		build = True 
 		query = True 
 

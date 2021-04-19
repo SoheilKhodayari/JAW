@@ -1,0 +1,48 @@
+====================================================
+[timestamp] generated on 19/04/2021 16:26:10
+====================================================
+
+[*] NavigationURL: 
+
+----------------------------------------------------
+[*] Tags: ['WIN.LOC']
+[*] NodeId: {'TopExpression': '14', 'CallExpression': '15', 'Argument': '17'}
+[*] Location: 47
+[*] Function: Fetch
+[*] Template: url
+[*] Top Expression: fetch(url)
+
+1:['WIN.LOC'] variable=url
+	0 (loc:46)- url = LOCAL_FUNCTION_ARGUMENT
+	1 (loc:54)- url <--(invocation-value)-- [def-scope-id=29] a1
+	2 (loc:52)- [scope-id=29] a1 = LOCAL_FUNCTION_ARGUMENT
+	3 (loc:56)- [scope-id=29] a1 <--(invocation-value)-- [def-scope-id=33] source
+	4 (loc:45)- [scope-id=33]  var source = window.location.hash
+	5 (loc:62)- url <--(invocation-value)-- [def-scope-id=49] a2
+	6 (loc:60)- [scope-id=49] a2 = LOCAL_FUNCTION_ARGUMENT
+	7 (loc:64)- [scope-id=49] a2 <--(invocation-value)-- [def-scope-id=53] source
+	8 (loc:45)- [scope-id=53]  var source = window.location.hash
+	9 (loc:73)- url <--(invocation-value)-- [def-scope-id=76] a3
+	10 (loc:70)- [scope-id=76] a3 = LOCAL_FUNCTION_ARGUMENT
+	11 (loc:80)- [scope-id=76] a3 <--(invocation-value)-- [def-scope-id=86] source
+	12 (loc:45)- [scope-id=86]  var source = window.location.hash
+	13 (loc:96)- url <--(invocation-value)-- [def-scope-id=130] a4
+	14 (loc:94)- [scope-id=130] a4 = LOCAL_FUNCTION_ARGUMENT
+	15 (loc:101)- [scope-id=130] a4 <--(invocation-value)-- [def-scope-id=138] source
+	16 (loc:45)- [scope-id=138]  var source = window.location.hash
+	17 (loc:108)- url <--(invocation-value)-- [def-scope-id=160] a5
+	18 (loc:106)- [scope-id=160] a5 = LOCAL_FUNCTION_ARGUMENT
+	19 (loc:110)- [scope-id=160] a5 <--(invocation-value)-- [def-scope-id=164] source
+	20 (loc:45)- [scope-id=164]  var source = window.location.hash
+	21 (loc:116)- url <--(invocation-value)-- [def-scope-id=184] a6
+	22 (loc:114)- [scope-id=184] a6 = LOCAL_FUNCTION_ARGUMENT
+	23 (loc:118)- [scope-id=184] a6 <--(invocation-value)-- [def-scope-id=188] source
+	24 (loc:45)- [scope-id=188]  var source = window.location.hash
+	25 (loc:124)- url <--(invocation-value)-- [def-scope-id=214] a7
+	26 (loc:122)- [scope-id=214] a7 = LOCAL_FUNCTION_ARGUMENT
+	27 (loc:128)- [scope-id=214] a7 <--(invocation-value)-- [def-scope-id=234] source
+	28 (loc:45)- [scope-id=234]  var source = window.location.hash
+	29 (loc:131)- [scope-id=214] a7 <--(invocation-value)-- [def-scope-id=256] source
+	30 (loc:45)- [scope-id=256]  var source = window.location.hash
+----------------------------------------------------
+

@@ -1,0 +1,22 @@
+====================================================
+[timestamp] generated on 19/04/2021 15:25:28
+====================================================
+
+[*] NavigationURL: 
+
+----------------------------------------------------
+[*] Tags: ['WIN.LOC']
+[*] NodeId: {'TopExpression': '28', 'CallExpression': '29', 'Argument': '31'}
+[*] Location: 51
+[*] Function: Fetch
+[*] Template: newPageUrl
+[*] Top Expression: fetch(newPageUrl, { method: "POST" })
+
+1:['WIN.LOC'] variable=newPageUrl
+	0 (loc:50)- var newPageUrl = domain + path
+	1 (loc:49)- var domain = "https://example.com/"
+	2 (loc:47)- path = LOCAL_FUNCTION_ARGUMENT
+	3 (loc:45)- path <--(invocation-value)-- [def-scope-id=11] hash
+	4 (loc:43)- [scope-id=11]  var hash = window.location.hash
+----------------------------------------------------
+

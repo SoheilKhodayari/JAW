@@ -1,3 +1,4 @@
+
 /*
 
   Copyright (C) 2020  Soheil Khodayari, CISPA
@@ -15,7 +16,7 @@
 
   Usage:
   ------------
-  python3 -m hpg_analysis.cs_csrf.unit_test --js=test_5.js
+  python3 -m hpg_analysis.cs_csrf.unit_test --js=test_7.js
 
 
   Output:
@@ -30,23 +31,37 @@
   Unit Test file for the detection of client-side CSRF
 
   
-  Source: localStorage
-  Sink:   Fetch
-  Type: Inter-Procedural, Function Hoisting, Global Vars
-  Checks: PDG, IPCG Edges
-
+  Source: window.location.hash
+  Sink:  Fetch
+  Type: Inter-Procedural, Events
+  Checks: AST, CFG, PDG, IPCG, ERDDG Edges
 
 */
 
 
+// sources
+var s1 = window.location.hash; // Win Hash Fragment
+var s2 = document.cookie; // Cookie
+var s3 = document.referrer; // Referrer
+var s4 = window.name;   // Win Name
+var s5 = window.localStorage.getItem('key') // Storage
+var s6 = document.getElementById('div-id').attr('class') // DOM Attr
 
-var domain = 'https://example.com/';
-function sendRequest (path) {
-	var newPageUrl = domain + path;
-	fetch(newPageUrl, { method: 'POST'});
-};
 
-var u = localStorage.getItem('path');
-sendRequest(u)
+var eventName = 'focus';
+var button =document.getElementById('button-id');
+function eventHandler(){
+
+	fetch(s1+s2+s3+s4+s5+s6); // taint with all sources
+}
+button.addEventListener(eventName, eventHandler);
+button.focus();
+
+
+
+
+
+
+
 
 

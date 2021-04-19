@@ -45,15 +45,20 @@ from hpg_analysis.cs_csrf.main import driver_program_unit_test
 def main():
 
 	parser = argparse.ArgumentParser(description='This script analyzes a given unit test JS program to detect client-side CSRF.')
-	parser.add_argument('--js', help='name of the JavaScript program for analysis located under /hpg_construction/unit_tests/cs_csrf/ (default: ALL)', default='ALL')
+	parser.add_argument('--js', help='Name of the JavaScript program for analysis located under /hpg_construction/unit_tests/cs_csrf/ (default: ALL)', default='ALL')
+	parser.add_argument('--recreate', help='recreate the graph or use an already generated graph from a previous run  (default: true)', default='true')
 
 	# dictionary of the provided arguments
 	args = vars(parser.parse_args())
 
-	if args['js'] == 'ALL':
-		driver_program_unit_test()
+	if args['recreate'] == 'true':
+		recreate = True 
 	else:
-		driver_program_unit_test(test_file_name=args['js'])
+		recreate = False 
+	if args['js'] == 'ALL':
+		driver_program_unit_test(re_analyze=recreate)
+	else:
+		driver_program_unit_test(test_file_name=args['js'], re_analyze=recreate)
 
 
 if __name__ == '__main__':
