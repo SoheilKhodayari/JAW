@@ -116,12 +116,12 @@ def main_data_collection():
 				d = RequesterModule.requester(navigation_url)
 				## check if the site base address is reachable 
 				if RequesterModule.is_http_response_valid(d):
-					try:
+					# try:
 						crawlerUtilityModule.collect_site_data(site_id, navigation_url, driver)
-					except BaseException as error:
-						print('chrome runinto error for site: %s'%site_id)
-						driver= seleniumModule.get_new_browser(xhr_logger=True, event_logger=True, headless_mode=False)
-						continue
+					# except BaseException as error:
+					# 	print('chrome runinto error for site: %s'%site_id)
+					# 	driver= seleniumModule.get_new_browser(xhr_logger=True, event_logger=True, headless_mode=False)
+					# 	continue
 				else:
 					continue
 

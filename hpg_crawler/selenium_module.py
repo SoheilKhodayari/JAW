@@ -42,14 +42,31 @@ REQUEST_CAPTURE_EXTENSION_CRX = os.path.join(os.path.join(EXTENTIONS_ROOT, "xhr-
 #				Utils
 # ----------------------------------------------------------------------- #
 
+def get_headless_chrome_instance():
+
+	"""
+	@return {seleniumDriver}: headless chromer driver instance
+	"""
+	chrome_options = Options()
+	chrome_options.add_argument('--no-sandbox')
+	chrome_options.add_argument("--headless")
+	chrome_options.add_argument('--disable-dev-shm-usage')
+
+	if CrawlerConfig.USE_DOCKER:
+		driver = webdriver.Chrome(CrawlerConfig.CHROME_DRIVER_DOCKER, options=chrome_options)
+	else:
+		driver = webdriver.Chrome(CrawlerConfig.CHROME_DRIVER, options=chrome_options)
+
+	return driver
+
+
+
 def get_new_browser(name= CHROME, headless_mode=False, xhr_logger=False, event_logger=False):
 	"""
 		@param name: browser name
 		@return: selenium driver handle to the browser or None (if browser not supported)
 	"""
 	if name == CHROME:
-		# chromedriver = '/usr/bin/chromedriver'
-		chromedriver = CrawlerConfig.CHROME_DRIVER
 		chrome_options = Options()
 		chrome_options.add_argument('--no-sandbox')
 		chrome_options.add_argument('--disable-dev-shm-usage')
@@ -69,8 +86,11 @@ def get_new_browser(name= CHROME, headless_mode=False, xhr_logger=False, event_l
 		# @See: https://stackoverflow.com/questions/20907180/getting-console-log-output-from-chrome-with-selenium-python-api-bindings
 		d = DesiredCapabilities.CHROME
 		d['goog:loggingPrefs'] = { 'browser':'ALL' }
-		driver = webdriver.Chrome(chromedriver, options=chrome_options, desired_capabilities=d)
 
+		if CrawlerConfig.USE_DOCKER:
+			driver = webdriver.Chrome(CrawlerConfig.CHROME_DRIVER_DOCKER, options=chrome_options, desired_capabilities=d)
+		else:
+			driver = webdriver.Chrome(CrawlerConfig.CHROME_DRIVER, options=chrome_options, desired_capabilities=d)
 		return driver
 
 	return None

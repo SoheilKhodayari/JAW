@@ -1,0 +1,18 @@
+# run: docker-compose up -d
+# verbose mode: docker-compose --verbose up
+# build images: docker-compose build --no-cache
+
+version: "3.3"
+   
+services:
+  crawler:
+    tty: true
+    restart: always
+    container_name: hpg_crawler
+    build: 
+      context: ./../ 
+      dockerfile: ./hpg_crawler/crawling.Dockerfile
+    command: python hpg_crawler/driver.py 1
+    volumes:
+      - ./../:/hpg_base
+

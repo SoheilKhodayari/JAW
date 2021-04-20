@@ -35,6 +35,8 @@ from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 import config as CrawlerConfig
 import sites.sitesmap as sitesmapModule
+import selenium_module as seleniumModule
+
 
 class NavigationStorage(object):
 
@@ -350,12 +352,19 @@ def find_html_resource_urls(stateful_driver,
 		try:
 			stateful_driver.get(url)
 		except:
-			stateful_driver = get_headless_chrome_instance(headless= CrawlerConfig.IS_HEADLESS_MODE)
+			err = sys.exc_info()[0]
+			print(err)
+			return []
+			# stateful_driver = seleniumModule.get_headless_chrome_instance()
 			
 		time.sleep(CrawlerConfig.PAGE_LOAD_WAIT_TIME_DEFAULT)
 		
 		page_content = stateful_driver.page_source
 		soup_content = BeautifulSoup(page_content, "html.parser")
+
+		# selenium failed
+		if stateful_driver.current_url.strip() == 'data:,':
+			return []
 
 		# if the loaded_url is redirected, or has an added hash fragment, also store that variant
 		_save_url_if_new(stateful_driver.current_url)
@@ -419,21 +428,6 @@ def find_html_resource_urls(stateful_driver,
 
 
 
-def get_headless_chrome_instance(headless=True):
-
-	"""
-	@return {seleniumDriver}: headless chromer driver instance
-	"""
-	chromedriver = CrawlerConfig.CHROME_DRIVER
-	chrome_options = Options()
-	chrome_options.add_argument('--no-sandbox')
-	chrome_options.add_argument("--headless")
-	chrome_options.add_argument('--disable-dev-shm-usage')
-	driver = webdriver.Chrome(chromedriver, options=chrome_options)
-
-	return driver
-
-
 def get_logged_driver(driver, site_id, state_index=0):
 	"""
 	@param driver {pointer}: seleniumDriver instance
@@ -475,9 +469,9 @@ def start_crawler(site_id, state_index=0):
 	FAILED_EXIT_CODE = 0
 	SUCCESS_EXIT_CODE = 1
 
-	print("[*] started crawler on site %s"%site_id)
+	print("[*] started URL discovery for site %s"%site_id)
 	site_id = str(site_id)
-	driver = get_headless_chrome_instance()
+	driver = seleniumModule.get_headless_chrome_instance()
 	driver = get_logged_driver(driver, site_id)
 	seed_url = get_seed_url(site_id)
 
@@ -510,6 +504,8 @@ def start_crawler(site_id, state_index=0):
 			json_content= {"navigation_graph": navigation_graph}
 			json.dump(json_content, fd)
 
+
+	print("[*] finished URL discovery for site %s"%site_id)
 	return SUCCESS_EXIT_CODE
 	
 	

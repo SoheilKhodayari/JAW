@@ -15,6 +15,19 @@ A template/example state script is provided in `hpg_crawler/sites/template/Auth.
 If you do not want to load any user states before the crawling session, disable this option (set the `USE_STATE_SCRIPTS` in the crawler configuration to false).
 
 
+## Running
+
+If you want to crawl a particular site:
+```bash
+$ python3 hpg_crawler/driver.py <site-id>
+```
+
+If you want to crawl a range of websites:
+```bash
+$ python3 hpg_crawler/driver.py <from-site-id> <to-site-id>
+```
+
+
 ## Crawler Configuration
 
 - `OUTPUT_DATA_DIRECTORY`:

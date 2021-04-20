@@ -16,3 +16,4 @@ tld==0.12.2
 urllib3==1.25.10
 argparse==1.4.0
 pandas==1.1.5
+pyvirtualdisplay

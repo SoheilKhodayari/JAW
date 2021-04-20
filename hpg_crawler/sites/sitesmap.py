@@ -21,7 +21,7 @@
 # TODO: place your input sites here for testing
 
 SITES_MAP = {
-	'1': ('example-name', 'https://example.com', ),
+	'1': ('google', 'https://google.com', ),
 }
 
 

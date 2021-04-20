@@ -23,7 +23,9 @@
 import os
 
 # maximum number of urls to be found before termination
-MAX_CRAWLING_URLS_DEFAULT = 1000
+# MAX_CRAWLING_URLS_DEFAULT = 1000 # (default)
+MAX_CRAWLING_URLS_DEFAULT = 10 
+
 
 # crawler time bucket before termination (in seconds)
 # Default: 20 * 60  =  20 mins
@@ -104,6 +106,10 @@ if PLATFORM == "macos":
 else:
 	CHROME_DRIVER = '/usr/bin/chromedriver'
 
+# use the dockerized version of the crawler
+USE_DOCKER = True
+# driver for docker chrome, specified in Dockerfile
+CHROME_DRIVER_DOCKER = '/usr/local/bin/chromedriver'
 	
 ## whether or not the crawler should beautify JS files upon saving
 ## NOTE that this may incur additional time
