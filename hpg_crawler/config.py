@@ -23,8 +23,8 @@
 import os
 
 # maximum number of urls to be found before termination
-# MAX_CRAWLING_URLS_DEFAULT = 1000 # (default)
-MAX_CRAWLING_URLS_DEFAULT = 10 
+MAX_CRAWLING_URLS_DEFAULT = 1000 # (default)
+# MAX_CRAWLING_URLS_DEFAULT = 10 
 
 
 # crawler time bucket before termination (in seconds)
