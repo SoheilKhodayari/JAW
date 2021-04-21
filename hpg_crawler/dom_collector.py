@@ -55,7 +55,7 @@ def _get_data_external_links(scripts, driver=None):
 				if RequesterModule.is_http_response_valid(d):
 					d_str = str(d).strip()
 					if (not d_str.startswith("""<!doctype html>""")) and ('doctype html' not in d_str): #ignore the case when resource is HTML, e.g, non-authenticated access via python requests
-						data.append([script_type, d])
+						data.append([script_type, d, link])
 				else:
 					## no valid content
 					if constantsModule.DEBUG_PRINTS:
@@ -89,7 +89,7 @@ def _get_data_external_links(scripts, driver=None):
 					d_str = d_str.text # get the 'pre' tag content
 
 				if (not d_str.startswith("""<!doctype html>""")): #ignore the case when resource is HTML, e.g, non-authenticated access via python requests
-					data.append([script_type, d_str])
+					data.append([script_type, d_str, link])
 				else:
 					## no valid content
 					if constantsModule.DEBUG_PRINTS:
@@ -214,7 +214,7 @@ def get_dynamic_data(siteId, url, driver= None, close_conn= True, internal_only=
 	library_links = {} # lib name -> lib address
 	scripts = []
 	internals = []
-	for i in soup_content.find_all('script'):
+	for i in soup_content.find_all("script"):
 		if not i.get('src'):
 			if not i.get('type'):
 				# script contains JS if type is absent

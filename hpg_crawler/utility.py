@@ -368,7 +368,6 @@ def collect_site_data(site_id, url, driver, out_path = CrawlerConfig.OUTPUT_DATA
 	script_files_counter = 0
 
 	mappings = {}
-	writeMapping = False
 	for item in script_files:
 		script_files_counter+=1
 
@@ -380,19 +379,21 @@ def collect_site_data(site_id, url, driver, out_path = CrawlerConfig.OUTPUT_DATA
 			# remove HTML comment obfuscation in the start and end of inline script tags <!-- and -->
 			script_content = script_content.strip().lstrip('<!--').rstrip('-->')
 
+			# @ISSUE fixed: make the implicit reference to internal scripts in the scripts description file explicit  
+			mappings[script_files_counter] = 'internal_script'
+
 		else:
 			link = item[2]
 			mappings[script_files_counter] = link
-			writeMapping = True
 
 		script_save_file_name = os.path.join(scripts_folder, str(script_files_counter)+'.js')
 		with open(script_save_file_name, "w+") as fd:
 			fd.write(script_content)
 		_beautify_js(script_save_file_name)
 
-	if writeMapping:
-		with open( os.path.join(scripts_folder,"mappings.json"), 'w+', encoding='utf-8') as fd:
-			json.dump(mappings, fd, ensure_ascii=False, indent=4)
+
+	with open( os.path.join(scripts_folder,"mappings.json"), 'w+', encoding='utf-8') as fd:
+		json.dump(mappings, fd, ensure_ascii=False, indent=4)
 
 	# step 3: save library files
 	lib_links_dictionary = dynamic_data[3]

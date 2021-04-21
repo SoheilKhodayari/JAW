@@ -237,6 +237,12 @@ $ python3 driver.py <start-site-id> <end-site-id>
 ``` 
 For example, `python3 driver.py 1 5` crawls websites with id one to five from `hpg_crawler/sites/sitemap.py`.
 
+### Running With Docker
+
+- Specify which website you want to crawl in `docker-compose.yml` under the `command` field
+- Spawn an instance of the crawler by `./run.docker.sh`.
+
+
 For more information about the web crawler of JAW, see [here](docs/crawler.md).
 
 
