@@ -8,7 +8,7 @@ The crawler takes as inputs the list of sites to test, and a state script for ea
 
 **Testbed.** The list of input sites are specified in `hpg_crawler/sites/sitemap.py`. Each site is assigned a id and a name.
 
-**Login State.** The state script loads different user states inside the browser (e.g., login as user1, login as user2, etc). The state script of each file must be placed inside `hpg_crawler/sites/<site-id>` where <site-id> is the id specified in `hpg_crawler/sites/sitemap.py`.
+**Login State.** The state script loads different user states inside the browser (e.g., login as user1, login as user2, etc). The state script of each file must be placed inside `hpg_crawler/sites/<site-id>` where `<site-id>` is the id specified in `hpg_crawler/sites/sitemap.py`.
 
 **Template.**
 A template/example state script is provided in `hpg_crawler/sites/template/Auth.py`.
