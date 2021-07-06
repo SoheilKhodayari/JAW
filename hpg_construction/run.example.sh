@@ -1,1 +1,1 @@
-node main.js -js ./unit_tests/debug.js -o debug
+node main.js -js ./unit_tests/example_analysis/test_1.js -o unit_tests/example_analysis/test_1

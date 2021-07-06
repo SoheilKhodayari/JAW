@@ -62,6 +62,7 @@ function main(){
 
      } catch(err) {
          console.error('[-] ERROR:  '+ err.message);
+         err.stack && console.error(err.stack)
      }
 }
 
@@ -70,10 +71,5 @@ function main(){
     console.log('[+] started code property graph analyzer...');
     await main();
     console.log('[+] code property graph analyzer finished!');
-    
-    setTimeout(function(){
-        process.exit()
-        console.log('[+] waiting for 10 seconds to flush async I/O.')
-    }, 10000); // wait 10 seconds before termination to flush the async data to the node and edges CSV files
 
 })();

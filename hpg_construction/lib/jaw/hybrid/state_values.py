@@ -91,7 +91,7 @@ class StateValues:
 		with open(nodes_file_absolute, 'a+') as fd:
 			for request_id in requests:
 				rr = requests[request_id]
-				csv_line= '{0}{1} {4}{1} {3}{1} {6}{1} {1} {1} {2}{1} {5}{1} {1} RequestNode{1}\n'.format(uuid.uuid4(), constantsModule.outputCSVDelimiter, rr['url'], rr['type'], rr['method'], rr['body'], rr['status'])
+				csv_line= '{0}{1}{4}{1}{3}{1}{6}{1}{1}{1}{2}{1}{5}{1}{1}RequestNode{1}\n'.format(uuid.uuid4(), constantsModule.outputCSVDelimiter, rr['url'], rr['type'], rr['method'], rr['body'], rr['status'])
 				fd.write(csv_line)
 
 
@@ -145,7 +145,7 @@ class StateValues:
 			## event name --> Type field
 			## event target --> Value field
 			## label --> EventNode (to be used for ORM)
-			csv_line= '{0}{1} {2}{1} {1} {1} {1} {1} {3}{1} {1} {1} EventNode{1}\n'.format(uuid.uuid4(), constantsModule.outputCSVDelimiter, event_name, event_target)
+			csv_line= '{0}{1}{2}{1}{1}{1}{1}{1}{3}{1}{1}{1}EventNode{1}\n'.format(uuid.uuid4(), constantsModule.outputCSVDelimiter, event_name, event_target)
 			events.append(csv_line)
 
 
@@ -177,7 +177,7 @@ class StateValues:
 				## cookie value 	--> Value field
 				## cookie httpOnly  --> Type field
 				## label 			--> CookieNode
-				csv_line = '{0}{1} {4}{1} {1} {1} {1} {1} {3}{1} {2}{1} {1} CookieNode{1}\n'.format(uuid.uuid4(), constantsModule.outputCSVDelimiter, cookie_obj['name'], cookie_obj['value'], cookie_obj['httpOnly'])
+				csv_line = '{0}{1}{4}{1}{1}{1}{1}{1}{3}{1}{2}{1}{1}CookieNode{1}\n'.format(uuid.uuid4(), constantsModule.outputCSVDelimiter, cookie_obj['name'], cookie_obj['value'], cookie_obj['httpOnly'])
 				fd.write(csv_line)
 
 	@staticmethod
@@ -205,7 +205,7 @@ class StateValues:
 			## html path 		--> Location field
 			## html code 		--> Code field
 			## label 			--> DOMSnapshot
-			csv_line = '{0}{1} {1} {1} {1} {1} {2}{1} {1} {1} {1} DOMSnapshot{1}\n'.format(uuid.uuid4(), constantsModule.outputCSVDelimiter, html_path)
+			csv_line = '{0}{1}{1}{1}{1}{1}{2}{1}{1}{1}{1}DOMSnapshot{1}\n'.format(uuid.uuid4(), constantsModule.outputCSVDelimiter, html_path)
 			fd.write(csv_line)
 
 

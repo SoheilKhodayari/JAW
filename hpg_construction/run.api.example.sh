@@ -1,1 +1,1 @@
-python3 -m hpg_construction.api /Users/soheilkhodayari/Desktop/projects/hpgRelease/hpg-release/hpg_construction/outputs/test_1 --hybrid=false
+python3 -m hpg_construction.api ./hpg_construction/outputs/test_website/test_webpage --hybrid=false

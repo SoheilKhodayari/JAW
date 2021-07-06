@@ -18,7 +18,7 @@
 
 	Usage:
 	------------
-	python -m hpg_analysis.queries.example 
+	python -m hpg_analysis.queries.example_query_cypher 
 
 """
 

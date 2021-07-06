@@ -65,6 +65,7 @@ else:
 	NEO4J_PASS = 'root' # default pass is 'neo4j'
 
 
+# neo4j version config
 NEOJ_VERSION_4X = '4.'
 NEOJ_VERSION_3X = '3.'
 if os.getenv('NEO4J_VERSION') is not None:
@@ -72,10 +73,10 @@ if os.getenv('NEO4J_VERSION') is not None:
 else:
 	NEO4J_VERSION = NEOJ_VERSION_4X
 
-
-
-
 # browser view on port 7474 with HTTP!
+NEO4J_CONN_HTTP_STRING = "http://127.0.0.1:7474"
+
+# bolt connections
 NEO4J_CONN_STRING = "bolt://127.0.0.1:7687"
 
 # NeoModel connection string
@@ -94,6 +95,10 @@ CACHE_PATH = os.path.join(BASE_DIR, "cache")
 
 # analyzer driver program
 ANALYZER_DRIVER_PATH = os.path.join(os.path.join(BASE_DIR, "hpg_construction"), "main.js")
+
+# analyzer driver program v2
+ANALYZER_DRIVER_PATH_V2 = os.path.join(os.path.join(BASE_DIR, "hpg_construction"), "cli.js")
+
 
 # path to store the node and csv files 
 OUTPUT_NODES_RELS_PATH = os.path.join(os.path.join(BASE_DIR, "hpg_construction"), "outputs")

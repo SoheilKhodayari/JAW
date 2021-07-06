@@ -31,6 +31,17 @@
 #		Neo4j Utility Queries
 # -------------------------------------------------------------------------- #
 
+
+def get_cfg_level_nodes_for_statements():
+
+	TOP_LEVEL_NODES = [
+		"ExpressionStatement",
+		"VariableDeclaration",
+	]
+
+	return TOP_LEVEL_NODES
+
+
 def get_ast_parent(tx, node):
 
 	"""
@@ -61,16 +72,15 @@ def get_ast_topmost(tx, node):
 	"""
 	parent = get_ast_parent(tx, node)
 
+	CFG_LEVEL_STATEMENTS = get_cfg_level_nodes_for_statements()
 	done = False
 	while not done:
 		grand_parent = get_ast_parent(tx, parent)
 		if grand_parent is None:
 			done = True
 			return parent
-		elif grand_parent['Type'] == 'ExpressionStatement':
-			done = True
-			break
-		elif grand_parent['Type'] == 'VariableDeclaration':
+
+		if grand_parent['Type'] in CFG_LEVEL_STATEMENTS:
 			done = True
 			break
 		else:

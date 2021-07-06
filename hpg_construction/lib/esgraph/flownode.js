@@ -503,6 +503,7 @@ Object.defineProperties(FlowNode.prototype, {
 			}
 		}
 	},
+
 	/**
 	 * C-use set at this node
 	 * @type {Set}

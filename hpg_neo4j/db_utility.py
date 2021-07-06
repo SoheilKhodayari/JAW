@@ -31,6 +31,8 @@ import subprocess
 import os
 import sys
 import time
+import requests
+import uuid
 import hpg_crawler.sites.sitesmap as sitesMapConfig 
 import constants as constantsModule
 import hpg_neo4j.orm as ORMModule
@@ -38,13 +40,48 @@ from utils.utility import _hash, run_os_command
 from neo4j import GraphDatabase
 from utils.logging import logger
 
-
 def _get_last_subpath(s):
 	"""
 	@param s :input string
 	@return the last part of the given directory as string
 	"""
 	return os.path.basename(os.path.normpath(s))
+
+
+
+
+def generate_uuid_for_graph():
+	"""
+	generates a uuid for the graph, which can be used as the id of the neo4j docker container
+	"""
+	return 'graph-' + str(uuid.uuid4())
+
+
+
+def API_build_property_graph_for_file(file_absolute_path, file_name, timeout=30*60):
+
+	"""
+	builds a property graph database for a given file
+	"""
+
+	file_absolute_path_name = os.path.join(file_absolute_path, file_name)
+
+	if 'hpg_construction/outputs' in file_absolute_path:
+		e_index = file_absolute_path.index('hpg_construction/outputs') + len('hpg_construction/outputs') + 1
+		output_folder = file_absolute_path[e_index:]
+		output_folder = os.path.join(output_folder, file_name.rstrip('.js'))
+	elif 'hpg_construction/unit_tests' in file_absolute_path:
+		e_index = file_absolute_path.index('hpg_construction/unit_tests') + len('hpg_construction/unit_tests') + 1
+		output_folder = os.path.join("unit_tests", file_absolute_path[e_index:])
+		output_folder = os.path.join(output_folder, file_name.rstrip('.js'))
+	else:
+		logger.error('input file for graph construction must be under the hpg_construction/outputs/ folder!')
+		sys.exit(1)
+
+	command = "node --max-old-space-size=32000 %s -js %s -o %s"%(constantsModule.ANALYZER_DRIVER_PATH, file_absolute_path_name, output_folder)
+	output = run_os_command(command, timeout=timeout)
+	return output
+
 
 
 def API_build_property_graph_for_unit_test(test_file, print_debug=constantsModule.DEBUG_PRINTS):
@@ -231,4 +268,32 @@ def does_neo4j_db_exists(database_name):
 	else:
 		return False
 
+
+
+
+def wait_for_neo4j_bolt_connection(timeout=60):
+	"""
+	wait until neo4j access bolt/http connections
+	"""
+	timer = 0
+	increment = 5
+	RET = False
+
+	while True:
+		try:
+			r = requests.get(constantsModule.NEO4J_CONN_HTTP_STRING, verify=False, timeout=3) # 3 seconds timeout
+			s = str(r.status_code)
+			if s.startswith('2'):
+				logger.info('neo4j is now ready to accept bolt connections.')
+				RET = True
+				break
+		except:
+			time.sleep(increment)
+			timer+= increment
+			if timer >= timeout:
+				logger.error('neo4j is not accepting bolt connections.')
+				RET = False
+				break
+
+	return RET
 

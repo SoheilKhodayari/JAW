@@ -24,17 +24,21 @@ var namespace = require('../../namespace'),
 /**
  * Constructor of Def class, initialize a Def object, if valid
  * @param {object} fromNode A FlowNode from where this definition is generated
+ * param {object} fromNodeActual: A FlowNode from where this definition is actually generated, i.e., not the global entry `Program` node for hoisted functions/variables
  * @param {string} type Type of this definition
  * @param {Array} range Array of range
  * @constructor
  * @throws {object} When an attribute of Def is invalid
  */
-function Def(fromNode, type, range) {
+function Def(fromNode, type, range, fromNodeActual) {
     'use strict';
     // Def.validate(fromNode, type, range);
     internal(this)._fromNode = fromNode;
     internal(this)._type = type;
     internal(this)._range = factoryRange.create(range);
+
+
+    internal(this)._fromNodeActual = fromNodeActual;
 
     /* start-test-block */
     this._testonly_ = internal(this);
@@ -162,6 +166,13 @@ Object.defineProperties(Def.prototype, {
 		},
 		enumerable: true
 	},
+    fromNodeActual: {
+        get: function () {
+            'use strict';
+            return internal(this)._fromNodeActual;
+        },
+        enumerable: true
+    },
 	type: {
 		get: function () {
 			'use strict';

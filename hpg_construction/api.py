@@ -72,7 +72,7 @@ def main():
 
 	# build the property graph for the js program
 	command = "node --max-old-space-size=32000 %s -js %s -o %s"%(constantsModule.ANALYZER_DRIVER_PATH, js_program, relative_output_path)
-	utilityModule.run_os_command(command)
+	utilityModule.run_os_command(command, timeout=15*60)
 
 
 	# store also the dynamic info inside the csv

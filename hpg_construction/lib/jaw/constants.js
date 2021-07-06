@@ -199,6 +199,26 @@ constantsModule.devDEBUG = false
 // tolerant mode: experimental
 constantsModule.tolerantMode = false;
 
+/**
+ * Set verbose mode
+ * When verbose mode is set, error logs will be shown in console explicitly and in detail.
+ * @type {boolean}
+ * @memberof constantsModule.prototype
+ */
+constantsModule.verboseMode = true;
+
+
+/**
+ * Supported languages
+ */
+const LANG = { 
+	js: 'js', // client-side JS 
+	nodejs: 'nodejs',
+}
+
+constantsModule.LANG = LANG;
+
+
 module.exports = constantsModule;
 
 

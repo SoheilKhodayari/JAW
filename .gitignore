@@ -141,3 +141,8 @@ snippets
 hpg_construction/lib/jaw/dom-points-to/template.js
 hpg_construction/lib/jaw/dom-points-to/resolution.out
 hpg_construction/run.test.sh
+hpg_construction/unit_tests/**/*.csv
+
+
+docker/neo4j/volume/*
+!docker/neo4j/volume/.gitkeep

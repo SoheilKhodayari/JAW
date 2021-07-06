@@ -103,7 +103,7 @@ function analyzeFunctionDeclaration(model) {
         FunctionDeclaration: function (node) {
             var funVar = scope.namedFunctionVars.get(node.id.name);
             if (!!funVar) {
-                vardefOfNamedFunctions.add(varDefFactory.create(funVar, defFactory.createFunctionDef(scopeEntryNode, node.range)));
+                vardefOfNamedFunctions.add(varDefFactory.create(funVar, defFactory.createFunctionDef(scopeEntryNode, node.range, node)));
             }
         }
     });
@@ -120,7 +120,14 @@ DefUseAnalyzer.prototype.initiallyAnalyzeIntraProceduralModels = function () {
         var scopes = scopeTree.scopes;
         scopes.forEach(function (scope) {
             var model = modelCtrl.getIntraProceduralModelByMainlyRelatedScopeFromAPageModels(scopeTree, scope);
-            analyzeBuiltInObjects(model);
+            /* Calling this will create ReachIn definitions
+             * for Builtin objects (e.g., window, document)
+             * specified in scope/pagescope.js. However,
+             * since we cannot add PDG edges for such built-in definitions (no definiton node),
+             * we do not also need to store the ReachIn definitions in nodes.
+             */
+            // analyzeBuiltInObjects(model);  
+
             analyzeDefaultValueOfLocalVariables(model);
             analyzeFunctionDeclaration(model);
         });
@@ -174,8 +181,10 @@ DefUseAnalyzer.prototype.findDUPairs = function (model) {
             // pairs.add(dupairFactory.create(elem.definition.fromNode, [node, node.false, 'false']));
             // FIX for PDG control dependence edges
             var ifStatement = node.parent;
-            pairs.add(dupairFactory.create(elem.definition.fromNode, [ifStatement, ifStatement.consequent, ifStatement.alternate])); // node, true, false
-            dupairs.set(elem.variable, pairs);
+            if(ifStatement){
+                pairs.add(dupairFactory.create(elem.definition.fromNode, [ifStatement, ifStatement.consequent, ifStatement.alternate])); // node, true, false
+                dupairs.set(elem.variable, pairs);
+            }
         
         });
     });

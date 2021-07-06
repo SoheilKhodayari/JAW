@@ -62,11 +62,12 @@ DefFactory.prototype.createObjectDef = function (from, range) {
  * Factory method for function type definition
  * @param {FlowNode} from Node where the definition is generated
  * @param {Range|Array} range
+* @param {FlowNode} actual Node where the definition is generated (for global functions/variables)
  * @returns {Def} Definition object with function type
  */
-DefFactory.prototype.createFunctionDef = function (from, range) {
+DefFactory.prototype.createFunctionDef = function (from, range, actual) {
     "use strict";
-    return new Def(from, Def.FUNCTION_TYPE, range);
+    return new Def(from, Def.FUNCTION_TYPE, range, actual);
 };
 
 /**
@@ -86,9 +87,9 @@ DefFactory.prototype.createHTMLDOMDef = function (from, range) {
  * @param {Range|Array} range
  * @returns {Def} Definition object with undefined type
  */
-DefFactory.prototype.createUndefinedDef = function (from, range) {
+DefFactory.prototype.createUndefinedDef = function (from, range, actual) {
     "use strict";
-    return new Def(from, Def.UNDEFINED_TYPE, range);
+    return new Def(from, Def.UNDEFINED_TYPE, range, actual);
 };
 
 /**

@@ -18,7 +18,7 @@
 
 	Usage:
 	------------
-	python -m hpg_analysis.queries.exampleorm 
+	python -m hpg_analysis.queries.example_query_orm 
 
 
 	Further Documentation on NeoModel ORM:
