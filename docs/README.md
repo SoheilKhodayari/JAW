@@ -9,6 +9,7 @@
 ### Graph Construction
 
 - [Building a Property Graph](hpg-building.md)
+- [Using JAW with Neo4j Docker Container](neo4j-docker.md)
 
 ### Graph Traversals
 

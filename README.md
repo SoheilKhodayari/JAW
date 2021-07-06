@@ -86,115 +86,45 @@ Please install the following dependencies before proceeding to the installation 
 
 ## Installation
 
-Please follow the steps below in order for an smooth installation process.
+Below is the quick installation guide. Please see [here](docs/installation.md) for `detailed` installation instructions. 
 
-### Step 1: Installing Python Dependencies
+### Step 1: Installing Python/NodeJS Dependencies
 In the project root directory, run:
 ```sh
-$ pip3 install -r requirements.txt
+$ cd installation
+$ ./install_dependencies.sh
 ```
 
-### Step 2: Installing Node Modules
-In the project root directory, run:
-```sh
-$ cd hpg_construction
-$ npm install
-```
-Then:
-```sh
-$ cd hpg_construction/lib/jaw/dom-points-to
-$ npm install
-```
-Finally:
-```sh
-$ cd hpg_construction/lib/jaw/normalization
-$ npm install
-```
+### Step 2: Installing Neo4j
 
-### Step 3: Installing Neo4j
+This prototype has been tested with `Neo4j 3.5.9`, and `Neo4j 4.2.3` community edition.
 
-**1- Install Java.**
+**Option 1: Using JAW with Neo4j in Docker**
+Please see [here](docs/neo4j-docker.md) for information on how to use JAW with neo4j running inside docker.
 
-Follow the tutorial [here](https://www.digitalocean.com/community/tutorials/how-to-manually-install-oracle-java-on-a-debian-or-ubuntu-vps) to install the latest version of Java.
+**Option 2: Installing in Host Machine.**
 
+You can download `Neo4j 3.5.9`, or `Neo4j 4.2.3`  from the [neo4j download center](https://neo4j.com/download-center/#community).
+You can also install it, among others, via `apt-get` or `homebrew`. For example:
 
-**2- Install Neo4j.**
-
-This prototype have been tested with `Neo4j 3.5.9`, community edition.
-You can download the `3.5.x` version from the [neo4j download center](https://neo4j.com/download-center/#community).
-You can also install it, among others, via `apt-get` or `homebrew`, as shown below.
-
-2.1- Installing for Linux
 ```sh
 $ cd installation
-$ chmod +x neo4j_installation.sh
-$ ./neo4j_installation.sh
-```
-For more information, see [here](https://www.alibabacloud.com/blog/installing-neo4j-on-ubuntu-16-04_594570), or [here](https://neo4j.com/developer/kb/using-apt-get-to-download-a-specific-neo4j-debian-package/).
-
-2.2- Installing For MacOS
-```sh
-$ cd installation
-$ brew install ./neo4j.rb
+$ # for linux, neo4j 3.5.x
+$ ./linux_neo4j_installation.sh
+$ # for macos, neo4j 3.5.x
+$ ./macos_neo4j_installation.sh
 ```
 
-**Note:** the graph import commands and database activation may slightly differ across neo4j versions. 
-If you want to use another version of neo4j, you need to change the graph import command (i.e., `NEO4J_IMPORT_COMMAND`), as well as the database activation logic (i.e., `dbms.active_database`) in `API_neo4j_prepare` function
-of `hpg_neo4j/db_utility` package.
+Then, copy the `example.env`  and rename it to `.env`.
+- Set your operating system:
+	- `PLATFORM=linux`
+	- `PLATFORM=macos`
 
-
-**3- Set the intitial Neo4j Password.**
-
-By default, the password should be set as `root` for the user `neo4j`. If you set any other password, you also need to change it in `constants.py`.
+**Note** By default, the neo4j password should be set as `root` for the user `neo4j`. If you set any other password, you also need to change it in `constants.py`.
 ```sh
 $ neo4j-admin set-initial-password root
 ```
 
-**Note**: the default username and password should be `neo4j` and `neo4j`, respectively. But this has to be changed so that neo4j allows `driver connections`. If the above command did not work, try using the `cypher-shell`:
-
-connect to cypher shell via:
-```sh
-$ cypher-shell -u neo4j -p neo4j
-```
-then run:
-```sh
-CALL dbms.changePassword('root');
-:exit
-```
-
-If you choose a different password, you must set it in `.env` with `NEO4J_PASS=your-password`.
-
-
-**4- Make sure you can see the followings (uncommented) in your `neo4j.conf` file:**
-```
-dbms.connector.bolt.enabled=true
-dbms.connector.bolt.listen_address=0.0.0.0:7687 
-```
-
-### Step 4: Setup Enviornment Variables
-
-Copy the `example.env`  and rename it to `.env`.
-- Set your operating system:
-	- `PLATFORM=linux`
-	- `PLATFORM=macos`
-- If you choose a different password than that of step 3, you must set it in `.env` with `NEO4J_PASS=your-password`.
-
-**Note**: you may use the tool in windows. This requires changing the `neo4j` configuration varibles (e.g., NEO4J_CONF) in `constants.py`. In addition, you should change the
-`API_neo4j_prepare` function in `main.py` by replacing the `sed` bash command to that of windows (or simply provide a similar copying logic).
-
-### Further Information about Neo4j
-
-Neo4j example DB import synax:
-```sh
-$ neo4j-admin import --mode=csv --database=graph.db --nodes=nodes.csv --relationships=rels.csv --delimiter='¿'
-```
-See: [Neo4j import documentation](https://neo4j.com/docs/operations-manual/current/tools/import/) for more!
-
-
-Environment configuration on OS X:
-```sh
-$ export NEO4J_HOME="/usr/local/Cellar/neo4j/3.5.9/libexec"
-```
 
 # Quick Start
 
@@ -329,12 +259,12 @@ You should place and run your queries in `hpg_analysis/<ANALYSIS_NAME>`.
 #### Option 1: Using the NeoModel ORM
 You can use the [NeoModel ORM](https://neomodel.readthedocs.io/en/latest/properties.html) to query the HPG. To write a query:
 
-(1) Check out the [HPG data model](docs/hpg-nodes.md) and [syntax tree](docs/syntax-tree.md).
-(2) Check out the [ORM model](https://github.com/SoheilKhodayari/JAW/blob/master/hpg_neo4j/orm.py) for HPGs 
-(3) See the example query file provided; `exampleorm.py` in the `hpg_analysis/example` folder.
+- (1) Check out the [HPG data model](docs/hpg-nodes.md) and [syntax tree](docs/syntax-tree.md).
+- (2) Check out the [ORM model](https://github.com/SoheilKhodayari/JAW/blob/master/hpg_neo4j/orm.py) for HPGs 
+- (3) See the example query file provided; `example_query_orm.py` in the `hpg_analysis/example` folder.
 
 ```sh
-$ python3 -m hpg_analysis.example.exampleorm  
+$ python3 -m hpg_analysis.example.example_query_orm  
 ```
 
 
@@ -344,11 +274,11 @@ For more information, please see [here](docs/hpg-querying.md).
 
 You can use [Cypher](https://neo4j.com/docs/cypher-manual/3.5/) to write custom queries. For this:
 
-(1) Check out the [HPG data model](docs/hpg-nodes.md) and [syntax tree](docs/syntax-tree.md).
-(2) See the example query file provided; `example.py` in the `hpg_analysis/example` folder.
+- (1) Check out the [HPG data model](docs/hpg-nodes.md) and [syntax tree](docs/syntax-tree.md).
+- (2) See the example query file provided; `example_query_cypher.py` in the `hpg_analysis/example` folder.
 
 ```sh
-$ python3 -m hpg_analysis.example.example
+$ python3 -m hpg_analysis.example.example_query_cypher
 ```
 
 For more information, please see [here](docs/hpg-querying.md).
@@ -408,7 +338,7 @@ This entry shows that on line 29, there is a `$.ajax` call expression, and this 
 
 # Detailed Documentation.
 
-For more information, visit our wiki page [here](docs/jaw.md). Below is a table of contents for quick access.
+For more information, visit our wiki page [here](docs/README.md). Below is a table of contents for quick access.
 
 ### The Web Crawler of JAW
 - [Web Crawler](docs/crawler.md)
@@ -421,6 +351,7 @@ For more information, visit our wiki page [here](docs/jaw.md). Below is a table 
 ### Graph Construction
 
 - [Building a Property Graph](docs/hpg-building.md)
+- [Using JAW with Neo4j Docker Container](docs/neo4j-docker.md)
 
 ### Graph Traversals
 
