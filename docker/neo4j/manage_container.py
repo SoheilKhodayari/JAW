@@ -66,6 +66,7 @@ def create_neo4j_container(container_name, volume_home=VOLUME_HOME):
     -e NEO4J_dbms_security_procedures_unrestricted=apoc.\\\* \
     -e PYTHONUNBUFFERED=1 \
     --env NEO4J_AUTH={2}/{3} \
+    --user="$(id -u):$(id -g)" \
     neo4j:4.2.3
 	""".format(container_name, volume_home, constants.NEO4J_USER, constants.NEO4J_PASS, constants.OUTPUT_NODES_RELS_PATH)
 	# Note: pass the analyzer outputs folder as the import directory of neo4j
