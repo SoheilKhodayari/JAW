@@ -188,7 +188,7 @@ $ python3 -m hpg_construction.api <path> --js=<program.js> --import=<bool> --hyb
 
 **Specification of Parameters:**
 
-- `<path>`: base path to the folder containing the program files for analysis (must be under the `hpg_construction/outputs` folder).
+- `<path>`: absolute path to the folder containing the program files for analysis (must be under the `hpg_construction/outputs` folder).
 - `--js=<program.js>`: name of the JavaScript program for analysis (default: `js_program.js`).
 - `--import=<bool>`: whether the constructed property graph should be imported to an active neo4j database (default: true).
 - `--hybrid=bool`: whether the hybrid mode is enabled (default: `false`). This implies that the tester wants to enrich the property graph by inputing files for any of the HTML snapshot, fired events, HTTP requests and cookies, as collected by the JAW crawler.
