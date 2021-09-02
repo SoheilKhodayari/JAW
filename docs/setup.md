@@ -23,7 +23,7 @@ $ ./install_dependencies.sh
 This prototype has been tested with `Neo4j 3.5.9`, and `Neo4j 4.2.3` community edition.
 
 **Option 1: Using JAW with Neo4j in Docker**
-Please see [here](docs/neo4j-docker.md) for information on how to use JAW with neo4j running inside docker.
+Please see [here](neo4j-docker.md) for information on how to use JAW with neo4j running inside docker.
 
 **Option 2: Installing in Host Machine.**
 
