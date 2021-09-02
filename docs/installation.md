@@ -32,7 +32,7 @@ $ npm install
 Follow the tutorial [here](https://www.digitalocean.com/community/tutorials/how-to-manually-install-oracle-java-on-a-debian-or-ubuntu-vps) to install the latest version of Java.
 
 
-**2- Install Neo4j.**
+**2- Setup Neo4j.**
 
 This prototype has been tested with `Neo4j 3.5.9`, and `Neo4j 4.2.3` community edition.
 

@@ -1,3 +1,6 @@
+### Installation
+- [Setup](setup.md)
+
 ### The Web Crawler of JAW
 - [Web Crawler](crawler.md)
 

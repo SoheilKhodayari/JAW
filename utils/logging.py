@@ -16,7 +16,7 @@
 
     Description:
     ------------
-    High-level interface to build the property graph
+    A logger module for messages 
 
 
     Usage:

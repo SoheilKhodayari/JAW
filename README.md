@@ -1,4 +1,24 @@
+<p align="center">
+	<a href="//soheilkhodayari.github.io/JAW/">
+		<img align="center" alt="JAW" src="docs/assets/logo.png" height="195">
+	</a>
+</p>
+
+<p align="center">
+	<span><b> J A W</b></span>
+</p>
+
+<p align="center">
+	<a href="https://soheilkhodayari.github.io/JAW/">Website</a> |
+	<a href="https://github.com/SoheilKhodayari/JAW/tree/master/docs">Docs</a> |
+	<a href="https://github.com/SoheilKhodayari/JAW/tree/master/docs/setup.md">Setup</a> |
+	<a href="https://github.com/SoheilKhodayari/JAW/tree/master/hpg_crawler">Crawler</a> |
+	<a href="https://github.com/SoheilKhodayari/JAW/blob/master/hpg_analysis/example/example_analysis.py"> Quick Start (Example)</a>
+</p>
+
+
 # JAW
+
 
 [![Build Status](https://travis-ci.org/boennemann/badges.svg?branch=master)](https://travis-ci.org/boennemann/badges) [![Node](https://img.shields.io/badge/node%40latest-%3E%3D%206.0.0-brightgreen.svg)](https://img.shields.io/badge/node%40latest-%3E%3D%206.0.0-brightgreen.svg) [![Platform](https://img.shields.io/badge/platform-windows%20%7C%20macos%20%7C%20linux-lightgrey.svg)](https://img.shields.io/badge/platform-windows%20%7C%20macos%20%7C%20linux-lightgrey.svg) [![Open Source Love](https://badges.frapsoft.com/os/v1/open-source.svg?v=103)](https://github.com/ellerbrock/open-source-badges/) [![Tweet](https://img.shields.io/twitter/url/http/shields.io.svg?style=social)](https://twitter.com/intent/tweet?text=A%20Static-Dynamic%20Analysis%20Framework%20for%20Client-side%20JavaScript&url=https://github.com/SoheilKhodayari/JAW)
 
@@ -97,7 +117,7 @@ $ cd installation
 $ ./install_dependencies.sh
 ```
 
-### Step 2: Installing Neo4j
+### Step 2: Setup Neo4j
 
 This prototype has been tested with `Neo4j 3.5.9`, and `Neo4j 4.2.3` community edition.
 
