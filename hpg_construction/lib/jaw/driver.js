@@ -430,21 +430,22 @@ var findCallGraphObjectExpressionFunctions = function(props, current_path){
  */
 var getMemberExpressionAsString = function(memberExpressionNode){
 
-    var key = memberExpressionNode.property.name;
-    var n = memberExpressionNode.object;
-    if(n && n.type === 'Identifier'){
-         key = n.name + '.'+ key;
-    }
-    while(n && n.type === 'MemberExpression'){
-        key = n.property.name + '.'+ key;
-        n = n.object; // loop
-        if(n.type === 'Identifier'){
-            key = n.name + '.'+ key;
-            break;
-        }
-    }
+    // var key = memberExpressionNode.property.name;
+    // var n = memberExpressionNode.object;
+    // if(n && n.type === 'Identifier'){
+    //      key = n.name + '.'+ key;
+    // }
+    // while(n && n.type === 'MemberExpression'){
+    //     key = n.property.name + '.'+ key;
+    //     n = n.object; // loop
+    //     if(n.type === 'Identifier'){
+    //         key = n.name + '.'+ key;
+    //         break;
+    //     }
+    // }
+
     // USE escodegen instead?
-    // escodegen.generate(memberExpressionNode)  
+    var key = escodegen.generate(memberExpressionNode)  
     return key;                       
 }
 
@@ -452,8 +453,9 @@ var getCallGraphFieldsForASTNode = function(node){
     var n = { _id: node._id }
     return n;
 }
+
 /**
- * consider's the case where partialActualName is part of a key in the functionMap
+ * considers the case where partialActualName is part of a key in the functionMap
  * this will then create an alias entry for such key pairs with the PartialAliasName replaced
  */
 var checkFunctionMapForPartialAliasing = function(pairs){
@@ -462,9 +464,15 @@ var checkFunctionMapForPartialAliasing = function(pairs){
         var partialAliasName = pairs[i][1];
         for(var functionName in functionMap){
             if(functionName.includes(partialActualName)){
-                var pattern = new RegExp(partialActualName, "g");
-                var newName = functionName.replace(pattern, partialAliasName);
-                functionMap[newName] = functionMap[functionName]         
+
+                // @note: the RegExp is too slow when the number of iterations is a lot
+                // Instead, we can just use the .replace() function for more speed!
+
+                // var pattern = new RegExp(partialActualName, "g");
+                // var newName = functionName.replace(pattern, partialAliasName);
+
+                var newName = functionName.replace(partialActualName, partialAliasName);
+                functionMap[newName] = functionMap[functionName]      
             }
         }
     }
@@ -622,56 +630,110 @@ Driver.prototype.writeIntraProceduralAnalysisResultFiles = async function (relat
         theDriver.intraProceduralDUPairsImageFilePaths[pageIndex] = [];
 
 
-        var astList = []
+        /**
+         *  Abstract Syntax Tree (AST)
+         *  for each Scope
+         *  main Scope has the full AST
+         *  (subgoal) find initial function declarations 
+         */
+
+        const mainAST = scopeTree.scopes[0].ast;
+
+        var astRels = [];
+        var astNodes = [];
+        var preNod = null;
+
+        esprimaParser.traverseAST(mainAST, function(node){
+            if(node && node._id){
+                // @note: this check is unneccessary since we iterate only once over the main AST
+                // if(!astNodes.some(e => e._id == node._id)){   
+                    // store new nodes
+                    astNodes.push(node);
+                // }
+            }
+            if(preNod){
+                Object.keys(preNod).forEach((property) => {
+                    let n = preNod[property];
+                    if(Array.isArray(n)){
+                        for(let j=0; j< n.length; j++){
+                            let item = n[j];
+                            if(item && item._id) {
+                                var record = {'fromId': preNod._id, 'toId': item._id, 'relationLabel': "AST_parentOf", 'relationType': property, 'args': {"arg":j} };
+                                astRels.push(record);
+                            }
+                        }
+                    }
+                    else if(n && n._id){
+                        var record = { 'fromId': preNod._id, 
+                                        'toId': n._id, 
+                                        'relationLabel': "AST_parentOf", 
+                                        'relationType': property, 
+                                        'args': {"kwarg": n.name? n.name: n.value} 
+                                    };
+                        astRels.push(record);
+                    }
+                });
+            }
+            preNod = node;
+
+        }); // END esprimaParser.traverseAST
+    
+        /**
+         *  Export AST nodes & rels
+         */
+
+        if(constantsModule.DEBUG){
+            let nodeASTRecords = [];
+            Object.keys(astNodes).forEach((idx) => {
+                let nodeItem = astNodes[idx];
+                let record = {
+                    id: (''+ nodeItem._id),
+                    type: (''+ nodeItem.type)? (nodeItem.type): '',
+                    kind: (''+ nodeItem.kind)? (nodeItem.kind): '',
+                    name: (''+ nodeItem.name)? (nodeItem.name): '',
+                    range: (''+ nodeItem.range)? (nodeItem.range): '',
+                    loc: (''+ nodeItem.loc)? (JSON.stringify(nodeItem.loc)): '',
+                    value: (''+ nodeItem.value)? (JSON.stringify(nodeItem.value)): '',
+                    raw: (''+ nodeItem.raw)? (nodeItem.raw): '',
+                    async: (''+ nodeItem.async)? (nodeItem.async): '',
+                    computed: (''+ nodeItem.computed)? (nodeItem.computed): '',
+                    generator: (''+ nodeItem.generator)? (nodeItem.generator): '',
+                    sourceType: (''+ nodeItem.sourceType)? (nodeItem.sourceType): '',
+                };
+                nodeASTRecords.push(record);
+            });
+
+            let edgeASTRecords = []
+            Object.keys(astRels).forEach((idx) => {
+               let relItem = astRels[idx];
+               let record = {
+                   fromId: (''+ relItem[0]),
+                   toId: ('' + relItem[1]),
+                   relationLabel: ('' + relItem[2]),
+                   relationType: ('' + relItem[3]),
+                   args: (relItem[4])? (JSON.stringify(relItem[4])): ''
+               };
+               edgeASTRecords.push(record);
+            });
+        } /* END DEBUG */
+
+        for(var w = 0; w< astNodes.length; w++){
+            var record = astNodes[w];
+            fs.writeSync(fp_nodes, getNodeLine(record));
+        }
+        for(var w = 0; w< astRels.length; w++){
+            var record = astRels[w];
+            fs.writeSync(fp_rels, getRelationLine(record));
+        }
+
         await intraProceduralModels.forEach(async function (model, modelIndex) {
             
             if(modelIndex == 0){
-                /**
-                 *  Abstract Syntax Tree (AST)
-                 *  for each Scope
-                 *  main Scope has the full AST
-                 *  (subgoal) find initial function declarations 
-                 */
 
                 var ast = scopeTree.scopes[modelIndex].ast;
-                astList.push(ast);
-
-                var astRels = [];
-                var astNodes = [];
-                var preNod = null;
 
                 esprimaParser.traverseAST(ast, function(node){
-                    if(node && node._id){
-                        // store new nodes
-                        if(!astNodes.some(e => e._id == node._id)){
-                            astNodes.push(node);
-                        }
-                    }
-                    if(preNod){
-                         Object.keys(preNod).forEach((property) => {
-                            let n = preNod[property];
-                            if(Array.isArray(n)){
-                                for(let j=0; j< n.length; j++){
-                                    let item = n[j];
-                                    if(item && item._id) {
-                                        var record = {'fromId': preNod._id, 'toId': item._id, 'relationLabel': "AST_parentOf", 'relationType': property, 'args': {"arg":j} };
-                                        astRels.push(record);
-                                    }
-                                }
-                            }
-                            else if(n && n._id){
-                                var record = { 'fromId': preNod._id, 
-                                                'toId': n._id, 
-                                                'relationLabel': "AST_parentOf", 
-                                                'relationType': property, 
-                                                'args': {"kwarg": n.name? n.name: n.value} 
-                                            };
-                                astRels.push(record);
-                            }
-                        });
-                    }
-                    preNod = node;
-                    
+
                     /**
                     * Initial Semantic Type Assignment
                     */
@@ -808,7 +870,7 @@ Driver.prototype.writeIntraProceduralAnalysisResultFiles = async function (relat
                                     // consider the case where actual_name is part of a key in function map
                                     // now node.right.name is aliased with the alias_name MemberExpression
                                     // checkFunctionMapForPartialAliasing(actual_name, alias_name)
-                                     call_graph_alias_check.push([function_actual_name, function_alias_name]);
+                                     call_graph_alias_check.push([actual_name, alias_name]);
                                 }
                             }else if(node.right.type === 'MemberExpression'){
 
@@ -819,86 +881,17 @@ Driver.prototype.writeIntraProceduralAnalysisResultFiles = async function (relat
                                     functionMap[alias_name] = functionMap[actual_name];
                                 }else{
                                     // checkFunctionMapForPartialAliasing(actual_name, alias_name);
-                                     call_graph_alias_check.push([function_actual_name, function_alias_name]);
+                                     call_graph_alias_check.push([actual_name, alias_name]);
                                 } 
                             }
                         }/* END: add function aliases to function Map */
 
                     } // END modelIndex=0 & CG analysis
 
-
-                    // @Note: this part moved to the next block where we find ERDDG registration edges
-                    // if(!disable_ERDDG_analysis && modelIndex === 0){
-                    //     // find all event registrations here 
-                    //     if(node && node.type === 'ExpressionStatement' && node.expression &&
-                    //        node.expression.callee && node.expression.callee.type === 'MemberExpression' &&
-                    //        node.expression.callee.property.name === 'addEventListener'){
-                    //        if(node.expression.callee.object.name in eventRegistrationStatements){
-                    //           // add node to the list of event handlers registered on the element specified at key
-                    //           eventRegistrationStatements[node.expression.callee.object.name].push(node);
-                    //        }else{
-                    //             eventRegistrationStatements[node.expression.callee.object.name] = [node];
-                    //        } 
-                    //     }
-                    // }
-
-
                 }); // END esprimaParser.traverseAST
 
             } // end modelIndex == 0
             
-            /**
-             *  Export AST nodes & rels
-             */
-
-            if(modelIndex === 0){
-
-                if(constantsModule.DEBUG){
-                    let nodeASTRecords = [];
-                    Object.keys(astNodes).forEach((idx) => {
-                        let nodeItem = astNodes[idx];
-                        let record = {
-                            id: (''+ nodeItem._id),
-                            type: (''+ nodeItem.type)? (nodeItem.type): '',
-                            kind: (''+ nodeItem.kind)? (nodeItem.kind): '',
-                            name: (''+ nodeItem.name)? (nodeItem.name): '',
-                            range: (''+ nodeItem.range)? (nodeItem.range): '',
-                            loc: (''+ nodeItem.loc)? (JSON.stringify(nodeItem.loc)): '',
-                            value: (''+ nodeItem.value)? (JSON.stringify(nodeItem.value)): '',
-                            raw: (''+ nodeItem.raw)? (nodeItem.raw): '',
-                            async: (''+ nodeItem.async)? (nodeItem.async): '',
-                            computed: (''+ nodeItem.computed)? (nodeItem.computed): '',
-                            generator: (''+ nodeItem.generator)? (nodeItem.generator): '',
-                            sourceType: (''+ nodeItem.sourceType)? (nodeItem.sourceType): '',
-                        };
-                        nodeASTRecords.push(record);
-                    });
-
-                    let edgeASTRecords = []
-                    Object.keys(astRels).forEach((idx) => {
-                       let relItem = astRels[idx];
-                       let record = {
-                           fromId: (''+ relItem[0]),
-                           toId: ('' + relItem[1]),
-                           relationLabel: ('' + relItem[2]),
-                           relationType: ('' + relItem[3]),
-                           args: (relItem[4])? (JSON.stringify(relItem[4])): ''
-                       };
-                       edgeASTRecords.push(record);
-                    });
-                } /* END DEBUG */
-
-                for(var w = 0; w< astNodes.length; w++){
-                    var record = astNodes[w];
-                    fs.writeSync(fp_nodes, getNodeLine(record));
-                }
-                for(var w = 0; w< astRels.length; w++){
-                    var record = astRels[w];
-                    fs.writeSync(fp_rels, getRelationLine(record));
-                }
-
-             }
-
 
             /**
              *  Control Flow Graph (CFG)
@@ -1031,9 +1024,12 @@ Driver.prototype.writeIntraProceduralAnalysisResultFiles = async function (relat
         });  /* END intraProceduralModels.forEach */
 
 
-        // check partial aliasing + 
-        // ALSO capture the verbtaim case when the position of the function definition in the code 
-        // is after the call/alias site 
+        /*
+        * The call `checkFunctionMapForPartialAliasing` is meant to:
+        *  - Check function name aliasing: create entries in the functionMap for alias names
+        *  - Handle the cases where a function verbatim or alias call site is before the position of the function definition in the code (i.e., hoisting function variable names)
+        */
+        // await checkFunctionMapForPartialAliasing(call_graph_alias_check);
         await checkFunctionMapForPartialAliasing(call_graph_alias_check);
 
         /**
@@ -1050,7 +1046,6 @@ Driver.prototype.writeIntraProceduralAnalysisResultFiles = async function (relat
          */
 
         var event_dependencies = [];
-        var mainAST = astList[0];
 
 
         var modelForPage = modelCtrl.getModelByMainlyRelatedScopeFromAPageModels(scopeTree, scopeTree.root);
@@ -1391,8 +1386,6 @@ Driver.prototype.writeInterProceduralAnalysisResultFiles = async function (relat
 
         await interProceduralModels.forEach(function (model, modelIndex) {
 
-            // @CHECK
-            // TODO: is there any extra edges for CFG? (i.e., are there new flows that have not been considered yet??)
             /**
              *  Control Flow Graph (CFG)
              *  for each Scope AST

@@ -24,7 +24,7 @@
 
 
 
-An open-source, prototype implementation of property graphs for JavaScript based on the [esprima](https://github.com/jquery/esprima/tree/master/src) parser, and the [Mozilla SpiderMonkey Parser API](https://developer.mozilla.org/en-US/docs/Mozilla/Projects/SpiderMonkey/Parser_API). JAW can be used for analyzing the client-side of web applications and JavaScript-based programs.
+An open-source, prototype implementation of property graphs for JavaScript based on the [esprima](https://github.com/jquery/esprima/tree/master/src) parser, and the [EsTree SpiderMonkey Spec](https://github.com/estree/estree). JAW can be used for analyzing the client-side of web applications and JavaScript-based programs.
 
 This project is licensed under `GNU AFFERO GENERAL PUBLIC LICENSE V3.0`. See [here](LICENSE) for more information.
 
