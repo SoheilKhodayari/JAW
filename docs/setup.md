@@ -14,8 +14,7 @@ Below is the quick installation guide. Please see [here](installation.md) for `d
 ### Step 1: Installing Python/NodeJS Dependencies
 In the project root directory, run:
 ```sh
-$ cd installation
-$ ./install_dependencies.sh
+$ ./installation/install_dependencies.sh
 ```
 
 ### Step 2: Setup Neo4j 

@@ -218,14 +218,14 @@ def get_dynamic_data(siteId, url, driver= None, close_conn= True, internal_only=
 		if not i.get('src'):
 			if not i.get('type'):
 				# script contains JS if type is absent
-				scripts.append(['internal_script', i.text])
-				internals.append(['internal_script', i.text])
+				scripts.append(['internal_script', i.string])
+				internals.append(['internal_script', i.string])
 			else:
 				script_type = i.get('type')
 				# filter out text/json, etc
 				if is_valid_script_type(script_type): 
-					scripts.append(['internal_script', i.text])
-					internals.append(['internal_script', i.text])	
+					scripts.append(['internal_script', i.string])
+					internals.append(['internal_script', i.string])	
 
 		else:
 			relative_link = i.get('src').lstrip('/')
