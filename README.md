@@ -113,8 +113,7 @@ Below is the quick installation guide. Please see [here](docs/installation.md) f
 ### Step 1: Installing Python/NodeJS Dependencies
 In the project root directory, run:
 ```sh
-$ cd installation
-$ ./install_dependencies.sh
+$ ./installation/install_dependencies.sh
 ```
 
 ### Step 2: Setup Neo4j
@@ -136,6 +135,9 @@ $ ./linux_neo4j_installation.sh
 $ # for macos, neo4j 3.5.x
 $ ./macos_neo4j_installation.sh
 ```
+
+If you encountered any errors, please checkout the [Neo4j Debian Packages](https://debian.neo4j.com/) repository for potential changes.  
+
 
 Then, copy the `example.env`  and rename it to `.env`.
 - Set your operating system:

@@ -52,6 +52,8 @@ $ # for macos, neo4j 3.5.x
 $ ./macos_neo4j_installation.sh
 ```
 
+If you encountered any errors, please checkout the [Neo4j Debian Packages](https://debian.neo4j.com/) repository for potential changes.  
+
 For more information, see [here](https://www.alibabacloud.com/blog/installing-neo4j-on-ubuntu-16-04_594570), or [here](https://neo4j.com/developer/kb/using-apt-get-to-download-a-specific-neo4j-debian-package/).
 
 

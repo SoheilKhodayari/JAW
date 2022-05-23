@@ -1,6 +1,10 @@
 #!/usr/bin/env bash
 
-wget -O - https://debian.neo4j.org/neotechnology.gpg.key | sudo apt-key add -
-echo 'deb https://debian.neo4j.org/repo stable/' | sudo tee -a /etc/apt/sources.list.d/neo4j.list
+# neo4j version family
+# see https://debian.neo4j.com/ for possible choices 
+VERSION='3.5'
+
+wget -O - https://debian.neo4j.com/neotechnology.gpg.key | sudo apt-key add -
+echo 'deb https://debian.neo4j.com stable' $VERSION | sudo tee /etc/apt/sources.list.d/neo4j.list
 sudo apt-get update
-sudo apt-get install neo4j=3.5.9
+sudo apt-get install neo4j
