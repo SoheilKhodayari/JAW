@@ -16,7 +16,7 @@ To start the crawler, do:
 $ node crawler.js --seedurl=https://google.com --maxurls=100 --browser=chrome --headless=true
 ```
 
-Please see [https://github.com/SoheilKhodayari/JAW/tree/master/docs/crawling/puppeteer-crawler.md] for more information.
+Please see [here](https://github.com/SoheilKhodayari/JAW/tree/master/docs/puppeteer-crawler.md) for more information.
 
 
 ## CLI Usage (Selenium)
@@ -36,5 +36,5 @@ $ python3 hpg_crawler/driver.py <from-site-id> <to-site-id>
 $ ./run.docker.sh
 ```
 
-For more information, please refer to the documentation of the `hpg_crawler` [here]([https://github.com/SoheilKhodayari/JAW/tree/master/docs/crawling/hpg-crawler.md).
+For more information, please refer to the documentation of the `hpg_crawler` [here]([https://github.com/SoheilKhodayari/JAW/tree/master/docs/hpg-crawler.md).
 

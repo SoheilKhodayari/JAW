@@ -31,4 +31,4 @@ $ python3 hpg_crawler/driver.py <from-site-id> <to-site-id>
 $ ./run.docker.sh
 ```
 
-For more information, please refer to the documentation of the `hpg_crawler` [here](https://github.com/SoheilKhodayari/JAW/tree/master/docs/crawling/hpg-crawler.md).
+For more information, please refer to the documentation of the `hpg_crawler` [here](https://github.com/SoheilKhodayari/JAW/tree/master/docs/hpg-crawler.md).

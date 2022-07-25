@@ -11,8 +11,8 @@
 <p align="center">
 	<a href="https://soheilkhodayari.github.io/JAW/">Website</a> |
 	<a href="https://github.com/SoheilKhodayari/JAW/tree/master/docs">Docs</a> |
-	<a href="https://github.com/SoheilKhodayari/JAW/tree/master/docs/setup.md">Setup</a> |
-	<a href="https://github.com/SoheilKhodayari/JAW/tree/master/hpg_crawler">Crawler</a> |
+	<a href="https://github.com/SoheilKhodayari/JAW/tree/master/docs/installation.md">Setup</a> |
+	<a href="https://github.com/SoheilKhodayari/JAW/tree/master/crawler">Crawler</a> |
 	<a href="https://github.com/SoheilKhodayari/JAW/blob/master/analyses/example/example_analysis.py"> Quick Start (Example)</a>
 </p>
 
