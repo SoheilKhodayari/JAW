@@ -1,0 +1,2812 @@
+[
+    {
+        "id": "34072",
+        "location": "{start:{line:8402,column:0},end:{line:8465,column:1}}",
+        "type": "FunctionDeclaration",
+        "function": "getTooltipSize",
+        "params": [
+            "tooltip",
+            "model"
+        ],
+        "labels": "['out ~ model']"
+    },
+    {
+        "id": "84",
+        "location": "{start:{line:12,column:9},end:{line:16152,column:1}}",
+        "type": "FunctionExpression",
+        "function": "Anonymous",
+        "params": [
+            "moment"
+        ],
+        "labels": "['out ~ moment']"
+    },
+    {
+        "id": "34433",
+        "location": "{start:{line:8470,column:0},end:{line:8538,column:1}}",
+        "type": "FunctionDeclaration",
+        "function": "determineAlignment",
+        "params": [
+            "tooltip",
+            "size"
+        ],
+        "labels": "['out ~ size']"
+    },
+    {
+        "id": "34640",
+        "location": "{start:{line:8511,column:6},end:{line:8513,column:2}}",
+        "type": "FunctionExpression",
+        "function": "yf",
+        "params": [
+            "y"
+        ],
+        "labels": "['out ~ y']"
+    },
+    {
+        "id": "34738",
+        "location": "{start:{line:8543,column:0},end:{line:8592,column:1}}",
+        "type": "FunctionDeclaration",
+        "function": "getBackgroundPoint",
+        "params": [
+            "vm",
+            "size",
+            "alignment",
+            "chart"
+        ],
+        "labels": "['out ~ size, chart']"
+    },
+    {
+        "id": "34933",
+        "location": "{start:{line:8594,column:0},end:{line:8600,column:1}}",
+        "type": "FunctionDeclaration",
+        "function": "getAlignedX",
+        "params": [
+            "vm",
+            "align"
+        ],
+        "labels": "['out ~ align']"
+    },
+    {
+        "id": "35322",
+        "location": "{start:{line:8684,column:9},end:{line:8794,column:2}}",
+        "type": "FunctionExpression",
+        "function": "update",
+        "params": [
+            "changed"
+        ],
+        "labels": "['out ~ changed']"
+    },
+    {
+        "id": "36877",
+        "location": "{start:{line:8998,column:17},end:{line:9039,column:2}}",
+        "type": "FunctionExpression",
+        "function": "drawBackground",
+        "params": [
+            "pt",
+            "vm",
+            "ctx",
+            "tooltipSize"
+        ],
+        "labels": "['out ~ vm']"
+    },
+    {
+        "id": "37338",
+        "location": "{start:{line:9097,column:14},end:{line:9133,column:2}}",
+        "type": "FunctionExpression",
+        "function": "handleEvent",
+        "params": [
+            "e"
+        ],
+        "labels": "['out ~ e']"
+    },
+    {
+        "id": "37554",
+        "location": "{start:{line:9174,column:10},end:{line:9203,column:3}}",
+        "type": "FunctionExpression",
+        "function": "merger",
+        "params": [
+            "key",
+            "target",
+            "source",
+            "options"
+        ],
+        "labels": "['out ~ key, target']"
+    },
+    {
+        "id": "37729",
+        "location": "{start:{line:9214,column:10},end:{line:9227,column:3}}",
+        "type": "FunctionExpression",
+        "function": "merger",
+        "params": [
+            "key",
+            "target",
+            "source",
+            "options"
+        ],
+        "labels": "['out ~ key']"
+    },
+    {
+        "id": "37944",
+        "location": "{start:{line:9269,column:0},end:{line:9280,column:1}}",
+        "type": "FunctionDeclaration",
+        "function": "nextAvailableScaleId",
+        "params": [
+            "axesOpts",
+            "prefix",
+            "index"
+        ],
+        "labels": "['out ~ axesOpts']"
+    },
+    {
+        "id": "37996",
+        "location": "{start:{line:9286,column:0},end:{line:9292,column:1}}",
+        "type": "FunctionDeclaration",
+        "function": "compare2Level",
+        "params": [
+            "l1",
+            "l2"
+        ],
+        "labels": "['out ~ l1']"
+    },
+    {
+        "id": "38002",
+        "location": "{start:{line:9287,column:8},end:{line:9291,column:2}}",
+        "type": "FunctionExpression",
+        "function": "Anonymous",
+        "params": [
+            "a",
+            "b"
+        ],
+        "labels": "['out ~ a, b']"
+    },
+    {
+        "id": "4169",
+        "location": "{start:{line:776,column:21},end:{line:796,column:1}}",
+        "type": "FunctionExpression",
+        "function": "convert.ansi16.rgb",
+        "params": [
+            "args"
+        ],
+        "labels": "['out ~ args']"
+    },
+    {
+        "id": "4267",
+        "location": "{start:{line:798,column:22},end:{line:813,column:1}}",
+        "type": "FunctionExpression",
+        "function": "convert.ansi256.rgb",
+        "params": [
+            "args"
+        ],
+        "labels": "['out ~ args']"
+    },
+    {
+        "id": "38336",
+        "location": "{start:{line:9398,column:9},end:{line:9437,column:2}}",
+        "type": "FunctionExpression",
+        "function": "resize",
+        "params": [
+            "silent"
+        ],
+        "labels": "['out ~ silent']"
+    },
+    {
+        "id": "38552",
+        "location": "{start:{line:9444,column:38},end:{line:9448,column:3}}",
+        "type": "FunctionExpression",
+        "function": "scalesOptions.xAxes",
+        "params": [
+            "xAxisOptions",
+            "index"
+        ],
+        "labels": "['out ~ xAxisOptions']"
+    },
+    {
+        "id": "38582",
+        "location": "{start:{line:9450,column:38},end:{line:9454,column:3}}",
+        "type": "FunctionExpression",
+        "function": "scalesOptions.yAxes",
+        "params": [
+            "yAxisOptions",
+            "index"
+        ],
+        "labels": "['out ~ yAxisOptions']"
+    },
+    {
+        "id": "38758",
+        "location": "{start:{line:9494,column:24},end:{line:9533,column:3}}",
+        "type": "FunctionExpression",
+        "function": "items",
+        "params": [
+            "item"
+        ],
+        "labels": "['out ~ item']"
+    },
+    {
+        "id": "38921",
+        "location": "{start:{line:9535,column:26},end:{line:9539,column:3}}",
+        "type": "FunctionExpression",
+        "function": "updated",
+        "params": [
+            "hasUpdated",
+            "id"
+        ],
+        "labels": "['out ~ hasUpdated']"
+    },
+    {
+        "id": "39175",
+        "location": "{start:{line:9601,column:9},end:{line:9667,column:2}}",
+        "type": "FunctionExpression",
+        "function": "update",
+        "params": [
+            "config"
+        ],
+        "labels": "['out ~ config']"
+    },
+    {
+        "id": "5867",
+        "location": "{start:{line:1121,column:0},end:{line:1134,column:1}}",
+        "type": "FunctionDeclaration",
+        "function": "wrapConversion",
+        "params": [
+            "toModel",
+            "graph"
+        ],
+        "labels": "['out ~ graph']"
+    },
+    {
+        "id": "6033",
+        "location": "{start:{line:1160,column:0},end:{line:1179,column:1}}",
+        "type": "FunctionDeclaration",
+        "function": "wrapRaw",
+        "params": [
+            "fn"
+        ],
+        "labels": "['out ~ fn']"
+    },
+    {
+        "id": "6040",
+        "location": "{start:{line:1161,column:17},end:{line:1171,column:2}}",
+        "type": "FunctionExpression",
+        "function": "wrappedFn",
+        "params": [
+            "args"
+        ],
+        "labels": "['out ~ args']"
+    },
+    {
+        "id": "6092",
+        "location": "{start:{line:1181,column:0},end:{line:1211,column:1}}",
+        "type": "FunctionDeclaration",
+        "function": "wrapRounded",
+        "params": [
+            "fn"
+        ],
+        "labels": "['out ~ fn']"
+    },
+    {
+        "id": "6099",
+        "location": "{start:{line:1182,column:17},end:{line:1203,column:2}}",
+        "type": "FunctionExpression",
+        "function": "wrappedFn",
+        "params": [
+            "args"
+        ],
+        "labels": "['out ~ args']"
+    },
+    {
+        "id": "39425",
+        "location": "{start:{line:9684,column:27},end:{line:9691,column:3}}",
+        "type": "FunctionExpression",
+        "function": "me",
+        "params": [
+            "box"
+        ],
+        "labels": "['out ~ box']"
+    },
+    {
+        "id": "39596",
+        "location": "{start:{line:9749,column:9},end:{line:9799,column:2}}",
+        "type": "FunctionExpression",
+        "function": "render",
+        "params": [
+            "config"
+        ],
+        "labels": "['out ~ config']"
+    },
+    {
+        "id": "39794",
+        "location": "{start:{line:9801,column:7},end:{line:9839,column:2}}",
+        "type": "FunctionExpression",
+        "function": "draw",
+        "params": [
+            "easingValue"
+        ],
+        "labels": "['out ~ easingValue']"
+    },
+    {
+        "id": "39991",
+        "location": "{start:{line:9859,column:25},end:{line:9874,column:2}}",
+        "type": "FunctionExpression",
+        "function": "_getSortedDatasetMetas",
+        "params": [
+            "filterVisible"
+        ],
+        "labels": "['out ~ filterVisible']"
+    },
+    {
+        "id": "40076",
+        "location": "{start:{line:9888,column:15},end:{line:9902,column:2}}",
+        "type": "FunctionExpression",
+        "function": "drawDatasets",
+        "params": [
+            "easingValue"
+        ],
+        "labels": "['out ~ easingValue']"
+    },
+    {
+        "id": "7232",
+        "location": "{start:{line:1405,column:0},end:{line:1472,column:1}}",
+        "type": "FunctionDeclaration",
+        "function": "getRgba",
+        "params": [
+            "string"
+        ],
+        "labels": "['out ~ string']"
+    },
+    {
+        "id": "40857",
+        "location": "{start:{line:10120,column:19},end:{line:10134,column:2}}",
+        "type": "FunctionExpression",
+        "function": "updateHoverStyle",
+        "params": [
+            "elements",
+            "mode",
+            "enabled"
+        ],
+        "labels": "['out ~ enabled, mode']"
+    },
+    {
+        "id": "7595",
+        "location": "{start:{line:1474,column:0},end:{line:1488,column:1}}",
+        "type": "FunctionDeclaration",
+        "function": "getHsla",
+        "params": [
+            "string"
+        ],
+        "labels": "['out ~ string']"
+    },
+    {
+        "id": "7679",
+        "location": "{start:{line:1490,column:0},end:{line:1504,column:1}}",
+        "type": "FunctionDeclaration",
+        "function": "getHwb",
+        "params": [
+            "string"
+        ],
+        "labels": "['out ~ string']"
+    },
+    {
+        "id": "7801",
+        "location": "{start:{line:1516,column:0},end:{line:1527,column:1}}",
+        "type": "FunctionDeclaration",
+        "function": "getAlpha",
+        "params": [
+            "string"
+        ],
+        "labels": "['out ~ string']"
+    },
+    {
+        "id": "40943",
+        "location": "{start:{line:10139,column:15},end:{line:10184,column:2}}",
+        "type": "FunctionExpression",
+        "function": "eventHandler",
+        "params": [
+            "e"
+        ],
+        "labels": "['out ~ e']"
+    },
+    {
+        "id": "41082",
+        "location": "{start:{line:10192,column:14},end:{line:10234,column:2}}",
+        "type": "FunctionExpression",
+        "function": "handleEvent",
+        "params": [
+            "e"
+        ],
+        "labels": "['out ~ e']"
+    },
+    {
+        "id": "41309",
+        "location": "{start:{line:10288,column:19},end:{line:10301,column:2}}",
+        "type": "FunctionExpression",
+        "function": "helpers$1.where",
+        "params": [
+            "collection",
+            "filterCallback"
+        ],
+        "labels": "['out ~ collection, filterCallback']"
+    },
+    {
+        "id": "41342",
+        "location": "{start:{line:10294,column:29},end:{line:10298,column:3}}",
+        "type": "FunctionExpression",
+        "function": "collection",
+        "params": [
+            "item"
+        ],
+        "labels": "['out ~ item']"
+    },
+    {
+        "id": "41381",
+        "location": "{start:{line:10306,column:2},end:{line:10314,column:3}}",
+        "type": "FunctionExpression",
+        "function": "Array.prototype.findIndex",
+        "params": [
+            "array",
+            "callback",
+            "scope"
+        ],
+        "labels": "['out ~ scope, array, callback']"
+    },
+    {
+        "id": "7840",
+        "location": "{start:{line:1530,column:0},end:{line:1540,column:1}}",
+        "type": "FunctionDeclaration",
+        "function": "hexString",
+        "params": [
+            "rgba",
+            "a"
+        ],
+        "labels": "['out ~ rgba, a']"
+    },
+    {
+        "id": "7901",
+        "location": "{start:{line:1542,column:0},end:{line:1547,column:1}}",
+        "type": "FunctionDeclaration",
+        "function": "rgbString",
+        "params": [
+            "rgba",
+            "alpha"
+        ],
+        "labels": "['out ~ rgba, alpha']"
+    },
+    {
+        "id": "7946",
+        "location": "{start:{line:1549,column:0},end:{line:1555,column:1}}",
+        "type": "FunctionDeclaration",
+        "function": "rgbaString",
+        "params": [
+            "rgba",
+            "alpha"
+        ],
+        "labels": "['out ~ alpha, rgba']"
+    },
+    {
+        "id": "7993",
+        "location": "{start:{line:1557,column:0},end:{line:1566,column:1}}",
+        "type": "FunctionDeclaration",
+        "function": "percentString",
+        "params": [
+            "rgba",
+            "alpha"
+        ],
+        "labels": "['out ~ rgba, alpha']"
+    },
+    {
+        "id": "8141",
+        "location": "{start:{line:1575,column:0},end:{line:1580,column:1}}",
+        "type": "FunctionDeclaration",
+        "function": "hslString",
+        "params": [
+            "hsla",
+            "alpha"
+        ],
+        "labels": "['out ~ hsla, alpha']"
+    },
+    {
+        "id": "8186",
+        "location": "{start:{line:1582,column:0},end:{line:1588,column:1}}",
+        "type": "FunctionDeclaration",
+        "function": "hslaString",
+        "params": [
+            "hsla",
+            "alpha"
+        ],
+        "labels": "['out ~ alpha, hsla']"
+    },
+    {
+        "id": "8233",
+        "location": "{start:{line:1592,column:0},end:{line:1598,column:1}}",
+        "type": "FunctionDeclaration",
+        "function": "hwbString",
+        "params": [
+            "hwb",
+            "alpha"
+        ],
+        "labels": "['out ~ alpha, hwb']"
+    },
+    {
+        "id": "41433",
+        "location": "{start:{line:10315,column:27},end:{line:10326,column:2}}",
+        "type": "FunctionExpression",
+        "function": "helpers$1.findNextWhere",
+        "params": [
+            "arrayToSearch",
+            "filterCallback",
+            "startIndex"
+        ],
+        "labels": "['out ~ startIndex, arrayToSearch, filterCallback']"
+    },
+    {
+        "id": "41483",
+        "location": "{start:{line:10327,column:31},end:{line:10338,column:2}}",
+        "type": "FunctionExpression",
+        "function": "helpers$1.findPreviousWhere",
+        "params": [
+            "arrayToSearch",
+            "filterCallback",
+            "startIndex"
+        ],
+        "labels": "['out ~ startIndex, filterCallback']"
+    },
+    {
+        "id": "41608",
+        "location": "{start:{line:10352,column:22},end:{line:10357,column:3}}",
+        "type": "FunctionExpression",
+        "function": "Number.NEGATIVE_INFINITY",
+        "params": [
+            "max",
+            "value"
+        ],
+        "labels": "['out ~ value']"
+    },
+    {
+        "id": "41643",
+        "location": "{start:{line:10360,column:22},end:{line:10365,column:3}}",
+        "type": "FunctionExpression",
+        "function": "Number.POSITIVE_INFINITY",
+        "params": [
+            "min",
+            "value"
+        ],
+        "labels": "['out ~ value']"
+    },
+    {
+        "id": "41683",
+        "location": "{start:{line:10371,column:2},end:{line:10377,column:3}}",
+        "type": "FunctionExpression",
+        "function": "Math.sign",
+        "params": [
+            "x"
+        ],
+        "labels": "['out ~ x']"
+    },
+    {
+        "id": "41747",
+        "location": "{start:{line:10392,column:28},end:{line:10403,column:2}}",
+        "type": "FunctionExpression",
+        "function": "helpers$1._decimalPlaces",
+        "params": [
+            "x"
+        ],
+        "labels": "['out ~ x']"
+    },
+    {
+        "id": "41911",
+        "location": "{start:{line:10432,column:24},end:{line:10434,column:2}}",
+        "type": "FunctionExpression",
+        "function": "helpers$1.aliasPixel",
+        "params": [
+            "pixelWidth"
+        ],
+        "labels": "['out ~ pixelWidth']"
+    },
+    {
+        "id": "41964",
+        "location": "{start:{line:10450,column:25},end:{line:10483,column:2}}",
+        "type": "FunctionExpression",
+        "function": "helpers$1.splineCurve",
+        "params": [
+            "firstPoint",
+            "middlePoint",
+            "afterPoint",
+            "t"
+        ],
+        "labels": "['out ~ firstPoint, afterPoint']"
+    },
+    {
+        "id": "8369",
+        "location": "{start:{line:1625,column:12},end:{line:1668,column:1}}",
+        "type": "FunctionExpression",
+        "function": "Color",
+        "params": [
+            "obj"
+        ],
+        "labels": "['out ~ obj']"
+    },
+    {
+        "id": "8789",
+        "location": "{start:{line:1717,column:8},end:{line:1723,column:2}}",
+        "type": "FunctionExpression",
+        "function": "alpha",
+        "params": [
+            "val"
+        ],
+        "labels": "['out ~ val']"
+    },
+    {
+        "id": "8853",
+        "location": "{start:{line:1734,column:6},end:{line:1740,column:2}}",
+        "type": "FunctionExpression",
+        "function": "hue",
+        "params": [
+            "val"
+        ],
+        "labels": "['out ~ val']"
+    },
+    {
+        "id": "42726",
+        "location": "{start:{line:10576,column:22},end:{line:10581,column:2}}",
+        "type": "FunctionExpression",
+        "function": "helpers$1.nextItem",
+        "params": [
+            "collection",
+            "index",
+            "loop"
+        ],
+        "labels": "['out ~ loop, collection, index']"
+    },
+    {
+        "id": "42777",
+        "location": "{start:{line:10582,column:26},end:{line:10587,column:2}}",
+        "type": "FunctionExpression",
+        "function": "helpers$1.previousItem",
+        "params": [
+            "collection",
+            "index",
+            "loop"
+        ],
+        "labels": "['out ~ loop, index']"
+    },
+    {
+        "id": "9756",
+        "location": "{start:{line:1926,column:6},end:{line:1944,column:2}}",
+        "type": "FunctionExpression",
+        "function": "mix",
+        "params": [
+            "mixinColor",
+            "weight"
+        ],
+        "labels": "['out ~ weight']"
+    },
+    {
+        "id": "43191",
+        "location": "{start:{line:10672,column:1},end:{line:10686,column:2}}",
+        "type": "FunctionDeclaration",
+        "function": "parseMaxStyle",
+        "params": [
+            "styleValue",
+            "node",
+            "parentProperty"
+        ],
+        "labels": "['out ~ styleValue']"
+    },
+    {
+        "id": "43377",
+        "location": "{start:{line:10731,column:31},end:{line:10735,column:2}}",
+        "type": "FunctionExpression",
+        "function": "helpers$1._calculatePadding",
+        "params": [
+            "container",
+            "padding",
+            "parentDimension"
+        ],
+        "labels": "['out ~ padding']"
+    },
+    {
+        "id": "43606",
+        "location": "{start:{line:10774,column:22},end:{line:10778,column:2}}",
+        "type": "FunctionExpression",
+        "function": "helpers$1.getStyle",
+        "params": [
+            "el",
+            "property"
+        ],
+        "labels": "['out ~ el']"
+    },
+    {
+        "id": "10074",
+        "location": "{start:{line:1994,column:28},end:{line:2008,column:1}}",
+        "type": "FunctionExpression",
+        "function": "Color.prototype.getValues",
+        "params": [
+            "space"
+        ],
+        "labels": "['out ~ space']"
+    },
+    {
+        "id": "10138",
+        "location": "{start:{line:2010,column:28},end:{line:2065,column:1}}",
+        "type": "FunctionExpression",
+        "function": "Color.prototype.setValues",
+        "params": [
+            "space",
+            "vals"
+        ],
+        "labels": "['out ~ space, vals']"
+    },
+    {
+        "id": "10466",
+        "location": "{start:{line:2084,column:29},end:{line:2099,column:1}}",
+        "type": "FunctionExpression",
+        "function": "Color.prototype.setChannel",
+        "params": [
+            "space",
+            "index",
+            "val"
+        ],
+        "labels": "['out ~ val, index']"
+    },
+    {
+        "id": "43769",
+        "location": "{start:{line:10805,column:25},end:{line:10847,column:2}}",
+        "type": "FunctionExpression",
+        "function": "helpers$1.longestText",
+        "params": [
+            "ctx",
+            "font",
+            "arrayOfThings",
+            "cache"
+        ],
+        "labels": "['out ~ font, cache, arrayOfThings']"
+    },
+    {
+        "id": "44009",
+        "location": "{start:{line:10848,column:25},end:{line:10858,column:2}}",
+        "type": "FunctionExpression",
+        "function": "helpers$1.measureText",
+        "params": [
+            "ctx",
+            "data",
+            "gc",
+            "longest",
+            "string"
+        ],
+        "labels": "['out ~ longest']"
+    },
+    {
+        "id": "44075",
+        "location": "{start:{line:10865,column:32},end:{line:10871,column:3}}",
+        "type": "FunctionExpression",
+        "function": "arrayOfThings",
+        "params": [
+            "thing"
+        ],
+        "labels": "['out ~ thing']"
+    },
+    {
+        "id": "44119",
+        "location": "{start:{line:10880,column:2},end:{line:10887,column:3}}",
+        "type": "FunctionExpression",
+        "function": "Anonymous",
+        "params": [
+            "value"
+        ],
+        "labels": "['out ~ value']"
+    },
+    {
+        "id": "44144",
+        "location": "{start:{line:10889,column:27},end:{line:10894,column:2}}",
+        "type": "FunctionExpression",
+        "function": "helpers$1.getHoverColor",
+        "params": [
+            "colorValue"
+        ],
+        "labels": "['out ~ colorValue']"
+    },
+    {
+        "id": "10567",
+        "location": "{start:{line:2144,column:10},end:{line:2153,column:2}}",
+        "type": "FunctionExpression",
+        "function": "isArray",
+        "params": [
+            "value"
+        ],
+        "labels": "['out ~ value']"
+    },
+    {
+        "id": "10659",
+        "location": "{start:{line:2180,column:17},end:{line:2182,column:2}}",
+        "type": "FunctionExpression",
+        "function": "valueOrDefault",
+        "params": [
+            "value",
+            "defaultValue"
+        ],
+        "labels": "['out ~ value']"
+    },
+    {
+        "id": "10673",
+        "location": "{start:{line:2191,column:24},end:{line:2193,column:2}}",
+        "type": "FunctionExpression",
+        "function": "valueAtIndexOrDefault",
+        "params": [
+            "value",
+            "index",
+            "defaultValue"
+        ],
+        "labels": "['out ~ value']"
+    },
+    {
+        "id": "10696",
+        "location": "{start:{line:2203,column:11},end:{line:2207,column:2}}",
+        "type": "FunctionExpression",
+        "function": "callback",
+        "params": [
+            "fn",
+            "args",
+            "thisArg"
+        ],
+        "labels": "['out ~ fn']"
+    },
+    {
+        "id": "10720",
+        "location": "{start:{line:2218,column:7},end:{line:2238,column:2}}",
+        "type": "FunctionExpression",
+        "function": "each",
+        "params": [
+            "loopable",
+            "fn",
+            "thisArg",
+            "reverse"
+        ],
+        "labels": "['out ~ loopable, reverse']"
+    },
+    {
+        "id": "10839",
+        "location": "{start:{line:2247,column:14},end:{line:2269,column:2}}",
+        "type": "FunctionExpression",
+        "function": "arrayEquals",
+        "params": [
+            "a0",
+            "a1"
+        ],
+        "labels": "['out ~ a0, a1']"
+    },
+    {
+        "id": "10928",
+        "location": "{start:{line:2276,column:8},end:{line:2295,column:2}}",
+        "type": "FunctionExpression",
+        "function": "clone",
+        "params": [
+            "source"
+        ],
+        "labels": "['out ~ source']"
+    },
+    {
+        "id": "11056",
+        "location": "{start:{line:2317,column:12},end:{line:2326,column:2}}",
+        "type": "FunctionExpression",
+        "function": "_mergerIf",
+        "params": [
+            "key",
+            "target",
+            "source"
+        ],
+        "labels": "['out ~ key, target']"
+    },
+    {
+        "id": "44268",
+        "location": "{start:{line:11029,column:10},end:{line:11031,column:3}}",
+        "type": "FunctionExpression",
+        "function": "values",
+        "params": [
+            "value"
+        ],
+        "labels": "['out ~ value']"
+    },
+    {
+        "id": "44284",
+        "location": "{start:{line:11041,column:10},end:{line:11073,column:3}}",
+        "type": "FunctionExpression",
+        "function": "linear",
+        "params": [
+            "tickValue",
+            "index",
+            "ticks"
+        ],
+        "labels": "['out ~ ticks, tickValue']"
+    },
+    {
+        "id": "44482",
+        "location": "{start:{line:11075,column:15},end:{line:11084,column:3}}",
+        "type": "FunctionExpression",
+        "function": "logarithmic",
+        "params": [
+            "tickValue",
+            "index",
+            "ticks"
+        ],
+        "labels": "['out ~ tickValue, index, ticks']"
+    },
+    {
+        "id": "11113",
+        "location": "{start:{line:2337,column:8},end:{line:2362,column:2}}",
+        "type": "FunctionExpression",
+        "function": "merge",
+        "params": [
+            "target",
+            "source",
+            "options"
+        ],
+        "labels": "['out ~ source, target']"
+    },
+    {
+        "id": "11293",
+        "location": "{start:{line:2393,column:11},end:{line:2413,column:2}}",
+        "type": "FunctionExpression",
+        "function": "inherits",
+        "params": [
+            "extensions"
+        ],
+        "labels": "['out ~ extensions']"
+    },
+    {
+        "id": "11381",
+        "location": "{start:{line:2415,column:14},end:{line:2420,column:2}}",
+        "type": "FunctionExpression",
+        "function": "_deprecated",
+        "params": [
+            "scope",
+            "value",
+            "previous",
+            "current"
+        ],
+        "labels": "['out ~ value']"
+    },
+    {
+        "id": "11492",
+        "location": "{start:{line:2484,column:16},end:{line:2489,column:2}}",
+        "type": "FunctionExpression",
+        "function": "easeInOutQuad",
+        "params": [
+            "t"
+        ],
+        "labels": "['out ~ t']"
+    },
+    {
+        "id": "11550",
+        "location": "{start:{line:2499,column:17},end:{line:2504,column:2}}",
+        "type": "FunctionExpression",
+        "function": "easeInOutCubic",
+        "params": [
+            "t"
+        ],
+        "labels": "['out ~ t']"
+    },
+    {
+        "id": "11615",
+        "location": "{start:{line:2514,column:17},end:{line:2519,column:2}}",
+        "type": "FunctionExpression",
+        "function": "easeInOutQuart",
+        "params": [
+            "t"
+        ],
+        "labels": "['out ~ t']"
+    },
+    {
+        "id": "44743",
+        "location": "{start:{line:11163,column:0},end:{line:11188,column:1}}",
+        "type": "FunctionDeclaration",
+        "function": "getPixelForGridLine",
+        "params": [
+            "scale",
+            "index",
+            "offsetGridLines"
+        ],
+        "labels": "['out ~ offsetGridLines, index']"
+    },
+    {
+        "id": "44875",
+        "location": "{start:{line:11190,column:0},end:{line:11202,column:1}}",
+        "type": "FunctionDeclaration",
+        "function": "garbageCollect",
+        "params": [
+            "caches",
+            "length"
+        ],
+        "labels": "['out ~ length']"
+    },
+    {
+        "id": "44937",
+        "location": "{start:{line:11208,column:0},end:{line:11260,column:1}}",
+        "type": "FunctionDeclaration",
+        "function": "computeLabelSizes",
+        "params": [
+            "ctx",
+            "tickFonts",
+            "ticks",
+            "caches"
+        ],
+        "labels": "['out ~ ticks']"
+    },
+    {
+        "id": "11688",
+        "location": "{start:{line:2529,column:17},end:{line:2534,column:2}}",
+        "type": "FunctionExpression",
+        "function": "easeInOutQuint",
+        "params": [
+            "t"
+        ],
+        "labels": "['out ~ t']"
+    },
+    {
+        "id": "11785",
+        "location": "{start:{line:2548,column:13},end:{line:2550,column:2}}",
+        "type": "FunctionExpression",
+        "function": "easeInExpo",
+        "params": [
+            "t"
+        ],
+        "labels": "['out ~ t']"
+    },
+    {
+        "id": "11806",
+        "location": "{start:{line:2552,column:14},end:{line:2554,column:2}}",
+        "type": "FunctionExpression",
+        "function": "easeOutExpo",
+        "params": [
+            "t"
+        ],
+        "labels": "['out ~ t']"
+    },
+    {
+        "id": "11829",
+        "location": "{start:{line:2556,column:16},end:{line:2567,column:2}}",
+        "type": "FunctionExpression",
+        "function": "easeInOutExpo",
+        "params": [
+            "t"
+        ],
+        "labels": "['out ~ t']"
+    },
+    {
+        "id": "11884",
+        "location": "{start:{line:2569,column:13},end:{line:2574,column:2}}",
+        "type": "FunctionExpression",
+        "function": "easeInCirc",
+        "params": [
+            "t"
+        ],
+        "labels": "['out ~ t']"
+    },
+    {
+        "id": "11928",
+        "location": "{start:{line:2580,column:16},end:{line:2585,column:2}}",
+        "type": "FunctionExpression",
+        "function": "easeInOutCirc",
+        "params": [
+            "t"
+        ],
+        "labels": "['out ~ t']"
+    },
+    {
+        "id": "11971",
+        "location": "{start:{line:2587,column:16},end:{line:2607,column:2}}",
+        "type": "FunctionExpression",
+        "function": "easeInElastic",
+        "params": [
+            "t"
+        ],
+        "labels": "['out ~ t']"
+    },
+    {
+        "id": "12074",
+        "location": "{start:{line:2609,column:17},end:{line:2629,column:2}}",
+        "type": "FunctionExpression",
+        "function": "easeOutElastic",
+        "params": [
+            "t"
+        ],
+        "labels": "['out ~ t']"
+    },
+    {
+        "id": "45257",
+        "location": "{start:{line:11262,column:0},end:{line:11264,column:1}}",
+        "type": "FunctionDeclaration",
+        "function": "getTickMarkLength",
+        "params": [
+            "options"
+        ],
+        "labels": "['out ~ options']"
+    },
+    {
+        "id": "45270",
+        "location": "{start:{line:11266,column:0},end:{line:11277,column:1}}",
+        "type": "FunctionDeclaration",
+        "function": "getScaleLabelHeight",
+        "params": [
+            "options"
+        ],
+        "labels": "['out ~ options']"
+    },
+    {
+        "id": "45395",
+        "location": "{start:{line:11290,column:0},end:{line:11295,column:1}}",
+        "type": "FunctionDeclaration",
+        "function": "parseTickFontOptions",
+        "params": [
+            "options"
+        ],
+        "labels": "['out ~ options']"
+    },
+    {
+        "id": "45485",
+        "location": "{start:{line:11309,column:0},end:{line:11323,column:1}}",
+        "type": "FunctionDeclaration",
+        "function": "getEvenSpacing",
+        "params": [
+            "arr"
+        ],
+        "labels": "['out ~ arr']"
+    },
+    {
+        "id": "45631",
+        "location": "{start:{line:11346,column:0},end:{line:11355,column:1}}",
+        "type": "FunctionDeclaration",
+        "function": "getMajorIndices",
+        "params": [
+            "ticks"
+        ],
+        "labels": "['out ~ ticks']"
+    },
+    {
+        "id": "45675",
+        "location": "{start:{line:11357,column:0},end:{line:11373,column:1}}",
+        "type": "FunctionDeclaration",
+        "function": "skipMajors",
+        "params": [
+            "ticks",
+            "majorIndices",
+            "spacing"
+        ],
+        "labels": "['out ~ ticks']"
+    },
+    {
+        "id": "45750",
+        "location": "{start:{line:11375,column:0},end:{line:11404,column:1}}",
+        "type": "FunctionDeclaration",
+        "function": "skip",
+        "params": [
+            "ticks",
+            "spacing",
+            "majorStart",
+            "majorEnd"
+        ],
+        "labels": "['out ~ majorEnd']"
+    },
+    {
+        "id": "12177",
+        "location": "{start:{line:2631,column:19},end:{line:2654,column:2}}",
+        "type": "FunctionExpression",
+        "function": "easeInOutElastic",
+        "params": [
+            "t"
+        ],
+        "labels": "['out ~ t']"
+    },
+    {
+        "id": "12371",
+        "location": "{start:{line:2665,column:16},end:{line:2671,column:2}}",
+        "type": "FunctionExpression",
+        "function": "easeInOutBack",
+        "params": [
+            "t"
+        ],
+        "labels": "['out ~ t']"
+    },
+    {
+        "id": "12438",
+        "location": "{start:{line:2677,column:16},end:{line:2688,column:2}}",
+        "type": "FunctionExpression",
+        "function": "easeOutBounce",
+        "params": [
+            "t"
+        ],
+        "labels": "['out ~ t']"
+    },
+    {
+        "id": "12506",
+        "location": "{start:{line:2690,column:18},end:{line:2695,column:2}}",
+        "type": "FunctionExpression",
+        "function": "easeInOutBounce",
+        "params": [
+            "t"
+        ],
+        "labels": "['out ~ t']"
+    },
+    {
+        "id": "12615",
+        "location": "{start:{line:2743,column:14},end:{line:2772,column:2}}",
+        "type": "FunctionExpression",
+        "function": "roundedRect",
+        "params": [
+            "ctx",
+            "x",
+            "y",
+            "width",
+            "height",
+            "radius"
+        ],
+        "labels": "['out ~ radius']"
+    },
+    {
+        "id": "12824",
+        "location": "{start:{line:2774,column:12},end:{line:2885,column:2}}",
+        "type": "FunctionExpression",
+        "function": "drawPoint",
+        "params": [
+            "ctx",
+            "style",
+            "radius",
+            "x",
+            "y",
+            "rotation"
+        ],
+        "labels": "['out ~ style, radius, rotation']"
+    },
+    {
+        "id": "46637",
+        "location": "{start:{line:11646,column:18},end:{line:11655,column:2}}",
+        "type": "FunctionExpression",
+        "function": "afterBuildTicks",
+        "params": [
+            "ticks"
+        ],
+        "labels": "['out ~ ticks']"
+    },
+    {
+        "id": "13666",
+        "location": "{start:{line:2912,column:9},end:{line:2940,column:2}}",
+        "type": "FunctionExpression",
+        "function": "lineTo",
+        "params": [
+            "ctx",
+            "previous",
+            "target",
+            "flip"
+        ],
+        "labels": "['out ~ flip, target']"
+    },
+    {
+        "id": "13933",
+        "location": "{start:{line:2999,column:0},end:{line:3008,column:1}}",
+        "type": "FunctionDeclaration",
+        "function": "toFontString",
+        "params": [
+            "font"
+        ],
+        "labels": "['out ~ font']"
+    },
+    {
+        "id": "14053",
+        "location": "{start:{line:3049,column:12},end:{line:3069,column:2}}",
+        "type": "FunctionExpression",
+        "function": "toPadding",
+        "params": [
+            "value"
+        ],
+        "labels": "['out ~ value']"
+    },
+    {
+        "id": "14230",
+        "location": "{start:{line:3105,column:10},end:{line:3129,column:2}}",
+        "type": "FunctionExpression",
+        "function": "resolve",
+        "params": [
+            "inputs",
+            "context",
+            "index",
+            "info"
+        ],
+        "labels": "['out ~ context, index, info']"
+    },
+    {
+        "id": "14341",
+        "location": "{start:{line:3141,column:13},end:{line:3160,column:2}}",
+        "type": "FunctionExpression",
+        "function": "_factorize",
+        "params": [
+            "value"
+        ],
+        "labels": "['out ~ value']"
+    },
+    {
+        "id": "47777",
+        "location": "{start:{line:11854,column:16},end:{line:11877,column:2}}",
+        "type": "FunctionExpression",
+        "function": "getRightValue",
+        "params": [
+            "rawValue"
+        ],
+        "labels": "['out ~ rawValue']"
+    },
+    {
+        "id": "14511",
+        "location": "{start:{line:3194,column:13},end:{line:3199,column:3}}",
+        "type": "FunctionExpression",
+        "function": "textAlign",
+        "params": [
+            "align"
+        ],
+        "labels": "['out ~ align']"
+    },
+    {
+        "id": "14595",
+        "location": "{start:{line:3228,column:17},end:{line:3230,column:1}}",
+        "type": "FunctionExpression",
+        "function": "getAdapter",
+        "params": [
+            "rtl",
+            "rectX",
+            "width"
+        ],
+        "labels": "['out ~ rtl']"
+    },
+    {
+        "id": "14612",
+        "location": "{start:{line:3232,column:28},end:{line:3244,column:1}}",
+        "type": "FunctionExpression",
+        "function": "overrideTextDirection",
+        "params": [
+            "ctx",
+            "direction"
+        ],
+        "labels": "['out ~ direction']"
+    },
+    {
+        "id": "14771",
+        "location": "{start:{line:3272,column:0},end:{line:3319,column:1}}",
+        "type": "FunctionDeclaration",
+        "function": "interpolate",
+        "params": [
+            "start",
+            "view",
+            "model",
+            "ease"
+        ],
+        "labels": "['out ~ view, start']"
+    },
+    {
+        "id": "47985",
+        "location": "{start:{line:11922,column:14},end:{line:11944,column:2}}",
+        "type": "FunctionExpression",
+        "function": "_parseValue",
+        "params": [
+            "value"
+        ],
+        "labels": "['out ~ value']"
+    },
+    {
+        "id": "48140",
+        "location": "{start:{line:11985,column:18},end:{line:11994,column:2}}",
+        "type": "FunctionExpression",
+        "function": "getPixelForTick",
+        "params": [
+            "index"
+        ],
+        "labels": "['out ~ index']"
+    },
+    {
+        "id": "15051",
+        "location": "{start:{line:3342,column:13},end:{line:3366,column:2}}",
+        "type": "FunctionExpression",
+        "function": "transition",
+        "params": [
+            "ease"
+        ],
+        "labels": "['out ~ ease']"
+    },
+    {
+        "id": "15308",
+        "location": "{start:{line:3445,column:15},end:{line:3470,column:2}}",
+        "type": "FunctionExpression",
+        "function": "addAnimation",
+        "params": [
+            "chart",
+            "animation",
+            "duration",
+            "lazy"
+        ],
+        "labels": "['out ~ lazy, chart']"
+    },
+    {
+        "id": "15675",
+        "location": "{start:{line:3552,column:0},end:{line:3587,column:1}}",
+        "type": "FunctionDeclaration",
+        "function": "listenArrayEvents",
+        "params": [
+            "array",
+            "listener"
+        ],
+        "labels": "['out ~ array']"
+    },
+    {
+        "id": "15799",
+        "location": "{start:{line:3577,column:45},end:{line:3581,column:5}}",
+        "type": "FunctionExpression",
+        "function": "array._chartjs.listeners",
+        "params": [
+            "object"
+        ],
+        "labels": "['out ~ object']"
+    },
+    {
+        "id": "16503",
+        "location": "{start:{line:3820,column:11},end:{line:3824,column:4}}",
+        "type": "FunctionExpression",
+        "function": "merger",
+        "params": [
+            "key",
+            "target",
+            "source"
+        ],
+        "labels": "['out ~ key']"
+    },
+    {
+        "id": "16671",
+        "location": "{start:{line:3873,column:11},end:{line:3892,column:2}}",
+        "type": "FunctionExpression",
+        "function": "getStyle",
+        "params": [
+            "index"
+        ],
+        "labels": "['out ~ index']"
+    },
+    {
+        "id": "16763",
+        "location": "{start:{line:3897,column:32},end:{line:3926,column:2}}",
+        "type": "FunctionExpression",
+        "function": "_resolveDatasetElementOptions",
+        "params": [
+            "element",
+            "hover"
+        ],
+        "labels": "['out ~ hover']"
+    },
+    {
+        "id": "17495",
+        "location": "{start:{line:4067,column:17},end:{line:4071,column:2}}",
+        "type": "FunctionExpression",
+        "function": "insertElements",
+        "params": [
+            "start",
+            "count"
+        ],
+        "labels": "['out ~ count']"
+    },
+    {
+        "id": "50891",
+        "location": "{start:{line:12574,column:19},end:{line:12583,column:2}}",
+        "type": "FunctionExpression",
+        "function": "getLabelForIndex",
+        "params": [
+            "index",
+            "datasetIndex"
+        ],
+        "labels": "['out ~ datasetIndex']"
+    },
+    {
+        "id": "51030",
+        "location": "{start:{line:12606,column:19},end:{line:12629,column:2}}",
+        "type": "FunctionExpression",
+        "function": "getPixelForValue",
+        "params": [
+            "value",
+            "index",
+            "datasetIndex"
+        ],
+        "labels": "['out ~ index, datasetIndex, value']"
+    },
+    {
+        "id": "51165",
+        "location": "{start:{line:12631,column:18},end:{line:12636,column:2}}",
+        "type": "FunctionExpression",
+        "function": "getPixelForTick",
+        "params": [
+            "index"
+        ],
+        "labels": "['out ~ index']"
+    },
+    {
+        "id": "17663",
+        "location": "{start:{line:4128,column:0},end:{line:4148,column:1}}",
+        "type": "FunctionDeclaration",
+        "function": "clipArc",
+        "params": [
+            "ctx",
+            "arc"
+        ],
+        "labels": "['out ~ arc']"
+    },
+    {
+        "id": "17794",
+        "location": "{start:{line:4150,column:0},end:{line:4175,column:1}}",
+        "type": "FunctionDeclaration",
+        "function": "drawFullCircleBorders",
+        "params": [
+            "ctx",
+            "vm",
+            "arc",
+            "inner"
+        ],
+        "labels": "['out ~ inner, arc']"
+    },
+    {
+        "id": "17947",
+        "location": "{start:{line:4177,column:0},end:{line:4201,column:1}}",
+        "type": "FunctionDeclaration",
+        "function": "drawBorder",
+        "params": [
+            "ctx",
+            "vm",
+            "arc"
+        ],
+        "labels": "['out ~ arc']"
+    },
+    {
+        "id": "51659",
+        "location": "{start:{line:12735,column:16},end:{line:12740,column:2}}",
+        "type": "FunctionExpression",
+        "function": "getRightValue",
+        "params": [
+            "value"
+        ],
+        "labels": "['out ~ value']"
+    },
+    {
+        "id": "52364",
+        "location": "{start:{line:12913,column:0},end:{line:12929,column:1}}",
+        "type": "FunctionDeclaration",
+        "function": "getOrCreateStack",
+        "params": [
+            "stacks",
+            "stacked",
+            "meta"
+        ],
+        "labels": "['out ~ stacked, meta, stacks']"
+    },
+    {
+        "id": "52421",
+        "location": "{start:{line:12931,column:0},end:{line:12957,column:1}}",
+        "type": "FunctionDeclaration",
+        "function": "stackData",
+        "params": [
+            "scale",
+            "stacks",
+            "meta",
+            "data"
+        ],
+        "labels": "['out ~ meta, data']"
+    },
+    {
+        "id": "52574",
+        "location": "{start:{line:12959,column:0},end:{line:12972,column:1}}",
+        "type": "FunctionDeclaration",
+        "function": "updateMinMax",
+        "params": [
+            "scale",
+            "meta",
+            "data"
+        ],
+        "labels": "['out ~ meta, data']"
+    },
+    {
+        "id": "19386",
+        "location": "{start:{line:4487,column:7},end:{line:4509,column:2}}",
+        "type": "FunctionExpression",
+        "function": "draw",
+        "params": [
+            "chartArea"
+        ],
+        "labels": "['out ~ chartArea']"
+    },
+    {
+        "id": "19560",
+        "location": "{start:{line:4535,column:0},end:{line:4558,column:1}}",
+        "type": "FunctionDeclaration",
+        "function": "getBarBounds",
+        "params": [
+            "vm"
+        ],
+        "labels": "['out ~ vm']"
+    },
+    {
+        "id": "19695",
+        "location": "{start:{line:4560,column:0},end:{line:4562,column:1}}",
+        "type": "FunctionDeclaration",
+        "function": "swap",
+        "params": [
+            "orig",
+            "v1",
+            "v2"
+        ],
+        "labels": "['out ~ orig, v1, v2']"
+    },
+    {
+        "id": "19713",
+        "location": "{start:{line:4564,column:0},end:{line:4582,column:1}}",
+        "type": "FunctionDeclaration",
+        "function": "parseBorderSkipped",
+        "params": [
+            "vm"
+        ],
+        "labels": "['out ~ vm']"
+    },
+    {
+        "id": "19780",
+        "location": "{start:{line:4584,column:0},end:{line:4604,column:1}}",
+        "type": "FunctionDeclaration",
+        "function": "parseBorderWidth",
+        "params": [
+            "vm",
+            "maxW",
+            "maxH"
+        ],
+        "labels": "['out ~ maxH, maxW']"
+    },
+    {
+        "id": "53074",
+        "location": "{start:{line:13053,column:18},end:{line:13059,column:2}}",
+        "type": "FunctionExpression",
+        "function": "getPixelForTick",
+        "params": [
+            "index"
+        ],
+        "labels": "['out ~ index']"
+    },
+    {
+        "id": "53386",
+        "location": "{start:{line:13125,column:0},end:{line:13127,column:1}}",
+        "type": "FunctionDeclaration",
+        "function": "nonNegativeOrDefault",
+        "params": [
+            "value",
+            "defaultValue"
+        ],
+        "labels": "['out ~ value']"
+    },
+    {
+        "id": "20040",
+        "location": "{start:{line:4628,column:0},end:{line:4636,column:1}}",
+        "type": "FunctionDeclaration",
+        "function": "inRange",
+        "params": [
+            "vm",
+            "x",
+            "y"
+        ],
+        "labels": "['out ~ vm']"
+    },
+    {
+        "id": "53739",
+        "location": "{start:{line:13189,column:34},end:{line:13196,column:4}}",
+        "type": "FunctionExpression",
+        "function": "valuesPerStack",
+        "params": [
+            "valuesForType"
+        ],
+        "labels": "['out ~ valuesForType']"
+    },
+    {
+        "id": "20800",
+        "location": "{start:{line:4822,column:0},end:{line:4849,column:1}}",
+        "type": "FunctionDeclaration",
+        "function": "computeFlexCategoryTraits",
+        "params": [
+            "index",
+            "ruler",
+            "options"
+        ],
+        "labels": "['out ~ index']"
+    },
+    {
+        "id": "54419",
+        "location": "{start:{line:13306,column:18},end:{line:13312,column:2}}",
+        "type": "FunctionExpression",
+        "function": "getPixelForTick",
+        "params": [
+            "index"
+        ],
+        "labels": "['out ~ index']"
+    },
+    {
+        "id": "21136",
+        "location": "{start:{line:4900,column:16},end:{line:4926,column:2}}",
+        "type": "FunctionExpression",
+        "function": "updateElement",
+        "params": [
+            "rectangle",
+            "index",
+            "reset"
+        ],
+        "labels": "['out ~ index']"
+    },
+    {
+        "id": "21283",
+        "location": "{start:{line:4931,column:25},end:{line:4947,column:2}}",
+        "type": "FunctionExpression",
+        "function": "_updateElementGeometry",
+        "params": [
+            "rectangle",
+            "index",
+            "reset",
+            "options"
+        ],
+        "labels": "['out ~ reset']"
+    },
+    {
+        "id": "21429",
+        "location": "{start:{line:4955,column:13},end:{line:4981,column:2}}",
+        "type": "FunctionExpression",
+        "function": "_getStacks",
+        "params": [
+            "last"
+        ],
+        "labels": "['out ~ last']"
+    },
+    {
+        "id": "54588",
+        "location": "{start:{line:13344,column:19},end:{line:13354,column:2}}",
+        "type": "FunctionExpression",
+        "function": "getPixelForValue",
+        "params": [
+            "value"
+        ],
+        "labels": "['out ~ value']"
+    },
+    {
+        "id": "54795",
+        "location": "{start:{line:13423,column:0},end:{line:13430,column:1}}",
+        "type": "FunctionDeclaration",
+        "function": "getTickBackdropHeight",
+        "params": [
+            "opts"
+        ],
+        "labels": "['out ~ opts']"
+    },
+    {
+        "id": "54833",
+        "location": "{start:{line:13432,column:0},end:{line:13444,column:1}}",
+        "type": "FunctionDeclaration",
+        "function": "measureLabelSize",
+        "params": [
+            "ctx",
+            "lineHeight",
+            "label"
+        ],
+        "labels": "['out ~ label']"
+    },
+    {
+        "id": "54880",
+        "location": "{start:{line:13446,column:0},end:{line:13463,column:1}}",
+        "type": "FunctionDeclaration",
+        "function": "determineLimits",
+        "params": [
+            "angle",
+            "pos",
+            "size",
+            "min",
+            "max"
+        ],
+        "labels": "['out ~ angle']"
+    },
+    {
+        "id": "21549",
+        "location": "{start:{line:4998,column:16},end:{line:5007,column:2}}",
+        "type": "FunctionExpression",
+        "function": "getStackIndex",
+        "params": [
+            "datasetIndex",
+            "name"
+        ],
+        "labels": "['out ~ name']"
+    },
+    {
+        "id": "21672",
+        "location": "{start:{line:5035,column:26},end:{line:5089,column:2}}",
+        "type": "FunctionExpression",
+        "function": "calculateBarValuePixels",
+        "params": [
+            "datasetIndex",
+            "index",
+            "options"
+        ],
+        "labels": "['out ~ datasetIndex, index']"
+    },
+    {
+        "id": "55218",
+        "location": "{start:{line:13548,column:0},end:{line:13556,column:1}}",
+        "type": "FunctionDeclaration",
+        "function": "getTextAlignForAngle",
+        "params": [
+            "angle"
+        ],
+        "labels": "['out ~ angle']"
+    },
+    {
+        "id": "55242",
+        "location": "{start:{line:13558,column:0},end:{line:13570,column:1}}",
+        "type": "FunctionDeclaration",
+        "function": "fillText",
+        "params": [
+            "ctx",
+            "text",
+            "position",
+            "lineHeight"
+        ],
+        "labels": "['out ~ text']"
+    },
+    {
+        "id": "55314",
+        "location": "{start:{line:13572,column:0},end:{line:13578,column:1}}",
+        "type": "FunctionDeclaration",
+        "function": "adjustPointPositionForLabelHeight",
+        "params": [
+            "angle",
+            "textSize",
+            "position"
+        ],
+        "labels": "['out ~ angle']"
+    },
+    {
+        "id": "22044",
+        "location": "{start:{line:5094,column:26},end:{line:5112,column:2}}",
+        "type": "FunctionExpression",
+        "function": "calculateBarIndexPixels",
+        "params": [
+            "datasetIndex",
+            "index",
+            "ruler",
+            "options"
+        ],
+        "labels": "['out ~ options']"
+    },
+    {
+        "id": "55754",
+        "location": "{start:{line:13650,column:0},end:{line:13652,column:1}}",
+        "type": "FunctionDeclaration",
+        "function": "numberOrZero",
+        "params": [
+            "param"
+        ],
+        "labels": "['out ~ param']"
+    },
+    {
+        "id": "55900",
+        "location": "{start:{line:13673,column:38},end:{line:13687,column:3}}",
+        "type": "FunctionExpression",
+        "function": "chart.data.datasets",
+        "params": [
+            "dataset",
+            "datasetIndex"
+        ],
+        "labels": "['out ~ datasetIndex']"
+    },
+    {
+        "id": "55927",
+        "location": "{start:{line:13677,column:33},end:{line:13685,column:5}}",
+        "type": "FunctionExpression",
+        "function": "dataset.data",
+        "params": [
+            "rawValue",
+            "index"
+        ],
+        "labels": "['out ~ index']"
+    },
+    {
+        "id": "22563",
+        "location": "{start:{line:5230,column:16},end:{line:5262,column:2}}",
+        "type": "FunctionExpression",
+        "function": "updateElement",
+        "params": [
+            "point",
+            "index",
+            "reset"
+        ],
+        "labels": "['out ~ reset']"
+    },
+    {
+        "id": "56464",
+        "location": "{start:{line:13773,column:32},end:{line:13786,column:2}}",
+        "type": "FunctionExpression",
+        "function": "getDistanceFromCenterForValue",
+        "params": [
+            "value"
+        ],
+        "labels": "['out ~ value']"
+    },
+    {
+        "id": "23477",
+        "location": "{start:{line:5454,column:15},end:{line:5464,column:2}}",
+        "type": "FunctionExpression",
+        "function": "getRingIndex",
+        "params": [
+            "datasetIndex"
+        ],
+        "labels": "['out ~ datasetIndex']"
+    },
+    {
+        "id": "56726",
+        "location": "{start:{line:13831,column:28},end:{line:13836,column:4}}",
+        "type": "FunctionExpression",
+        "function": "me.ticks",
+        "params": [
+            "label",
+            "index"
+        ],
+        "labels": "['out ~ index']"
+    },
+    {
+        "id": "57019",
+        "location": "{start:{line:13886,column:27},end:{line:13907,column:3}}",
+        "type": "FunctionExpression",
+        "function": "me.ticks",
+        "params": [
+            "label",
+            "index"
+        ],
+        "labels": "['out ~ index']"
+    },
+    {
+        "id": "24054",
+        "location": "{start:{line:5528,column:16},end:{line:5580,column:2}}",
+        "type": "FunctionExpression",
+        "function": "updateElement",
+        "params": [
+            "arc",
+            "index",
+            "reset"
+        ],
+        "labels": "['out ~ reset, arc, index']"
+    },
+    {
+        "id": "57407",
+        "location": "{start:{line:14022,column:0},end:{line:14055,column:1}}",
+        "type": "FunctionDeclaration",
+        "function": "buildLookupTable",
+        "params": [
+            "timestamps",
+            "min",
+            "max",
+            "distribution"
+        ],
+        "labels": "['out ~ timestamps, distribution']"
+    },
+    {
+        "id": "57580",
+        "location": "{start:{line:14058,column:0},end:{line:14082,column:1}}",
+        "type": "FunctionDeclaration",
+        "function": "lookup",
+        "params": [
+            "table",
+            "key",
+            "value"
+        ],
+        "labels": "['out ~ key, value']"
+    },
+    {
+        "id": "24376",
+        "location": "{start:{line:5588,column:28},end:{line:5593,column:3}}",
+        "type": "FunctionExpression",
+        "function": "meta.data",
+        "params": [
+            "element",
+            "index"
+        ],
+        "labels": "['out ~ element']"
+    },
+    {
+        "id": "24411",
+        "location": "{start:{line:5602,column:25},end:{line:5608,column:2}}",
+        "type": "FunctionExpression",
+        "function": "calculateCircumference",
+        "params": [
+            "value"
+        ],
+        "labels": "['out ~ value']"
+    },
+    {
+        "id": "24447",
+        "location": "{start:{line:5611,column:20},end:{line:5652,column:2}}",
+        "type": "FunctionExpression",
+        "function": "getMaxBorderWidth",
+        "params": [
+            "arcs"
+        ],
+        "labels": "['out ~ arcs']"
+    },
+    {
+        "id": "24720",
+        "location": "{start:{line:5677,column:23},end:{line:5687,column:2}}",
+        "type": "FunctionExpression",
+        "function": "_getRingWeightOffset",
+        "params": [
+            "datasetIndex"
+        ],
+        "labels": "['out ~ datasetIndex']"
+    },
+    {
+        "id": "57918",
+        "location": "{start:{line:14140,column:0},end:{line:14156,column:1}}",
+        "type": "FunctionDeclaration",
+        "function": "parse",
+        "params": [
+            "scale",
+            "input"
+        ],
+        "labels": "['out ~ input']"
+    },
+    {
+        "id": "57979",
+        "location": "{start:{line:14161,column:0},end:{line:14175,column:1}}",
+        "type": "FunctionDeclaration",
+        "function": "determineUnitForAutoTicks",
+        "params": [
+            "minUnit",
+            "min",
+            "max",
+            "capacity"
+        ],
+        "labels": "['out ~ capacity']"
+    },
+    {
+        "id": "58065",
+        "location": "{start:{line:14180,column:0},end:{line:14191,column:1}}",
+        "type": "FunctionDeclaration",
+        "function": "determineUnitForFormatting",
+        "params": [
+            "scale",
+            "numTicks",
+            "minUnit",
+            "min",
+            "max"
+        ],
+        "labels": "['out ~ minUnit, scale, numTicks']"
+    },
+    {
+        "id": "58347",
+        "location": "{start:{line:14248,column:0},end:{line:14269,column:1}}",
+        "type": "FunctionDeclaration",
+        "function": "computeOffsets",
+        "params": [
+            "table",
+            "ticks",
+            "min",
+            "max",
+            "options"
+        ],
+        "labels": "['out ~ ticks, options']"
+    },
+    {
+        "id": "25086",
+        "location": "{start:{line:5812,column:0},end:{line:5830,column:1}}",
+        "type": "FunctionDeclaration",
+        "function": "toClip",
+        "params": [
+            "value"
+        ],
+        "labels": "['out ~ value']"
+    },
+    {
+        "id": "25437",
+        "location": "{start:{line:5917,column:16},end:{line:5958,column:2}}",
+        "type": "FunctionExpression",
+        "function": "updateElement",
+        "params": [
+            "point",
+            "index",
+            "reset"
+        ],
+        "labels": "['out ~ reset']"
+    },
+    {
+        "id": "25781",
+        "location": "{start:{line:5982,column:18},end:{line:6018,column:2}}",
+        "type": "FunctionExpression",
+        "function": "calculatePointY",
+        "params": [
+            "value",
+            "index",
+            "datasetIndex"
+        ],
+        "labels": "['out ~ index, datasetIndex']"
+    },
+    {
+        "id": "58563",
+        "location": "{start:{line:14286,column:0},end:{line:14305,column:1}}",
+        "type": "FunctionDeclaration",
+        "function": "ticksFromTimestamps",
+        "params": [
+            "scale",
+            "values",
+            "majorUnit"
+        ],
+        "labels": "['out ~ majorUnit']"
+    },
+    {
+        "id": "58813",
+        "location": "{start:{line:14386,column:16},end:{line:14391,column:2}}",
+        "type": "FunctionExpression",
+        "function": "getRightValue",
+        "params": [
+            "rawValue"
+        ],
+        "labels": "['out ~ rawValue']"
+    },
+    {
+        "id": "59588",
+        "location": "{start:{line:14527,column:19},end:{line:14545,column:2}}",
+        "type": "FunctionExpression",
+        "function": "getLabelForIndex",
+        "params": [
+            "index",
+            "datasetIndex"
+        ],
+        "labels": "['out ~ index']"
+    },
+    {
+        "id": "59707",
+        "location": "{start:{line:14551,column:21},end:{line:14572,column:2}}",
+        "type": "FunctionExpression",
+        "function": "tickFormatFunction",
+        "params": [
+            "time",
+            "index",
+            "ticks",
+            "format"
+        ],
+        "labels": "['out ~ format']"
+    },
+    {
+        "id": "59924",
+        "location": "{start:{line:14595,column:19},end:{line:14610,column:2}}",
+        "type": "FunctionExpression",
+        "function": "getPixelForValue",
+        "params": [
+            "value",
+            "index",
+            "datasetIndex"
+        ],
+        "labels": "['out ~ index, datasetIndex']"
+    },
+    {
+        "id": "59983",
+        "location": "{start:{line:14612,column:18},end:{line:14617,column:2}}",
+        "type": "FunctionExpression",
+        "function": "getPixelForTick",
+        "params": [
+            "index"
+        ],
+        "labels": "['out ~ index']"
+    },
+    {
+        "id": "27341",
+        "location": "{start:{line:6306,column:16},end:{line:6350,column:2}}",
+        "type": "FunctionExpression",
+        "function": "updateElement",
+        "params": [
+            "arc",
+            "index",
+            "reset"
+        ],
+        "labels": "['out ~ arc, reset']"
+    },
+    {
+        "id": "60364",
+        "location": "{start:{line:14709,column:8},end:{line:14716,column:2}}",
+        "type": "FunctionExpression",
+        "function": "parse",
+        "params": [
+            "value",
+            "format"
+        ],
+        "labels": "['out ~ value, format']"
+    },
+    {
+        "id": "60462",
+        "location": "{start:{line:14730,column:10},end:{line:14736,column:2}}",
+        "type": "FunctionExpression",
+        "function": "startOf",
+        "params": [
+            "time",
+            "unit",
+            "weekday"
+        ],
+        "labels": "['out ~ unit']"
+    },
+    {
+        "id": "27594",
+        "location": "{start:{line:6357,column:28},end:{line:6361,column:3}}",
+        "type": "FunctionExpression",
+        "function": "meta.data",
+        "params": [
+            "element",
+            "index"
+        ],
+        "labels": "['out ~ element, index']"
+    },
+    {
+        "id": "27713",
+        "location": "{start:{line:6389,column:16},end:{line:6411,column:2}}",
+        "type": "FunctionExpression",
+        "function": "_computeAngle",
+        "params": [
+            "index"
+        ],
+        "labels": "['out ~ index']"
+    },
+    {
+        "id": "60690",
+        "location": "{start:{line:14798,column:0},end:{line:14845,column:1}}",
+        "type": "FunctionDeclaration",
+        "function": "decodeFill",
+        "params": [
+            "el",
+            "index",
+            "count"
+        ],
+        "labels": "['out ~ index, count']"
+    },
+    {
+        "id": "28128",
+        "location": "{start:{line:6528,column:16},end:{line:6562,column:2}}",
+        "type": "FunctionExpression",
+        "function": "updateElement",
+        "params": [
+            "point",
+            "index",
+            "reset"
+        ],
+        "labels": "['out ~ reset']"
+    },
+    {
+        "id": "61195",
+        "location": "{start:{line:14927,column:0},end:{line:14956,column:1}}",
+        "type": "FunctionDeclaration",
+        "function": "resolveTarget",
+        "params": [
+            "sources",
+            "index",
+            "propagate"
+        ],
+        "labels": "['out ~ propagate']"
+    },
+    {
+        "id": "61330",
+        "location": "{start:{line:14977,column:0},end:{line:15007,column:1}}",
+        "type": "FunctionDeclaration",
+        "function": "drawArea",
+        "params": [
+            "ctx",
+            "curve0",
+            "curve1",
+            "len0",
+            "len1"
+        ],
+        "labels": "['out ~ len0, len1, curve1']"
+    },
+    {
+        "id": "61535",
+        "location": "{start:{line:15009,column:0},end:{line:15057,column:1}}",
+        "type": "FunctionDeclaration",
+        "function": "doFill",
+        "params": [
+            "ctx",
+            "points",
+            "mapper",
+            "view",
+            "color",
+            "loop"
+        ],
+        "labels": "['out ~ loop']"
+    },
+    {
+        "id": "28819",
+        "location": "{start:{line:6696,column:0},end:{line:6705,column:1}}",
+        "type": "FunctionDeclaration",
+        "function": "getRelativePosition",
+        "params": [
+            "e",
+            "chart"
+        ],
+        "labels": "['out ~ e']"
+    },
+    {
+        "id": "28931",
+        "location": "{start:{line:6733,column:0},end:{line:6743,column:1}}",
+        "type": "FunctionDeclaration",
+        "function": "getIntersectItems",
+        "params": [
+            "chart",
+            "position"
+        ],
+        "labels": "['out ~ position']"
+    },
+    {
+        "id": "28944",
+        "location": "{start:{line:6736,column:26},end:{line:6740,column:2}}",
+        "type": "FunctionExpression",
+        "function": "chart",
+        "params": [
+            "element"
+        ],
+        "labels": "['out ~ element']"
+    },
+    {
+        "id": "28967",
+        "location": "{start:{line:6753,column:0},end:{line:6774,column:1}}",
+        "type": "FunctionDeclaration",
+        "function": "getNearestItems",
+        "params": [
+            "chart",
+            "position",
+            "intersect",
+            "distanceMetric"
+        ],
+        "labels": "['out ~ position, intersect']"
+    },
+    {
+        "id": "28988",
+        "location": "{start:{line:6757,column:26},end:{line:6771,column:2}}",
+        "type": "FunctionExpression",
+        "function": "chart",
+        "params": [
+            "element"
+        ],
+        "labels": "['out ~ element']"
+    },
+    {
+        "id": "29131",
+        "location": "{start:{line:6792,column:0},end:{line:6814,column:1}}",
+        "type": "FunctionDeclaration",
+        "function": "indexMode",
+        "params": [
+            "chart",
+            "e",
+            "options"
+        ],
+        "labels": "['out ~ options']"
+    },
+    {
+        "id": "29260",
+        "location": "{start:{line:6836,column:28},end:{line:6841,column:4}}",
+        "type": "FunctionExpression",
+        "function": "chart",
+        "params": [
+            "element"
+        ],
+        "labels": "['out ~ element']"
+    },
+    {
+        "id": "29298",
+        "location": "{start:{line:6875,column:11},end:{line:6886,column:3}}",
+        "type": "FunctionExpression",
+        "function": "dataset",
+        "params": [
+            "chart",
+            "e",
+            "options"
+        ],
+        "labels": "['out ~ options']"
+    },
+    {
+        "id": "29444",
+        "location": "{start:{line:6934,column:5},end:{line:6955,column:3}}",
+        "type": "FunctionExpression",
+        "function": "x",
+        "params": [
+            "chart",
+            "e",
+            "options"
+        ],
+        "labels": "['out ~ options']"
+    },
+    {
+        "id": "29468",
+        "location": "{start:{line:6939,column:28},end:{line:6947,column:4}}",
+        "type": "FunctionExpression",
+        "function": "chart",
+        "params": [
+            "element"
+        ],
+        "labels": "['out ~ element']"
+    },
+    {
+        "id": "29518",
+        "location": "{start:{line:6965,column:5},end:{line:6986,column:3}}",
+        "type": "FunctionExpression",
+        "function": "y",
+        "params": [
+            "chart",
+            "e",
+            "options"
+        ],
+        "labels": "['out ~ options']"
+    },
+    {
+        "id": "29542",
+        "location": "{start:{line:6970,column:28},end:{line:6978,column:4}}",
+        "type": "FunctionExpression",
+        "function": "chart",
+        "params": [
+            "element"
+        ],
+        "labels": "['out ~ element']"
+    },
+    {
+        "id": "29616",
+        "location": "{start:{line:6998,column:0},end:{line:7006,column:1}}",
+        "type": "FunctionDeclaration",
+        "function": "sortByWeight",
+        "params": [
+            "array",
+            "reverse"
+        ],
+        "labels": "['out ~ reverse']"
+    },
+    {
+        "id": "62433",
+        "location": "{start:{line:15223,column:0},end:{line:15227,column:1}}",
+        "type": "FunctionDeclaration",
+        "function": "getBoxWidth",
+        "params": [
+            "labelOpts",
+            "fontSize"
+        ],
+        "labels": "['out ~ labelOpts, fontSize']"
+    },
+    {
+        "id": "29916",
+        "location": "{start:{line:7058,column:0},end:{line:7088,column:1}}",
+        "type": "FunctionDeclaration",
+        "function": "updateDims",
+        "params": [
+            "chartArea",
+            "params",
+            "layout"
+        ],
+        "labels": "['out ~ layout, chartArea']"
+    },
+    {
+        "id": "30178",
+        "location": "{start:{line:7104,column:0},end:{line:7118,column:1}}",
+        "type": "FunctionDeclaration",
+        "function": "getMargins",
+        "params": [
+            "horizontal",
+            "chartArea"
+        ],
+        "labels": "['out ~ horizontal']"
+    },
+    {
+        "id": "62952",
+        "location": "{start:{line:15386,column:34},end:{line:15404,column:4}}",
+        "type": "FunctionExpression",
+        "function": "me.legendItems",
+        "params": [
+            "legendItem",
+            "i"
+        ],
+        "labels": "['out ~ i']"
+    },
+    {
+        "id": "63112",
+        "location": "{start:{line:15416,column:34},end:{line:15440,column:4}}",
+        "type": "FunctionExpression",
+        "function": "me.legendItems",
+        "params": [
+            "legendItem",
+            "i"
+        ],
+        "labels": "['out ~ i']"
+    },
+    {
+        "id": "30247",
+        "location": "{start:{line:7120,column:0},end:{line:7147,column:1}}",
+        "type": "FunctionDeclaration",
+        "function": "fitBoxes",
+        "params": [
+            "boxes",
+            "chartArea",
+            "params"
+        ],
+        "labels": "['out ~ chartArea, params']"
+    },
+    {
+        "id": "30605",
+        "location": "{start:{line:7219,column:9},end:{line:7238,column:2}}",
+        "type": "FunctionExpression",
+        "function": "addBox",
+        "params": [
+            "chart",
+            "item"
+        ],
+        "labels": "['out ~ chart']"
+    },
+    {
+        "id": "30691",
+        "location": "{start:{line:7245,column:12},end:{line:7250,column:2}}",
+        "type": "FunctionExpression",
+        "function": "removeBox",
+        "params": [
+            "chart",
+            "layoutItem"
+        ],
+        "labels": "['out ~ chart']"
+    },
+    {
+        "id": "30728",
+        "location": "{start:{line:7258,column:12},end:{line:7270,column:2}}",
+        "type": "FunctionExpression",
+        "function": "configure",
+        "params": [
+            "chart",
+            "item",
+            "options"
+        ],
+        "labels": "['out ~ options']"
+    },
+    {
+        "id": "63672",
+        "location": "{start:{line:15535,column:17},end:{line:15550,column:3}}",
+        "type": "FunctionExpression",
+        "function": "fillText",
+        "params": [
+            "x",
+            "y",
+            "legendItem",
+            "textWidth"
+        ],
+        "labels": "['out ~ legendItem']"
+    },
+    {
+        "id": "30783",
+        "location": "{start:{line:7279,column:9},end:{line:7371,column:2}}",
+        "type": "FunctionExpression",
+        "function": "update",
+        "params": [
+            "chart",
+            "width",
+            "height"
+        ],
+        "labels": "['out ~ chart']"
+    },
+    {
+        "id": "31053",
+        "location": "{start:{line:7380,column:17},end:{line:7387,column:2}}",
+        "type": "FunctionExpression",
+        "function": "acquireContext",
+        "params": [
+            "item"
+        ],
+        "labels": "['out ~ item']"
+    },
+    {
+        "id": "31199",
+        "location": "{start:{line:7443,column:0},end:{line:7491,column:1}}",
+        "type": "FunctionDeclaration",
+        "function": "initCanvas",
+        "params": [
+            "canvas",
+            "config"
+        ],
+        "labels": "['out ~ canvas']"
+    },
+    {
+        "id": "63881",
+        "location": "{start:{line:15582,column:33},end:{line:15620,column:3}}",
+        "type": "FunctionExpression",
+        "function": "me.legendItems",
+        "params": [
+            "legendItem",
+            "i"
+        ],
+        "labels": "['out ~ i']"
+    },
+    {
+        "id": "64131",
+        "location": "{start:{line:15628,column:19},end:{line:15646,column:2}}",
+        "type": "FunctionExpression",
+        "function": "_getLegendItemAt",
+        "params": [
+            "x",
+            "y"
+        ],
+        "labels": "['out ~ x, y']"
+    },
+    {
+        "id": "64238",
+        "location": "{start:{line:15653,column:14},end:{line:15692,column:2}}",
+        "type": "FunctionExpression",
+        "function": "handleEvent",
+        "params": [
+            "e"
+        ],
+        "labels": "['out ~ e']"
+    },
+    {
+        "id": "31432",
+        "location": "{start:{line:7526,column:0},end:{line:7534,column:1}}",
+        "type": "FunctionDeclaration",
+        "function": "createEvent",
+        "params": [
+            "type",
+            "chart",
+            "x",
+            "y",
+            "nativeEvent"
+        ],
+        "labels": "['out ~ x, y']"
+    },
+    {
+        "id": "31740",
+        "location": "{start:{line:7602,column:35},end:{line:7606,column:2}}",
+        "type": "FunctionExpression",
+        "function": "expando.renderProxy",
+        "params": [
+            "e"
+        ],
+        "labels": "['out ~ e']"
+    },
+    {
+        "id": "31835",
+        "location": "{start:{line:7637,column:0},end:{line:7672,column:1}}",
+        "type": "FunctionDeclaration",
+        "function": "addResizeListener",
+        "params": [
+            "node",
+            "listener",
+            "chart"
+        ],
+        "labels": "['out ~ chart']"
+    },
+    {
+        "id": "32087",
+        "location": "{start:{line:7726,column:16},end:{line:7735,column:2}}",
+        "type": "FunctionExpression",
+        "function": "_ensureLoaded",
+        "params": [
+            "canvas"
+        ],
+        "labels": "['out ~ canvas']"
+    },
+    {
+        "id": "32126",
+        "location": "{start:{line:7737,column:17},end:{line:7771,column:2}}",
+        "type": "FunctionExpression",
+        "function": "acquireContext",
+        "params": [
+            "item",
+            "config"
+        ],
+        "labels": "['out ~ item']"
+    },
+    {
+        "id": "32306",
+        "location": "{start:{line:7803,column:19},end:{line:7818,column:2}}",
+        "type": "FunctionExpression",
+        "function": "addEventListener",
+        "params": [
+            "chart",
+            "type",
+            "listener"
+        ],
+        "labels": "['out ~ type']"
+    },
+    {
+        "id": "32384",
+        "location": "{start:{line:7820,column:22},end:{line:7836,column:2}}",
+        "type": "FunctionExpression",
+        "function": "removeEventListener",
+        "params": [
+            "chart",
+            "type",
+            "listener"
+        ],
+        "labels": "['out ~ type']"
+    },
+    {
+        "id": "32534",
+        "location": "{start:{line:7943,column:31},end:{line:7947,column:3}}",
+        "type": "FunctionExpression",
+        "function": "[ ].concat(plugins).forEach",
+        "params": [
+            "plugin"
+        ],
+        "labels": "['out ~ plugin']"
+    },
+    {
+        "id": "32956",
+        "location": "{start:{line:8093,column:22},end:{line:8095,column:2}}",
+        "type": "FunctionExpression",
+        "function": "getScaleConstructor",
+        "params": [
+            "type"
+        ],
+        "labels": "['out ~ type']"
+    },
+    {
+        "id": "32976",
+        "location": "{start:{line:8096,column:19},end:{line:8099,column:2}}",
+        "type": "FunctionExpression",
+        "function": "getScaleDefaults",
+        "params": [
+            "type"
+        ],
+        "labels": "['out ~ type']"
+    },
+    {
+        "id": "33005",
+        "location": "{start:{line:8100,column:22},end:{line:8105,column:2}}",
+        "type": "FunctionExpression",
+        "function": "updateScaleDefaults",
+        "params": [
+            "type",
+            "additions"
+        ],
+        "labels": "['out ~ type']"
+    },
+    {
+        "id": "33210",
+        "location": "{start:{line:8154,column:10},end:{line:8171,column:4}}",
+        "type": "FunctionExpression",
+        "function": "title",
+        "params": [
+            "tooltipItems",
+            "data"
+        ],
+        "labels": "['out ~ tooltipItems']"
+    },
+    {
+        "id": "33306",
+        "location": "{start:{line:8179,column:10},end:{line:8191,column:4}}",
+        "type": "FunctionExpression",
+        "function": "label",
+        "params": [
+            "tooltipItem",
+            "data"
+        ],
+        "labels": "['out ~ tooltipItem']"
+    },
+    {
+        "id": "33441",
+        "location": "{start:{line:8224,column:10},end:{line:8248,column:2}}",
+        "type": "FunctionExpression",
+        "function": "average",
+        "params": [
+            "elements"
+        ],
+        "labels": "['out ~ elements']"
+    },
+    {
+        "id": "33653",
+        "location": "{start:{line:8290,column:0},end:{line:8301,column:1}}",
+        "type": "FunctionDeclaration",
+        "function": "pushOrConcat",
+        "params": [
+            "base",
+            "toPush"
+        ],
+        "labels": "['out ~ toPush']"
+    },
+    {
+        "id": "33688",
+        "location": "{start:{line:8309,column:0},end:{line:8314,column:1}}",
+        "type": "FunctionDeclaration",
+        "function": "splitNewlines",
+        "params": [
+            "str"
+        ],
+        "labels": "['out ~ str']"
+    }
+]

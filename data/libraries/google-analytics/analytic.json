@@ -1,0 +1,2510 @@
+[
+    {
+        "id": "33491",
+        "location": "{start:{line:12762,column:19},end:{line:12783,column:1}}",
+        "type": "FunctionExpression",
+        "function": "GA.on",
+        "params": [
+            "integration"
+        ],
+        "labels": "['out ~ integration']"
+    },
+    {
+        "id": "55",
+        "location": "{start:{line:10,column:4},end:{line:96,column:1}}",
+        "type": "FunctionExpression",
+        "function": "Anonymous",
+        "params": [
+            "modules",
+            "cache",
+            "entries"
+        ],
+        "labels": "['out ~ cache, modules']"
+    },
+    {
+        "id": "69",
+        "location": "{start:{line:26,column:2},end:{line:30,column:3}}",
+        "type": "FunctionDeclaration",
+        "function": "require",
+        "params": [
+            "name",
+            "jumped"
+        ],
+        "labels": "['out ~ name']"
+    },
+    {
+        "id": "34104",
+        "location": "{start:{line:12907,column:24},end:{line:12917,column:1}}",
+        "type": "FunctionExpression",
+        "function": "GA.prototype.identify",
+        "params": [
+            "identify"
+        ],
+        "labels": "['out ~ identify']"
+    },
+    {
+        "id": "598",
+        "location": "{start:{line:203,column:24},end:{line:206,column:3}}",
+        "type": "FunctionExpression",
+        "function": "this.on",
+        "params": [
+            "settings",
+            "options"
+        ],
+        "labels": "['out ~ options']"
+    },
+    {
+        "id": "686",
+        "location": "{start:{line:251,column:60},end:{line:302,column:1}}",
+        "type": "FunctionExpression",
+        "function": "Analytics.prototype.initialize",
+        "params": [
+            "settings",
+            "options"
+        ],
+        "labels": "['out ~ options']"
+    },
+    {
+        "id": "35052",
+        "location": "{start:{line:13168,column:0},end:{line:13173,column:1}}",
+        "type": "FunctionDeclaration",
+        "function": "path",
+        "params": [
+            "properties",
+            "options"
+        ],
+        "labels": "['out ~ properties, options']"
+    },
+    {
+        "id": "35083",
+        "location": "{start:{line:13182,column:0},end:{line:13185,column:1}}",
+        "type": "FunctionDeclaration",
+        "function": "formatValue",
+        "params": [
+            "value"
+        ],
+        "labels": "['out ~ value']"
+    },
+    {
+        "id": "821",
+        "location": "{start:{line:286,column:21},end:{line:294,column:3}}",
+        "type": "FunctionExpression",
+        "function": "integrations",
+        "params": [
+            "name",
+            "integration"
+        ],
+        "labels": "['out ~ integration']"
+    },
+    {
+        "id": "933",
+        "location": "{start:{line:336,column:31},end:{line:360,column:1}}",
+        "type": "FunctionExpression",
+        "function": "Analytics.prototype.identify",
+        "params": [
+            "id",
+            "traits",
+            "options",
+            "fn"
+        ],
+        "labels": "['out ~ options, fn, traits, id']"
+    },
+    {
+        "id": "1064",
+        "location": "{start:{line:383,column:28},end:{line:406,column:1}}",
+        "type": "FunctionExpression",
+        "function": "Analytics.prototype.group",
+        "params": [
+            "id",
+            "traits",
+            "options",
+            "fn"
+        ],
+        "labels": "['out ~ options, fn, traits, id']"
+    },
+    {
+        "id": "1191",
+        "location": "{start:{line:418,column:28},end:{line:449,column:1}}",
+        "type": "FunctionExpression",
+        "function": "Analytics.prototype.track",
+        "params": [
+            "event",
+            "properties",
+            "options",
+            "fn"
+        ],
+        "labels": "['out ~ options, fn, properties']"
+    },
+    {
+        "id": "1342",
+        "location": "{start:{line:463,column:65},end:{line:490,column:1}}",
+        "type": "FunctionExpression",
+        "function": "Analytics.prototype.trackLink",
+        "params": [
+            "links",
+            "event",
+            "properties"
+        ],
+        "labels": "['out ~ links, event, properties']"
+    },
+    {
+        "id": "1371",
+        "location": "{start:{line:469,column:14},end:{line:487,column:3}}",
+        "type": "FunctionExpression",
+        "function": "links",
+        "params": [
+            "el"
+        ],
+        "labels": "['out ~ el']"
+    },
+    {
+        "id": "1390",
+        "location": "{start:{line:471,column:20},end:{line:486,column:5}}",
+        "type": "FunctionExpression",
+        "function": "el",
+        "params": [
+            "e"
+        ],
+        "labels": "['out ~ e']"
+    },
+    {
+        "id": "1495",
+        "location": "{start:{line:504,column:66},end:{line:535,column:1}}",
+        "type": "FunctionExpression",
+        "function": "Analytics.prototype.trackForm",
+        "params": [
+            "forms",
+            "event",
+            "properties"
+        ],
+        "labels": "['out ~ forms, event, properties']"
+    },
+    {
+        "id": "1524",
+        "location": "{start:{line:510,column:14},end:{line:532,column:3}}",
+        "type": "FunctionExpression",
+        "function": "forms",
+        "params": [
+            "el"
+        ],
+        "labels": "['out ~ el']"
+    },
+    {
+        "id": "1628",
+        "location": "{start:{line:549,column:27},end:{line:591,column:1}}",
+        "type": "FunctionExpression",
+        "function": "Analytics.prototype.page",
+        "params": [
+            "category",
+            "name",
+            "properties",
+            "options",
+            "fn"
+        ],
+        "labels": "['out ~ options, fn, properties, name, category']"
+    },
+    {
+        "id": "1869",
+        "location": "{start:{line:601,column:31},end:{line:606,column:1}}",
+        "type": "FunctionExpression",
+        "function": "Analytics.prototype.pageview",
+        "params": [
+            "url"
+        ],
+        "labels": "['out ~ url']"
+    },
+    {
+        "id": "1899",
+        "location": "{start:{line:618,column:28},end:{line:637,column:1}}",
+        "type": "FunctionExpression",
+        "function": "Analytics.prototype.alias",
+        "params": [
+            "to",
+            "from",
+            "options",
+            "fn"
+        ],
+        "labels": "['out ~ options, fn, from']"
+    },
+    {
+        "id": "2000",
+        "location": "{start:{line:646,column:28},end:{line:655,column:1}}",
+        "type": "FunctionExpression",
+        "function": "Analytics.prototype.ready",
+        "params": [
+            "fn"
+        ],
+        "labels": "['out ~ fn']"
+    },
+    {
+        "id": "2054",
+        "location": "{start:{line:673,column:28},end:{line:679,column:1}}",
+        "type": "FunctionExpression",
+        "function": "Analytics.prototype.debug",
+        "params": [
+            "str"
+        ],
+        "labels": "['out ~ str']"
+    },
+    {
+        "id": "2165",
+        "location": "{start:{line:721,column:30},end:{line:730,column:1}}",
+        "type": "FunctionExpression",
+        "function": "Analytics.prototype._invoke",
+        "params": [
+            "method",
+            "facade"
+        ],
+        "labels": "['out ~ facade']"
+    },
+    {
+        "id": "2182",
+        "location": "{start:{line:724,column:27},end:{line:727,column:3}}",
+        "type": "FunctionExpression",
+        "function": "this._integrations",
+        "params": [
+            "name",
+            "integration"
+        ],
+        "labels": "['out ~ name']"
+    },
+    {
+        "id": "2329",
+        "location": "{start:{line:779,column:32},end:{line:788,column:1}}",
+        "type": "FunctionExpression",
+        "function": "Analytics.prototype.normalize",
+        "params": [
+            "msg"
+        ],
+        "labels": "['out ~ msg']"
+    },
+    {
+        "id": "36090",
+        "location": "{start:{line:13604,column:17},end:{line:13613,column:1}}",
+        "type": "FunctionExpression",
+        "function": "module.exports",
+        "params": [
+            "arr",
+            "fn"
+        ],
+        "labels": "['out ~ arr, fn']"
+    },
+    {
+        "id": "36519",
+        "location": "{start:{line:13750,column:16},end:{line:13754,column:3}}",
+        "type": "FunctionExpression",
+        "function": "options",
+        "params": [
+            "name",
+            "value"
+        ],
+        "labels": "['out ~ name, value']"
+    },
+    {
+        "id": "2491",
+        "location": "{start:{line:821,column:0},end:{line:823,column:1}}",
+        "type": "FunctionDeclaration",
+        "function": "Emitter",
+        "params": [
+            "obj"
+        ],
+        "labels": "['out ~ obj']"
+    },
+    {
+        "id": "2877",
+        "location": "{start:{line:969,column:17},end:{line:975,column:1}}",
+        "type": "FunctionExpression",
+        "function": "module.exports",
+        "params": [
+            "arr",
+            "obj"
+        ],
+        "labels": "['out ~ arr, obj']"
+    },
+    {
+        "id": "36905",
+        "location": "{start:{line:13913,column:0},end:{line:13924,column:1}}",
+        "type": "FunctionDeclaration",
+        "function": "omit",
+        "params": [
+            "keys",
+            "object"
+        ],
+        "labels": "['out ~ keys']"
+    },
+    {
+        "id": "36965",
+        "location": "{start:{line:13942,column:0},end:{line:13951,column:1}}",
+        "type": "FunctionDeclaration",
+        "function": "pick",
+        "params": [
+            "obj"
+        ],
+        "labels": "['out ~ obj']"
+    },
+    {
+        "id": "3066",
+        "location": "{start:{line:1021,column:0},end:{line:1026,column:1}}",
+        "type": "FunctionDeclaration",
+        "function": "Facade",
+        "params": [
+            "obj"
+        ],
+        "labels": "['out ~ obj']"
+    },
+    {
+        "id": "3386",
+        "location": "{start:{line:1155,column:27},end:{line:1163,column:1}}",
+        "type": "FunctionExpression",
+        "function": "Facade.prototype.options",
+        "params": [
+            "integration"
+        ],
+        "labels": "['out ~ integration']"
+    },
+    {
+        "id": "3460",
+        "location": "{start:{line:1172,column:27},end:{line:1199,column:1}}",
+        "type": "FunctionExpression",
+        "function": "Facade.prototype.enabled",
+        "params": [
+            "integration"
+        ],
+        "labels": "['out ~ integration']"
+    },
+    {
+        "id": "3938",
+        "location": "{start:{line:1336,column:0},end:{line:1342,column:1}}",
+        "type": "FunctionDeclaration",
+        "function": "traverse",
+        "params": [
+            "input",
+            "strict"
+        ],
+        "labels": "['out ~ strict, input']"
+    },
+    {
+        "id": "3975",
+        "location": "{start:{line:1352,column:0},end:{line:1361,column:1}}",
+        "type": "FunctionDeclaration",
+        "function": "object",
+        "params": [
+            "obj",
+            "strict"
+        ],
+        "labels": "['out ~ strict']"
+    },
+    {
+        "id": "3984",
+        "location": "{start:{line:1353,column:12},end:{line:1359,column:3}}",
+        "type": "FunctionExpression",
+        "function": "obj",
+        "params": [
+            "key",
+            "val"
+        ],
+        "labels": "['out ~ val']"
+    },
+    {
+        "id": "4026",
+        "location": "{start:{line:1371,column:0},end:{line:1380,column:1}}",
+        "type": "FunctionDeclaration",
+        "function": "array",
+        "params": [
+            "arr",
+            "strict"
+        ],
+        "labels": "['out ~ strict']"
+    },
+    {
+        "id": "4035",
+        "location": "{start:{line:1372,column:12},end:{line:1378,column:3}}",
+        "type": "FunctionExpression",
+        "function": "arr",
+        "params": [
+            "val",
+            "x"
+        ],
+        "labels": "['out ~ val']"
+    },
+    {
+        "id": "37603",
+        "location": "{start:{line:14187,column:29},end:{line:14192,column:1}}",
+        "type": "FunctionExpression",
+        "function": "HubSpot.prototype.identify",
+        "params": [
+            "identify"
+        ],
+        "labels": "['out ~ identify']"
+    },
+    {
+        "id": "4228",
+        "location": "{start:{line:1483,column:0},end:{line:1489,column:1}}",
+        "type": "FunctionDeclaration",
+        "function": "isEmpty",
+        "params": [
+            "val"
+        ],
+        "labels": "['out ~ val']"
+    },
+    {
+        "id": "4297",
+        "location": "{start:{line:1506,column:17},end:{line:1525,column:1}}",
+        "type": "FunctionExpression",
+        "function": "module.exports",
+        "params": [
+            "val"
+        ],
+        "labels": "['out ~ val']"
+    },
+    {
+        "id": "4595",
+        "location": "{start:{line:1595,column:13},end:{line:1598,column:1}}",
+        "type": "FunctionExpression",
+        "function": "exports.is",
+        "params": [
+            "string",
+            "strict"
+        ],
+        "labels": "['out ~ string, strict']"
+    },
+    {
+        "id": "4645",
+        "location": "{start:{line:1622,column:17},end:{line:1632,column:1}}",
+        "type": "FunctionExpression",
+        "function": "module.exports",
+        "params": [
+            "obj",
+            "fn"
+        ],
+        "labels": "['out ~ obj']"
+    },
+    {
+        "id": "4686",
+        "location": "{start:{line:1642,column:0},end:{line:1646,column:1}}",
+        "type": "FunctionDeclaration",
+        "function": "string",
+        "params": [
+            "obj",
+            "fn"
+        ],
+        "labels": "['out ~ obj']"
+    },
+    {
+        "id": "4713",
+        "location": "{start:{line:1656,column:0},end:{line:1662,column:1}}",
+        "type": "FunctionDeclaration",
+        "function": "object",
+        "params": [
+            "obj",
+            "fn"
+        ],
+        "labels": "['out ~ obj']"
+    },
+    {
+        "id": "4739",
+        "location": "{start:{line:1672,column:0},end:{line:1676,column:1}}",
+        "type": "FunctionDeclaration",
+        "function": "array",
+        "params": [
+            "obj",
+            "fn"
+        ],
+        "labels": "['out ~ obj']"
+    },
+    {
+        "id": "4948",
+        "location": "{start:{line:1751,column:0},end:{line:1783,column:1}}",
+        "type": "FunctionDeclaration",
+        "function": "clone",
+        "params": [
+            "obj"
+        ],
+        "labels": "['out ~ obj']"
+    },
+    {
+        "id": "5147",
+        "location": "{start:{line:1807,column:2},end:{line:1821,column:3}}",
+        "type": "FunctionDeclaration",
+        "function": "trait",
+        "params": [
+            "a",
+            "b"
+        ],
+        "labels": "['out ~ b']"
+    },
+    {
+        "id": "5330",
+        "location": "{start:{line:1863,column:9},end:{line:1917,column:3}}",
+        "type": "FunctionExpression",
+        "function": "Anonymous",
+        "params": [
+            "obj",
+            "path",
+            "val",
+            "options"
+        ],
+        "labels": "['out ~ options, path, obj']"
+    },
+    {
+        "id": "5481",
+        "location": "{start:{line:1927,column:0},end:{line:1929,column:1}}",
+        "type": "FunctionDeclaration",
+        "function": "find",
+        "params": [
+            "obj",
+            "key"
+        ],
+        "labels": "['out ~ obj, key']"
+    },
+    {
+        "id": "5496",
+        "location": "{start:{line:1938,column:0},end:{line:1941,column:1}}",
+        "type": "FunctionDeclaration",
+        "function": "del",
+        "params": [
+            "obj",
+            "key"
+        ],
+        "labels": "['out ~ obj, key']"
+    },
+    {
+        "id": "5514",
+        "location": "{start:{line:1950,column:0},end:{line:1953,column:1}}",
+        "type": "FunctionDeclaration",
+        "function": "replace",
+        "params": [
+            "obj",
+            "key",
+            "val"
+        ],
+        "labels": "['out ~ obj, key']"
+    },
+    {
+        "id": "5595",
+        "location": "{start:{line:1995,column:17},end:{line:2006,column:1}}",
+        "type": "FunctionExpression",
+        "function": "module.exports",
+        "params": [
+            "val"
+        ],
+        "labels": "['out ~ val']"
+    },
+    {
+        "id": "5659",
+        "location": "{start:{line:2016,column:0},end:{line:2019,column:1}}",
+        "type": "FunctionDeclaration",
+        "function": "toMs",
+        "params": [
+            "num"
+        ],
+        "labels": "['out ~ num']"
+    },
+    {
+        "id": "38180",
+        "location": "{start:{line:14384,column:15},end:{line:14390,column:3}}",
+        "type": "FunctionExpression",
+        "function": "events",
+        "params": [
+            "event"
+        ],
+        "labels": "['out ~ event']"
+    },
+    {
+        "id": "39039",
+        "location": "{start:{line:14723,column:4},end:{line:14723,column:463}}",
+        "type": "FunctionExpression",
+        "function": "window",
+        "params": [
+            "a",
+            "b"
+        ],
+        "labels": "['out ~ a, b']"
+    },
+    {
+        "id": "6480",
+        "location": "{start:{line:2443,column:28},end:{line:2460,column:1}}",
+        "type": "FunctionExpression",
+        "function": "Identify.prototype.traits",
+        "params": [
+            "aliases"
+        ],
+        "labels": "['out ~ aliases']"
+    },
+    {
+        "id": "7115",
+        "location": "{start:{line:2643,column:0},end:{line:2646,column:1}}",
+        "type": "FunctionDeclaration",
+        "function": "trim",
+        "params": [
+            "str"
+        ],
+        "labels": "['out ~ str']"
+    },
+    {
+        "id": "7140",
+        "location": "{start:{line:2648,column:15},end:{line:2651,column:1}}",
+        "type": "FunctionExpression",
+        "function": "exports.left",
+        "params": [
+            "str"
+        ],
+        "labels": "['out ~ str']"
+    },
+    {
+        "id": "7164",
+        "location": "{start:{line:2653,column:16},end:{line:2656,column:1}}",
+        "type": "FunctionExpression",
+        "function": "exports.right",
+        "params": [
+            "str"
+        ],
+        "labels": "['out ~ str']"
+    },
+    {
+        "id": "39850",
+        "location": "{start:{line:14957,column:6},end:{line:15142,column:1}}",
+        "type": "FunctionExpression",
+        "function": "Anonymous",
+        "params": [
+            "require",
+            "module",
+            "exports"
+        ],
+        "labels": "['out ~ exports']"
+    },
+    {
+        "id": "40356",
+        "location": "{start:{line:15132,column:19},end:{line:15138,column:3}}",
+        "type": "FunctionExpression",
+        "function": "properties",
+        "params": [
+            "key",
+            "val"
+        ],
+        "labels": "['out ~ key']"
+    },
+    {
+        "id": "7902",
+        "location": "{start:{line:2938,column:0},end:{line:2947,column:1}}",
+        "type": "FunctionDeclaration",
+        "function": "currency",
+        "params": [
+            "val"
+        ],
+        "labels": "['out ~ val']"
+    },
+    {
+        "id": "8201",
+        "location": "{start:{line:3052,column:23},end:{line:3056,column:1}}",
+        "type": "FunctionExpression",
+        "function": "Page.prototype.event",
+        "params": [
+            "name"
+        ],
+        "labels": "['out ~ name']"
+    },
+    {
+        "id": "8340",
+        "location": "{start:{line:3128,column:25},end:{line:3132,column:1}}",
+        "type": "FunctionExpression",
+        "function": "Screen.prototype.event",
+        "params": [
+            "name"
+        ],
+        "labels": "['out ~ name']"
+    },
+    {
+        "id": "8418",
+        "location": "{start:{line:3155,column:17},end:{line:3165,column:1}}",
+        "type": "FunctionExpression",
+        "function": "module.exports",
+        "params": [
+            "times",
+            "func"
+        ],
+        "labels": "['out ~ times']"
+    },
+    {
+        "id": "40966",
+        "location": "{start:{line:15353,column:29},end:{line:15367,column:3}}",
+        "type": "FunctionExpression",
+        "function": "window.LC_API.on_message",
+        "params": [
+            "data"
+        ],
+        "labels": "['out ~ data']"
+    },
+    {
+        "id": "8498",
+        "location": "{start:{line:3206,column:0},end:{line:3212,column:1}}",
+        "type": "FunctionDeclaration",
+        "function": "bindMethods",
+        "params": [
+            "obj",
+            "methods"
+        ],
+        "labels": "['out ~ methods']"
+    },
+    {
+        "id": "8568",
+        "location": "{start:{line:3230,column:17},end:{line:3237,column:1}}",
+        "type": "FunctionExpression",
+        "function": "module.exports",
+        "params": [
+            "obj",
+            "fn"
+        ],
+        "labels": "['out ~ fn']"
+    },
+    {
+        "id": "8723",
+        "location": "{start:{line:3275,column:0},end:{line:3277,column:1}}",
+        "type": "FunctionDeclaration",
+        "function": "callback",
+        "params": [
+            "fn"
+        ],
+        "labels": "['out ~ fn']"
+    },
+    {
+        "id": "8740",
+        "location": "{start:{line:3288,column:17},end:{line:3292,column:1}}",
+        "type": "FunctionExpression",
+        "function": "callback.async",
+        "params": [
+            "fn",
+            "wait"
+        ],
+        "labels": "['out ~ fn, wait']"
+    },
+    {
+        "id": "8968",
+        "location": "{start:{line:3365,column:0},end:{line:3397,column:1}}",
+        "type": "FunctionDeclaration",
+        "function": "clone",
+        "params": [
+            "obj"
+        ],
+        "labels": "['out ~ obj']"
+    },
+    {
+        "id": "9454",
+        "location": "{start:{line:3574,column:0},end:{line:3590,column:1}}",
+        "type": "FunctionDeclaration",
+        "function": "set",
+        "params": [
+            "name",
+            "value",
+            "options"
+        ],
+        "labels": "['out ~ value, options']"
+    },
+    {
+        "id": "41787",
+        "location": "{start:{line:15613,column:75},end:{line:15613,column:660}}",
+        "type": "FunctionExpression",
+        "function": "a.init",
+        "params": [
+            "b",
+            "c",
+            "f"
+        ],
+        "labels": "['out ~ f']"
+    },
+    {
+        "id": "9767",
+        "location": "{start:{line:3690,column:11},end:{line:3697,column:3}}",
+        "type": "FunctionExpression",
+        "function": "process.env.DEBUG || \"\".split(\"/[s,]+/\").forEach",
+        "params": [
+            "name"
+        ],
+        "labels": "['out ~ name']"
+    },
+    {
+        "id": "9853",
+        "location": "{start:{line:3742,column:0},end:{line:3751,column:1}}",
+        "type": "FunctionDeclaration",
+        "function": "humanize",
+        "params": [
+            "ms"
+        ],
+        "labels": "['out ~ ms']"
+    },
+    {
+        "id": "42294",
+        "location": "{start:{line:15732,column:14},end:{line:15734,column:3}}",
+        "type": "FunctionExpression",
+        "function": "props",
+        "params": [
+            "key",
+            "val"
+        ],
+        "labels": "['out ~ val']"
+    },
+    {
+        "id": "42449",
+        "location": "{start:{line:15780,column:0},end:{line:15788,column:1}}",
+        "type": "FunctionDeclaration",
+        "function": "lowercase",
+        "params": [
+            "arr"
+        ],
+        "labels": "['out ~ arr']"
+    },
+    {
+        "id": "10104",
+        "location": "{start:{line:3812,column:0},end:{line:3815,column:1}}",
+        "type": "FunctionDeclaration",
+        "function": "coerce",
+        "params": [
+            "val"
+        ],
+        "labels": "['out ~ val']"
+    },
+    {
+        "id": "10137",
+        "location": "{start:{line:3834,column:0},end:{line:3855,column:1}}",
+        "type": "FunctionDeclaration",
+        "function": "debug",
+        "params": [
+            "name"
+        ],
+        "labels": "['out ~ name']"
+    },
+    {
+        "id": "10237",
+        "location": "{start:{line:3872,column:15},end:{line:3889,column:1}}",
+        "type": "FunctionExpression",
+        "function": "debug.enable",
+        "params": [
+            "name"
+        ],
+        "labels": "['out ~ name']"
+    },
+    {
+        "id": "10346",
+        "location": "{start:{line:3909,column:17},end:{line:3918,column:1}}",
+        "type": "FunctionExpression",
+        "function": "debug.humanize",
+        "params": [
+            "ms"
+        ],
+        "labels": "['out ~ ms']"
+    },
+    {
+        "id": "10412",
+        "location": "{start:{line:3928,column:16},end:{line:3940,column:1}}",
+        "type": "FunctionExpression",
+        "function": "debug.enabled",
+        "params": [
+            "name"
+        ],
+        "labels": "['out ~ name']"
+    },
+    {
+        "id": "10479",
+        "location": "{start:{line:3946,column:0},end:{line:3949,column:1}}",
+        "type": "FunctionDeclaration",
+        "function": "coerce",
+        "params": [
+            "val"
+        ],
+        "labels": "['out ~ val']"
+    },
+    {
+        "id": "10528",
+        "location": "{start:{line:3969,column:15},end:{line:3979,column:1}}",
+        "type": "FunctionExpression",
+        "function": "defaults",
+        "params": [
+            "dest",
+            "src",
+            "recursive"
+        ],
+        "labels": "['out ~ dest, src, recursive']"
+    },
+    {
+        "id": "10658",
+        "location": "{start:{line:4165,column:4},end:{line:4168,column:5}}",
+        "type": "FunctionDeclaration",
+        "function": "f",
+        "params": [
+            "n"
+        ],
+        "labels": "['out ~ n']"
+    },
+    {
+        "id": "10791",
+        "location": "{start:{line:4199,column:4},end:{line:4213,column:5}}",
+        "type": "FunctionDeclaration",
+        "function": "quote",
+        "params": [
+            "string"
+        ],
+        "labels": "['out ~ string']"
+    },
+    {
+        "id": "42536",
+        "location": "{start:{line:15816,column:17},end:{line:15822,column:1}}",
+        "type": "FunctionExpression",
+        "function": "module.exports",
+        "params": [
+            "arr",
+            "fn"
+        ],
+        "labels": "['out ~ arr, fn']"
+    },
+    {
+        "id": "11240",
+        "location": "{start:{line:4357,column:25},end:{line:4397,column:9}}",
+        "type": "FunctionExpression",
+        "function": "JSON.stringify",
+        "params": [
+            "value",
+            "replacer",
+            "space"
+        ],
+        "labels": "['out ~ space, replacer']"
+    },
+    {
+        "id": "11340",
+        "location": "{start:{line:4405,column:21},end:{line:4483,column:9}}",
+        "type": "FunctionExpression",
+        "function": "JSON.parse",
+        "params": [
+            "text",
+            "reviver"
+        ],
+        "labels": "['out ~ text, reviver']"
+    },
+    {
+        "id": "12024",
+        "location": "{start:{line:4717,column:0},end:{line:4733,column:1}}",
+        "type": "FunctionDeclaration",
+        "function": "set",
+        "params": [
+            "name",
+            "value",
+            "options"
+        ],
+        "labels": "['out ~ value, options']"
+    },
+    {
+        "id": "43639",
+        "location": "{start:{line:16189,column:31},end:{line:16194,column:1}}",
+        "type": "FunctionExpression",
+        "function": "Nudgespot.prototype.identify",
+        "params": [
+            "identify"
+        ],
+        "labels": "['out ~ identify']"
+    },
+    {
+        "id": "12835",
+        "location": "{start:{line:5054,column:28},end:{line:5062,column:1}}",
+        "type": "FunctionExpression",
+        "function": "Entity.prototype.identify",
+        "params": [
+            "id",
+            "traits"
+        ],
+        "labels": "['out ~ id']"
+    },
+    {
+        "id": "13224",
+        "location": "{start:{line:5178,column:23},end:{line:5181,column:1}}",
+        "type": "FunctionExpression",
+        "function": "Memory.prototype.get",
+        "params": [
+            "key"
+        ],
+        "labels": "['out ~ key']"
+    },
+    {
+        "id": "44410",
+        "location": "{start:{line:16300,column:23},end:{line:16308,column:1}}",
+        "type": "FunctionExpression",
+        "function": "Olark.prototype.page",
+        "params": [
+            "page"
+        ],
+        "labels": "['out ~ page']"
+    },
+    {
+        "id": "44470",
+        "location": "{start:{line:16316,column:27},end:{line:16335,column:1}}",
+        "type": "FunctionExpression",
+        "function": "Olark.prototype.identify",
+        "params": [
+            "identify"
+        ],
+        "labels": "['out ~ identify']"
+    },
+    {
+        "id": "44604",
+        "location": "{start:{line:16344,column:24},end:{line:16347,column:1}}",
+        "type": "FunctionExpression",
+        "function": "Olark.prototype.track",
+        "params": [
+            "track"
+        ],
+        "labels": "['out ~ track']"
+    },
+    {
+        "id": "13536",
+        "location": "{start:{line:5300,column:17},end:{line:5309,column:1}}",
+        "type": "FunctionExpression",
+        "function": "store.transact",
+        "params": [
+            "key",
+            "defaultVal",
+            "transactionFn"
+        ],
+        "labels": "['out ~ transactionFn']"
+    },
+    {
+        "id": "13611",
+        "location": "{start:{line:5315,column:20},end:{line:5319,column:1}}",
+        "type": "FunctionExpression",
+        "function": "store.deserialize",
+        "params": [
+            "value"
+        ],
+        "labels": "['out ~ value']"
+    },
+    {
+        "id": "13670",
+        "location": "{start:{line:5331,column:13},end:{line:5335,column:2}}",
+        "type": "FunctionExpression",
+        "function": "store.set",
+        "params": [
+            "key",
+            "val"
+        ],
+        "labels": "['out ~ val']"
+    },
+    {
+        "id": "13949",
+        "location": "{start:{line:5393,column:27},end:{line:5399,column:2}}",
+        "type": "FunctionExpression",
+        "function": "withIEStorage",
+        "params": [
+            "storage",
+            "key",
+            "val"
+        ],
+        "labels": "['out ~ val']"
+    },
+    {
+        "id": "14408",
+        "location": "{start:{line:5526,column:17},end:{line:5539,column:1}}",
+        "type": "FunctionExpression",
+        "function": "module.exports",
+        "params": [
+            "e"
+        ],
+        "labels": "['out ~ e']"
+    },
+    {
+        "id": "44734",
+        "location": "{start:{line:16399,column:28},end:{line:16402,column:3}}",
+        "type": "FunctionExpression",
+        "function": "api",
+        "params": [
+            "data"
+        ],
+        "labels": "['out ~ data']"
+    },
+    {
+        "id": "14498",
+        "location": "{start:{line:5557,column:30},end:{line:5565,column:1}}",
+        "type": "FunctionExpression",
+        "function": "Object.keys",
+        "params": [
+            "obj"
+        ],
+        "labels": "['out ~ obj']"
+    },
+    {
+        "id": "14532",
+        "location": "{start:{line:5575,column:17},end:{line:5583,column:1}}",
+        "type": "FunctionExpression",
+        "function": "exports.values",
+        "params": [
+            "obj"
+        ],
+        "labels": "['out ~ obj']"
+    },
+    {
+        "id": "14568",
+        "location": "{start:{line:5594,column:16},end:{line:5601,column:1}}",
+        "type": "FunctionExpression",
+        "function": "exports.merge",
+        "params": [
+            "a",
+            "b"
+        ],
+        "labels": "['out ~ b']"
+    },
+    {
+        "id": "14761",
+        "location": "{start:{line:5681,column:13},end:{line:5685,column:3}}",
+        "type": "FunctionExpression",
+        "function": "opts",
+        "params": [
+            "key",
+            "value"
+        ],
+        "labels": "['out ~ key']"
+    },
+    {
+        "id": "14799",
+        "location": "{start:{line:5689,column:18},end:{line:5694,column:3}}",
+        "type": "FunctionExpression",
+        "function": "providers",
+        "params": [
+            "key",
+            "value"
+        ],
+        "labels": "['out ~ key']"
+    },
+    {
+        "id": "14843",
+        "location": "{start:{line:5698,column:13},end:{line:5704,column:3}}",
+        "type": "FunctionExpression",
+        "function": "opts",
+        "params": [
+            "key"
+        ],
+        "labels": "['out ~ key']"
+    },
+    {
+        "id": "14986",
+        "location": "{start:{line:5746,column:20},end:{line:5753,column:1}}",
+        "type": "FunctionExpression",
+        "function": "sameValueZero",
+        "params": [
+            "value1",
+            "value2"
+        ],
+        "labels": "['out ~ value1, value2']"
+    },
+    {
+        "id": "15019",
+        "location": "{start:{line:5784,column:15},end:{line:5802,column:1}}",
+        "type": "FunctionExpression",
+        "function": "includes",
+        "params": [
+            "searchElement",
+            "collection"
+        ],
+        "labels": "['out ~ collection, searchElement']"
+    },
+    {
+        "id": "15047",
+        "location": "{start:{line:5793,column:7},end:{line:5799,column:3}}",
+        "type": "FunctionExpression",
+        "function": "collection",
+        "params": [
+            "value"
+        ],
+        "labels": "['out ~ value']"
+    },
+    {
+        "id": "15194",
+        "location": "{start:{line:5881,column:16},end:{line:5888,column:1}}",
+        "type": "FunctionExpression",
+        "function": "arrayEach",
+        "params": [
+            "iterator",
+            "array"
+        ],
+        "labels": "['out ~ array, iterator']"
+    },
+    {
+        "id": "15228",
+        "location": "{start:{line:5900,column:15},end:{line:5909,column:1}}",
+        "type": "FunctionExpression",
+        "function": "baseEach",
+        "params": [
+            "iterator",
+            "object"
+        ],
+        "labels": "['out ~ iterator, object']"
+    },
+    {
+        "id": "15272",
+        "location": "{start:{line:5943,column:11},end:{line:5945,column:1}}",
+        "type": "FunctionExpression",
+        "function": "each",
+        "params": [
+            "iterator",
+            "collection"
+        ],
+        "labels": "['out ~ collection']"
+    },
+    {
+        "id": "15404",
+        "location": "{start:{line:6044,column:16},end:{line:6055,column:1}}",
+        "type": "FunctionExpression",
+        "function": "indexKeys",
+        "params": [
+            "target",
+            "pred"
+        ],
+        "labels": "['out ~ target, pred']"
+    },
+    {
+        "id": "15455",
+        "location": "{start:{line:6068,column:17},end:{line:6080,column:1}}",
+        "type": "FunctionExpression",
+        "function": "objectKeys",
+        "params": [
+            "target",
+            "pred"
+        ],
+        "labels": "['out ~ target, pred']"
+    },
+    {
+        "id": "15497",
+        "location": "{start:{line:6115,column:17},end:{line:6131,column:1}}",
+        "type": "FunctionExpression",
+        "function": "module.exports",
+        "params": [
+            "source"
+        ],
+        "labels": "['out ~ source']"
+    },
+    {
+        "id": "15552",
+        "location": "{start:{line:6151,column:17},end:{line:6158,column:1}}",
+        "type": "FunctionExpression",
+        "function": "module.exports",
+        "params": [
+            "arr",
+            "fn"
+        ],
+        "labels": "['out ~ arr']"
+    },
+    {
+        "id": "15695",
+        "location": "{start:{line:6238,column:0},end:{line:6244,column:1}}",
+        "type": "FunctionDeclaration",
+        "function": "stringToFunction",
+        "params": [
+            "str"
+        ],
+        "labels": "['out ~ str']"
+    },
+    {
+        "id": "15721",
+        "location": "{start:{line:6254,column:0},end:{line:6269,column:1}}",
+        "type": "FunctionDeclaration",
+        "function": "objectToFunction",
+        "params": [
+            "obj"
+        ],
+        "labels": "['out ~ obj']"
+    },
+    {
+        "id": "15758",
+        "location": "{start:{line:6261,column:9},end:{line:6268,column:3}}",
+        "type": "FunctionExpression",
+        "function": "Anonymous",
+        "params": [
+            "val"
+        ],
+        "labels": "['out ~ val']"
+    },
+    {
+        "id": "15887",
+        "location": "{start:{line:6309,column:55},end:{line:6311,column:3}}",
+        "type": "FunctionExpression",
+        "function": "str.replace",
+        "params": [
+            "$0",
+            "$1"
+        ],
+        "labels": "['out ~ $1']"
+    },
+    {
+        "id": "15920",
+        "location": "{start:{line:6331,column:17},end:{line:6336,column:1}}",
+        "type": "FunctionExpression",
+        "function": "module.exports",
+        "params": [
+            "str",
+            "fn"
+        ],
+        "labels": "['out ~ fn']"
+    },
+    {
+        "id": "15977",
+        "location": "{start:{line:6364,column:0},end:{line:6371,column:1}}",
+        "type": "FunctionDeclaration",
+        "function": "map",
+        "params": [
+            "str",
+            "props",
+            "fn"
+        ],
+        "labels": "['out ~ props']"
+    },
+    {
+        "id": "15993",
+        "location": "{start:{line:6366,column:25},end:{line:6370,column:3}}",
+        "type": "FunctionExpression",
+        "function": "re",
+        "params": [
+            "_"
+        ],
+        "labels": "['out ~ _']"
+    },
+    {
+        "id": "16024",
+        "location": "{start:{line:6381,column:0},end:{line:6390,column:1}}",
+        "type": "FunctionDeclaration",
+        "function": "unique",
+        "params": [
+            "arr"
+        ],
+        "labels": "['out ~ arr']"
+    },
+    {
+        "id": "16091",
+        "location": "{start:{line:6416,column:15},end:{line:6423,column:1}}",
+        "type": "FunctionExpression",
+        "function": "exports.bind",
+        "params": [
+            "el",
+            "type",
+            "fn",
+            "capture"
+        ],
+        "labels": "['out ~ el']"
+    },
+    {
+        "id": "16129",
+        "location": "{start:{line:6436,column:17},end:{line:6443,column:1}}",
+        "type": "FunctionExpression",
+        "function": "exports.unbind",
+        "params": [
+            "el",
+            "type",
+            "fn",
+            "capture"
+        ],
+        "labels": "['out ~ el']"
+    },
+    {
+        "id": "16448",
+        "location": "{start:{line:6563,column:11},end:{line:6585,column:1}}",
+        "type": "FunctionExpression",
+        "function": "pick",
+        "params": [
+            "props",
+            "object"
+        ],
+        "labels": "['out ~ object, props']"
+    },
+    {
+        "id": "16551",
+        "location": "{start:{line:6609,column:17},end:{line:6614,column:1}}",
+        "type": "FunctionExpression",
+        "function": "module.exports",
+        "params": [
+            "e"
+        ],
+        "labels": "['out ~ e']"
+    },
+    {
+        "id": "16610",
+        "location": "{start:{line:6636,column:16},end:{line:6662,column:1}}",
+        "type": "FunctionExpression",
+        "function": "exports.parse",
+        "params": [
+            "str"
+        ],
+        "labels": "['out ~ str']"
+    },
+    {
+        "id": "16760",
+        "location": "{start:{line:6672,column:20},end:{line:6690,column:1}}",
+        "type": "FunctionExpression",
+        "function": "exports.stringify",
+        "params": [
+            "obj"
+        ],
+        "labels": "['out ~ obj']"
+    },
+    {
+        "id": "16969",
+        "location": "{start:{line:6771,column:20},end:{line:6782,column:1}}",
+        "type": "FunctionExpression",
+        "function": "User.prototype.id",
+        "params": [
+            "id"
+        ],
+        "labels": "['out ~ id']"
+    },
+    {
+        "id": "17019",
+        "location": "{start:{line:6791,column:29},end:{line:6819,column:1}}",
+        "type": "FunctionExpression",
+        "function": "User.prototype.anonymousId",
+        "params": [
+            "anonymousId"
+        ],
+        "labels": "['out ~ anonymousId']"
+    },
+    {
+        "id": "46483",
+        "location": "{start:{line:17012,column:28},end:{line:17022,column:1}}",
+        "type": "FunctionExpression",
+        "function": "Preact.prototype.identify",
+        "params": [
+            "identify"
+        ],
+        "labels": "['out ~ identify']"
+    },
+    {
+        "id": "46544",
+        "location": "{start:{line:17031,column:25},end:{line:17034,column:1}}",
+        "type": "FunctionExpression",
+        "function": "Preact.prototype.group",
+        "params": [
+            "group"
+        ],
+        "labels": "['out ~ group']"
+    },
+    {
+        "id": "46875",
+        "location": "{start:{line:17152,column:27},end:{line:17158,column:1}}",
+        "type": "FunctionExpression",
+        "function": "Qualaroo.prototype.track",
+        "params": [
+            "track"
+        ],
+        "labels": "['out ~ track']"
+    },
+    {
+        "id": "17270",
+        "location": "{start:{line:6882,column:17},end:{line:6900,column:1}}",
+        "type": "FunctionExpression",
+        "function": "module.exports",
+        "params": [
+            "a"
+        ],
+        "labels": "['out ~ a']"
+    },
+    {
+        "id": "47018",
+        "location": "{start:{line:17195,column:33},end:{line:17211,column:1}}",
+        "type": "FunctionExpression",
+        "function": "Quantcast.prototype.initialize",
+        "params": [
+            "page"
+        ],
+        "labels": "['out ~ page']"
+    },
+    {
+        "id": "18505",
+        "location": "{start:{line:7144,column:2},end:{line:7159,column:3}}",
+        "type": "FunctionDeclaration",
+        "function": "Integration",
+        "params": [
+            "options"
+        ],
+        "labels": "['out ~ options']"
+    },
+    {
+        "id": "18716",
+        "location": "{start:{line:7212,column:0},end:{line:7218,column:1}}",
+        "type": "FunctionDeclaration",
+        "function": "bindMethods",
+        "params": [
+            "obj",
+            "methods"
+        ],
+        "labels": "['out ~ methods']"
+    },
+    {
+        "id": "47501",
+        "location": "{start:{line:17350,column:30},end:{line:17366,column:1}}",
+        "type": "FunctionExpression",
+        "function": "Quantcast.prototype._labels",
+        "params": [
+            "type"
+        ],
+        "labels": "['out ~ type']"
+    },
+    {
+        "id": "47558",
+        "location": "{start:{line:17358,column:25},end:{line:17363,column:3}}",
+        "type": "FunctionExpression",
+        "function": "args",
+        "params": [
+            "ret",
+            "arg"
+        ],
+        "labels": "['out ~ arg']"
+    },
+    {
+        "id": "47774",
+        "location": "{start:{line:17431,column:3},end:{line:17431,column:3250}}",
+        "type": "FunctionExpression",
+        "function": "document",
+        "params": [
+            "a",
+            "b"
+        ],
+        "labels": "['out ~ b, a']"
+    },
+    {
+        "id": "47976",
+        "location": "{start:{line:17431,column:669},end:{line:17431,column:944}}",
+        "type": "FunctionDeclaration",
+        "function": "f",
+        "params": [
+            "a",
+            "b"
+        ],
+        "labels": "['out ~ b']"
+    },
+    {
+        "id": "18847",
+        "location": "{start:{line:7250,column:11},end:{line:7257,column:3}}",
+        "type": "FunctionExpression",
+        "function": "process.env.DEBUG || \"\".split(\"/[s,]+/\").forEach",
+        "params": [
+            "name"
+        ],
+        "labels": "['out ~ name']"
+    },
+    {
+        "id": "18933",
+        "location": "{start:{line:7302,column:0},end:{line:7311,column:1}}",
+        "type": "FunctionDeclaration",
+        "function": "humanize",
+        "params": [
+            "ms"
+        ],
+        "labels": "['out ~ ms']"
+    },
+    {
+        "id": "19184",
+        "location": "{start:{line:7372,column:0},end:{line:7375,column:1}}",
+        "type": "FunctionDeclaration",
+        "function": "coerce",
+        "params": [
+            "val"
+        ],
+        "labels": "['out ~ val']"
+    },
+    {
+        "id": "19217",
+        "location": "{start:{line:7394,column:0},end:{line:7415,column:1}}",
+        "type": "FunctionDeclaration",
+        "function": "debug",
+        "params": [
+            "name"
+        ],
+        "labels": "['out ~ name']"
+    },
+    {
+        "id": "19317",
+        "location": "{start:{line:7432,column:15},end:{line:7449,column:1}}",
+        "type": "FunctionExpression",
+        "function": "debug.enable",
+        "params": [
+            "name"
+        ],
+        "labels": "['out ~ name']"
+    },
+    {
+        "id": "19426",
+        "location": "{start:{line:7469,column:17},end:{line:7478,column:1}}",
+        "type": "FunctionExpression",
+        "function": "debug.humanize",
+        "params": [
+            "ms"
+        ],
+        "labels": "['out ~ ms']"
+    },
+    {
+        "id": "19492",
+        "location": "{start:{line:7488,column:16},end:{line:7500,column:1}}",
+        "type": "FunctionExpression",
+        "function": "debug.enabled",
+        "params": [
+            "name"
+        ],
+        "labels": "['out ~ name']"
+    },
+    {
+        "id": "19559",
+        "location": "{start:{line:7506,column:0},end:{line:7509,column:1}}",
+        "type": "FunctionDeclaration",
+        "function": "coerce",
+        "params": [
+            "val"
+        ],
+        "labels": "['out ~ val']"
+    },
+    {
+        "id": "19871",
+        "location": "{start:{line:7673,column:14},end:{line:7697,column:1}}",
+        "type": "FunctionExpression",
+        "function": "exports.map",
+        "params": [
+            "events",
+            "event"
+        ],
+        "labels": "['out ~ events']"
+    },
+    {
+        "id": "19884",
+        "location": "{start:{line:7676,column:15},end:{line:7696,column:3}}",
+        "type": "FunctionExpression",
+        "function": "events",
+        "params": [
+            "matchingEvents",
+            "val",
+            "key",
+            "events"
+        ],
+        "labels": "['out ~ events, val, key']"
+    },
+    {
+        "id": "48032",
+        "location": "{start:{line:17431,column:882},end:{line:17431,column:942}}",
+        "type": "FunctionExpression",
+        "function": "b.removeEventListener",
+        "params": [
+            "a",
+            "b",
+            "c"
+        ],
+        "labels": "['out ~ b']"
+    },
+    {
+        "id": "48098",
+        "location": "{start:{line:17431,column:1087},end:{line:17431,column:1908}}",
+        "type": "FunctionExpression",
+        "function": "c.init",
+        "params": [
+            "a",
+            "b"
+        ],
+        "labels": "['out ~ a, b']"
+    },
+    {
+        "id": "48257",
+        "location": "{start:{line:17431,column:1930},end:{line:17431,column:2499}}",
+        "type": "FunctionExpression",
+        "function": "c.prototype.loadFull",
+        "params": [
+            "a",
+            "b",
+            "c",
+            "d",
+            "e"
+        ],
+        "labels": "['out ~ a, c, d']"
+    },
+    {
+        "id": "48443",
+        "location": "{start:{line:17431,column:2517},end:{line:17431,column:2947}}",
+        "type": "FunctionExpression",
+        "function": "c.prototype.wrap",
+        "params": [
+            "b",
+            "c"
+        ],
+        "labels": "['out ~ b, c']"
+    },
+    {
+        "id": "19938",
+        "location": "{start:{line:7709,column:17},end:{line:7723,column:1}}",
+        "type": "FunctionExpression",
+        "function": "exports.invoke",
+        "params": [
+            "method"
+        ],
+        "labels": "['out ~ method']"
+    },
+    {
+        "id": "20015",
+        "location": "{start:{line:7734,column:16},end:{line:7740,column:1}}",
+        "type": "FunctionExpression",
+        "function": "exports.queue",
+        "params": [
+            "method",
+            "args"
+        ],
+        "labels": "['out ~ method']"
+    },
+    {
+        "id": "20164",
+        "location": "{start:{line:7787,column:15},end:{line:7830,column:1}}",
+        "type": "FunctionExpression",
+        "function": "exports.load",
+        "params": [
+            "name",
+            "locals",
+            "callback"
+        ],
+        "labels": "['out ~ name, locals']"
+    },
+    {
+        "id": "20313",
+        "location": "{start:{line:7812,column:29},end:{line:7815,column:7}}",
+        "type": "FunctionExpression",
+        "function": "attrs",
+        "params": [
+            "err"
+        ],
+        "labels": "['out ~ err']"
+    },
+    {
+        "id": "20371",
+        "location": "{start:{line:7841,column:17},end:{line:7849,column:1}}",
+        "type": "FunctionExpression",
+        "function": "exports.locals",
+        "params": [
+            "locals"
+        ],
+        "labels": "['out ~ locals']"
+    },
+    {
+        "id": "20413",
+        "location": "{start:{line:7845,column:21},end:{line:7847,column:3}}",
+        "type": "FunctionExpression",
+        "function": "this.options",
+        "params": [
+            "key",
+            "val"
+        ],
+        "labels": "['out ~ key']"
+    },
+    {
+        "id": "48690",
+        "location": "{start:{line:17465,column:40},end:{line:17477,column:1}}",
+        "type": "FunctionExpression",
+        "function": "RollbarIntegration.prototype.identify",
+        "params": [
+            "identify"
+        ],
+        "labels": "['out ~ identify']"
+    },
+    {
+        "id": "20867",
+        "location": "{start:{line:8018,column:17},end:{line:8030,column:1}}",
+        "type": "FunctionExpression",
+        "function": "module.exports",
+        "params": [
+            "obj",
+            "fn",
+            "ctx"
+        ],
+        "labels": "['out ~ obj']"
+    },
+    {
+        "id": "20925",
+        "location": "{start:{line:8041,column:0},end:{line:8045,column:1}}",
+        "type": "FunctionDeclaration",
+        "function": "string",
+        "params": [
+            "obj",
+            "fn",
+            "ctx"
+        ],
+        "labels": "['out ~ obj']"
+    },
+    {
+        "id": "20956",
+        "location": "{start:{line:8056,column:0},end:{line:8062,column:1}}",
+        "type": "FunctionDeclaration",
+        "function": "object",
+        "params": [
+            "obj",
+            "fn",
+            "ctx"
+        ],
+        "labels": "['out ~ obj']"
+    },
+    {
+        "id": "20986",
+        "location": "{start:{line:8073,column:0},end:{line:8077,column:1}}",
+        "type": "FunctionDeclaration",
+        "function": "array",
+        "params": [
+            "obj",
+            "fn",
+            "ctx"
+        ],
+        "labels": "['out ~ obj']"
+    },
+    {
+        "id": "49520",
+        "location": "{start:{line:17715,column:32},end:{line:17739,column:1}}",
+        "type": "FunctionExpression",
+        "function": "SatisMeter.prototype.identify",
+        "params": [
+            "identify"
+        ],
+        "labels": "['out ~ identify']"
+    },
+    {
+        "id": "21046",
+        "location": "{start:{line:8096,column:17},end:{line:8112,column:1}}",
+        "type": "FunctionExpression",
+        "function": "module.exports",
+        "params": [
+            "val"
+        ],
+        "labels": "['out ~ val']"
+    },
+    {
+        "id": "21212",
+        "location": "{start:{line:8193,column:0},end:{line:8199,column:1}}",
+        "type": "FunctionDeclaration",
+        "function": "stringToFunction",
+        "params": [
+            "str"
+        ],
+        "labels": "['out ~ str']"
+    },
+    {
+        "id": "21238",
+        "location": "{start:{line:8209,column:0},end:{line:8224,column:1}}",
+        "type": "FunctionDeclaration",
+        "function": "objectToFunction",
+        "params": [
+            "obj"
+        ],
+        "labels": "['out ~ obj']"
+    },
+    {
+        "id": "21275",
+        "location": "{start:{line:8216,column:9},end:{line:8223,column:3}}",
+        "type": "FunctionExpression",
+        "function": "Anonymous",
+        "params": [
+            "val"
+        ],
+        "labels": "['out ~ val']"
+    },
+    {
+        "id": "21404",
+        "location": "{start:{line:8264,column:55},end:{line:8266,column:3}}",
+        "type": "FunctionExpression",
+        "function": "str.replace",
+        "params": [
+            "$0",
+            "$1"
+        ],
+        "labels": "['out ~ $1']"
+    },
+    {
+        "id": "21551",
+        "location": "{start:{line:8327,column:35},end:{line:8331,column:3}}",
+        "type": "FunctionExpression",
+        "function": "str.replace",
+        "params": [
+            "_",
+            "f"
+        ],
+        "labels": "['out ~ f']"
+    },
+    {
+        "id": "21605",
+        "location": "{start:{line:8375,column:12},end:{line:8385,column:1}}",
+        "type": "FunctionExpression",
+        "function": "foldl",
+        "params": [
+            "iterator",
+            "accumulator",
+            "collection"
+        ],
+        "labels": "['out ~ iterator']"
+    },
+    {
+        "id": "21685",
+        "location": "{start:{line:8412,column:17},end:{line:8455,column:1}}",
+        "type": "FunctionExpression",
+        "function": "module.exports",
+        "params": [
+            "options",
+            "fn"
+        ],
+        "labels": "['out ~ options, fn']"
+    },
+    {
+        "id": "21894",
+        "location": "{start:{line:8469,column:17},end:{line:8473,column:1}}",
+        "type": "FunctionExpression",
+        "function": "module.exports",
+        "params": [
+            "el",
+            "fn"
+        ],
+        "labels": "['out ~ el']"
+    },
+    {
+        "id": "21964",
+        "location": "{start:{line:8500,column:0},end:{line:8510,column:1}}",
+        "type": "FunctionDeclaration",
+        "function": "attach",
+        "params": [
+            "el",
+            "fn"
+        ],
+        "labels": "['out ~ el']"
+    },
+    {
+        "id": "22060",
+        "location": "{start:{line:8531,column:17},end:{line:8573,column:1}}",
+        "type": "FunctionExpression",
+        "function": "module.exports",
+        "params": [
+            "options",
+            "fn"
+        ],
+        "labels": "['out ~ options, fn']"
+    },
+    {
+        "id": "50234",
+        "location": "{start:{line:17938,column:26},end:{line:17943,column:3}}",
+        "type": "FunctionExpression",
+        "function": "headers",
+        "params": [
+            "err",
+            "res"
+        ],
+        "labels": "['out ~ err']"
+    },
+    {
+        "id": "50270",
+        "location": "{start:{line:17954,column:27},end:{line:17970,column:1}}",
+        "type": "FunctionExpression",
+        "function": "Segment.prototype.cookie",
+        "params": [
+            "name",
+            "val"
+        ],
+        "labels": "['out ~ name']"
+    },
+    {
+        "id": "50388",
+        "location": "{start:{line:17982,column:31},end:{line:17994,column:1}}",
+        "type": "FunctionExpression",
+        "function": "Segment.prototype.referrerId",
+        "params": [
+            "query",
+            "ctx"
+        ],
+        "labels": "['out ~ query']"
+    },
+    {
+        "id": "50618",
+        "location": "{start:{line:18083,column:16},end:{line:18109,column:1}}",
+        "type": "FunctionExpression",
+        "function": "exports.parse",
+        "params": [
+            "str"
+        ],
+        "labels": "['out ~ str']"
+    },
+    {
+        "id": "22262",
+        "location": "{start:{line:8600,column:0},end:{line:8604,column:1}}",
+        "type": "FunctionDeclaration",
+        "function": "toNoCase",
+        "params": [
+            "string"
+        ],
+        "labels": "['out ~ string']"
+    },
+    {
+        "id": "22311",
+        "location": "{start:{line:8622,column:43},end:{line:8624,column:3}}",
+        "type": "FunctionExpression",
+        "function": "separatorSplitter",
+        "params": [
+            "m",
+            "next"
+        ],
+        "labels": "['out ~ next']"
+    },
+    {
+        "id": "22530",
+        "location": "{start:{line:8771,column:14},end:{line:8778,column:1}}",
+        "type": "FunctionExpression",
+        "function": "exports.tag",
+        "params": [
+            "name",
+            "tag"
+        ],
+        "labels": "['out ~ tag']"
+    },
+    {
+        "id": "22561",
+        "location": "{start:{line:8792,column:0},end:{line:8810,column:1}}",
+        "type": "FunctionDeclaration",
+        "function": "objectify",
+        "params": [
+            "str"
+        ],
+        "labels": "['out ~ str']"
+    },
+    {
+        "id": "22590",
+        "location": "{start:{line:8799,column:22},end:{line:8804,column:3}}",
+        "type": "FunctionExpression",
+        "function": "el.attributes",
+        "params": [
+            "attr"
+        ],
+        "labels": "['out ~ attr']"
+    },
+    {
+        "id": "50768",
+        "location": "{start:{line:18119,column:20},end:{line:18137,column:1}}",
+        "type": "FunctionExpression",
+        "function": "exports.stringify",
+        "params": [
+            "obj"
+        ],
+        "labels": "['out ~ obj']"
+    },
+    {
+        "id": "50908",
+        "location": "{start:{line:18176,column:0},end:{line:18184,column:1}}",
+        "type": "FunctionDeclaration",
+        "function": "store",
+        "params": [
+            "key",
+            "value"
+        ],
+        "labels": "['out ~ key']"
+    },
+    {
+        "id": "50976",
+        "location": "{start:{line:18199,column:0},end:{line:18203,column:1}}",
+        "type": "FunctionDeclaration",
+        "function": "set",
+        "params": [
+            "key",
+            "val"
+        ],
+        "labels": "['out ~ val']"
+    },
+    {
+        "id": "22820",
+        "location": "{start:{line:8879,column:0},end:{line:8921,column:1}}",
+        "type": "FunctionDeclaration",
+        "function": "parse",
+        "params": [
+            "html",
+            "doc"
+        ],
+        "labels": "['out ~ html, doc']"
+    },
+    {
+        "id": "23068",
+        "location": "{start:{line:8969,column:47},end:{line:8971,column:3}}",
+        "type": "FunctionExpression",
+        "function": "clean(string).replace",
+        "params": [
+            "matches",
+            "match"
+        ],
+        "labels": "['out ~ match']"
+    },
+    {
+        "id": "23109",
+        "location": "{start:{line:9000,column:0},end:{line:9006,column:1}}",
+        "type": "FunctionDeclaration",
+        "function": "toNoCase",
+        "params": [
+            "string"
+        ],
+        "labels": "['out ~ string']"
+    },
+    {
+        "id": "23167",
+        "location": "{start:{line:9024,column:43},end:{line:9026,column:3}}",
+        "type": "FunctionExpression",
+        "function": "separatorSplitter",
+        "params": [
+            "m",
+            "next"
+        ],
+        "labels": "['out ~ next']"
+    },
+    {
+        "id": "51435",
+        "location": "{start:{line:18427,column:42},end:{line:18433,column:3}}",
+        "type": "FunctionExpression",
+        "function": "url",
+        "params": [
+            "err",
+            "obj"
+        ],
+        "labels": "['out ~ err']"
+    },
+    {
+        "id": "51493",
+        "location": "{start:{line:18442,column:0},end:{line:18473,column:1}}",
+        "type": "FunctionDeclaration",
+        "function": "encode",
+        "params": [
+            "input"
+        ],
+        "labels": "['out ~ input']"
+    },
+    {
+        "id": "51664",
+        "location": "{start:{line:18478,column:0},end:{line:18502,column:1}}",
+        "type": "FunctionDeclaration",
+        "function": "encode",
+        "params": [
+            "string"
+        ],
+        "labels": "['out ~ string']"
+    },
+    {
+        "id": "51853",
+        "location": "{start:{line:18561,column:0},end:{line:18608,column:1}}",
+        "type": "FunctionDeclaration",
+        "function": "jsonp",
+        "params": [
+            "url",
+            "opts",
+            "fn"
+        ],
+        "labels": "['out ~ opts, fn, url']"
+    },
+    {
+        "id": "52091",
+        "location": "{start:{line:18633,column:0},end:{line:18649,column:1}}",
+        "type": "FunctionDeclaration",
+        "function": "utm",
+        "params": [
+            "query"
+        ],
+        "labels": "['out ~ query']"
+    },
+    {
+        "id": "24114",
+        "location": "{start:{line:9390,column:34},end:{line:9392,column:1}}",
+        "type": "FunctionExpression",
+        "function": "Amplitude.prototype.setDeviceId",
+        "params": [
+            "deviceId"
+        ],
+        "labels": "['out ~ deviceId']"
+    },
+    {
+        "id": "24385",
+        "location": "{start:{line:9539,column:17},end:{line:9581,column:1}}",
+        "type": "FunctionExpression",
+        "function": "module.exports",
+        "params": [
+            "options",
+            "fn"
+        ],
+        "labels": "['out ~ options, fn']"
+    },
+    {
+        "id": "25232",
+        "location": "{start:{line:9854,column:23},end:{line:9864,column:1}}",
+        "type": "FunctionExpression",
+        "function": "Bing.prototype.track",
+        "params": [
+            "track"
+        ],
+        "labels": "['out ~ track']"
+    },
+    {
+        "id": "25572",
+        "location": "{start:{line:9950,column:31},end:{line:9960,column:1}}",
+        "type": "FunctionExpression",
+        "function": "Blueshift.prototype.identify",
+        "params": [
+            "identify"
+        ],
+        "labels": "['out ~ identify']"
+    },
+    {
+        "id": "25740",
+        "location": "{start:{line:10002,column:15},end:{line:10005,column:3}}",
+        "type": "FunctionExpression",
+        "function": "obj",
+        "params": [
+            "results",
+            "val",
+            "key"
+        ],
+        "labels": "['out ~ val']"
+    },
+    {
+        "id": "54449",
+        "location": "{start:{line:19458,column:33},end:{line:19487,column:3}}",
+        "type": "FunctionExpression",
+        "function": "window.userlikeTrackingEvent",
+        "params": [
+            "eventName",
+            "globalCtx",
+            "sessionCtx"
+        ],
+        "labels": "['out ~ eventName']"
+    },
+    {
+        "id": "26115",
+        "location": "{start:{line:10130,column:16},end:{line:10156,column:1}}",
+        "type": "FunctionExpression",
+        "function": "exports.parse",
+        "params": [
+            "str"
+        ],
+        "labels": "['out ~ str']"
+    },
+    {
+        "id": "26265",
+        "location": "{start:{line:10166,column:20},end:{line:10184,column:1}}",
+        "type": "FunctionExpression",
+        "function": "exports.stringify",
+        "params": [
+            "obj"
+        ],
+        "labels": "['out ~ obj']"
+    },
+    {
+        "id": "54764",
+        "location": "{start:{line:19542,column:26},end:{line:19547,column:1}}",
+        "type": "FunctionExpression",
+        "function": "UserVoice.on",
+        "params": [
+            "integration"
+        ],
+        "labels": "['out ~ integration']"
+    },
+    {
+        "id": "55326",
+        "location": "{start:{line:19803,column:23},end:{line:19811,column:1}}",
+        "type": "FunctionExpression",
+        "function": "Vero.prototype.track",
+        "params": [
+            "track"
+        ],
+        "labels": "['out ~ track']"
+    },
+    {
+        "id": "55376",
+        "location": "{start:{line:19823,column:23},end:{line:19831,column:1}}",
+        "type": "FunctionExpression",
+        "function": "Vero.prototype.alias",
+        "params": [
+            "alias"
+        ],
+        "labels": "['out ~ alias']"
+    },
+    {
+        "id": "55594",
+        "location": "{start:{line:19908,column:14},end:{line:19910,column:3}}",
+        "type": "FunctionExpression",
+        "function": "experiments",
+        "params": [
+            "err",
+            "traits"
+        ],
+        "labels": "['out ~ traits']"
+    },
+    {
+        "id": "27243",
+        "location": "{start:{line:10505,column:0},end:{line:10513,column:1}}",
+        "type": "FunctionDeclaration",
+        "function": "defaults",
+        "params": [
+            "dest",
+            "defaults"
+        ],
+        "labels": "['out ~ dest']"
+    },
+    {
+        "id": "56251",
+        "location": "{start:{line:20101,column:21},end:{line:20106,column:3}}",
+        "type": "FunctionExpression",
+        "function": "this.options",
+        "params": [
+            "key",
+            "value"
+        ],
+        "labels": "['out ~ value']"
+    },
+    {
+        "id": "56349",
+        "location": "{start:{line:20138,column:28},end:{line:20143,column:1}}",
+        "type": "FunctionExpression",
+        "function": "Woopra.prototype.identify",
+        "params": [
+            "identify"
+        ],
+        "labels": "['out ~ identify']"
+    },
+    {
+        "id": "29071",
+        "location": "{start:{line:11143,column:0},end:{line:11153,column:1}}",
+        "type": "FunctionDeclaration",
+        "function": "generate",
+        "params": [
+            "name",
+            "options"
+        ],
+        "labels": "['out ~ options']"
+    },
+    {
+        "id": "29147",
+        "location": "{start:{line:11173,column:0},end:{line:11185,column:1}}",
+        "type": "FunctionDeclaration",
+        "function": "throttle",
+        "params": [
+            "func",
+            "wait"
+        ],
+        "labels": "['out ~ wait']"
+    },
+    {
+        "id": "29218",
+        "location": "{start:{line:11208,column:0},end:{line:11216,column:1}}",
+        "type": "FunctionDeclaration",
+        "function": "when",
+        "params": [
+            "condition",
+            "fn",
+            "interval"
+        ],
+        "labels": "['out ~ condition']"
+    },
+    {
+        "id": "29452",
+        "location": "{start:{line:11274,column:32},end:{line:11280,column:1}}",
+        "type": "FunctionExpression",
+        "function": "Customerio.prototype.identify",
+        "params": [
+            "identify"
+        ],
+        "labels": "['out ~ identify']"
+    },
+    {
+        "id": "29687",
+        "location": "{start:{line:11371,column:0},end:{line:11378,column:1}}",
+        "type": "FunctionDeclaration",
+        "function": "aliasByDictionary",
+        "params": [
+            "obj",
+            "aliases"
+        ],
+        "labels": "['out ~ obj']"
+    },
+    {
+        "id": "31192",
+        "location": "{start:{line:11916,column:43},end:{line:11930,column:1}}",
+        "type": "FunctionExpression",
+        "function": "Extole.prototype._formatConversionParams",
+        "params": [
+            "event",
+            "email",
+            "userId",
+            "properties"
+        ],
+        "labels": "['out ~ properties']"
+    },
+    {
+        "id": "32331",
+        "location": "{start:{line:12374,column:0},end:{line:12407,column:1}}",
+        "type": "FunctionDeclaration",
+        "function": "clean",
+        "params": [
+            "obj"
+        ],
+        "labels": "['out ~ obj']"
+    },
+    {
+        "id": "32416",
+        "location": "{start:{line:12417,column:0},end:{line:12421,column:1}}",
+        "type": "FunctionDeclaration",
+        "function": "clear",
+        "params": [
+            "obj",
+            "key"
+        ],
+        "labels": "['out ~ obj, key']"
+    },
+    {
+        "id": "32441",
+        "location": "{start:{line:12437,column:2},end:{line:12450,column:3}}",
+        "type": "FunctionDeclaration",
+        "function": "step",
+        "params": [
+            "object",
+            "prev"
+        ],
+        "labels": "['out ~ object, prev']"
+    },
+    {
+        "id": "32618",
+        "location": "{start:{line:12491,column:3},end:{line:12497,column:3}}",
+        "type": "FunctionExpression",
+        "function": "document",
+        "params": [
+            "m",
+            "n",
+            "e",
+            "t",
+            "l",
+            "o",
+            "g",
+            "y"
+        ],
+        "labels": "['out ~ g']"
+    },
+    {
+        "id": "32670",
+        "location": "{start:{line:12493,column:15},end:{line:12493,column:54}}",
+        "type": "FunctionExpression",
+        "function": "g.identify",
+        "params": [
+            "i",
+            "v"
+        ],
+        "labels": "['out ~ v']"
+    },
+    {
+        "id": "32796",
+        "location": "{start:{line:12521,column:24},end:{line:12524,column:3}}",
+        "type": "FunctionExpression",
+        "function": "traits",
+        "params": [
+            "results",
+            "value",
+            "key"
+        ],
+        "labels": "['out ~ key']"
+    },
+    {
+        "id": "32838",
+        "location": "{start:{line:12536,column:0},end:{line:12543,column:1}}",
+        "type": "FunctionDeclaration",
+        "function": "convert",
+        "params": [
+            "key",
+            "value"
+        ],
+        "labels": "['out ~ value']"
+    }
+]

@@ -1,0 +1,23 @@
+[
+    {
+        "id": "105",
+        "location": "{start:{line:41,column:49},end:{line:45,column:5}}",
+        "type": "FunctionExpression",
+        "function": "navdrawerContainer.addEventListener",
+        "params": [
+            "event"
+        ],
+        "labels": "['out ~ event']"
+    },
+    {
+        "id": "140",
+        "location": "{start:{line:66,column:26},end:{line:80,column:5}}",
+        "type": "FunctionExpression",
+        "function": "$.fn.waitForContent",
+        "params": [
+            "callback",
+            "time"
+        ],
+        "labels": "['out ~ time']"
+    }
+]

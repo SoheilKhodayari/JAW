@@ -1,0 +1,4071 @@
+[
+    {
+        "id": "25690",
+        "location": "{start:{line:10106,column:16},end:{line:10108,column:3}}",
+        "type": "FunctionExpression",
+        "function": "_create",
+        "label": "REQ"
+    },
+    {
+        "id": "25293",
+        "location": "{start:{line:9928,column:1},end:{line:10023,column:2}}",
+        "type": "FunctionDeclaration",
+        "function": "xhr",
+        "label": "REQ",
+        "params": [
+            "url",
+            "options",
+            "returnDeferred"
+        ]
+    },
+    {
+        "id": "22268",
+        "location": "{start:{line:8977,column:12},end:{line:8997,column:3}}",
+        "type": "FunctionExpression",
+        "function": "emit",
+        "label": "E-DISPATCH",
+        "params": [
+            "target",
+            "type",
+            "event"
+        ]
+    },
+    {
+        "id": "20770",
+        "location": "{start:{line:8370,column:8},end:{line:8374,column:3}}",
+        "type": "FunctionExpression",
+        "function": "emit",
+        "label": "E-DISPATCH",
+        "params": [
+            "type",
+            "event"
+        ]
+    },
+    {
+        "id": "30554",
+        "location": "{start:{line:12203,column:11},end:{line:12213,column:3}}",
+        "type": "FunctionExpression",
+        "function": "publish",
+        "label": "E-DISPATCH",
+        "params": [
+            "topic",
+            "event"
+        ]
+    },
+    {
+        "id": "20591",
+        "location": "{start:{line:8291,column:1},end:{line:8295,column:2}}",
+        "type": "FunctionDeclaration",
+        "function": "emitAsync",
+        "label": "E-DISPATCH",
+        "params": [
+            "args"
+        ]
+    },
+    {
+        "id": "30452",
+        "location": "{start:{line:12122,column:9},end:{line:12134,column:2}}",
+        "type": "FunctionExpression",
+        "function": "publish",
+        "label": "E-DISPATCH",
+        "params": [
+            "topic",
+            "args"
+        ]
+    },
+    {
+        "id": "30472",
+        "location": "{start:{line:12136,column:18},end:{line:12154,column:2}}",
+        "type": "FunctionExpression",
+        "function": "connectPublisher",
+        "label": "E-DISPATCH",
+        "params": [
+            "topic",
+            "obj",
+            "event"
+        ]
+    },
+    {
+        "id": "15989",
+        "location": "{start:{line:6198,column:22},end:{line:6205,column:2}}",
+        "type": "FunctionExpression",
+        "function": "_checkPubCount",
+        "label": "E-DISPATCH",
+        "params": [
+            "dfd"
+        ]
+    },
+    {
+        "id": "30480",
+        "location": "{start:{line:12152,column:11},end:{line:12152,column:59}}",
+        "type": "FunctionExpression",
+        "function": "pf",
+        "label": "E-DISPATCH"
+    },
+    {
+        "id": "15549",
+        "location": "{start:{line:6057,column:19},end:{line:6178,column:2}}",
+        "type": "FunctionExpression",
+        "function": "_ioSetArgs",
+        "label": "E-DISPATCH",
+        "params": [
+            "args",
+            "canceller",
+            "okHandler",
+            "errHandler"
+        ]
+    },
+    {
+        "id": "16069",
+        "location": "{start:{line:6222,column:23},end:{line:6237,column:2}}",
+        "type": "FunctionExpression",
+        "function": "_ioNotifyStart",
+        "label": "E-DISPATCH",
+        "params": [
+            "dfd"
+        ]
+    },
+    {
+        "id": "16118",
+        "location": "{start:{line:6239,column:17},end:{line:6270,column:2}}",
+        "type": "FunctionExpression",
+        "function": "_ioWatch",
+        "label": "E-DISPATCH",
+        "params": [
+            "dfd",
+            "validCheck",
+            "ioCheck",
+            "resHandle"
+        ]
+    },
+    {
+        "id": "16237",
+        "location": "{start:{line:6308,column:12},end:{line:6390,column:2}}",
+        "type": "FunctionExpression",
+        "function": "xhr",
+        "label": "E-DISPATCH",
+        "params": [
+            "method",
+            "args",
+            "hasBody"
+        ]
+    },
+    {
+        "id": "24780",
+        "location": "{start:{line:9795,column:1},end:{line:9835,column:2}}",
+        "type": "FunctionDeclaration",
+        "function": "handleResponse",
+        "label": "E-DISPATCH",
+        "params": [
+            "response",
+            "error"
+        ]
+    },
+    {
+        "id": "25030",
+        "location": "{start:{line:9863,column:3},end:{line:9873,column:4}}",
+        "type": "FunctionDeclaration",
+        "function": "onProgress",
+        "label": "E-DISPATCH",
+        "params": [
+            "transferType",
+            "evt"
+        ]
+    },
+    {
+        "id": "25263",
+        "location": "{start:{line:9917,column:1},end:{line:9919,column:2}}",
+        "type": "FunctionDeclaration",
+        "function": "getHeader",
+        "label": "E-DISPATCH",
+        "params": [
+            "headerName"
+        ]
+    },
+    {
+        "id": "14725",
+        "location": "{start:{line:5600,column:17},end:{line:5699,column:4}}",
+        "type": "FunctionExpression",
+        "function": "syncRequire",
+        "label": "E-DISPATCH",
+        "params": [
+            "deps",
+            "callback",
+            "require"
+        ]
+    },
+    {
+        "id": "15935",
+        "location": "{start:{line:6180,column:19},end:{line:6186,column:2}}",
+        "type": "FunctionExpression",
+        "function": "_deferredOk",
+        "label": "E-DISPATCH",
+        "params": [
+            "dfd"
+        ]
+    },
+    {
+        "id": "25922",
+        "location": "{start:{line:10195,column:28},end:{line:10201,column:2}}",
+        "type": "FunctionExpression",
+        "function": "handleNativeResponse",
+        "label": "E-DISPATCH",
+        "params": [
+            "response"
+        ]
+    },
+    {
+        "id": "921",
+        "location": "{start:{line:364,column:17},end:{line:376,column:4}}",
+        "type": "FunctionExpression",
+        "function": "getText",
+        "label": "E-DISPATCH",
+        "params": [
+            "url",
+            "async",
+            "onLoad"
+        ]
+    },
+    {
+        "id": "16552",
+        "location": "{start:{line:6392,column:15},end:{line:6396,column:2}}",
+        "type": "FunctionExpression",
+        "function": "xhrGet",
+        "label": "E-DISPATCH",
+        "params": [
+            "args"
+        ]
+    },
+    {
+        "id": "16571",
+        "location": "{start:{line:6398,column:34},end:{line:6405,column:2}}",
+        "type": "FunctionExpression",
+        "function": "xhrPost",
+        "label": "E-DISPATCH",
+        "params": [
+            "args"
+        ]
+    },
+    {
+        "id": "16591",
+        "location": "{start:{line:6407,column:32},end:{line:6414,column:2}}",
+        "type": "FunctionExpression",
+        "function": "xhrPut",
+        "label": "E-DISPATCH",
+        "params": [
+            "args"
+        ]
+    },
+    {
+        "id": "16607",
+        "location": "{start:{line:6416,column:18},end:{line:6420,column:2}}",
+        "type": "FunctionExpression",
+        "function": "xhrDelete",
+        "label": "E-DISPATCH",
+        "params": [
+            "args"
+        ]
+    },
+    {
+        "id": "23368",
+        "location": "{start:{line:9378,column:1},end:{line:9413,column:2}}",
+        "type": "FunctionDeclaration",
+        "function": "watchInFlight",
+        "label": "E-DISPATCH"
+    },
+    {
+        "id": "24986",
+        "location": "{start:{line:9854,column:3},end:{line:9856,column:4}}",
+        "type": "FunctionDeclaration",
+        "function": "onLoad",
+        "label": "E-DISPATCH",
+        "params": [
+            "evt"
+        ]
+    },
+    {
+        "id": "24996",
+        "location": "{start:{line:9857,column:3},end:{line:9861,column:4}}",
+        "type": "FunctionDeclaration",
+        "function": "onError",
+        "label": "E-DISPATCH",
+        "params": [
+            "evt"
+        ]
+    },
+    {
+        "id": "24062",
+        "location": "{start:{line:9581,column:20},end:{line:9639,column:2}}",
+        "type": "FunctionExpression",
+        "function": "deferred",
+        "label": "E-DISPATCH",
+        "params": [
+            "response",
+            "cancel",
+            "isValid",
+            "isReady",
+            "handleResponse",
+            "last"
+        ]
+    },
+    {
+        "id": "23549",
+        "location": "{start:{line:9415,column:1},end:{line:9450,column:2}}",
+        "type": "FunctionDeclaration",
+        "function": "watch",
+        "label": "E-DISPATCH",
+        "params": [
+            "dfd"
+        ]
+    },
+    {
+        "id": "4641",
+        "location": "{start:{line:1392,column:21},end:{line:1423,column:4}}",
+        "type": "FunctionExpression",
+        "function": "injectPlugin",
+        "label": "E-DISPATCH",
+        "params": [
+            "module"
+        ]
+    },
+    {
+        "id": "5874",
+        "location": "{start:{line:1760,column:19},end:{line:1786,column:4}}",
+        "type": "FunctionExpression",
+        "function": "injectUrl",
+        "label": "E-DISPATCH",
+        "params": [
+            "url",
+            "callback",
+            "owner"
+        ]
+    },
+    {
+        "id": "3958",
+        "location": "{start:{line:1207,column:24},end:{line:1245,column:4}}",
+        "type": "FunctionExpression",
+        "function": "resolvePluginLoadQ",
+        "label": "E-DISPATCH",
+        "params": [
+            "plugin"
+        ]
+    },
+    {
+        "id": "4851",
+        "location": "{start:{line:1459,column:18},end:{line:1608,column:4}}",
+        "type": "FunctionExpression",
+        "function": "injectModule",
+        "label": "E-DISPATCH",
+        "params": [
+            "module"
+        ]
+    },
+    {
+        "id": "4141",
+        "location": "{start:{line:1247,column:16},end:{line:1269,column:4}}",
+        "type": "FunctionExpression",
+        "function": "finishExec",
+        "label": "E-DISPATCH",
+        "params": [
+            "module"
+        ]
+    },
+    {
+        "id": "4243",
+        "location": "{start:{line:1273,column:16},end:{line:1324,column:4}}",
+        "type": "FunctionExpression",
+        "function": "execModule",
+        "label": "E-DISPATCH",
+        "params": [
+            "module",
+            "strict"
+        ]
+    },
+    {
+        "id": "4669",
+        "location": "{start:{line:1403,column:17},end:{line:1408,column:6}}",
+        "type": "FunctionExpression",
+        "function": "onLoad",
+        "label": "E-DISPATCH",
+        "params": [
+            "def"
+        ]
+    },
+    {
+        "id": "5124",
+        "location": "{start:{line:1537,column:24},end:{line:1589,column:7}}",
+        "type": "FunctionExpression",
+        "function": "xhrCallback",
+        "label": "E-DISPATCH",
+        "params": [
+            "text"
+        ]
+    },
+    {
+        "id": "5359",
+        "location": "{start:{line:1610,column:18},end:{line:1663,column:4}}",
+        "type": "FunctionExpression",
+        "function": "defineModule",
+        "label": "E-DISPATCH",
+        "params": [
+            "module",
+            "deps",
+            "def"
+        ]
+    },
+    {
+        "id": "653",
+        "location": "{start:{line:281,column:23},end:{line:310,column:3}}",
+        "type": "FunctionExpression",
+        "function": "initSyncLoader",
+        "label": "E-DISPATCH",
+        "params": [
+            "dojoRequirePlugin_",
+            "checkDojoRequirePlugin_",
+            "transformToAmd_"
+        ]
+    },
+    {
+        "id": "8265",
+        "location": "{start:{line:2550,column:16},end:{line:2565,column:2}}",
+        "type": "FunctionExpression",
+        "function": "provide",
+        "label": "E-DISPATCH",
+        "params": [
+            "mid"
+        ]
+    },
+    {
+        "id": "8369",
+        "location": "{start:{line:2661,column:2},end:{line:2717,column:3}}",
+        "type": "FunctionDeclaration",
+        "function": "doRequire",
+        "label": "E-DISPATCH",
+        "params": [
+            "mid",
+            "omitModuleCheck"
+        ]
+    },
+    {
+        "id": "2326",
+        "location": "{start:{line:828,column:20},end:{line:888,column:4}}",
+        "type": "FunctionExpression",
+        "function": "contextRequire",
+        "label": "E-DISPATCH",
+        "params": [
+            "a1",
+            "a2",
+            "a3",
+            "referenceModule",
+            "contextRequire"
+        ]
+    },
+    {
+        "id": "3483",
+        "location": "{start:{line:1100,column:15},end:{line:1143,column:4}}",
+        "type": "FunctionExpression",
+        "function": "getModule",
+        "label": "E-DISPATCH",
+        "params": [
+            "mid",
+            "referenceModule",
+            "immediate"
+        ]
+    },
+    {
+        "id": "4483",
+        "location": "{start:{line:1344,column:19},end:{line:1367,column:4}}",
+        "type": "FunctionExpression",
+        "function": "checkComplete",
+        "label": "E-DISPATCH"
+    },
+    {
+        "id": "8365",
+        "location": "{start:{line:2569,column:16},end:{line:2724,column:2}}",
+        "type": "FunctionExpression",
+        "function": "require",
+        "label": "E-DISPATCH",
+        "params": [
+            "moduleName",
+            "omitModuleCheck"
+        ]
+    },
+    {
+        "id": "14364",
+        "location": "{start:{line:5488,column:5},end:{line:5577,column:6}}",
+        "type": "FunctionDeclaration",
+        "function": "preload",
+        "label": "E-DISPATCH",
+        "params": [
+            "locale"
+        ]
+    },
+    {
+        "id": "14239",
+        "location": "{start:{line:5436,column:52},end:{line:5581,column:4}}",
+        "type": "FunctionExpression",
+        "function": "_preloadLocalizations",
+        "label": "E-DISPATCH",
+        "params": [
+            "bundlePrefix",
+            "localesGenerated",
+            "guaranteedAmdFormat",
+            "contextRequire"
+        ]
+    },
+    {
+        "id": "13307",
+        "location": "{start:{line:4946,column:8},end:{line:4991,column:3}}",
+        "type": "FunctionExpression",
+        "function": "load",
+        "label": "E-DISPATCH",
+        "params": [
+            "id",
+            "require",
+            "load"
+        ]
+    },
+    {
+        "id": "26149",
+        "location": "{start:{line:10257,column:7},end:{line:10289,column:2}}",
+        "type": "FunctionExpression",
+        "function": "load",
+        "label": "E-DISPATCH",
+        "params": [
+            "id",
+            "parentRequire",
+            "loaded",
+            "config"
+        ]
+    },
+    {
+        "id": "14345",
+        "location": "{start:{line:5483,column:5},end:{line:5486,column:6}}",
+        "type": "FunctionDeclaration",
+        "function": "cacheId",
+        "label": "E-DISPATCH",
+        "params": [
+            "path",
+            "name",
+            "loc",
+            "require"
+        ]
+    },
+    {
+        "id": "14523",
+        "location": "{start:{line:5522,column:11},end:{line:5567,column:12}}",
+        "type": "FunctionDeclaration",
+        "function": "improveBundle",
+        "label": "E-DISPATCH",
+        "params": [
+            "bundlePath",
+            "bundleName",
+            "bundle",
+            "localized"
+        ]
+    },
+    {
+        "id": "2526",
+        "location": "{start:{line:890,column:19},end:{line:929,column:4}}",
+        "type": "FunctionExpression",
+        "function": "createRequire",
+        "label": "E-DISPATCH",
+        "params": [
+            "module"
+        ]
+    },
+    {
+        "id": "7102",
+        "location": "{start:{line:2094,column:22},end:{line:2102,column:3}}",
+        "type": "FunctionExpression",
+        "function": "dojoRequirePlugin",
+        "label": "E-DISPATCH",
+        "params": [
+            "mid",
+            "require",
+            "loaded"
+        ]
+    },
+    {
+        "id": "7481",
+        "location": "{start:{line:2221,column:23},end:{line:2352,column:3}}",
+        "type": "FunctionExpression",
+        "function": "dojoLoadInitPlugin",
+        "label": "E-DISPATCH",
+        "params": [
+            "mid",
+            "require",
+            "loaded"
+        ]
+    },
+    {
+        "id": "13801",
+        "location": "{start:{line:5203,column:11},end:{line:5220,column:3}}",
+        "type": "FunctionExpression",
+        "function": "doLoad",
+        "label": "E-DISPATCH",
+        "params": [
+            "require",
+            "bundlePathAndName",
+            "bundlePath",
+            "bundleName",
+            "locale",
+            "load"
+        ]
+    },
+    {
+        "id": "13955",
+        "location": "{start:{line:5237,column:9},end:{line:5418,column:3}}",
+        "type": "FunctionExpression",
+        "function": "load",
+        "label": "E-DISPATCH",
+        "params": [
+            "id",
+            "require",
+            "load"
+        ]
+    },
+    {
+        "id": "14206",
+        "location": "{start:{line:5426,column:10},end:{line:5430,column:4}}",
+        "type": "FunctionExpression",
+        "function": "isXd",
+        "label": "E-DISPATCH",
+        "params": [
+            "mid",
+            "contextRequire"
+        ]
+    },
+    {
+        "id": "14688",
+        "location": "{start:{line:5583,column:21},end:{line:5588,column:4}}",
+        "type": "FunctionExpression",
+        "function": "waitForPreloads",
+        "label": "E-DISPATCH",
+        "params": [
+            "id",
+            "require",
+            "load"
+        ]
+    },
+    {
+        "id": "26457",
+        "location": "{start:{line:10368,column:12},end:{line:10405,column:3}}",
+        "type": "FunctionExpression",
+        "function": "onEvent",
+        "label": "E-DISPATCH"
+    },
+    {
+        "id": "8559",
+        "location": "{start:{line:2730,column:27},end:{line:2762,column:2}}",
+        "type": "FunctionExpression",
+        "function": "registerModulePath",
+        "label": "E-DISPATCH",
+        "params": [
+            "moduleName",
+            "prefix"
+        ]
+    },
+    {
+        "id": "8590",
+        "location": "{start:{line:2764,column:24},end:{line:2797,column:2}}",
+        "type": "FunctionExpression",
+        "function": "platformRequire",
+        "label": "E-DISPATCH",
+        "params": [
+            "modMap"
+        ]
+    },
+    {
+        "id": "8659",
+        "location": "{start:{line:2799,column:40},end:{line:2810,column:2}}",
+        "type": "FunctionExpression",
+        "function": "requireAfterIf",
+        "label": "E-DISPATCH",
+        "params": [
+            "condition",
+            "moduleName",
+            "omitModuleCheck"
+        ]
+    },
+    {
+        "id": "8679",
+        "location": "{start:{line:2812,column:28},end:{line:2816,column:2}}",
+        "type": "FunctionExpression",
+        "function": "requireLocalization",
+        "label": "E-DISPATCH",
+        "params": [
+            "moduleName",
+            "bundleName",
+            "locale"
+        ]
+    },
+    {
+        "id": "9365",
+        "location": "{start:{line:3094,column:19},end:{line:3134,column:3}}",
+        "type": "FunctionExpression",
+        "function": "moduleUrl",
+        "label": "E-DISPATCH",
+        "params": [
+            "module",
+            "url"
+        ]
+    },
+    {
+        "id": "13112",
+        "location": "{start:{line:4820,column:14},end:{line:4920,column:2}}",
+        "type": "FunctionExpression",
+        "function": "cache",
+        "label": "E-DISPATCH",
+        "params": [
+            "module",
+            "url",
+            "value"
+        ]
+    },
+    {
+        "id": "13559",
+        "location": "{start:{line:5109,column:16},end:{line:5113,column:2}}",
+        "type": "FunctionExpression",
+        "function": "load",
+        "label": "E-DISPATCH",
+        "params": [
+            "id",
+            "parentRequire",
+            "loaded",
+            "config"
+        ]
+    },
+    {
+        "id": "15071",
+        "location": "{start:{line:5717,column:31},end:{line:5739,column:3}}",
+        "type": "FunctionExpression",
+        "function": "getLocalization",
+        "label": "E-DISPATCH",
+        "params": [
+            "moduleName",
+            "bundleName",
+            "locale"
+        ]
+    },
+    {
+        "id": "14321",
+        "location": "{start:{line:5476,column:5},end:{line:5481,column:6}}",
+        "type": "FunctionDeclaration",
+        "function": "preloadingRelLock",
+        "label": "E-DISPATCH"
+    },
+    {
+        "id": "3921",
+        "location": "{start:{line:1199,column:27},end:{line:1205,column:4}}",
+        "type": "FunctionExpression",
+        "function": "promoteModuleToPlugin",
+        "label": "E-DISPATCH",
+        "params": [
+            "pluginModule"
+        ]
+    },
+    {
+        "id": "13351",
+        "location": "{start:{line:4965,column:13},end:{line:4967,column:5}}",
+        "type": "FunctionExpression",
+        "function": "finish",
+        "label": "E-DISPATCH",
+        "params": [
+            "text"
+        ]
+    },
+    {
+        "id": "14030",
+        "location": "{start:{line:5371,column:13},end:{line:5375,column:5}}",
+        "type": "FunctionExpression",
+        "function": "finish",
+        "label": "E-DISPATCH"
+    },
+    {
+        "id": "4586",
+        "location": "{start:{line:1378,column:14},end:{line:1384,column:3}}",
+        "type": "FunctionExpression",
+        "function": "undef",
+        "label": "E-DISPATCH",
+        "params": [
+            "moduleId",
+            "referenceModule"
+        ]
+    },
+    {
+        "id": "38955",
+        "location": "{start:{line:16129,column:14},end:{line:16140,column:2}}",
+        "type": "FunctionExpression",
+        "function": "load",
+        "label": "E-DISPATCH",
+        "params": [
+            "id",
+            "parentRequire",
+            "loaded"
+        ]
+    },
+    {
+        "id": "16638",
+        "location": "{start:{line:6438,column:17},end:{line:6444,column:2}}",
+        "type": "FunctionExpression",
+        "function": "_getText",
+        "label": "E-DISPATCH",
+        "params": [
+            "url"
+        ]
+    },
+    {
+        "id": "26820",
+        "location": "{start:{line:10516,column:17},end:{line:10518,column:2}}",
+        "type": "FunctionExpression",
+        "function": "load",
+        "label": "E-DISPATCH",
+        "params": [
+            "id",
+            "req",
+            "load"
+        ]
+    },
+    {
+        "id": "7565",
+        "location": "{start:{line:2290,column:15},end:{line:2297,column:8}}",
+        "type": "FunctionExpression",
+        "function": "provide",
+        "label": "E-DISPATCH",
+        "params": [
+            "moduleName"
+        ]
+    },
+    {
+        "id": "7592",
+        "location": "{start:{line:2298,column:15},end:{line:2302,column:8}}",
+        "type": "FunctionExpression",
+        "function": "require",
+        "label": "E-DISPATCH",
+        "params": [
+            "moduleName",
+            "omitModuleCheck"
+        ]
+    },
+    {
+        "id": "7621",
+        "location": "{start:{line:2303,column:27},end:{line:2317,column:8}}",
+        "type": "FunctionExpression",
+        "function": "requireLocalization",
+        "label": "E-DISPATCH",
+        "params": [
+            "moduleName",
+            "bundleName",
+            "locale"
+        ]
+    },
+    {
+        "id": "1516",
+        "location": "{start:{line:611,column:12},end:{line:708,column:4}}",
+        "type": "FunctionExpression",
+        "function": "config",
+        "label": "E-DISPATCH",
+        "params": [
+            "config",
+            "booting",
+            "referenceModule"
+        ]
+    },
+    {
+        "id": "5559",
+        "location": "{start:{line:1665,column:13},end:{line:1683,column:4}}",
+        "type": "FunctionExpression",
+        "function": "runDefQ",
+        "label": "E-DISPATCH",
+        "params": [
+            "referenceModule",
+            "mids"
+        ]
+    },
+    {
+        "id": "6256",
+        "location": "{start:{line:1846,column:12},end:{line:1926,column:3}}",
+        "type": "FunctionExpression",
+        "function": "def",
+        "label": "E-DISPATCH",
+        "params": [
+            "mid",
+            "dependencies",
+            "factory"
+        ]
+    },
+    {
+        "id": "8019",
+        "location": "{start:{line:2442,column:19},end:{line:2492,column:3}}",
+        "type": "FunctionExpression",
+        "function": "transformToAmd",
+        "label": "E-DISPATCH",
+        "params": [
+            "module",
+            "text"
+        ]
+    },
+    {
+        "id": "5479",
+        "location": "{start:{line:1638,column:13},end:{line:1640,column:7}}",
+        "type": "FunctionExpression",
+        "function": "config",
+        "label": "E-DISPATCH"
+    },
+    {
+        "id": "44005",
+        "location": "{start:{line:18382,column:9},end:{line:18414,column:3}}",
+        "type": "FunctionExpression",
+        "function": "_fire",
+        "label": "E-DISPATCH",
+        "params": [
+            "evt",
+            "args"
+        ]
+    },
+    {
+        "id": "191",
+        "location": "{start:{line:156,column:8},end:{line:162,column:3}}",
+        "type": "FunctionExpression",
+        "function": "req",
+        "label": "E-DISPATCH",
+        "params": [
+            "config",
+            "dependencies",
+            "callback"
+        ]
+    },
+    {
+        "id": "1381",
+        "location": "{start:{line:571,column:20},end:{line:576,column:4}}",
+        "type": "FunctionExpression",
+        "function": "computeAliases",
+        "label": "E-DISPATCH",
+        "params": [
+            "config",
+            "dest"
+        ]
+    },
+    {
+        "id": "13922",
+        "location": "{start:{line:5230,column:21},end:{line:5235,column:3}}",
+        "type": "FunctionExpression",
+        "function": "getLocalesToLoad",
+        "label": "E-DISPATCH",
+        "params": [
+            "targetLocale"
+        ]
+    },
+    {
+        "id": "26434",
+        "location": "{start:{line:10362,column:19},end:{line:10366,column:3}}",
+        "type": "FunctionExpression",
+        "function": "handleDomReady",
+        "label": "E-DISPATCH"
+    },
+    {
+        "id": "44066",
+        "location": "{start:{line:18416,column:8},end:{line:18448,column:3}}",
+        "type": "FunctionExpression",
+        "function": "play",
+        "label": "E-DISPATCH",
+        "params": [
+            "delay",
+            "gotoStart"
+        ]
+    },
+    {
+        "id": "44170",
+        "location": "{start:{line:18450,column:9},end:{line:18472,column:3}}",
+        "type": "FunctionExpression",
+        "function": "_play",
+        "label": "E-DISPATCH",
+        "params": [
+            "gotoStart"
+        ]
+    },
+    {
+        "id": "44284",
+        "location": "{start:{line:18474,column:9},end:{line:18484,column:3}}",
+        "type": "FunctionExpression",
+        "function": "pause",
+        "label": "E-DISPATCH"
+    },
+    {
+        "id": "44381",
+        "location": "{start:{line:18501,column:8},end:{line:18516,column:3}}",
+        "type": "FunctionExpression",
+        "function": "stop",
+        "label": "E-DISPATCH",
+        "params": [
+            "gotoEnd"
+        ]
+    },
+    {
+        "id": "44478",
+        "location": "{start:{line:18534,column:10},end:{line:18575,column:3}}",
+        "type": "FunctionExpression",
+        "function": "_cycle",
+        "label": "E-DISPATCH"
+    },
+    {
+        "id": "44340",
+        "location": "{start:{line:18486,column:15},end:{line:18499,column:3}}",
+        "type": "FunctionExpression",
+        "function": "gotoPercent",
+        "label": "E-DISPATCH",
+        "params": [
+            "percent",
+            "andPlay"
+        ]
+    },
+    {
+        "id": "45457",
+        "location": "{start:{line:18868,column:15},end:{line:18918,column:2}}",
+        "type": "FunctionExpression",
+        "function": "anim",
+        "label": "E-DISPATCH",
+        "params": [
+            "node",
+            "properties",
+            "duration",
+            "easing",
+            "onEnd",
+            "delay"
+        ]
+    },
+    {
+        "id": "44832",
+        "location": "{start:{line:18633,column:16},end:{line:18653,column:2}}",
+        "type": "FunctionExpression",
+        "function": "_fade",
+        "label": "E-DISPATCH",
+        "params": [
+            "args"
+        ]
+    },
+    {
+        "id": "45129",
+        "location": "{start:{line:18726,column:26},end:{line:18866,column:2}}",
+        "type": "FunctionExpression",
+        "function": "animateProperty",
+        "label": "E-DISPATCH",
+        "params": [
+            "args"
+        ]
+    },
+    {
+        "id": "44932",
+        "location": "{start:{line:18666,column:17},end:{line:18671,column:2}}",
+        "type": "FunctionExpression",
+        "function": "fadeIn",
+        "label": "E-DISPATCH",
+        "params": [
+            "args"
+        ]
+    },
+    {
+        "id": "44952",
+        "location": "{start:{line:18673,column:18},end:{line:18678,column:2}}",
+        "type": "FunctionExpression",
+        "function": "fadeOut",
+        "label": "E-DISPATCH",
+        "params": [
+            "args"
+        ]
+    },
+    {
+        "id": "21492",
+        "location": "{start:{line:8689,column:16},end:{line:8708,column:2}}",
+        "type": "FunctionExpression",
+        "function": "pausable",
+        "label": "E-DISPATCH",
+        "params": [
+            "target",
+            "type",
+            "listener",
+            "dontFix"
+        ]
+    },
+    {
+        "id": "44451",
+        "location": "{start:{line:18518,column:11},end:{line:18522,column:3}}",
+        "type": "FunctionExpression",
+        "function": "destroy",
+        "label": "E-DISPATCH"
+    },
+    {
+        "id": "35099",
+        "location": "{start:{line:13944,column:39},end:{line:13944,column:75}}",
+        "type": "FunctionExpression",
+        "function": "destroy",
+        "label": "E-DISPATCH",
+        "params": [
+            "node"
+        ]
+    },
+    {
+        "id": "37261",
+        "location": "{start:{line:14968,column:33},end:{line:14989,column:2}}",
+        "type": "FunctionExpression",
+        "function": "destroy",
+        "label": "E-DISPATCH",
+        "params": [
+            "node"
+        ]
+    },
+    {
+        "id": "2238",
+        "location": "{start:{line:804,column:27},end:{line:826,column:4}}",
+        "type": "FunctionExpression",
+        "function": "injectDependencies",
+        "label": "E-DISPATCH",
+        "params": [
+            "module"
+        ]
+    },
+    {
+        "id": "2945",
+        "location": "{start:{line:999,column:19},end:{line:1006,column:3}}",
+        "type": "FunctionExpression",
+        "function": "makeModuleInfo",
+        "label": "E-DISPATCH",
+        "params": [
+            "pid",
+            "mid",
+            "pack",
+            "url"
+        ]
+    },
+    {
+        "id": "3422",
+        "location": "{start:{line:1089,column:18},end:{line:1091,column:3}}",
+        "type": "FunctionExpression",
+        "function": "getModuleInfo",
+        "label": "E-DISPATCH",
+        "params": [
+            "mid",
+            "referenceModule",
+            "fromPendingCache"
+        ]
+    },
+    {
+        "id": "3803",
+        "location": "{start:{line:1177,column:16},end:{line:1193,column:4}}",
+        "type": "FunctionExpression",
+        "function": "runFactory",
+        "label": "E-DISPATCH",
+        "params": [
+            "module",
+            "args"
+        ]
+    },
+    {
+        "id": "4748",
+        "location": "{start:{line:1433,column:20},end:{line:1457,column:4}}",
+        "type": "FunctionExpression",
+        "function": "evalModuleText",
+        "label": "E-DISPATCH",
+        "params": [
+            "text",
+            "module"
+        ]
+    },
+    {
+        "id": "4992",
+        "location": "{start:{line:1496,column:25},end:{line:1520,column:5}}",
+        "type": "FunctionExpression",
+        "function": "onLoadCallback",
+        "label": "E-DISPATCH"
+    },
+    {
+        "id": "2610",
+        "location": "{start:{line:908,column:21},end:{line:910,column:7}}",
+        "type": "FunctionExpression",
+        "function": "undef",
+        "label": "E-DISPATCH",
+        "params": [
+            "mid"
+        ]
+    },
+    {
+        "id": "6058",
+        "location": "{start:{line:1803,column:26},end:{line:1826,column:3}}",
+        "type": "FunctionExpression",
+        "function": "trace",
+        "label": "E-DISPATCH",
+        "params": [
+            "group",
+            "args"
+        ]
+    },
+    {
+        "id": "14251",
+        "location": "{start:{line:5452,column:4},end:{line:5458,column:5}}",
+        "type": "FunctionDeclaration",
+        "function": "doRequire",
+        "label": "E-DISPATCH",
+        "params": [
+            "mid",
+            "callback"
+        ]
+    },
+    {
+        "id": "1189",
+        "location": "{start:{line:527,column:35},end:{line:548,column:5}}",
+        "type": "FunctionExpression",
+        "function": "consumePendingCacheInsert",
+        "label": "E-DISPATCH",
+        "params": [
+            "referenceModule",
+            "clear"
+        ]
+    },
+    {
+        "id": "2290",
+        "location": "{start:{line:813,column:28},end:{line:817,column:9}}",
+        "type": "FunctionExpression",
+        "function": "onLoadCallback",
+        "label": "E-DISPATCH"
+    },
+    {
+        "id": "3023",
+        "location": "{start:{line:1008,column:19},end:{line:1087,column:3}}",
+        "type": "FunctionExpression",
+        "function": "getModuleInfo_",
+        "label": "E-DISPATCH",
+        "params": [
+            "mid",
+            "referenceModule",
+            "packs",
+            "modules",
+            "baseUrl",
+            "mapProgs",
+            "pathsMapProg",
+            "aliases",
+            "alwaysCreate",
+            "fromPendingCache"
+        ]
+    },
+    {
+        "id": "2628",
+        "location": "{start:{line:913,column:27},end:{line:924,column:7}}",
+        "type": "FunctionExpression",
+        "function": "syncLoadNls",
+        "label": "E-DISPATCH",
+        "params": [
+            "mid"
+        ]
+    },
+    {
+        "id": "3692",
+        "location": "{start:{line:1146,column:31},end:{line:1148,column:3}}",
+        "type": "FunctionExpression",
+        "function": "toAbsMid",
+        "label": "E-DISPATCH",
+        "params": [
+            "mid",
+            "referenceModule"
+        ]
+    },
+    {
+        "id": "3709",
+        "location": "{start:{line:1150,column:22},end:{line:1159,column:3}}",
+        "type": "FunctionExpression",
+        "function": "toUrl",
+        "label": "E-DISPATCH",
+        "params": [
+            "name",
+            "referenceModule"
+        ]
+    },
+    {
+        "id": "13266",
+        "location": "{start:{line:4936,column:13},end:{line:4944,column:3}}",
+        "type": "FunctionExpression",
+        "function": "normalize",
+        "label": "E-DISPATCH",
+        "params": [
+            "id",
+            "toAbsMid"
+        ]
+    },
+    {
+        "id": "3451",
+        "location": "{start:{line:1094,column:32},end:{line:1096,column:4}}",
+        "type": "FunctionExpression",
+        "function": "resolvePluginResourceId",
+        "label": "E-DISPATCH",
+        "params": [
+            "plugin",
+            "prid",
+            "referenceModule"
+        ]
+    },
+    {
+        "id": "13905",
+        "location": "{start:{line:5222,column:14},end:{line:5228,column:3}}",
+        "type": "FunctionExpression",
+        "function": "normalize",
+        "label": "E-DISPATCH",
+        "params": [
+            "id",
+            "toAbsMid"
+        ]
+    },
+    {
+        "id": "2594",
+        "location": "{start:{line:904,column:23},end:{line:906,column:6}}",
+        "type": "FunctionExpression",
+        "function": "toAbsMid",
+        "label": "E-DISPATCH",
+        "params": [
+            "mid"
+        ]
+    },
+    {
+        "id": "9868",
+        "location": "{start:{line:3305,column:17},end:{line:3336,column:2}}",
+        "type": "FunctionExpression",
+        "function": "normalize",
+        "label": "E-DISPATCH",
+        "params": [
+            "id",
+            "toAbsMid"
+        ]
+    },
+    {
+        "id": "2581",
+        "location": "{start:{line:901,column:20},end:{line:903,column:6}}",
+        "type": "FunctionExpression",
+        "function": "toUrl",
+        "label": "E-DISPATCH",
+        "params": [
+            "name"
+        ]
+    },
+    {
+        "id": "12660",
+        "location": "{start:{line:4607,column:11},end:{line:4678,column:3}}",
+        "type": "FunctionExpression",
+        "function": "forEach",
+        "label": "E-DISPATCH",
+        "params": [
+            "arr",
+            "callback",
+            "thisObject"
+        ]
+    },
+    {
+        "id": "12747",
+        "location": "{start:{line:4680,column:7},end:{line:4717,column:3}}",
+        "type": "FunctionExpression",
+        "function": "map",
+        "label": "E-DISPATCH",
+        "params": [
+            "arr",
+            "callback",
+            "thisObject",
+            "Ctr"
+        ]
+    },
+    {
+        "id": "12852",
+        "location": "{start:{line:4719,column:10},end:{line:4763,column:3}}",
+        "type": "FunctionExpression",
+        "function": "filter",
+        "label": "E-DISPATCH",
+        "params": [
+            "arr",
+            "callback",
+            "thisObject"
+        ]
+    },
+    {
+        "id": "12968",
+        "location": "{start:{line:4765,column:14},end:{line:4767,column:3}}",
+        "type": "FunctionExpression",
+        "function": "clearCache",
+        "label": "E-DISPATCH"
+    },
+    {
+        "id": "14959",
+        "location": "{start:{line:5690,column:15},end:{line:5692,column:10}}",
+        "type": "FunctionExpression",
+        "function": "error",
+        "label": "E-DISPATCH"
+    },
+    {
+        "id": "12347",
+        "location": "{start:{line:4432,column:1},end:{line:4434,column:2}}",
+        "type": "FunctionDeclaration",
+        "function": "buildFn",
+        "label": "E-DISPATCH",
+        "params": [
+            "fn"
+        ]
+    },
+    {
+        "id": "12362",
+        "location": "{start:{line:4439,column:1},end:{line:4462,column:2}}",
+        "type": "FunctionDeclaration",
+        "function": "everyOrSome",
+        "label": "E-DISPATCH",
+        "params": [
+            "some"
+        ]
+    },
+    {
+        "id": "14753",
+        "location": "{start:{line:5605,column:5},end:{line:5661,column:6}}",
+        "type": "FunctionDeclaration",
+        "function": "load",
+        "label": "E-DISPATCH",
+        "params": [
+            "text"
+        ]
+    },
+    {
+        "id": "27610",
+        "location": "{start:{line:10720,column:1},end:{line:10844,column:2}}",
+        "type": "FunctionDeclaration",
+        "function": "inherited",
+        "label": "E-DISPATCH",
+        "params": [
+            "args",
+            "a",
+            "f",
+            "g"
+        ]
+    },
+    {
+        "id": "9589",
+        "location": "{start:{line:3212,column:12},end:{line:3249,column:3}}",
+        "type": "FunctionExpression",
+        "function": "add",
+        "label": "E-DISPATCH",
+        "params": [
+            "name",
+            "test",
+            "now",
+            "force"
+        ]
+    },
+    {
+        "id": "38591",
+        "location": "{start:{line:15906,column:11},end:{line:15914,column:3}}",
+        "type": "FunctionExpression",
+        "function": "forEach",
+        "label": "E-DISPATCH",
+        "params": [
+            "callback",
+            "thisObj"
+        ]
+    },
+    {
+        "id": "38673",
+        "location": "{start:{line:15951,column:15},end:{line:15964,column:3}}",
+        "type": "FunctionExpression",
+        "function": "instantiate",
+        "label": "E-DISPATCH",
+        "params": [
+            "declaredClass",
+            "properties"
+        ]
+    },
+    {
+        "id": "38713",
+        "location": "{start:{line:15965,column:6},end:{line:16005,column:3}}",
+        "type": "FunctionExpression",
+        "function": "at",
+        "label": "E-DISPATCH"
+    },
+    {
+        "id": "43579",
+        "location": "{start:{line:18017,column:9},end:{line:18038,column:3}}",
+        "type": "FunctionExpression",
+        "function": "place",
+        "label": "E-DISPATCH",
+        "params": [
+            "queryOrNode",
+            "position"
+        ]
+    },
+    {
+        "id": "43609",
+        "location": "{start:{line:18040,column:10},end:{line:18049,column:3}}",
+        "type": "FunctionExpression",
+        "function": "orphan",
+        "label": "E-DISPATCH",
+        "params": [
+            "filter"
+        ]
+    },
+    {
+        "id": "43649",
+        "location": "{start:{line:18075,column:9},end:{line:18111,column:3}}",
+        "type": "FunctionExpression",
+        "function": "query",
+        "label": "E-DISPATCH",
+        "params": [
+            "queryStr"
+        ]
+    },
+    {
+        "id": "38071",
+        "location": "{start:{line:15476,column:22},end:{line:15489,column:2}}",
+        "type": "FunctionExpression",
+        "function": "adaptAsForEach",
+        "label": "E-DISPATCH",
+        "params": [
+            "f",
+            "o"
+        ]
+    },
+    {
+        "id": "38133",
+        "location": "{start:{line:15516,column:26},end:{line:15534,column:2}}",
+        "type": "FunctionExpression",
+        "function": "adaptWithCondition",
+        "label": "E-DISPATCH",
+        "params": [
+            "f",
+            "g",
+            "o"
+        ]
+    },
+    {
+        "id": "41396",
+        "location": "{start:{line:16975,column:22},end:{line:17017,column:2}}",
+        "type": "FunctionExpression",
+        "function": "_childElements",
+        "label": "E-DISPATCH",
+        "params": [
+            "filterFunc",
+            "recursive"
+        ]
+    },
+    {
+        "id": "1035",
+        "location": "{start:{line:401,column:24},end:{line:408,column:3}}",
+        "type": "FunctionExpression",
+        "function": "signal",
+        "label": "E-DISPATCH",
+        "params": [
+            "type",
+            "args"
+        ]
+    },
+    {
+        "id": "34550",
+        "location": "{start:{line:13627,column:37},end:{line:13655,column:2}}",
+        "type": "FunctionExpression",
+        "function": "colorFromHex",
+        "label": "E-DISPATCH",
+        "params": [
+            "color",
+            "obj"
+        ]
+    },
+    {
+        "id": "23611",
+        "location": "{start:{line:9452,column:19},end:{line:9462,column:2}}",
+        "type": "FunctionExpression",
+        "function": "cancelAll",
+        "label": "E-DISPATCH"
+    },
+    {
+        "id": "24277",
+        "location": "{start:{line:9641,column:28},end:{line:9649,column:2}}",
+        "type": "FunctionExpression",
+        "function": "addCommonMethods",
+        "label": "E-DISPATCH",
+        "params": [
+            "provider",
+            "methods"
+        ]
+    },
+    {
+        "id": "43356",
+        "location": "{start:{line:17810,column:10},end:{line:17851,column:3}}",
+        "type": "FunctionExpression",
+        "function": "_place",
+        "label": "E-DISPATCH",
+        "params": [
+            "ary",
+            "refNode",
+            "position",
+            "useClone"
+        ]
+    },
+    {
+        "id": "43628",
+        "location": "{start:{line:18051,column:9},end:{line:18072,column:3}}",
+        "type": "FunctionExpression",
+        "function": "adopt",
+        "label": "E-DISPATCH",
+        "params": [
+            "queryOrListOrNode",
+            "position"
+        ]
+    },
+    {
+        "id": "36931",
+        "location": "{start:{line:14752,column:17},end:{line:14837,column:2}}",
+        "type": "FunctionExpression",
+        "function": "place",
+        "label": "E-DISPATCH",
+        "params": [
+            "node",
+            "refNode",
+            "position"
+        ]
+    },
+    {
+        "id": "37093",
+        "location": "{start:{line:14839,column:31},end:{line:14916,column:2}}",
+        "type": "FunctionExpression",
+        "function": "create",
+        "label": "E-DISPATCH",
+        "params": [
+            "tag",
+            "attrs",
+            "refNode",
+            "pos"
+        ]
+    },
+    {
+        "id": "43769",
+        "location": "{start:{line:18158,column:14},end:{line:18245,column:3}}",
+        "type": "FunctionExpression",
+        "function": "addContent",
+        "label": "E-DISPATCH",
+        "params": [
+            "content",
+            "position"
+        ]
+    },
+    {
+        "id": "11031",
+        "location": "{start:{line:3917,column:13},end:{line:3932,column:3}}",
+        "type": "FunctionExpression",
+        "function": "getObject",
+        "label": "E-DISPATCH",
+        "params": [
+            "name",
+            "create",
+            "context"
+        ]
+    },
+    {
+        "id": "10688",
+        "location": "{start:{line:3732,column:12},end:{line:3760,column:3}}",
+        "type": "FunctionExpression",
+        "function": "getProp",
+        "label": "E-DISPATCH",
+        "params": [
+            "parts",
+            "create",
+            "context"
+        ]
+    },
+    {
+        "id": "11052",
+        "location": "{start:{line:3934,column:10},end:{line:3959,column:3}}",
+        "type": "FunctionExpression",
+        "function": "exists",
+        "label": "E-DISPATCH",
+        "params": [
+            "name",
+            "obj"
+        ]
+    },
+    {
+        "id": "11701",
+        "location": "{start:{line:4253,column:11},end:{line:4320,column:3}}",
+        "type": "FunctionExpression",
+        "function": "replace",
+        "label": "E-DISPATCH",
+        "params": [
+            "tmpl",
+            "map",
+            "pattern"
+        ]
+    },
+    {
+        "id": "37560",
+        "location": "{start:{line:15170,column:10},end:{line:15226,column:3}}",
+        "type": "FunctionExpression",
+        "function": "remove",
+        "label": "E-DISPATCH",
+        "params": [
+            "node",
+            "classStr"
+        ]
+    },
+    {
+        "id": "10268",
+        "location": "{start:{line:3620,column:14},end:{line:3706,column:4}}",
+        "type": "FunctionExpression",
+        "function": "stringify",
+        "label": "E-DISPATCH",
+        "params": [
+            "value",
+            "replacer",
+            "spacer"
+        ]
+    },
+    {
+        "id": "10290",
+        "location": "{start:{line:3626,column:4},end:{line:3704,column:5}}",
+        "type": "FunctionDeclaration",
+        "function": "stringify",
+        "label": "E-DISPATCH",
+        "params": [
+            "it",
+            "indent",
+            "key"
+        ]
+    },
+    {
+        "id": "20159",
+        "location": "{start:{line:8140,column:1},end:{line:8155,column:2}}",
+        "type": "FunctionDeclaration",
+        "function": "logError",
+        "label": "E-DISPATCH",
+        "params": [
+            "error",
+            "rejection",
+            "deferred"
+        ]
+    },
+    {
+        "id": "1301",
+        "location": "{start:{line:550,column:21},end:{line:552,column:4}}",
+        "type": "FunctionExpression",
+        "function": "escapeString",
+        "label": "E-DISPATCH",
+        "params": [
+            "s"
+        ]
+    },
+    {
+        "id": "2860",
+        "location": "{start:{line:983,column:16},end:{line:997,column:3}}",
+        "type": "FunctionExpression",
+        "function": "compactPath",
+        "label": "E-DISPATCH",
+        "params": [
+            "path"
+        ]
+    },
+    {
+        "id": "7081",
+        "location": "{start:{line:2085,column:14},end:{line:2087,column:3}}",
+        "type": "FunctionExpression",
+        "function": "slashName",
+        "label": "E-DISPATCH",
+        "params": [
+            "name"
+        ]
+    },
+    {
+        "id": "39081",
+        "location": "{start:{line:16225,column:21},end:{line:16543,column:2}}",
+        "type": "FunctionExpression",
+        "function": "getQueryParts",
+        "label": "E-DISPATCH",
+        "params": [
+            "query"
+        ]
+    },
+    {
+        "id": "39226",
+        "location": "{start:{line:16305,column:14},end:{line:16311,column:3}}",
+        "type": "FunctionExpression",
+        "function": "endId",
+        "label": "E-DISPATCH"
+    },
+    {
+        "id": "39255",
+        "location": "{start:{line:16313,column:17},end:{line:16321,column:3}}",
+        "type": "FunctionExpression",
+        "function": "endClass",
+        "label": "E-DISPATCH"
+    },
+    {
+        "id": "7882",
+        "location": "{start:{line:2394,column:33},end:{line:2440,column:3}}",
+        "type": "FunctionExpression",
+        "function": "extractLegacyApiApplications",
+        "label": "E-DISPATCH",
+        "params": [
+            "text",
+            "noCommentText"
+        ]
+    },
+    {
+        "id": "10190",
+        "location": "{start:{line:3604,column:21},end:{line:3612,column:3}}",
+        "type": "FunctionExpression",
+        "function": "escapeString",
+        "label": "E-DISPATCH",
+        "params": [
+            "str"
+        ]
+    },
+    {
+        "id": "42360",
+        "location": "{start:{line:17325,column:15},end:{line:17327,column:2}}",
+        "type": "FunctionExpression",
+        "function": "attFunc",
+        "label": "E-DISPATCH",
+        "params": [
+            "match",
+            "nonAtt",
+            "att"
+        ]
+    },
+    {
+        "id": "42379",
+        "location": "{start:{line:17328,column:20},end:{line:17436,column:2}}",
+        "type": "FunctionExpression",
+        "function": "getQueryFunc",
+        "label": "E-DISPATCH",
+        "params": [
+            "query",
+            "forceDOM"
+        ]
+    },
+    {
+        "id": "13062",
+        "location": "{start:{line:4800,column:9},end:{line:4814,column:3}}",
+        "type": "FunctionExpression",
+        "function": "strip",
+        "label": "E-DISPATCH",
+        "params": [
+            "text"
+        ]
+    },
+    {
+        "id": "13718",
+        "location": "{start:{line:5190,column:18},end:{line:5197,column:3}}",
+        "type": "FunctionExpression",
+        "function": "getBundleName",
+        "label": "E-DISPATCH",
+        "params": [
+            "moduleName",
+            "bundleName",
+            "locale"
+        ]
+    },
+    {
+        "id": "37656",
+        "location": "{start:{line:15228,column:11},end:{line:15268,column:3}}",
+        "type": "FunctionExpression",
+        "function": "replace",
+        "label": "E-DISPATCH",
+        "params": [
+            "node",
+            "addClassStr",
+            "removeClassStr"
+        ]
+    },
+    {
+        "id": "38458",
+        "location": "{start:{line:15693,column:6},end:{line:15717,column:3}}",
+        "type": "FunctionExpression",
+        "function": "on",
+        "label": "E-DISPATCH",
+        "params": [
+            "eventName",
+            "listener"
+        ]
+    },
+    {
+        "id": "44746",
+        "location": "{start:{line:18605,column:14},end:{line:18616,column:3}}",
+        "type": "FunctionExpression",
+        "function": "_stopTimer",
+        "label": "E-DISPATCH"
+    },
+    {
+        "id": "30187",
+        "location": "{start:{line:11935,column:11},end:{line:11938,column:4}}",
+        "type": "FunctionExpression",
+        "function": "remove",
+        "label": "E-DISPATCH"
+    },
+    {
+        "id": "30420",
+        "location": "{start:{line:12091,column:12},end:{line:12102,column:2}}",
+        "type": "FunctionExpression",
+        "function": "disconnect",
+        "label": "E-DISPATCH",
+        "params": [
+            "handle"
+        ]
+    },
+    {
+        "id": "20814",
+        "location": "{start:{line:8388,column:1},end:{line:8455,column:2}}",
+        "type": "FunctionDeclaration",
+        "function": "advise",
+        "label": "E-DISPATCH",
+        "params": [
+            "dispatcher",
+            "type",
+            "advice",
+            "receiveArguments"
+        ]
+    },
+    {
+        "id": "21714",
+        "location": "{start:{line:8754,column:1},end:{line:8801,column:2}}",
+        "type": "FunctionDeclaration",
+        "function": "addListener",
+        "label": "E-DISPATCH",
+        "params": [
+            "target",
+            "type",
+            "listener",
+            "dontFix",
+            "matchesTarget"
+        ]
+    },
+    {
+        "id": "1077",
+        "location": "{start:{line:409,column:16},end:{line:423,column:3}}",
+        "type": "FunctionExpression",
+        "function": "on",
+        "label": "E-DISPATCH",
+        "params": [
+            "type",
+            "listener"
+        ]
+    },
+    {
+        "id": "38483",
+        "location": "{start:{line:15711,column:20},end:{line:15715,column:4}}",
+        "type": "FunctionExpression",
+        "function": "remove",
+        "label": "E-DISPATCH"
+    },
+    {
+        "id": "21551",
+        "location": "{start:{line:8709,column:11},end:{line:8721,column:2}}",
+        "type": "FunctionExpression",
+        "function": "once",
+        "label": "E-DISPATCH",
+        "params": [
+            "target",
+            "type",
+            "listener",
+            "dontFix"
+        ]
+    },
+    {
+        "id": "21585",
+        "location": "{start:{line:8722,column:12},end:{line:8752,column:2}}",
+        "type": "FunctionExpression",
+        "function": "parse",
+        "label": "E-DISPATCH",
+        "params": [
+            "target",
+            "type",
+            "listener",
+            "addListener",
+            "dontFix",
+            "matchesTarget"
+        ]
+    },
+    {
+        "id": "21678",
+        "location": "{start:{line:8744,column:20},end:{line:8748,column:4}}",
+        "type": "FunctionExpression",
+        "function": "remove",
+        "label": "E-DISPATCH"
+    },
+    {
+        "id": "34813",
+        "location": "{start:{line:13737,column:20},end:{line:13776,column:2}}",
+        "type": "FunctionExpression",
+        "function": "addOnWindowUnload",
+        "label": "E-DISPATCH",
+        "params": [
+            "obj",
+            "functionName"
+        ]
+    },
+    {
+        "id": "34847",
+        "location": "{start:{line:13778,column:14},end:{line:13810,column:2}}",
+        "type": "FunctionExpression",
+        "function": "addOnUnload",
+        "label": "E-DISPATCH",
+        "params": [
+            "obj",
+            "functionName"
+        ]
+    },
+    {
+        "id": "20743",
+        "location": "{start:{line:8365,column:6},end:{line:8369,column:3}}",
+        "type": "FunctionExpression",
+        "function": "on",
+        "label": "E-DISPATCH",
+        "params": [
+            "type",
+            "listener"
+        ]
+    },
+    {
+        "id": "30569",
+        "location": "{start:{line:12215,column:13},end:{line:12223,column:3}}",
+        "type": "FunctionExpression",
+        "function": "subscribe",
+        "label": "E-DISPATCH",
+        "params": [
+            "topic",
+            "listener"
+        ]
+    },
+    {
+        "id": "30644",
+        "location": "{start:{line:12250,column:7},end:{line:12262,column:3}}",
+        "type": "FunctionExpression",
+        "function": "fix",
+        "label": "E-DISPATCH",
+        "params": [
+            "evt",
+            "sender"
+        ]
+    },
+    {
+        "id": "30664",
+        "location": "{start:{line:12264,column:8},end:{line:12278,column:3}}",
+        "type": "FunctionExpression",
+        "function": "stop",
+        "label": "E-DISPATCH",
+        "params": [
+            "evt"
+        ]
+    },
+    {
+        "id": "33563",
+        "location": "{start:{line:13287,column:1},end:{line:13310,column:2}}",
+        "type": "FunctionDeclaration",
+        "function": "eventHandler",
+        "label": "E-DISPATCH",
+        "params": [
+            "type",
+            "selectHandler"
+        ]
+    },
+    {
+        "id": "38763",
+        "location": "{start:{line:16008,column:1},end:{line:16048,column:2}}",
+        "type": "FunctionDeclaration",
+        "function": "queryForEngine",
+        "label": "E-DISPATCH",
+        "params": [
+            "engine",
+            "NodeList"
+        ]
+    },
+    {
+        "id": "21989",
+        "location": "{start:{line:8859,column:3},end:{line:8861,column:4}}",
+        "type": "FunctionDeclaration",
+        "function": "select",
+        "label": "E-DISPATCH",
+        "params": [
+            "eventTarget"
+        ]
+    },
+    {
+        "id": "29669",
+        "location": "{start:{line:11824,column:0},end:{line:11852,column:1}}",
+        "type": "FunctionDeclaration",
+        "function": "connect_",
+        "label": "E-DISPATCH",
+        "params": [
+            "obj",
+            "event",
+            "context",
+            "method",
+            "dontFix"
+        ]
+    },
+    {
+        "id": "33571",
+        "location": "{start:{line:13289,column:16},end:{line:13298,column:3}}",
+        "type": "FunctionExpression",
+        "function": "handler",
+        "label": "E-DISPATCH",
+        "params": [
+            "node",
+            "listener"
+        ]
+    },
+    {
+        "id": "38771",
+        "location": "{start:{line:16009,column:14},end:{line:16026,column:3}}",
+        "type": "FunctionExpression",
+        "function": "query",
+        "label": "E-DISPATCH",
+        "params": [
+            "query",
+            "root"
+        ]
+    },
+    {
+        "id": "21445",
+        "location": "{start:{line:8648,column:10},end:{line:8688,column:2}}",
+        "type": "FunctionExpression",
+        "function": "on",
+        "label": "E-DISPATCH",
+        "params": [
+            "target",
+            "type",
+            "listener",
+            "dontFix"
+        ]
+    },
+    {
+        "id": "22595",
+        "location": "{start:{line:9063,column:20},end:{line:9079,column:3}}",
+        "type": "FunctionExpression",
+        "function": "fixListener",
+        "label": "E-DISPATCH",
+        "params": [
+            "listener"
+        ]
+    },
+    {
+        "id": "21961",
+        "location": "{start:{line:8838,column:15},end:{line:8878,column:2}}",
+        "type": "FunctionExpression",
+        "function": "selector",
+        "label": "E-DISPATCH",
+        "params": [
+            "selector",
+            "eventType",
+            "children"
+        ]
+    },
+    {
+        "id": "30433",
+        "location": "{start:{line:12104,column:11},end:{line:12120,column:2}}",
+        "type": "FunctionExpression",
+        "function": "subscribe",
+        "label": "E-DISPATCH",
+        "params": [
+            "topic",
+            "context",
+            "method"
+        ]
+    },
+    {
+        "id": "33614",
+        "location": "{start:{line:13299,column:19},end:{line:13308,column:3}}",
+        "type": "FunctionExpression",
+        "function": "bubble",
+        "label": "E-DISPATCH",
+        "params": [
+            "select"
+        ]
+    },
+    {
+        "id": "38986",
+        "location": "{start:{line:16142,column:49},end:{line:16144,column:2}}",
+        "type": "FunctionExpression",
+        "function": "_filterResult",
+        "label": "E-DISPATCH",
+        "params": [
+            "nodes",
+            "selector",
+            "root"
+        ]
+    },
+    {
+        "id": "21878",
+        "location": "{start:{line:8802,column:14},end:{line:8837,column:2}}",
+        "type": "FunctionExpression",
+        "function": "matches",
+        "label": "E-DISPATCH",
+        "params": [
+            "node",
+            "selector",
+            "context",
+            "children",
+            "matchesTarget"
+        ]
+    },
+    {
+        "id": "43205",
+        "location": "{start:{line:17751,column:14},end:{line:17800,column:3}}",
+        "type": "FunctionExpression",
+        "function": "_normalize",
+        "label": "E-DISPATCH",
+        "params": [
+            "content",
+            "refNode"
+        ]
+    },
+    {
+        "id": "38605",
+        "location": "{start:{line:15915,column:10},end:{line:15950,column:3}}",
+        "type": "FunctionExpression",
+        "function": "filter",
+        "label": "E-DISPATCH",
+        "params": [
+            "filter"
+        ]
+    },
+    {
+        "id": "43701",
+        "location": "{start:{line:18113,column:10},end:{line:18147,column:3}}",
+        "type": "FunctionExpression",
+        "function": "filter",
+        "label": "E-DISPATCH",
+        "params": [
+            "filter"
+        ]
+    },
+    {
+        "id": "37315",
+        "location": "{start:{line:15014,column:1},end:{line:15034,column:2}}",
+        "type": "FunctionDeclaration",
+        "function": "str2array",
+        "label": "E-DISPATCH",
+        "params": [
+            "s"
+        ]
+    },
+    {
+        "id": "20347",
+        "location": "{start:{line:8193,column:1},end:{line:8213,column:2}}",
+        "type": "FunctionDeclaration",
+        "function": "logRejected",
+        "label": "E-DISPATCH"
+    },
+    {
+        "id": "38113",
+        "location": "{start:{line:15504,column:21},end:{line:15514,column:2}}",
+        "type": "FunctionExpression",
+        "function": "adaptAsFilter",
+        "label": "E-DISPATCH",
+        "params": [
+            "f",
+            "o"
+        ]
+    },
+    {
+        "id": "42985",
+        "location": "{start:{line:17686,column:16},end:{line:17701,column:2}}",
+        "type": "FunctionExpression",
+        "function": "filter",
+        "label": "E-DISPATCH",
+        "params": [
+            "nodeList",
+            "filter",
+            "root"
+        ]
+    },
+    {
+        "id": "37447",
+        "location": "{start:{line:15118,column:7},end:{line:15168,column:3}}",
+        "type": "FunctionExpression",
+        "function": "add",
+        "label": "E-DISPATCH",
+        "params": [
+            "node",
+            "classStr"
+        ]
+    },
+    {
+        "id": "37711",
+        "location": "{start:{line:15270,column:10},end:{line:15315,column:3}}",
+        "type": "FunctionExpression",
+        "function": "toggle",
+        "label": "E-DISPATCH",
+        "params": [
+            "node",
+            "classStr",
+            "condition"
+        ]
+    },
+    {
+        "id": "17739",
+        "location": "{start:{line:6964,column:10},end:{line:7010,column:2}}",
+        "type": "FunctionExpression",
+        "function": "withDoc",
+        "label": "E-DISPATCH",
+        "params": [
+            "documentObject",
+            "callback",
+            "thisObject",
+            "cbArguments"
+        ]
+    },
+    {
+        "id": "10018",
+        "location": "{start:{line:3519,column:18},end:{line:3523,column:3}}",
+        "type": "FunctionExpression",
+        "function": "adviseHas",
+        "label": "E-DISPATCH",
+        "params": [
+            "featureSet",
+            "prefix",
+            "booting"
+        ]
+    },
+    {
+        "id": "17688",
+        "location": "{start:{line:6941,column:13},end:{line:6962,column:2}}",
+        "type": "FunctionExpression",
+        "function": "withGlobal",
+        "label": "E-DISPATCH",
+        "params": [
+            "globalObject",
+            "callback",
+            "thisObject",
+            "cbArguments"
+        ]
+    },
+    {
+        "id": "20275",
+        "location": "{start:{line:8166,column:1},end:{line:8191,column:2}}",
+        "type": "FunctionDeclaration",
+        "function": "trackUnhandledRejections",
+        "label": "E-DISPATCH",
+        "params": [
+            "error",
+            "handled",
+            "rejection",
+            "deferred"
+        ]
+    },
+    {
+        "id": "30320",
+        "location": "{start:{line:11981,column:9},end:{line:12089,column:2}}",
+        "type": "FunctionExpression",
+        "function": "connect",
+        "label": "E-DISPATCH",
+        "params": [
+            "obj",
+            "event",
+            "context",
+            "method",
+            "dontFix"
+        ]
+    },
+    {
+        "id": "36163",
+        "location": "{start:{line:14506,column:15},end:{line:14610,column:2}}",
+        "type": "FunctionExpression",
+        "function": "set",
+        "label": "E-DISPATCH",
+        "params": [
+            "node",
+            "name",
+            "value"
+        ]
+    },
+    {
+        "id": "37896",
+        "location": "{start:{line:15403,column:14},end:{line:15405,column:4}}",
+        "type": "FunctionExpression",
+        "function": "_oe",
+        "label": "E-DISPATCH",
+        "params": [
+            "a",
+            "b"
+        ]
+    },
+    {
+        "id": "43158",
+        "location": "{start:{line:17740,column:1},end:{line:17748,column:2}}",
+        "type": "FunctionDeclaration",
+        "function": "getSet",
+        "label": "E-DISPATCH",
+        "params": [
+            "module"
+        ]
+    },
+    {
+        "id": "33269",
+        "location": "{start:{line:13136,column:13},end:{line:13200,column:2}}",
+        "type": "FunctionExpression",
+        "function": "set",
+        "label": "E-DISPATCH",
+        "params": [
+            "node",
+            "name",
+            "value"
+        ]
+    },
+    {
+        "id": "34975",
+        "location": "{start:{line:13845,column:13},end:{line:13930,column:2}}",
+        "type": "FunctionExpression",
+        "function": "attr",
+        "label": "E-DISPATCH",
+        "params": [
+            "node",
+            "name",
+            "value"
+        ]
+    },
+    {
+        "id": "35400",
+        "location": "{start:{line:14041,column:13},end:{line:14127,column:2}}",
+        "type": "FunctionExpression",
+        "function": "prop",
+        "label": "E-DISPATCH",
+        "params": [
+            "node",
+            "name",
+            "value"
+        ]
+    },
+    {
+        "id": "35474",
+        "location": "{start:{line:14135,column:14},end:{line:14210,column:2}}",
+        "type": "FunctionExpression",
+        "function": "style",
+        "label": "E-DISPATCH",
+        "params": [
+            "node",
+            "name",
+            "value"
+        ]
+    },
+    {
+        "id": "35753",
+        "location": "{start:{line:14324,column:15},end:{line:14387,column:2}}",
+        "type": "FunctionExpression",
+        "function": "set",
+        "label": "E-DISPATCH",
+        "params": [
+            "node",
+            "name",
+            "value"
+        ]
+    },
+    {
+        "id": "35577",
+        "location": "{start:{line:14251,column:1},end:{line:14254,column:2}}",
+        "type": "FunctionDeclaration",
+        "function": "_hasAttr",
+        "label": "E-DISPATCH",
+        "params": [
+            "node",
+            "name"
+        ]
+    },
+    {
+        "id": "39929",
+        "location": "{start:{line:16574,column:16},end:{line:16586,column:2}}",
+        "type": "FunctionExpression",
+        "function": "_getAttr",
+        "label": "E-DISPATCH",
+        "params": [
+            "elem",
+            "attr"
+        ]
+    },
+    {
+        "id": "41007",
+        "location": "{start:{line:16855,column:27},end:{line:16938,column:2}}",
+        "type": "FunctionExpression",
+        "function": "getSimpleFilterFunc",
+        "label": "E-DISPATCH",
+        "params": [
+            "query",
+            "ignores"
+        ]
+    },
+    {
+        "id": "35607",
+        "location": "{start:{line:14261,column:15},end:{line:14275,column:2}}",
+        "type": "FunctionExpression",
+        "function": "has",
+        "label": "E-DISPATCH",
+        "params": [
+            "node",
+            "name"
+        ]
+    },
+    {
+        "id": "35649",
+        "location": "{start:{line:14277,column:15},end:{line:14322,column:2}}",
+        "type": "FunctionExpression",
+        "function": "get",
+        "label": "E-DISPATCH",
+        "params": [
+            "node",
+            "name"
+        ]
+    },
+    {
+        "id": "35899",
+        "location": "{start:{line:14400,column:23},end:{line:14419,column:2}}",
+        "type": "FunctionExpression",
+        "function": "getNodeProp",
+        "label": "E-DISPATCH",
+        "params": [
+            "node",
+            "name"
+        ]
+    },
+    {
+        "id": "10824",
+        "location": "{start:{line:3780,column:10},end:{line:3820,column:3}}",
+        "type": "FunctionExpression",
+        "function": "_mixin",
+        "label": "E-DISPATCH",
+        "params": [
+            "dest",
+            "source",
+            "copyFunc"
+        ]
+    },
+    {
+        "id": "37214",
+        "location": "{start:{line:14955,column:1},end:{line:14967,column:2}}",
+        "type": "FunctionDeclaration",
+        "function": "_destroy",
+        "label": "E-DISPATCH",
+        "params": [
+            "node",
+            "parent"
+        ]
+    },
+    {
+        "id": "18439",
+        "location": "{start:{line:7342,column:2},end:{line:7380,column:3}}",
+        "type": "FunctionDeclaration",
+        "function": "notify",
+        "label": "E-DISPATCH"
+    },
+    {
+        "id": "23696",
+        "location": "{start:{line:9489,column:1},end:{line:9491,column:2}}",
+        "type": "FunctionDeclaration",
+        "function": "isArrayBuffer",
+        "label": "E-DISPATCH",
+        "params": [
+            "value"
+        ]
+    },
+    {
+        "id": "23708",
+        "location": "{start:{line:9493,column:1},end:{line:9495,column:2}}",
+        "type": "FunctionDeclaration",
+        "function": "isBlob",
+        "label": "E-DISPATCH",
+        "params": [
+            "value"
+        ]
+    },
+    {
+        "id": "23740",
+        "location": "{start:{line:9506,column:1},end:{line:9508,column:2}}",
+        "type": "FunctionDeclaration",
+        "function": "isFormData",
+        "label": "E-DISPATCH",
+        "params": [
+            "value"
+        ]
+    },
+    {
+        "id": "28249",
+        "location": "{start:{line:10880,column:1},end:{line:10895,column:2}}",
+        "type": "FunctionDeclaration",
+        "function": "mixOwn",
+        "label": "E-DISPATCH",
+        "params": [
+            "target",
+            "source"
+        ]
+    },
+    {
+        "id": "28324",
+        "location": "{start:{line:10898,column:1},end:{line:10982,column:2}}",
+        "type": "FunctionDeclaration",
+        "function": "safeMixin",
+        "label": "E-DISPATCH",
+        "params": [
+            "target",
+            "source"
+        ]
+    },
+    {
+        "id": "29041",
+        "location": "{start:{line:11181,column:1},end:{line:11514,column:2}}",
+        "type": "FunctionDeclaration",
+        "function": "declare",
+        "label": "E-DISPATCH",
+        "params": [
+            "className",
+            "superclass",
+            "props"
+        ]
+    },
+    {
+        "id": "5744",
+        "location": "{start:{line:1719,column:14},end:{line:1733,column:4}}",
+        "type": "FunctionExpression",
+        "function": "domOn",
+        "label": "E-DISPATCH",
+        "params": [
+            "node",
+            "eventName",
+            "ieEventName",
+            "handler"
+        ]
+    },
+    {
+        "id": "38181",
+        "location": "{start:{line:15536,column:16},end:{line:15625,column:2}}",
+        "type": "FunctionExpression",
+        "function": "NodeList",
+        "label": "E-DISPATCH",
+        "params": [
+            "array"
+        ]
+    },
+    {
+        "id": "40255",
+        "location": "{start:{line:16678,column:20},end:{line:16725,column:2}}",
+        "type": "FunctionExpression",
+        "function": "getNodeIndex",
+        "label": "E-DISPATCH",
+        "params": [
+            "node"
+        ]
+    },
+    {
+        "id": "9885",
+        "location": "{start:{line:3313,column:9},end:{line:3333,column:4}}",
+        "type": "FunctionExpression",
+        "function": "get",
+        "label": "E-DISPATCH",
+        "params": [
+            "skip"
+        ]
+    },
+    {
+        "id": "42742",
+        "location": "{start:{line:17471,column:12},end:{line:17509,column:2}}",
+        "type": "FunctionExpression",
+        "function": "_zip",
+        "label": "E-DISPATCH",
+        "params": [
+            "arr"
+        ]
+    },
+    {
+        "id": "22647",
+        "location": "{start:{line:9080,column:18},end:{line:9106,column:3}}",
+        "type": "FunctionExpression",
+        "function": "fixAttach",
+        "label": "E-DISPATCH",
+        "params": [
+            "target",
+            "type",
+            "listener"
+        ]
+    },
+    {
+        "id": "22914",
+        "location": "{start:{line:9140,column:25},end:{line:9206,column:3}}",
+        "type": "FunctionExpression",
+        "function": "fixTouchListener",
+        "label": "E-DISPATCH",
+        "params": [
+            "listener"
+        ]
+    },
+    {
+        "id": "31329",
+        "location": "{start:{line:12490,column:22},end:{line:12528,column:2}}",
+        "type": "FunctionExpression",
+        "function": "getContentBox",
+        "label": "E-DISPATCH",
+        "params": [
+            "node",
+            "computedStyle"
+        ]
+    },
+    {
+        "id": "31810",
+        "location": "{start:{line:12658,column:21},end:{line:12704,column:2}}",
+        "type": "FunctionExpression",
+        "function": "setMarginBox",
+        "label": "E-DISPATCH",
+        "params": [
+            "node",
+            "box",
+            "computedStyle"
+        ]
+    },
+    {
+        "id": "32012",
+        "location": "{start:{line:12721,column:18},end:{line:12733,column:2}}",
+        "type": "FunctionExpression",
+        "function": "docScroll",
+        "label": "E-DISPATCH",
+        "params": [
+            "doc"
+        ]
+    },
+    {
+        "id": "32106",
+        "location": "{start:{line:12744,column:28},end:{line:12772,column:2}}",
+        "type": "FunctionExpression",
+        "function": "fixIeBiDiScrollLeft",
+        "label": "E-DISPATCH",
+        "params": [
+            "scrollLeft",
+            "doc"
+        ]
+    },
+    {
+        "id": "32209",
+        "location": "{start:{line:12774,column:17},end:{line:12813,column:2}}",
+        "type": "FunctionExpression",
+        "function": "position",
+        "label": "E-DISPATCH",
+        "params": [
+            "node",
+            "includeScroll"
+        ]
+    },
+    {
+        "id": "32412",
+        "location": "{start:{line:12839,column:23},end:{line:12861,column:2}}",
+        "type": "FunctionExpression",
+        "function": "normalizeEvent",
+        "label": "E-DISPATCH",
+        "params": [
+            "event"
+        ]
+    },
+    {
+        "id": "276",
+        "location": "{start:{line:181,column:11},end:{line:184,column:2}}",
+        "type": "FunctionExpression",
+        "function": "add",
+        "label": "E-DISPATCH",
+        "params": [
+            "name",
+            "test",
+            "now",
+            "force"
+        ]
+    },
+    {
+        "id": "36111",
+        "location": "{start:{line:14475,column:15},end:{line:14504,column:2}}",
+        "type": "FunctionExpression",
+        "function": "get",
+        "label": "E-DISPATCH",
+        "params": [
+            "node",
+            "name"
+        ]
+    },
+    {
+        "id": "36736",
+        "location": "{start:{line:14692,column:17},end:{line:14750,column:2}}",
+        "type": "FunctionExpression",
+        "function": "toDom",
+        "label": "E-DISPATCH",
+        "params": [
+            "frag",
+            "doc"
+        ]
+    },
+    {
+        "id": "18390",
+        "location": "{start:{line:7188,column:32},end:{line:7523,column:2}}",
+        "type": "FunctionExpression",
+        "function": "Deferred",
+        "label": "E-DISPATCH",
+        "params": [
+            "canceller"
+        ]
+    },
+    {
+        "id": "18724",
+        "location": "{start:{line:7425,column:31},end:{line:7437,column:3}}",
+        "type": "FunctionExpression",
+        "function": "errback",
+        "label": "E-DISPATCH",
+        "params": [
+            "error"
+        ]
+    },
+    {
+        "id": "24340",
+        "location": "{start:{line:9651,column:21},end:{line:9681,column:2}}",
+        "type": "FunctionExpression",
+        "function": "parseArgs",
+        "label": "E-DISPATCH",
+        "params": [
+            "url",
+            "options",
+            "skipData"
+        ]
+    },
+    {
+        "id": "31182",
+        "location": "{start:{line:12462,column:21},end:{line:12488,column:2}}",
+        "type": "FunctionExpression",
+        "function": "getMarginBox",
+        "label": "E-DISPATCH",
+        "params": [
+            "node",
+            "computedStyle"
+        ]
+    },
+    {
+        "id": "10951",
+        "location": "{start:{line:3822,column:9},end:{line:3882,column:3}}",
+        "type": "FunctionExpression",
+        "function": "mixin",
+        "label": "E-DISPATCH",
+        "params": [
+            "dest",
+            "sources"
+        ]
+    },
+    {
+        "id": "11213",
+        "location": "{start:{line:4025,column:10},end:{line:4038,column:3}}",
+        "type": "FunctionExpression",
+        "function": "extend",
+        "label": "E-DISPATCH",
+        "params": [
+            "ctor",
+            "props"
+        ]
+    },
+    {
+        "id": "11538",
+        "location": "{start:{line:4189,column:9},end:{line:4229,column:3}}",
+        "type": "FunctionExpression",
+        "function": "clone",
+        "label": "E-DISPATCH",
+        "params": [
+            "src"
+        ]
+    },
+    {
+        "id": "43918",
+        "location": "{start:{line:18288,column:36},end:{line:18308,column:2}}",
+        "type": "FunctionExpression",
+        "function": "Animation",
+        "label": "E-DISPATCH",
+        "params": [
+            "args"
+        ]
+    },
+    {
+        "id": "29841",
+        "location": "{start:{line:11873,column:23},end:{line:11882,column:1}}",
+        "type": "FunctionExpression",
+        "function": "_synthesizeEvent",
+        "label": "E-DISPATCH",
+        "params": [
+            "evt",
+            "props"
+        ]
+    },
+    {
+        "id": "28454",
+        "location": "{start:{line:10984,column:1},end:{line:10987,column:2}}",
+        "type": "FunctionDeclaration",
+        "function": "extend",
+        "label": "E-DISPATCH",
+        "params": [
+            "source"
+        ]
+    },
+    {
+        "id": "28469",
+        "location": "{start:{line:10989,column:1},end:{line:11000,column:2}}",
+        "type": "FunctionDeclaration",
+        "function": "createSubclass",
+        "label": "E-DISPATCH",
+        "params": [
+            "mixins",
+            "props"
+        ]
+    },
+    {
+        "id": "39110",
+        "location": "{start:{line:16259,column:11},end:{line:16265,column:3}}",
+        "type": "FunctionExpression",
+        "function": "ts",
+        "label": "E-DISPATCH",
+        "params": [
+            "s",
+            "e"
+        ]
+    },
+    {
+        "id": "39302",
+        "location": "{start:{line:16330,column:16},end:{line:16380,column:3}}",
+        "type": "FunctionExpression",
+        "function": "endPart",
+        "label": "E-DISPATCH"
+    },
+    {
+        "id": "41592",
+        "location": "{start:{line:17033,column:23},end:{line:17215,column:2}}",
+        "type": "FunctionExpression",
+        "function": "getElementsFunc",
+        "label": "E-DISPATCH",
+        "params": [
+            "query"
+        ]
+    },
+    {
+        "id": "42242",
+        "location": "{start:{line:17264,column:24},end:{line:17285,column:2}}",
+        "type": "FunctionExpression",
+        "function": "getStepQueryFunc",
+        "label": "E-DISPATCH",
+        "params": [
+            "query"
+        ]
+    },
+    {
+        "id": "42928",
+        "location": "{start:{line:17512,column:13},end:{line:17685,column:2}}",
+        "type": "FunctionExpression",
+        "function": "query",
+        "label": "E-DISPATCH",
+        "params": [
+            "query",
+            "root"
+        ]
+    },
+    {
+        "id": "42553",
+        "location": "{start:{line:17392,column:38},end:{line:17415,column:4}}",
+        "type": "FunctionExpression",
+        "function": "query",
+        "label": "E-DISPATCH",
+        "params": [
+            "root"
+        ]
+    },
+    {
+        "id": "16194",
+        "location": "{start:{line:6274,column:25},end:{line:6282,column:2}}",
+        "type": "FunctionExpression",
+        "function": "_ioAddQueryToUrl",
+        "label": "E-DISPATCH",
+        "params": [
+            "ioArgs"
+        ]
+    },
+    {
+        "id": "39184",
+        "location": "{start:{line:16294,column:15},end:{line:16303,column:3}}",
+        "type": "FunctionExpression",
+        "function": "endTag",
+        "label": "E-DISPATCH"
+    },
+    {
+        "id": "39288",
+        "location": "{start:{line:16323,column:15},end:{line:16328,column:3}}",
+        "type": "FunctionExpression",
+        "function": "endAll",
+        "label": "E-DISPATCH"
+    },
+    {
+        "id": "42125",
+        "location": "{start:{line:17217,column:18},end:{line:17249,column:2}}",
+        "type": "FunctionExpression",
+        "function": "filterDown",
+        "label": "E-DISPATCH",
+        "params": [
+            "root",
+            "queryParts"
+        ]
+    },
+    {
+        "id": "18417",
+        "location": "{start:{line:7334,column:2},end:{line:7341,column:3}}",
+        "type": "FunctionDeclaration",
+        "function": "complete",
+        "label": "E-DISPATCH",
+        "params": [
+            "value"
+        ]
+    },
+    {
+        "id": "18831",
+        "location": "{start:{line:7462,column:29},end:{line:7505,column:3}}",
+        "type": "FunctionExpression",
+        "function": "then",
+        "label": "E-DISPATCH",
+        "params": [
+            "resolvedCallback",
+            "errorCallback",
+            "progressCallback"
+        ]
+    },
+    {
+        "id": "18692",
+        "location": "{start:{line:7415,column:33},end:{line:7421,column:3}}",
+        "type": "FunctionExpression",
+        "function": "callback",
+        "label": "E-DISPATCH",
+        "params": [
+            "value"
+        ]
+    },
+    {
+        "id": "19087",
+        "location": "{start:{line:7578,column:21},end:{line:7588,column:2}}",
+        "type": "FunctionExpression",
+        "function": "signalWaiting",
+        "label": "E-DISPATCH",
+        "params": [
+            "waiting",
+            "type",
+            "result",
+            "rejection",
+            "deferred"
+        ]
+    },
+    {
+        "id": "19146",
+        "location": "{start:{line:7590,column:22},end:{line:7624,column:2}}",
+        "type": "FunctionExpression",
+        "function": "signalListener",
+        "label": "E-DISPATCH",
+        "params": [
+            "listener",
+            "type",
+            "result",
+            "rejection"
+        ]
+    },
+    {
+        "id": "19340",
+        "location": "{start:{line:7648,column:16},end:{line:7864,column:2}}",
+        "type": "FunctionExpression",
+        "function": "Deferred",
+        "label": "E-DISPATCH",
+        "params": [
+            "canceler"
+        ]
+    },
+    {
+        "id": "19598",
+        "location": "{start:{line:7787,column:29},end:{line:7821,column:3}}",
+        "type": "FunctionExpression",
+        "function": "then",
+        "label": "E-DISPATCH",
+        "params": [
+            "callback",
+            "errback",
+            "progback"
+        ]
+    },
+    {
+        "id": "19455",
+        "location": "{start:{line:7709,column:18},end:{line:7732,column:3}}",
+        "type": "FunctionExpression",
+        "function": "progress",
+        "label": "E-DISPATCH",
+        "params": [
+            "update",
+            "strict"
+        ]
+    },
+    {
+        "id": "19490",
+        "location": "{start:{line:7734,column:17},end:{line:7758,column:3}}",
+        "type": "FunctionExpression",
+        "function": "resolve",
+        "label": "E-DISPATCH",
+        "params": [
+            "value",
+            "strict"
+        ]
+    },
+    {
+        "id": "19535",
+        "location": "{start:{line:7760,column:29},end:{line:7785,column:3}}",
+        "type": "FunctionExpression",
+        "function": "reject",
+        "label": "E-DISPATCH",
+        "params": [
+            "error",
+            "strict"
+        ]
+    },
+    {
+        "id": "19296",
+        "location": "{start:{line:7632,column:22},end:{line:7646,column:2}}",
+        "type": "FunctionExpression",
+        "function": "signalDeferred",
+        "label": "E-DISPATCH",
+        "params": [
+            "deferred",
+            "type",
+            "result"
+        ]
+    },
+    {
+        "id": "18775",
+        "location": "{start:{line:7439,column:18},end:{line:7448,column:3}}",
+        "type": "FunctionExpression",
+        "function": "progress",
+        "label": "E-DISPATCH",
+        "params": [
+            "update"
+        ]
+    },
+    {
+        "id": "25098",
+        "location": "{start:{line:9875,column:3},end:{line:9877,column:4}}",
+        "type": "FunctionDeclaration",
+        "function": "onDownloadProgress",
+        "label": "E-DISPATCH",
+        "params": [
+            "evt"
+        ]
+    },
+    {
+        "id": "25107",
+        "location": "{start:{line:9879,column:3},end:{line:9881,column:4}}",
+        "type": "FunctionDeclaration",
+        "function": "onUploadProgress",
+        "label": "E-DISPATCH",
+        "params": [
+            "evt"
+        ]
+    },
+    {
+        "id": "19279",
+        "location": "{start:{line:7626,column:28},end:{line:7630,column:2}}",
+        "type": "FunctionExpression",
+        "function": "makeDeferredSignaler",
+        "label": "E-DISPATCH",
+        "params": [
+            "deferred",
+            "type"
+        ]
+    },
+    {
+        "id": "20082",
+        "location": "{start:{line:8079,column:10},end:{line:8089,column:3}}",
+        "type": "FunctionExpression",
+        "function": "always",
+        "label": "E-DISPATCH",
+        "params": [
+            "callbackOrErrback"
+        ]
+    },
+    {
+        "id": "20106",
+        "location": "{start:{line:8102,column:13},end:{line:8111,column:3}}",
+        "type": "FunctionExpression",
+        "function": "otherwise",
+        "label": "E-DISPATCH",
+        "params": [
+            "errback"
+        ]
+    },
+    {
+        "id": "18808",
+        "location": "{start:{line:7449,column:22},end:{line:7460,column:3}}",
+        "type": "FunctionExpression",
+        "function": "addCallbacks",
+        "label": "E-DISPATCH",
+        "params": [
+            "callback",
+            "errback"
+        ]
+    },
+    {
+        "id": "20615",
+        "location": "{start:{line:8297,column:27},end:{line:8316,column:2}}",
+        "type": "FunctionExpression",
+        "function": "trace",
+        "label": "E-DISPATCH"
+    },
+    {
+        "id": "20678",
+        "location": "{start:{line:8318,column:35},end:{line:8335,column:2}}",
+        "type": "FunctionExpression",
+        "function": "traceRejected",
+        "label": "E-DISPATCH"
+    },
+    {
+        "id": "20246",
+        "location": "{start:{line:8157,column:1},end:{line:8161,column:2}}",
+        "type": "FunctionDeclaration",
+        "function": "reportRejections",
+        "label": "E-DISPATCH",
+        "params": [
+            "error",
+            "handled",
+            "rejection",
+            "deferred"
+        ]
+    },
+    {
+        "id": "18906",
+        "location": "{start:{line:7507,column:33},end:{line:7521,column:3}}",
+        "type": "FunctionExpression",
+        "function": "cancel",
+        "label": "E-DISPATCH"
+    },
+    {
+        "id": "19673",
+        "location": "{start:{line:7823,column:33},end:{line:7861,column:3}}",
+        "type": "FunctionExpression",
+        "function": "cancel",
+        "label": "E-DISPATCH",
+        "params": [
+            "reason",
+            "strict"
+        ]
+    },
+    {
+        "id": "18965",
+        "location": "{start:{line:7525,column:15},end:{line:7531,column:3}}",
+        "type": "FunctionExpression",
+        "function": "addCallback",
+        "label": "E-DISPATCH",
+        "params": [
+            "callback"
+        ]
+    },
+    {
+        "id": "18983",
+        "location": "{start:{line:7533,column:14},end:{line:7539,column:3}}",
+        "type": "FunctionExpression",
+        "function": "addErrback",
+        "label": "E-DISPATCH",
+        "params": [
+            "errback"
+        ]
+    },
+    {
+        "id": "19002",
+        "location": "{start:{line:7541,column:11},end:{line:7548,column:3}}",
+        "type": "FunctionExpression",
+        "function": "addBoth",
+        "label": "E-DISPATCH",
+        "params": [
+            "callback"
+        ]
+    },
+    {
+        "id": "6175",
+        "location": "{start:{line:1830,column:7},end:{line:1836,column:4}}",
+        "type": "FunctionExpression",
+        "function": "set",
+        "label": "E-DISPATCH",
+        "params": [
+            "group",
+            "value"
+        ]
+    },
+    {
+        "id": "523",
+        "location": "{start:{line:225,column:14},end:{line:239,column:4}}",
+        "type": "FunctionExpression",
+        "function": "injectUrl",
+        "label": "E-DISPATCH",
+        "params": [
+            "url",
+            "callback"
+        ]
+    },
+    {
+        "id": "19967",
+        "location": "{start:{line:7961,column:8},end:{line:7981,column:3}}",
+        "type": "FunctionExpression",
+        "function": "then",
+        "label": "E-DISPATCH",
+        "params": [
+            "callback",
+            "errback",
+            "progback"
+        ]
+    },
+    {
+        "id": "26799",
+        "location": "{start:{line:10510,column:1},end:{line:10515,column:2}}",
+        "type": "FunctionDeclaration",
+        "function": "domReady",
+        "label": "E-DISPATCH",
+        "params": [
+            "callback"
+        ]
+    },
+    {
+        "id": "111",
+        "location": "{start:{line:127,column:12},end:{line:133,column:3}}",
+        "type": "FunctionExpression",
+        "function": "forEach",
+        "label": "E-DISPATCH",
+        "params": [
+            "vector",
+            "callback"
+        ]
+    },
+    {
+        "id": "5893",
+        "location": "{start:{line:1765,column:14},end:{line:1773,column:6}}",
+        "type": "FunctionExpression",
+        "function": "onLoad",
+        "label": "E-DISPATCH",
+        "params": [
+            "e"
+        ]
+    },
+    {
+        "id": "26568",
+        "location": "{start:{line:10414,column:43},end:{line:10472,column:2}}",
+        "type": "FunctionExpression",
+        "function": "addOnLoad",
+        "label": "E-DISPATCH",
+        "params": [
+            "priority",
+            "context",
+            "callback"
+        ]
+    },
+    {
+        "id": "34292",
+        "location": "{start:{line:13567,column:9},end:{line:13579,column:3}}",
+        "type": "FunctionExpression",
+        "function": "toHex",
+        "label": "E-DISPATCH"
+    },
+    {
+        "id": "38529",
+        "location": "{start:{line:15868,column:10},end:{line:15896,column:3}}",
+        "type": "FunctionExpression",
+        "function": "concat",
+        "label": "E-DISPATCH",
+        "params": [
+            "item"
+        ]
+    },
+    {
+        "id": "38572",
+        "location": "{start:{line:15898,column:7},end:{line:15904,column:3}}",
+        "type": "FunctionExpression",
+        "function": "map",
+        "label": "E-DISPATCH",
+        "params": [
+            "func",
+            "obj"
+        ]
+    },
+    {
+        "id": "16908",
+        "location": "{start:{line:6581,column:17},end:{line:6616,column:3}}",
+        "type": "FunctionExpression",
+        "function": "objectToQuery",
+        "label": "E-DISPATCH",
+        "params": [
+            "map"
+        ]
+    },
+    {
+        "id": "1319",
+        "location": "{start:{line:554,column:20},end:{line:569,column:4}}",
+        "type": "FunctionExpression",
+        "function": "computeMapProg",
+        "label": "E-DISPATCH",
+        "params": [
+            "map",
+            "dest"
+        ]
+    },
+    {
+        "id": "1423",
+        "location": "{start:{line:579,column:22},end:{line:601,column:4}}",
+        "type": "FunctionExpression",
+        "function": "fixupPackageInfo",
+        "label": "E-DISPATCH",
+        "params": [
+            "packageInfo"
+        ]
+    },
+    {
+        "id": "2821",
+        "location": "{start:{line:971,column:18},end:{line:981,column:3}}",
+        "type": "FunctionExpression",
+        "function": "runMapProg",
+        "label": "E-DISPATCH",
+        "params": [
+            "targetMid",
+            "map"
+        ]
+    },
+    {
+        "id": "4078",
+        "location": "{start:{line:1233,column:28},end:{line:1240,column:5}}",
+        "type": "FunctionExpression",
+        "function": "substituteModules",
+        "label": "E-DISPATCH",
+        "params": [
+            "module"
+        ]
+    },
+    {
+        "id": "38093",
+        "location": "{start:{line:15491,column:18},end:{line:15502,column:2}}",
+        "type": "FunctionExpression",
+        "function": "adaptAsMap",
+        "label": "E-DISPATCH",
+        "params": [
+            "f",
+            "o"
+        ]
+    },
+    {
+        "id": "11248",
+        "location": "{start:{line:4040,column:14},end:{line:4051,column:3}}",
+        "type": "FunctionExpression",
+        "function": "_hitchArgs",
+        "label": "E-DISPATCH",
+        "params": [
+            "scope",
+            "method"
+        ]
+    },
+    {
+        "id": "11511",
+        "location": "{start:{line:4176,column:11},end:{line:4187,column:3}}",
+        "type": "FunctionExpression",
+        "function": "partial",
+        "label": "E-DISPATCH",
+        "params": [
+            "method"
+        ]
+    },
+    {
+        "id": "38024",
+        "location": "{start:{line:15465,column:16},end:{line:15472,column:2}}",
+        "type": "FunctionExpression",
+        "function": "loopBody",
+        "label": "E-DISPATCH",
+        "params": [
+            "f",
+            "a",
+            "o"
+        ]
+    },
+    {
+        "id": "10788",
+        "location": "{start:{line:3764,column:14},end:{line:3766,column:3}}",
+        "type": "FunctionExpression",
+        "function": "efficient",
+        "label": "E-DISPATCH",
+        "params": [
+            "obj",
+            "offset",
+            "startWith"
+        ]
+    },
+    {
+        "id": "38401",
+        "location": "{start:{line:15654,column:14},end:{line:15654,column:88}}",
+        "type": "FunctionExpression",
+        "function": "name",
+        "label": "E-DISPATCH"
+    },
+    {
+        "id": "11310",
+        "location": "{start:{line:4053,column:9},end:{line:4098,column:3}}",
+        "type": "FunctionExpression",
+        "function": "hitch",
+        "label": "E-DISPATCH",
+        "params": [
+            "scope",
+            "method"
+        ]
+    },
+    {
+        "id": "44697",
+        "location": "{start:{line:18595,column:15},end:{line:18603,column:3}}",
+        "type": "FunctionExpression",
+        "function": "_startTimer",
+        "label": "E-DISPATCH"
+    },
+    {
+        "id": "10992",
+        "location": "{start:{line:3884,column:13},end:{line:3915,column:3}}",
+        "type": "FunctionExpression",
+        "function": "setObject",
+        "label": "E-DISPATCH",
+        "params": [
+            "name",
+            "value",
+            "context"
+        ]
+    },
+    {
+        "id": "17000",
+        "location": "{start:{line:6618,column:17},end:{line:6663,column:3}}",
+        "type": "FunctionExpression",
+        "function": "queryToObject",
+        "label": "E-DISPATCH",
+        "params": [
+            "str"
+        ]
+    },
+    {
+        "id": "18021",
+        "location": "{start:{line:7052,column:17},end:{line:7098,column:3}}",
+        "type": "FunctionExpression",
+        "function": "fieldToObject",
+        "label": "E-DISPATCH",
+        "params": [
+            "inputNode"
+        ]
+    },
+    {
+        "id": "18190",
+        "location": "{start:{line:7100,column:12},end:{line:7144,column:3}}",
+        "type": "FunctionExpression",
+        "function": "toObject",
+        "label": "E-DISPATCH",
+        "params": [
+            "formNode"
+        ]
+    },
+    {
+        "id": "17959",
+        "location": "{start:{line:7025,column:4},end:{line:7044,column:5}}",
+        "type": "FunctionDeclaration",
+        "function": "setValue",
+        "label": "E-DISPATCH",
+        "params": [
+            "obj",
+            "name",
+            "value"
+        ]
+    },
+    {
+        "id": "27224",
+        "location": "{start:{line:10645,column:1},end:{line:10718,column:2}}",
+        "type": "FunctionDeclaration",
+        "function": "c3mro",
+        "label": "E-DISPATCH",
+        "params": [
+            "bases",
+            "className"
+        ]
+    },
+    {
+        "id": "28106",
+        "location": "{start:{line:10846,column:1},end:{line:10857,column:2}}",
+        "type": "FunctionDeclaration",
+        "function": "getInherited",
+        "label": "E-DISPATCH",
+        "params": [
+            "name",
+            "args",
+            "a"
+        ]
+    },
+    {
+        "id": "28915",
+        "location": "{start:{line:11140,column:1},end:{line:11155,column:2}}",
+        "type": "FunctionDeclaration",
+        "function": "chain",
+        "label": "E-DISPATCH",
+        "params": [
+            "name",
+            "bases",
+            "reversed"
+        ]
+    },
+    {
+        "id": "227",
+        "location": "{start:{line:171,column:18},end:{line:173,column:3}}",
+        "type": "FunctionExpression",
+        "function": "has",
+        "label": "E-DISPATCH",
+        "params": [
+            "name"
+        ]
+    },
+    {
+        "id": "33187",
+        "location": "{start:{line:13099,column:13},end:{line:13134,column:2}}",
+        "type": "FunctionExpression",
+        "function": "get",
+        "label": "E-DISPATCH",
+        "params": [
+            "node",
+            "name"
+        ]
+    },
+    {
+        "id": "35872",
+        "location": "{start:{line:14389,column:18},end:{line:14398,column:2}}",
+        "type": "FunctionExpression",
+        "function": "remove",
+        "label": "E-DISPATCH",
+        "params": [
+            "node",
+            "name"
+        ]
+    },
+    {
+        "id": "38360",
+        "location": "{start:{line:15647,column:14},end:{line:15647,column:103}}",
+        "type": "FunctionExpression",
+        "function": "name",
+        "label": "E-DISPATCH"
+    },
+    {
+        "id": "23788",
+        "location": "{start:{line:9519,column:20},end:{line:9542,column:2}}",
+        "type": "FunctionExpression",
+        "function": "deepCopy",
+        "label": "E-DISPATCH",
+        "params": [
+            "target",
+            "source"
+        ]
+    },
+    {
+        "id": "23959",
+        "location": "{start:{line:9558,column:22},end:{line:9571,column:2}}",
+        "type": "FunctionExpression",
+        "function": "deepCreate",
+        "label": "E-DISPATCH",
+        "params": [
+            "source",
+            "properties"
+        ]
+    },
+    {
+        "id": "26053",
+        "location": "{start:{line:10224,column:19},end:{line:10226,column:2}}",
+        "type": "FunctionExpression",
+        "function": "register",
+        "label": "E-DISPATCH",
+        "params": [
+            "name",
+            "handler"
+        ]
+    },
+    {
+        "id": "18307",
+        "location": "{start:{line:7146,column:11},end:{line:7154,column:3}}",
+        "type": "FunctionExpression",
+        "function": "toQuery",
+        "label": "E-DISPATCH",
+        "params": [
+            "formNode"
+        ]
+    },
+    {
+        "id": "18323",
+        "location": "{start:{line:7156,column:10},end:{line:7165,column:3}}",
+        "type": "FunctionExpression",
+        "function": "toJson",
+        "label": "E-DISPATCH",
+        "params": [
+            "formNode",
+            "prettyPrint"
+        ]
+    },
+    {
+        "id": "28162",
+        "location": "{start:{line:10859,column:1},end:{line:10865,column:2}}",
+        "type": "FunctionDeclaration",
+        "function": "inherited__debug",
+        "label": "E-DISPATCH",
+        "params": [
+            "args",
+            "a1",
+            "a2",
+            "a3"
+        ]
+    },
+    {
+        "id": "45302",
+        "location": "{start:{line:18842,column:4},end:{line:18848,column:5}}",
+        "type": "FunctionDeclaration",
+        "function": "getStyle",
+        "label": "E-DISPATCH",
+        "params": [
+            "node",
+            "p"
+        ]
+    },
+    {
+        "id": "31522",
+        "location": "{start:{line:12547,column:1},end:{line:12578,column:2}}",
+        "type": "FunctionDeclaration",
+        "function": "setBox",
+        "label": "E-DISPATCH",
+        "params": [
+            "node",
+            "l",
+            "t",
+            "w",
+            "h",
+            "u"
+        ]
+    },
+    {
+        "id": "32345",
+        "location": "{start:{line:12817,column:22},end:{line:12837,column:2}}",
+        "type": "FunctionExpression",
+        "function": "getMarginSize",
+        "label": "E-DISPATCH",
+        "params": [
+            "node",
+            "computedStyle"
+        ]
+    },
+    {
+        "id": "35317",
+        "location": "{start:{line:14015,column:15},end:{line:14035,column:2}}",
+        "type": "FunctionExpression",
+        "function": "coords",
+        "label": "E-DISPATCH",
+        "params": [
+            "node",
+            "includeScroll"
+        ]
+    },
+    {
+        "id": "30783",
+        "location": "{start:{line:12325,column:22},end:{line:12351,column:2}}",
+        "type": "FunctionExpression",
+        "function": "getPadExtents",
+        "label": "E-DISPATCH",
+        "params": [
+            "node",
+            "computedStyle"
+        ]
+    },
+    {
+        "id": "30876",
+        "location": "{start:{line:12355,column:25},end:{line:12383,column:2}}",
+        "type": "FunctionExpression",
+        "function": "getBorderExtents",
+        "label": "E-DISPATCH",
+        "params": [
+            "node",
+            "computedStyle"
+        ]
+    },
+    {
+        "id": "30993",
+        "location": "{start:{line:12385,column:28},end:{line:12418,column:2}}",
+        "type": "FunctionExpression",
+        "function": "getPadBorderExtents",
+        "label": "E-DISPATCH",
+        "params": [
+            "node",
+            "computedStyle"
+        ]
+    },
+    {
+        "id": "31093",
+        "location": "{start:{line:12420,column:25},end:{line:12445,column:2}}",
+        "type": "FunctionExpression",
+        "function": "getMarginExtents",
+        "label": "E-DISPATCH",
+        "params": [
+            "node",
+            "computedStyle"
+        ]
+    },
+    {
+        "id": "31720",
+        "location": "{start:{line:12626,column:23},end:{line:12654,column:2}}",
+        "type": "FunctionExpression",
+        "function": "setContentSize",
+        "label": "E-DISPATCH",
+        "params": [
+            "node",
+            "box",
+            "computedStyle"
+        ]
+    },
+    {
+        "id": "35293",
+        "location": "{start:{line:13991,column:19},end:{line:14013,column:2}}",
+        "type": "FunctionExpression",
+        "function": "contentBox",
+        "label": "E-DISPATCH",
+        "params": [
+            "node",
+            "box"
+        ]
+    },
+    {
+        "id": "35269",
+        "location": "{start:{line:13962,column:18},end:{line:13989,column:2}}",
+        "type": "FunctionExpression",
+        "function": "marginBox",
+        "label": "E-DISPATCH",
+        "params": [
+            "node",
+            "box"
+        ]
+    },
+    {
+        "id": "44994",
+        "location": "{start:{line:18686,column:16},end:{line:18699,column:2}}",
+        "type": "FunctionExpression",
+        "function": "PropLine",
+        "label": "E-DISPATCH",
+        "params": [
+            "properties"
+        ]
+    },
+    {
+        "id": "19822",
+        "location": "{start:{line:7902,column:18},end:{line:7930,column:3}}",
+        "type": "FunctionExpression",
+        "function": "ErrorCtor",
+        "label": "E-DISPATCH",
+        "params": [
+            "message"
+        ]
+    },
+    {
+        "id": "45036",
+        "location": "{start:{line:18701,column:31},end:{line:18713,column:2}}",
+        "type": "FunctionExpression",
+        "function": "getValue",
+        "label": "E-DISPATCH",
+        "params": [
+            "r"
+        ]
+    },
+    {
+        "id": "23291",
+        "location": "{start:{line:9310,column:14},end:{line:9358,column:1}}",
+        "type": "FunctionExpression",
+        "function": "toJson",
+        "label": "E-DISPATCH",
+        "params": [
+            "it",
+            "prettyPrint"
+        ]
+    },
+    {
+        "id": "23899",
+        "location": "{start:{line:9544,column:25},end:{line:9556,column:2}}",
+        "type": "FunctionExpression",
+        "function": "deepCopyArray",
+        "label": "E-DISPATCH",
+        "params": [
+            "source"
+        ]
+    },
+    {
+        "id": "26851",
+        "location": "{start:{line:10532,column:1},end:{line:10551,column:2}}",
+        "type": "FunctionDeclaration",
+        "function": "processQ",
+        "label": "E-DISPATCH"
+    },
+    {
+        "id": "26908",
+        "location": "{start:{line:10555,column:17},end:{line:10564,column:4}}",
+        "type": "FunctionExpression",
+        "function": "detectReady",
+        "label": "E-DISPATCH",
+        "params": [
+            "evt"
+        ]
+    },
+    {
+        "id": "26954",
+        "location": "{start:{line:10565,column:8},end:{line:10568,column:4}}",
+        "type": "FunctionExpression",
+        "function": "on",
+        "label": "E-DISPATCH",
+        "params": [
+            "node",
+            "event"
+        ]
+    },
+    {
+        "id": "27110",
+        "location": "{start:{line:10608,column:16},end:{line:10618,column:4}}",
+        "type": "FunctionExpression",
+        "function": "poller",
+        "label": "E-DISPATCH"
+    },
+    {
+        "id": "23752",
+        "location": "{start:{line:9510,column:1},end:{line:9517,column:2}}",
+        "type": "FunctionDeclaration",
+        "function": "shouldDeepCopy",
+        "label": "E-DISPATCH",
+        "params": [
+            "value"
+        ]
+    },
+    {
+        "id": "40441",
+        "location": "{start:{line:16727,column:14},end:{line:16729,column:2}}",
+        "type": "FunctionExpression",
+        "function": "isEven",
+        "label": "E-DISPATCH",
+        "params": [
+            "elem"
+        ]
+    },
+    {
+        "id": "40454",
+        "location": "{start:{line:16731,column:13},end:{line:16733,column:2}}",
+        "type": "FunctionExpression",
+        "function": "isOdd",
+        "label": "E-DISPATCH",
+        "params": [
+            "elem"
+        ]
+    },
+    {
+        "id": "30616",
+        "location": "{start:{line:12235,column:17},end:{line:12242,column:3}}",
+        "type": "FunctionExpression",
+        "function": "_fixEvent",
+        "label": "E-DISPATCH",
+        "params": [
+            "evt",
+            "se"
+        ]
+    },
+    {
+        "id": "26015",
+        "location": "{start:{line:10216,column:1},end:{line:10222,column:2}}",
+        "type": "FunctionDeclaration",
+        "function": "handle",
+        "label": "E-DISPATCH",
+        "params": [
+            "response"
+        ]
+    },
+    {
+        "id": "22567",
+        "location": "{start:{line:9057,column:28},end:{line:9059,column:3}}",
+        "type": "FunctionExpression",
+        "function": "IESignal",
+        "label": "E-DISPATCH",
+        "params": [
+            "handle"
+        ]
+    },
+    {
+        "id": "22583",
+        "location": "{start:{line:9060,column:30},end:{line:9062,column:3}}",
+        "type": "FunctionExpression",
+        "function": "remove",
+        "label": "E-DISPATCH"
+    },
+    {
+        "id": "21045",
+        "location": "{start:{line:8456,column:1},end:{line:8504,column:2}}",
+        "type": "FunctionDeclaration",
+        "function": "aspect",
+        "label": "E-DISPATCH",
+        "params": [
+            "type"
+        ]
+    },
+    {
+        "id": "13780",
+        "location": "{start:{line:5199,column:35},end:{line:5201,column:3}}",
+        "type": "FunctionExpression",
+        "function": "getL10nName",
+        "label": "E-DISPATCH",
+        "params": [
+            "moduleName",
+            "bundleName",
+            "locale"
+        ]
+    },
+    {
+        "id": "20900",
+        "location": "{start:{line:8411,column:12},end:{line:8431,column:5}}",
+        "type": "FunctionExpression",
+        "function": "remove",
+        "label": "E-DISPATCH"
+    },
+    {
+        "id": "4452",
+        "location": "{start:{line:1329,column:24},end:{line:1342,column:4}}",
+        "type": "FunctionExpression",
+        "function": "guardCheckComplete",
+        "label": "E-DISPATCH",
+        "params": [
+            "proc"
+        ]
+    },
+    {
+        "id": "24131",
+        "location": "{start:{line:9596,column:2},end:{line:9599,column:3}}",
+        "type": "FunctionDeclaration",
+        "function": "errHandler",
+        "label": "E-DISPATCH",
+        "params": [
+            "error"
+        ]
+    },
+    {
+        "id": "160",
+        "location": "{start:{line:142,column:14},end:{line:144,column:3}}",
+        "type": "FunctionExpression",
+        "function": "makeError",
+        "label": "E-DISPATCH",
+        "params": [
+            "error",
+            "info"
+        ]
+    },
+    {
+        "id": "15964",
+        "location": "{start:{line:6187,column:19},end:{line:6195,column:2}}",
+        "type": "FunctionExpression",
+        "function": "_deferError",
+        "label": "E-DISPATCH",
+        "params": [
+            "error",
+            "dfd"
+        ]
+    },
+    {
+        "id": "36049",
+        "location": "{start:{line:14455,column:1},end:{line:14473,column:2}}",
+        "type": "FunctionDeclaration",
+        "function": "getText",
+        "label": "E-DISPATCH",
+        "params": [
+            "node"
+        ]
+    }
+]

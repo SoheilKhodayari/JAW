@@ -1,0 +1,333 @@
+[
+    {
+        "id": "7095",
+        "location": "{start:{line:2569,column:0},end:{line:2574,column:1}}",
+        "type": "FunctionDeclaration",
+        "function": "triggerDomEvent",
+        "label": "E-DISPATCH",
+        "params": [
+            "event",
+            "data"
+        ]
+    },
+    {
+        "id": "6884",
+        "location": "{start:{line:2501,column:10},end:{line:2523,column:5}}",
+        "type": "FunctionExpression",
+        "function": "emit",
+        "label": "E-DISPATCH",
+        "params": [
+            "event",
+            "data"
+        ]
+    },
+    {
+        "id": "4365",
+        "location": "{start:{line:1523,column:10},end:{line:1546,column:5}}",
+        "type": "FunctionExpression",
+        "function": "emit",
+        "label": "E-DISPATCH",
+        "params": [
+            "input"
+        ]
+    },
+    {
+        "id": "4446",
+        "location": "{start:{line:1554,column:13},end:{line:1560,column:5}}",
+        "type": "FunctionExpression",
+        "function": "tryEmit",
+        "label": "E-DISPATCH",
+        "params": [
+            "input"
+        ]
+    },
+    {
+        "id": "5072",
+        "location": "{start:{line:1808,column:10},end:{line:1819,column:5}}",
+        "type": "FunctionExpression",
+        "function": "emit",
+        "label": "E-DISPATCH",
+        "params": [
+            "input"
+        ]
+    },
+    {
+        "id": "5200",
+        "location": "{start:{line:1852,column:10},end:{line:1858,column:5}}",
+        "type": "FunctionExpression",
+        "function": "emit",
+        "label": "E-DISPATCH",
+        "params": [
+            "input"
+        ]
+    },
+    {
+        "id": "5425",
+        "location": "{start:{line:1918,column:10},end:{line:1929,column:5}}",
+        "type": "FunctionExpression",
+        "function": "emit",
+        "label": "E-DISPATCH",
+        "params": [
+            "input"
+        ]
+    },
+    {
+        "id": "5712",
+        "location": "{start:{line:2009,column:10},end:{line:2016,column:5}}",
+        "type": "FunctionExpression",
+        "function": "emit",
+        "label": "E-DISPATCH",
+        "params": [
+            "input"
+        ]
+    },
+    {
+        "id": "6089",
+        "location": "{start:{line:2126,column:10},end:{line:2131,column:5}}",
+        "type": "FunctionExpression",
+        "function": "emit",
+        "label": "E-DISPATCH"
+    },
+    {
+        "id": "1265",
+        "location": "{start:{line:495,column:0},end:{line:520,column:1}}",
+        "type": "FunctionDeclaration",
+        "function": "inputHandler",
+        "label": "E-DISPATCH",
+        "params": [
+            "manager",
+            "eventType",
+            "input"
+        ]
+    },
+    {
+        "id": "4378",
+        "location": "{start:{line:1527,column:8},end:{line:1529,column:9}}",
+        "type": "FunctionDeclaration",
+        "function": "emit",
+        "label": "E-DISPATCH",
+        "params": [
+            "event"
+        ]
+    },
+    {
+        "id": "4507",
+        "location": "{start:{line:1581,column:15},end:{line:1605,column:5}}",
+        "type": "FunctionExpression",
+        "function": "recognize",
+        "label": "E-DISPATCH",
+        "params": [
+            "inputData"
+        ]
+    },
+    {
+        "id": "5296",
+        "location": "{start:{line:1890,column:13},end:{line:1912,column:5}}",
+        "type": "FunctionExpression",
+        "function": "process",
+        "label": "E-DISPATCH",
+        "params": [
+            "input"
+        ]
+    },
+    {
+        "id": "5833",
+        "location": "{start:{line:2061,column:13},end:{line:2113,column:5}}",
+        "type": "FunctionExpression",
+        "function": "process",
+        "label": "E-DISPATCH",
+        "params": [
+            "input"
+        ]
+    },
+    {
+        "id": "6474",
+        "location": "{start:{line:2333,column:15},end:{line:2381,column:5}}",
+        "type": "FunctionExpression",
+        "function": "recognize",
+        "label": "E-DISPATCH",
+        "params": [
+            "inputData"
+        ]
+    },
+    {
+        "id": "1211",
+        "location": "{start:{line:471,column:0},end:{line:487,column:1}}",
+        "type": "FunctionDeclaration",
+        "function": "createInputInstance",
+        "label": "E-DISPATCH",
+        "params": [
+            "manager"
+        ]
+    },
+    {
+        "id": "6256",
+        "location": "{start:{line:2272,column:0},end:{line:2293,column:1}}",
+        "type": "FunctionDeclaration",
+        "function": "Manager",
+        "label": "E-DISPATCH",
+        "params": [
+            "element",
+            "options"
+        ]
+    },
+    {
+        "id": "6123",
+        "location": "{start:{line:2140,column:0},end:{line:2144,column:1}}",
+        "type": "FunctionDeclaration",
+        "function": "Hammer",
+        "label": "E-DISPATCH",
+        "params": [
+            "element",
+            "options"
+        ]
+    },
+    {
+        "id": "541",
+        "location": "{start:{line:221,column:0},end:{line:225,column:1}}",
+        "type": "FunctionDeclaration",
+        "function": "addEventListeners",
+        "label": "E-REGISTER",
+        "params": [
+            "target",
+            "types",
+            "handler"
+        ]
+    },
+    {
+        "id": "1105",
+        "location": "{start:{line:449,column:10},end:{line:453,column:5}}",
+        "type": "FunctionExpression",
+        "function": "init",
+        "label": "E-REGISTER"
+    },
+    {
+        "id": "6403",
+        "location": "{start:{line:2301,column:9},end:{line:2315,column:5}}",
+        "type": "FunctionExpression",
+        "function": "set",
+        "label": "E-REGISTER",
+        "params": [
+            "options"
+        ]
+    },
+    {
+        "id": "1024",
+        "location": "{start:{line:420,column:0},end:{line:437,column:1}}",
+        "type": "FunctionDeclaration",
+        "function": "Input",
+        "label": "E-REGISTER",
+        "params": [
+            "manager",
+            "callback"
+        ]
+    },
+    {
+        "id": "3697",
+        "location": "{start:{line:1232,column:12},end:{line:1234,column:5}}",
+        "type": "FunctionExpression",
+        "function": "update",
+        "label": "E-REGISTER"
+    },
+    {
+        "id": "3616",
+        "location": "{start:{line:1207,column:0},end:{line:1210,column:1}}",
+        "type": "FunctionDeclaration",
+        "function": "TouchAction",
+        "label": "E-REGISTER",
+        "params": [
+            "manager",
+            "value"
+        ]
+    },
+    {
+        "id": "4131",
+        "location": "{start:{line:1422,column:9},end:{line:1428,column:5}}",
+        "type": "FunctionExpression",
+        "function": "set",
+        "label": "E-REGISTER",
+        "params": [
+            "options"
+        ]
+    },
+    {
+        "id": "6656",
+        "location": "{start:{line:2408,column:9},end:{line:2424,column:5}}",
+        "type": "FunctionExpression",
+        "function": "add",
+        "label": "E-REGISTER",
+        "params": [
+            "recognizer"
+        ]
+    },
+    {
+        "id": "6714",
+        "location": "{start:{line:2431,column:12},end:{line:2450,column:5}}",
+        "type": "FunctionExpression",
+        "function": "remove",
+        "label": "E-REGISTER",
+        "params": [
+            "recognizer"
+        ]
+    },
+    {
+        "id": "7005",
+        "location": "{start:{line:2544,column:0},end:{line:2562,column:1}}",
+        "type": "FunctionDeclaration",
+        "function": "toggleCssProps",
+        "label": "E-REGISTER",
+        "params": [
+            "manager",
+            "add"
+        ]
+    },
+    {
+        "id": "6969",
+        "location": "{start:{line:2529,column:13},end:{line:2536,column:5}}",
+        "type": "FunctionExpression",
+        "function": "destroy",
+        "label": "E-REGISTER"
+    },
+    {
+        "id": "3354",
+        "location": "{start:{line:1144,column:13},end:{line:1147,column:5}}",
+        "type": "FunctionExpression",
+        "function": "destroy",
+        "label": "E-REGISTER"
+    },
+    {
+        "id": "2363",
+        "location": "{start:{line:791,column:0},end:{line:798,column:1}}",
+        "type": "FunctionDeclaration",
+        "function": "MouseInput",
+        "label": "E-REGISTER"
+    },
+    {
+        "id": "2546",
+        "location": "{start:{line:865,column:0},end:{line:872,column:1}}",
+        "type": "FunctionDeclaration",
+        "function": "PointerEventInput",
+        "label": "E-REGISTER"
+    },
+    {
+        "id": "2764",
+        "location": "{start:{line:939,column:0},end:{line:945,column:1}}",
+        "type": "FunctionDeclaration",
+        "function": "SingleTouchInput",
+        "label": "E-REGISTER"
+    },
+    {
+        "id": "2957",
+        "location": "{start:{line:1007,column:0},end:{line:1012,column:1}}",
+        "type": "FunctionDeclaration",
+        "function": "TouchInput",
+        "label": "E-REGISTER"
+    },
+    {
+        "id": "3226",
+        "location": "{start:{line:1105,column:0},end:{line:1114,column:1}}",
+        "type": "FunctionDeclaration",
+        "function": "TouchMouseInput",
+        "label": "E-REGISTER"
+    }
+]

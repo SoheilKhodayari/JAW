@@ -1,0 +1,13 @@
+[
+    {
+        "id": "5",
+        "location": "{start:{line:2,column:14},end:{line:77,column:1}}",
+        "type": "FunctionExpression",
+        "function": "cookies",
+        "label": "WIN.LOC",
+        "params": [
+            "data",
+            "opt"
+        ]
+    }
+]
