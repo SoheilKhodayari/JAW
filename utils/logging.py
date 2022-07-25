@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 """
-    Copyright (C) 2020  Soheil Khodayari, CISPA
+    Copyright (C) 21  Soheil Khodayari, CISPA
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Affero General Public License as published by
     the Free Software Foundation, either version 3 of the License, or
@@ -12,12 +12,12 @@
     GNU Affero General Public License for more details.
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
-
+    
 
     Description:
     ------------
-    A logger module for messages 
-
+    Logging module
+    
 
     Usage:
     ------------
@@ -27,11 +27,22 @@
     > logger.warning("message")
     > logger.error("message")
     > logger.critical("message")
-
 """
 
 
 import logging
+from datetime import datetime
+
+def get_current_timestamp():
+    
+    """
+    @return {string} current date and time string
+    """
+    
+    now = datetime.now()
+    dt_string = now.strftime("%d-%m-%Y_%H-%M-%S")
+    return dt_string
+
 
 class LogFormatter(logging.Formatter):
 
@@ -68,8 +79,20 @@ class LogFormatter(logging.Formatter):
 
 logger = logging.getLogger("JAW")
 logger.setLevel(logging.DEBUG)
+
+## stdout
 ch = logging.StreamHandler()
+
+## log to file
+# ch = logging.FileHandler('logs/logs_%s.log'%get_current_timestamp())
+
 ch.setLevel(logging.DEBUG)
 ch.setFormatter(LogFormatter())
 logger.addHandler(ch)
+
+
+
+
+
+
 

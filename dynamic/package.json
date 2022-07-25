@@ -1,0 +1,24 @@
+{
+  "name": "force_execution",
+  "version": "1.0.0",
+  "description": "",
+  "main": "force_execution.js",
+  "dependencies": {
+    "crypto": "^1.0.1",
+    "elapsed-time-logger": "^1.1.7",
+    "fs": "0.0.1-security",
+    "js-beautify": "^1.14.0",
+    "path": "^0.12.7",
+    "process": "^0.11.10",
+    "process.argv": "^0.6.0",
+    "psl": "^1.8.0",
+    "puppeteer": "^10.2.0",
+    "url": "^0.11.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Soheil Khodayari",
+  "license": "AGPL3"
+}

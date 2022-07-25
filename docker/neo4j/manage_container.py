@@ -66,9 +66,8 @@ def create_neo4j_container(container_name, volume_home=VOLUME_HOME):
     -e NEO4J_dbms_security_procedures_unrestricted=apoc.\\\* \
     -e PYTHONUNBUFFERED=1 \
     --env NEO4J_AUTH={2}/{3} \
-    --user="$(id -u):$(id -g)" \
     neo4j:4.2.3
-	""".format(container_name, volume_home, constants.NEO4J_USER, constants.NEO4J_PASS, constants.OUTPUT_NODES_RELS_PATH)
+	""".format(container_name, volume_home, constants.NEO4J_USER, constants.NEO4J_PASS, constants.DATA_DIR)
 	# Note: pass the analyzer outputs folder as the import directory of neo4j
 
 	utilityModule.run_os_command(command, print_stdout=False)
@@ -119,7 +118,7 @@ def import_data_inside_container_with_cypher(tx, database_name, relative_import_
 	return results
 
 
-def import_data_inside_container(container_name, database_name, relative_import_path, mode='graphML'):
+def import_data_inside_container(container_name, database_name, relative_import_path, mode='graphML', nodes_file=None, edges_file=None):
 
 	"""
 	@param {string} container_name
@@ -133,9 +132,16 @@ def import_data_inside_container(container_name, database_name, relative_import_
 	if mode == 'CSV':
 
 		csv_path = os.path.join('/var/lib/neo4j/import', relative_import_path)
-		nodes_path = os.path.join(csv_path, constants.NODE_INPUT_FILE_NAME)
-		rels_path = os.path.join(csv_path, constants.RELS_INPUT_FILE_NAME)
+		if nodes_file is None:
+			nodes_path = os.path.join(csv_path, constants.NODE_INPUT_FILE_NAME)
+		else:
+			nodes_path = os.path.join(csv_path, nodes_file)
 
+		if edges_file is None:
+			rels_path = os.path.join(csv_path, constants.RELS_INPUT_FILE_NAME)
+		else:
+			rels_path = os.path.join(csv_path, edges_file)
+	
 		# see: https://neo4j.com/docs/operations-manual/current/tools/neo4j-admin-import/#import-tool-option-skip-duplicate-nodes
 		if constants.NEO4J_VERSION.startswith(constants.NEOJ_VERSION_4X):
 			neo4j_import_cmd = "neo4j-admin import --database=%s --nodes=%s --relationships=%s --delimiter='¿' --skip-bad-relationships=true --skip-duplicate-nodes=true"%(database_name, nodes_path, rels_path)
@@ -149,6 +155,30 @@ def import_data_inside_container(container_name, database_name, relative_import_
 
 	elif mode == 'graphML':
 		return DU.exec_fn_within_transaction(import_data_inside_container_with_cypher, database_name, relative_import_path)
+
+
+
+#### Tests
+
+def _test_import():
+
+	relative_import_path = 'graphml/python_test_1.xml'
+	database_name = 'test_neo4j_db'
+	container_name = 'test_neo4j'
+	mode = 'graphML'
+
+	create_neo4j_container(container_name)
+	time.sleep(10)
+	result = import_data_inside_container(container_name, database_name, relative_import_path, mode)
+	logger.info(result)
+
+
+##### Run tests if run as the main module
+if __name__ == '__main__':
+
+	logger.info('running neo4j docker tests...')
+	_test_import()
+
 
 
 

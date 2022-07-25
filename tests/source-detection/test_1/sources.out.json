@@ -1,0 +1,20 @@
+{
+  "test_name": "test_1",
+  "sources": {
+    "window.x.y.z": [
+      {
+        "location": 35,
+        "id": 5,
+        "script": "file1.js"
+      }
+    ],
+    "document.x.y.z": [
+      {
+        "location": 32,
+        "id": 47,
+        "script": "file2.js"
+      }
+    ]
+  },
+  "parsing_errors": []
+}

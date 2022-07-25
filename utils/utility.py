@@ -33,39 +33,11 @@ import signal
 import hashlib
 from utils.logging import logger
 
-# -------------------------------------------------------------------------- #
-#  		Neo4j Utils
-# -------------------------------------------------------------------------- #
-
-def getChildsOf(tx, node, relation_type=''):
-	"""
-	@param {pointer} tx
-	@param {node object} node
-	@param {string} relation_type
-	@return {dict}: wrapperNode= a dict containing the parse tree with its root set to input node, format: {'node': node, 'children': [child_node1, child_node2, ...]} 
-	"""
-
-	outNode =  {'node': node, 'children': []} # wrapper around neo4j node
-	nodeId = node['Id']
-	if relation_type != '':
-		query= """
-		MATCH (root { Id: '%s' })-[:AST_parentOf { RelationType: '%s'}]->(child) RETURN collect(distinct child) AS resultset
-		"""%(nodeId, relation_type)
-	else:
-		query= """
-			MATCH (root { Id: '%s' })-[:AST_parentOf]->(child) RETURN collect(distinct child) AS resultset
-			"""%(nodeId)
-
-	results = tx.run(query)
-	for item in results:
-		childNodes = item['resultset']
-		for childNode in childNodes:
-			outNode['children'].append(getChildsOf(tx, childNode))
-	return outNode
 
 # -------------------------------------------------------------------------- #
 #  		OS Utils
 # -------------------------------------------------------------------------- #
+
 
 
 def run_os_command(cmd, print_stdout=True, timeout=30*60, prettify=False):
@@ -86,7 +58,7 @@ def run_os_command(cmd, print_stdout=True, timeout=30*60, prettify=False):
 	ret = -1
 	try:
 		my_timer.start()
-		if print_stdout and constantsModule.DEBUG_PRINTS:
+		if print_stdout:
 			if not prettify:
 				for line in io.TextIOWrapper(p.stdout, encoding="utf-8"):
 					logger.info(line.strip())
@@ -104,17 +76,6 @@ def run_os_command(cmd, print_stdout=True, timeout=30*60, prettify=False):
 		my_timer.cancel()
 
 	return ret
-
-	# p = subprocess.Popen(cmd, shell=True, stdout = subprocess.PIPE)
-	# if print_stdout and constantsModule.DEBUG_PRINTS:
-	# 	for line in p.stdout:
-	# 		logger.info(line)
-	# p.wait()
-	# ret = p.returncode
-	# time.sleep(1)
-	# return ret
-
-
 
 
 def get_directory_last_part(path):
@@ -177,37 +138,6 @@ def _get_last_subpath(s):
 	return os.path.basename(os.path.normpath(s))
 
 	
-def get_urls_directory(site_id):
-	
-	"""
-	@param {string} site_id
-	@return {string} the path to the urls.out file of the target site, None if no such file exists yet
-	"""
-
-	file_path = os.path.join(os.path.join(os.path.join(constantsModule.SITES_DIRECTORY, str(site_id)), "urls"), "urls.out")
-	if(os.path.exists(file_path)):
-		return file_path
-
-	return None
-
-
-def get_urls_file_content(file_path):
-	
-	"""
-	@param {string} file_path: path to the url file
-	@return {list} urls of the file
-	"""
-
-	fd = open(file_path, 'r')
-	content = fd.readlines()
-	urls = []
-	for url in content:
-		if url != '':
-			url = url.rstrip('\n')
-			urls.append(url)
-	fd.close()
-	return urls
-
 		
 # -------------------------------------------------------------------------- #
 #  		Other Utils
@@ -244,6 +174,7 @@ def get_unique_list(lst):
 	@return remove duplicates from list and return the resulting array
 	"""
 	return list(set(lst))
+
 
 def list_contains(needle, haystack):
 	for p in haystack:

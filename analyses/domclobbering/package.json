@@ -1,0 +1,47 @@
+{
+  "name": "domclobbering",
+  "version": "1.0.0",
+  "description": "",
+  "main": "static_analysis.js",
+  "dependencies": {
+    "crypto": "^1.0.1",
+    "elapsed-time-logger": "^1.1.7",
+    "fs": "0.0.1-security",
+    "js-beautify": "^1.14.0",
+    "path": "^0.12.7",
+    "process": "^0.11.10",
+    "puppeteer": "^10.2.0",
+    "core-js": "^0.8.4",
+    "csv-writer": "^1.5.0",
+    "domino": "^2.1.6",
+    "escodegen": "^1.14.3",
+    "esgraph": "*",
+    "espree": "^2.0.2",
+    "esprima": "^4.0.1",
+    "filbert": "^0.1.20",
+    "latest": "^0.2.0",
+    "open": "0.0.5",
+    "php-parser": "^3.0.2",
+    "process.argv": "^0.6.0",
+    "util": "^0.12.1",
+    "walkes": "*"
+  },
+  "devDependencies": {
+    "async": "^1.2.1",
+    "blanket": "^1.1.7",
+    "grunt": "^0.4.5",
+    "grunt-jsdoc": "^0.6.7",
+    "grunt-mocha-istanbul": "^2.4.0",
+    "grunt-mocha-test": "^0.12.7",
+    "grunt-strip-code": "^0.1.2",
+    "istanbul": "*",
+    "jsdoc": "^3.3.2",
+    "mocha": "*",
+    "should": "*"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Soheil Khodayari",
+  "license": "AGPL3"
+}

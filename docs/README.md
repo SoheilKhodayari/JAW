@@ -2,7 +2,7 @@
 - [Setup](setup.md)
 
 ### The Web Crawler of JAW
-- [Web Crawler](crawler.md)
+- [Web Crawlers](crawlers.md)
 
 ### Data Model of Hybrid Property Graphs (PG)
 - [Property Graph Nodes](hpg-nodes.md)

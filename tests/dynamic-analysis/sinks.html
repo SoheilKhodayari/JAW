@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Test Dynamic Taint Tracker Engine For Different Sink Types</title>
+</head>
+<body>
+
+<script type="text/javascript" src="./../../dynamic/iroh-browser.js"></script>
+<script type="text/javascript">
+	
+	let code= `
+		const tainted = 'TAINT-xyz';
+
+
+		// Request Forgery sinks
+		let url= 'https://google.com' + tainted
+
+		var xhr = new XMLHttpRequest();
+		xhr.open('GET', url);
+		fetch(url);
+
+
+		// WebSocket URL poisoning
+		let wsUrl = 'wss://google.com' + tainted;
+		var ws = new WebSocket(wsUrl);
+		
+		// XSS
+		var s = new Function(tainted);
+	
+		// Open Redirect
+		window.location.replace(tainted);
+		window.location.assign(tainted);
+
+		// clobbering cookies
+		let cookie1 = 'k1=' + tainted;
+		document.cookie = cookie1;
+
+
+		// clobbering json params
+		// JSON.parse(tainted);
+
+		// clobbering webstorage items
+		localStorage.setItem('k1', tainted);
+		sessionStorage.setItem('k2', tainted);
+
+	`;
+	localStorage.setItem('scriptsCode', code);
+</script>
+
+<script type="text/javascript" src="./../../dynamic/domc_taint_engine.js"></script>
+<script type="text/javascript">
+	startForceExecution();
+	console.log('taints', theWindow.clobberable); 
+</script>
+</body>
+</html>

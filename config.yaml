@@ -1,0 +1,72 @@
+# 1. which webapps to test?
+testbed: 
+  ## option 1: test a specifc website
+  site: https://google.com
+  ## option 2: provide a top-site list (e.g., Alexa, Tranco, etc)
+  sitelist: /input/tranco_Y3JG_unique.csv
+  from_row: 1
+  to_row: 5000
+
+
+# 2. crawler configuration
+crawler:
+  # max number of urls to visit
+  maxurls: 2
+  # time budget for crawling each site in seconds
+  sitetimeout: 1800 # 30 mins;
+  # browser to use for crawling
+  browser:
+    name: chrome
+    headless: true
+
+
+# 3. static analysis configuration
+staticpass:
+  # time budget for static analysis of each site in seconds
+  sitetimeout: 10800 # 3 hrs
+  # max amount of available memory for static analysis per process
+  memory: 32000
+
+
+# 4. dynamic analysis configuration
+dynamicpass:
+  # time budget for dynamic analysis of each site in seconds
+  sitetimeout: 10800 # 3 hrs
+  # which browser to use
+  browser:
+    name: chrome
+    # use remote browserstack browsers or not
+    use_browserstack: false
+    browserstack_username: xyz
+    browserstack_password: xyz
+    browserstack_access_key: xyz
+    
+
+
+# 5. choose the vulnerability analysis component to run
+# only one component must have the `enable` option as true
+general_vuln_analysis:
+  # performs a general vulnerability analysis (i.e., more than one vulnerability class)
+  # when enabled, other vulnerability-specific components (as configured below) 
+  # will not run individually anymore
+  enable: true
+
+domclobbering:
+  enabled: false
+  # enable or disable the passes, useful for large-scale analysis 
+  # e.g., first crawl all websites, then analyze them,
+  # as opposed to crawling and analyzing sequentially at the same time
+  passes:
+    crawling: true
+    static: true
+    static_neo4j: false
+    dynamic: false
+
+
+cs_csrf:
+  enabled: true
+  passes:
+    crawling: true
+    static: true
+    static_neo4j: true
+ 

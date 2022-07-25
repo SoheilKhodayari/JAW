@@ -1,11 +1,11 @@
 # Querying a Hyrbid Property Graph
 
 You can use Cypher Queries or the NeoModel ORM to query the property graph. The NeoModel ORM Schema is defined in `hpg_neo4j/orm.py`.
-You should place and run your queries in `hpg_analysis/<ANALYSIS_NAME>`. For further details, see the example query files provided: `example.orm.py` and `example.py` in the `hpg_analysis/example` folder.
+You should place and run your queries in `analyses/<ANALYSIS_NAME>`. For further details, see the example query files provided: `example.orm.py` and `example.py` in the `analyses/example` folder.
 
 ```sh
-$ python3 -m hpg_analysis.example.example
-$ python3 -m hpg_analysis.example.exampleorm  
+$ python3 -m analyses.example.example
+$ python3 -m analyses.example.exampleorm  
 ```
 
 ## Querying with ORM

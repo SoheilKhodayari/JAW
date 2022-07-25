@@ -11,7 +11,7 @@ To create a neo4j docker container, do:
 ```python
 import time, sys
 import docker.neo4j.manage_container as dockerModule
-import hpg_neo4j.db_utility as neo4jDatabaseUtilityModule
+import hpg_neo4j.db_utility as DU
 
 # IMPORTANT: do not change this name.
 # currently, neo4j in docker only supports one active database.
@@ -26,9 +26,10 @@ container_name = 'neo4j_container_name'
 input_mode = 'CSV'
 
 # this is the path of the property graph, e.g., nodes and relationship CSV files
-# this path must be relative to the ./hpg_construction/outputs/
+# this path must be relative to the $(pwd)/data/ directory
 # because the docker instance can only see files in that directory
-relative_import_path = "unit_tests/example_analysis/test_1"
+# e.g., /data/test_program/test.js
+relative_import_path = "test_program"
  
 # create the neo4j container
 dockerModule.create_neo4j_container(container_name)
@@ -39,11 +40,11 @@ dockerModule.import_data_inside_container(container_name, database_name, relativ
 
 
 # periodically poll the neo4j container HTTP interface (tcp port 7474) until it accepts driver connections
-connection_success = neo4jDatabaseUtilityModule.wait_for_neo4j_bolt_connection(timeout=120)
+connection_success = DU.wait_for_neo4j_bolt_connection(timeout=120)
 if not connection_success:
 	sys.exit(1)
 
-neo4jDatabaseUtilityModule.exec_fn_within_transaction(run_queries)
+DU.exec_fn_within_transaction(run_queries)
 
 
 def run_queries(tx):
@@ -57,11 +58,11 @@ def run_queries(tx):
 
 ## Complete Example
 
-A complete example on how to use JAW with neo4j docker can be found in [hpg_analysis/example/example_analysis.py](https://github.com/SoheilKhodayari/JAW/blob/master/hpg_analysis/example/example_analysis.py).
+A complete example on how to use JAW with neo4j docker can be found in [analyses/example/example_analysis.py](https://github.com/SoheilKhodayari/JAW/blob/master/analyses/example/example_analysis.py).
 
 You can run the example analysis from the root directory with:
 ```bash
-$ python3 -m hpg_analysis.example.example_analysis
+$ python3 -m analyses.example.example_analysis --input=$(pwd)/data/test_program/test.js
 
 ```
 

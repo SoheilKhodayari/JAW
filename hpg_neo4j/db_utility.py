@@ -33,10 +33,12 @@ import sys
 import time
 import requests
 import uuid
-import hpg_crawler.sites.sitesmap as sitesMapConfig 
+
+
 import constants as constantsModule
-import hpg_neo4j.orm as ORMModule
-from utils.utility import _hash, run_os_command
+# import hpg_neo4j.orm as ORMModule
+from utils.utility import _hash
+from utils.io import run_os_command
 from neo4j import GraphDatabase
 from utils.logging import logger
 
@@ -49,86 +51,12 @@ def _get_last_subpath(s):
 
 
 
-
 def generate_uuid_for_graph():
 	"""
 	generates a uuid for the graph, which can be used as the id of the neo4j docker container
 	"""
 	return 'graph-' + str(uuid.uuid4())
 
-
-
-def API_build_property_graph_for_file(file_absolute_path, file_name, timeout=30*60):
-
-	"""
-	builds a property graph database for a given file
-	"""
-
-	file_absolute_path_name = os.path.join(file_absolute_path, file_name)
-
-	if 'hpg_construction/outputs' in file_absolute_path:
-		e_index = file_absolute_path.index('hpg_construction/outputs') + len('hpg_construction/outputs') + 1
-		output_folder = file_absolute_path[e_index:]
-		output_folder = os.path.join(output_folder, file_name.rstrip('.js'))
-	elif 'hpg_construction/unit_tests' in file_absolute_path:
-		e_index = file_absolute_path.index('hpg_construction/unit_tests') + len('hpg_construction/unit_tests') + 1
-		output_folder = os.path.join("unit_tests", file_absolute_path[e_index:])
-		output_folder = os.path.join(output_folder, file_name.rstrip('.js'))
-	else:
-		logger.error('input file for graph construction must be under the hpg_construction/outputs/ folder!')
-		sys.exit(1)
-
-	command = "node --max-old-space-size=32000 %s -js %s -o %s"%(constantsModule.ANALYZER_DRIVER_PATH, file_absolute_path_name, output_folder)
-	output = run_os_command(command, timeout=timeout)
-	return output
-
-
-
-def API_build_property_graph_for_unit_test(test_file, print_debug=constantsModule.DEBUG_PRINTS):
-
-	"""
-	builds a property graph database by importing the CSV of the constructed hpg for a unit-test file
-	"""
-
-
-	# setup output folder
-	program_folder_name = os.path.join(constantsModule.UNIT_TESTS_FOLDER_NAME, test_file.rstrip('.js')) 
-
-	# read from input folder
-	absolute_program_folder_name = constantsModule.UNIT_TEST_BASE_PATH
-	program_path_name = os.path.join(absolute_program_folder_name, test_file)
-
-	command = "node --max-old-space-size=32000 %s -js %s -o %s"%(constantsModule.ANALYZER_DRIVER_PATH, program_path_name, program_folder_name)
-	p = subprocess.Popen(command, shell=True, stdout = subprocess.PIPE)
-	if print_debug:
-		for line in p.stdout:
-			print(line)
-	p.wait()
-	ret = p.returncode
-	return [program_folder_name, absolute_program_folder_name]
-
-
-def API_build_property_graph(site_id, url, print_debug=constantsModule.DEBUG_PRINTS):
-
-	"""
-	builds a property graph database in the CSV format
-	"""
-
-	siteConfig = sitesMapConfig.SITES_MAP[site_id] 
-	folder_name_of_url = siteConfig[0] + "_" + _hash(url)
-	program_folder_name = os.path.join(siteConfig[0], folder_name_of_url)
-
-	absolute_program_folder_name = os.path.join(os.path.join(constantsModule.OUTPUT_NODES_RELS_PATH, siteConfig[0]), folder_name_of_url)
-	program_path_name = os.path.join(absolute_program_folder_name, constantsModule.NAME_JS_PROGRAM)
-
-	command = "node --max-old-space-size=32000 %s -js %s -o %s"%(constantsModule.ANALYZER_DRIVER_PATH, program_path_name, program_folder_name)
-	p = subprocess.Popen(command, shell=True, stdout = subprocess.PIPE)
-	if print_debug:
-		for line in p.stdout:
-			print(line)
-	p.wait()
-	ret = p.returncode
-	return [program_folder_name, absolute_program_folder_name]
 
 
 def API_neo4j_prepare(csv_absolute_path, nodes_name=constantsModule.NODE_INPUT_FILE_NAME, relationships_name=constantsModule.RELS_INPUT_FILE_NAME, load_dom_tree_if_exists=True):
@@ -180,9 +108,8 @@ def API_neo4j_prepare(csv_absolute_path, nodes_name=constantsModule.NODE_INPUT_F
 	START_NEO4J_COMMAND = "neo4j start"
 	run_os_command(START_NEO4J_COMMAND)
 
-	if constantsModule.DEBUG_PRINTS:
-		logger.info("Neo4J DB setup in progress. Waiting for 10 seconds.")
-
+	
+	logger.info("Neo4J DB setup in progress. Waiting for 10 seconds.")
 	time.sleep(10)
 
 	if load_dom_tree_if_exists:
@@ -193,23 +120,6 @@ def API_neo4j_prepare(csv_absolute_path, nodes_name=constantsModule.NODE_INPUT_F
 			fd.close()
 			node.Code = html
 			node.save()
-
-def exec_fn_within_transaction(fn, *args):
-	
-	"""
-	wraps a function within a neo4j transaction
-	@param {pointer} fn: function 
-	@param {param-list} *args: positional arguments
-	@return fn output: execute fn with transaction and the list of passed args 
-	"""
-
-	out = None
-	neo_driver = GraphDatabase.driver(constantsModule.NEO4J_CONN_STRING, auth=(constantsModule.NEO4J_USER, constantsModule.NEO4J_PASS))
-	with neo_driver.session() as session:
-		with session.begin_transaction() as tx:
-			out = fn(tx, *args)
-
-	return out
 
 
 def activate_existing_neo4j_db(database_name):
@@ -269,6 +179,22 @@ def does_neo4j_db_exists(database_name):
 		return False
 
 
+def exec_fn_within_transaction(fn, *args):
+	
+	"""
+	wraps a function within a neo4j transaction
+	@param {pointer} fn: function 
+	@param {param-list} *args: positional arguments
+	@return fn output: execute fn with transaction and the list of passed args 
+	"""
+
+	out = None
+	neo_driver = GraphDatabase.driver(constantsModule.NEO4J_CONN_STRING, auth=(constantsModule.NEO4J_USER, constantsModule.NEO4J_PASS))
+	with neo_driver.session() as session:
+		with session.begin_transaction() as tx:
+			out = fn(tx, *args)
+
+	return out
 
 
 def wait_for_neo4j_bolt_connection(timeout=60):

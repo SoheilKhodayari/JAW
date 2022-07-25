@@ -1,0 +1,64 @@
+{
+  "test_name": "test_1",
+  "sinks": [
+    {
+      "location": 37,
+      "id": 21,
+      "script": "file1.js",
+      "vuln": "link_manipulation",
+      "sink_code": "script.src = source",
+      "sink_type": "element.src",
+      "taint_possibility": true,
+      "sink_identifiers": [
+        "source"
+      ]
+    },
+    {
+      "location": 29,
+      "id": 38,
+      "script": "file2.js",
+      "vuln": "cross_site_scripting",
+      "sink_code": "window.setTimeout('f()', 2000)",
+      "sink_type": "setTimeout",
+      "taint_possibility": false,
+      "sink_identifiers": []
+    },
+    {
+      "location": 40,
+      "id": 77,
+      "script": "file2.js",
+      "vuln": "cross_site_scripting",
+      "sink_code": "document.write(k)",
+      "sink_type": "document.write",
+      "taint_possibility": true,
+      "sink_identifiers": [
+        "k"
+      ]
+    },
+    {
+      "location": 47,
+      "id": 93,
+      "script": "file2.js",
+      "vuln": "cross_site_scripting",
+      "sink_code": "document.write(k)",
+      "sink_type": "document.write",
+      "taint_possibility": true,
+      "sink_identifiers": [
+        "k"
+      ]
+    },
+    {
+      "location": 56,
+      "id": 117,
+      "script": "file2.js",
+      "vuln": "link_manipulation",
+      "sink_code": "script.src = k",
+      "sink_type": "element.src",
+      "taint_possibility": true,
+      "sink_identifiers": [
+        "k"
+      ]
+    }
+  ],
+  "parsing_errors": []
+}

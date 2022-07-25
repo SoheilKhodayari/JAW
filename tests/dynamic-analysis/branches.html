@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Test Dynamic Taint Tracker Engine For Different Branches</title>
+</head>
+<body>
+
+<script type="text/javascript" src="./../../dynamic/iroh-browser.js"></script>
+<script type="text/javascript">
+	
+	let code= `
+		var a = "TAINT_123";
+		var b = "TAINT_456";
+		if(a){
+			eval(a);
+		}
+		
+		if(b){
+			eval(b);
+		}
+	`;
+
+	localStorage.setItem('scriptsCode', code);
+</script>
+
+<script type="text/javascript" src="./../../dynamic/domc_taint_engine.js"></script>
+<script type="text/javascript">
+	startForceExecution();
+	console.log('taints', theWindow.clobberable); 
+</script>
+</body>
+</html>

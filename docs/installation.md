@@ -1,5 +1,16 @@
 # Installation
 
+
+## Quick Start
+
+Install the dependencies via:
+```bash
+$ ./install.sh
+```
+
+
+## Step-by-Step Guide (Debugging Purpose)
+
 Please follow the steps below in order for an smooth installation process.
 
 ### Step 1: Installing Python Dependencies
@@ -37,6 +48,7 @@ Follow the tutorial [here](https://www.digitalocean.com/community/tutorials/how-
 This prototype has been tested with `Neo4j 3.5.9`, and `Neo4j 4.2.3` community edition.
 
 **Option 1: Using JAW with Neo4j in Docker**
+In this case, you only need docker. No further installation is required. 
 Please see [here](docs/neo4j-docker.md) for information on how to use JAW with neo4j running inside docker.
 
 **Option 2: Installing in Host Machine.**
@@ -58,8 +70,7 @@ For more information, see [here](https://www.alibabacloud.com/blog/installing-ne
 
 
 **Note:** the graph import commands and database activation may slightly differ across neo4j versions. 
-If you want to use another version of neo4j, you may need to change the graph import command (i.e., `NEO4J_IMPORT_COMMAND`), as well as the database activation logic (i.e., `dbms.active_database`) in `API_neo4j_prepare` function
-of `hpg_neo4j/db_utility` package.
+If you want to use another version of neo4j, you may need to change the graph import command (i.e., `NEO4J_IMPORT_COMMAND`), as well as the database activation logic (i.e., `dbms.active_database`) in `API_neo4j_prepare` function of `hpg_neo4j/db_utility` package.
 
 
 **3- Set the intitial Neo4j Password.**
@@ -90,14 +101,5 @@ dbms.connector.bolt.enabled=true
 dbms.connector.bolt.listen_address=0.0.0.0:7687 
 ```
 
-### Step 4: Setup Enviornment Variables
 
-Copy the `example.env`  and rename it to `.env`.
-- Set your operating system:
-	- `PLATFORM=linux`
-	- `PLATFORM=macos`
-- If you choose a different password than that of step 3, you must set it in `.env` with `NEO4J_PASS=your-password`.
-
-**Note**: you may use the tool in windows. This requires changing the `neo4j` configuration varibles (e.g., NEO4J_CONF) in `constants.py`. In addition, you should change the
-`API_neo4j_prepare` function in `main.py` by replacing the `sed` bash command to that of windows (or simply provide a similar copying logic).
 

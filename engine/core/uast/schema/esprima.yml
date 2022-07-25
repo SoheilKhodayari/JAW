@@ -1,0 +1,85 @@
+Program sourceType:["script"|"module"] body:[Statement|ModuleDeclaration]
+Statement
+    Declaration
+        FunctionDeclaration(Function) id:Identifier
+        VariableDeclaration declarations:[VariableDeclarator] kind:("var"|"let"|"const")
+        ClassDeclaration(Class) id:Identifier
+    EmptyStatement
+    DebuggerStatement
+    ExpressionStatement expression:Expression
+    BlockStatement body:[Statement]
+    ReturnStatement argument:Expression?
+    LabeledStatement label:Identifier body:Statement
+    BreakStatement label:Identifier?
+    ContinueStatement label:Identifier?
+    IfStatement test:Expression consequent:Statement alternate:Statement?
+    SwitchStatement discriminant:Expression cases:[SwitchCase]
+    WhileStatement test:Expression body:Statement
+    DoWhileStatement body:Statement test:Expression
+    ForStatement init:(VariableDeclaration|Expression)? test:Expression? update:Expression? body:Statement
+    ForInStatement left:(VariableDeclaration|Pattern) right:Expression body:Statement
+        ForOfStatement await:boolean
+    ThrowStatement argument:Expression
+    TryStatement block:BlockStatement handler:CatchClause? finalizer:BlockStatement?
+    WithStatement object:Expression body:Statement
+Function id:Identifier? params:[Pattern] body:BlockStatement generator:bool async:bool
+VariableDeclarator id:Pattern init:Expression?
+SwitchCase test:Expression? consequent:[Statement]
+CatchClause param:(Pattern?) body:BlockStatement
+Expression
+    ThisExpression
+    Identifier(Pattern) name:string
+    Literal value:(string|bool|number|Regexp|bigint)?
+        RegExpLiteral regex:{pattern:string flags:string}
+        BigIntLiteral bigint:string
+    ArrayExpression elements:[(Expression|SpreadElement)?]
+    ObjectExpression properties:[Property|SpreadElement]
+    FunctionExpression(Function)
+    ArrowFunctionExpression(Function) body:(BlockStatement|Expression) expression:bool
+    UnaryExpression operator:UnaryOperator prefix:bool argument:Expression
+    UpdateExpression operator:UpdateOperator argument:expression prefix:bool
+    BinaryExpression operator:BinaryOperator left:Expression right:Expression
+    AssignmentExpression operator:AssignmentOperator left:Pattern right:Expression
+    LogicalExpression operator:LogicalOperator left:Expression right:Expression
+    MemberExpression(ChainElement) object:(Expression|Super) property:Expression computed:bool
+    ChainExpression expression:ChainElement 
+    ConditionalExpression test:Expression consequent:Expression alternate:Expression
+    CallExpression(ChainElement) callee:(Expression|Super) arguments:[(Expression|SpreadElement)]
+    YieldExpression argument:Expression? delegate:bool
+    TemplateLiteral quasis:[TemplateElement] expressions:[Expression]
+    TaggedTemplateExpression tag:Expression quasi:TemplateLiteral
+    NewExpression
+    SequenceExpression expressions:[Expression]
+    ClassExpression(Class)
+    AwaitExpression argument:Expression
+    ImportExpression source:Expression
+    MetaProperty meta:Identifier property:Identifier
+Class id:Identifier? superClass:Expression? body:ClassBody
+ClassBody body:[MethodDefinition]
+MethodDefinition key:Expression value:FunctionExpression kind:("constructor"|"method"|"get"|"set") computed:bool static:bool
+SpreadElement argument:Expression
+Property key:Expression value:Expression kind:("init"|"get"|"set") method:bool shorthand:bool computed:bool
+    AssignmentProperty value:Pattern kind:"init" method:false
+Pattern
+    ObjectPattern properties:[AssignmentProperty|RestElement]
+    ArrayPattern elements:[Pattern?]
+    RestElement argument:Pattern
+    AssignmentPattern left:Pattern right:Expression
+Super
+TemplateElement tail:boolean value:{cooked:string? raw:string}
+ChainElement optional:boolean
+enum UnaryOperator {"-"|"+"|"!"|"~"|"typeof"|"void"|"delete"}
+enum UpdateOperator {"++"|"--"}
+enum BinaryOperator {"=="|"!="|"==="|"!=="|"<"|"<="|">"|">="|"<<"|">>"|">>>"|"+"|"-"|"*"|"/"|"%"|"**"|"|"|"^"|"&"|"in"|"instanceof"}
+enum AssignmentOperator {"="|"+="|"-="|"*="|"/="|"%="|"**="|"<<="|">>="|">>>="|"|="|"^="|"&="}
+enum LogicalOperator {"||"|"&&"|"??"}
+ModuleDeclaration
+    ImportDeclaration specifiers:[ImportSpecifier|ImportDefaultSpecifier|ImportNamespaceSpecifier] source:Literal
+    ExportNamedDeclaration declaration:Declaration? specifiers:[ExportSpecifier] source:Literal?
+    ExportDefaultDeclaration declaration:(Declaration|Expression)
+    ExportAllDeclaration source:Literal exported:(Identifier?)
+ModuleSpecifier local:Identifier
+    ImportSpecifier imported:Identifier
+    ImportDefaultSpecifier
+    ImportNamespaceSpecifier
+    ExportSpecifier exported:Identifier

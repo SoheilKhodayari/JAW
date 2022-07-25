@@ -7,6 +7,17 @@ $ git log --pretty="- %s" > CHANGELOG.md
 ```
 
 
+## Version 2.0.0
+
+- `[[ crawler ]]` new Puppeteer-based crawler with Chrome CDP
+- `[[ engine ]]` improved static analysis engine, code structure, and cli
+- `[[ domclobbering ]]` support for DOM Clobbering vulnerabilities
+- `[[ cs-csrf ]]` new JS-based interface
+- `[[ dynamic ]]` support for dynamic forced execution of data flows
+- `[[ cli ]]` new CLI for code analysis, hpg construction and importing
+- `[[ docs ]]` updated documentation with the new structure
+
+
 ## Version 1.1.0
 
 - `[[ docs ]]` updated documentation - using neo4j with docker and installation scripts
