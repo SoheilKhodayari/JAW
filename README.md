@@ -39,7 +39,7 @@ JAW has a Github pages website available at <a href="https://soheilkhodayari.git
 2. [HPG Construction](#hpg-construction)
 3. [Analysis and Outputs](#analysis-and-outputs)
 ### Setup
-1. [Installation](#setup)
+1. [Installation](#setup-1)
 ### Quick Start
 1. [Running the Pipeline](#running-the-pipeline)
 2. [Quick Example](#quick-example)
