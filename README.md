@@ -29,7 +29,7 @@ This project is licensed under `GNU AFFERO GENERAL PUBLIC LICENSE V3.0`. See [he
 
 JAW has a Github pages website available at <a href="https://soheilkhodayari.github.io/JAW/">https://soheilkhodayari.github.io/JAW/</a>.
 
-**Release Note:** On July 2022, JAW has been updated to its next major release with the ability to detect [DOM Clobbering](http://domclob.xyz/) vulnerabilities, including the code of [TheThing](https://github.com/SoheilKhodayari/TheThing). The previous version of JAW is available in the [`JAW-V1`](https://github.com/SoheilKhodayari/JAW/tree/JAW-v1) branch. 
+**Release Note:** On July 2022, JAW has been updated to its next major release with the ability to detect [DOM Clobbering](https://soheilkhodayari.github.io/DOMClobbering) vulnerabilities, including the code of [TheThing](https://github.com/SoheilKhodayari/TheThing). The previous version of JAW is available in the [`JAW-V1`](https://github.com/SoheilKhodayari/JAW/tree/JAW-v1) branch. 
 
 
 # Content
