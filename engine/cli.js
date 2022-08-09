@@ -18,7 +18,7 @@
 
 	    Usage:
 	    ------------
-	    node engine/cli.js  --lang=js --graphid=graph1 --input=/in/file1.js --input=/in/file2.js --output=/out/dir/ --mode=csv
+	    node engine/cli.js  --lang=js --graphid=graph1 --input=/in/file1.js --input=/in/file2.js --output=/out/dir/ --mode=csv --preprocess=true
 
 		OPTIONS
 	    --lang: 	language of the input program
@@ -26,6 +26,7 @@
 	    --input: 	path of the input program(s)
 	    --output: 	path of the output HPG
 	    --mode: 	determines the output format (csv or graphML)
+	    --preprocess: run AST preprocessing passes over code before analysis
 
 */
 
@@ -80,6 +81,8 @@ function uuidv4() {
 	// prepare graph id
 	const graphid = (args.graphid === '')? 'graph-' + uuidv4() : args.graphid;
 
+	// do the code preprocessing by default
+	const do_preprocessing = (args.preprocess.toLowerCase() === 'false')? false: true;
 
 	// input language
 	if(args.lang !== constantsModule.LANG.js && args.lang !== constantsModule.LANG.python && args.lang !== constantsModule.LANG.php){
@@ -104,7 +107,7 @@ function uuidv4() {
 
 		let filename = inputFiles[i];
 		let code = await SourceReader.getSourceFromFile(filename);
-		await hpgContainer.api.initializeModelsFromSource(filename, code) /* args.lang: only JS is supported at the moment */
+		await hpgContainer.api.initializeModelsFromSource(filename, code, args.lang, do_preprocessing) /* args.lang: only JS is supported at the moment */
 
 		
 	}

@@ -168,6 +168,7 @@ async function staticallyAnalyzeWebpage(url, webpageFolder){
 			scripts.push({
 				scriptId: i,
 				source: scriptContent,
+				name: scriptName,
 			})
 		}
 	}
@@ -193,7 +194,7 @@ async function staticallyAnalyzeWebpage(url, webpageFolder){
 	let scriptsCode = '';
 	let parsingErrors = [];
 	for(let [idx, script] of scripts.entries()){
-		let scriptName = '' + idx + '.js';
+		let scriptName = script.name; // '' + idx + '.js';
 		let parsingError = await SourceSinkAnalyzerInstance.api.initializeModelsFromSource(scriptName, script.source)
 		if(parsingError && parsingError === scriptName){
 			parsingErrors.push(parsingError);

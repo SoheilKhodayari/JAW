@@ -147,7 +147,7 @@ def main():
 		website_url = config["testbed"]["site"]
 
 		# crawling
-		if config['domclobbering']["passes"]["crawling"] or config['cs_csrf']["passes"]["crawling"]:
+		if (config['domclobbering']['enabled'] and config['domclobbering']["passes"]["crawling"]) or (config['cs_csrf']['enabled'] and config['cs_csrf']["passes"]["crawling"]):
 			LOGGER.info("crawling site %s."%(website_url))
 			cmd = crawling_command.replace('SEED_URL', website_url)
 			IOModule.run_os_command(cmd, cwd=crawler_command_cwd, timeout= crawling_timeout)
@@ -216,7 +216,7 @@ def main():
 					website_url = 'http://' + row[1]
 					
 					# crawling
-					if config['domclobbering']["passes"]["crawling"] or config['cs_csrf']["passes"]["crawling"]:
+					if (config['domclobbering']['enabled'] and config['domclobbering']["passes"]["crawling"]) or (config['cs_csrf']['enabled'] and config['cs_csrf']["passes"]["crawling"]):
 						LOGGER.info("crawling site %s - %s"%(website_rank, website_url)) 
 						cmd = crawling_command.replace('SEED_URL', website_url)
 						IOModule.run_os_command(cmd, cwd=crawler_command_cwd, timeout= crawling_timeout)

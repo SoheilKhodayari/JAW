@@ -46,6 +46,8 @@ var scopeCtrl = require('./lib/jaw/scope/scopectrl'),
   flownodeFactory = require('./lib/esgraph/flownodefactory'),
   graphBuilder = require('./lib/jaw/graphbuilder');
 
+ var codeProcessor = require('./core/transformation/preprecessor');
+
 // const uastMapper = require('./core/uast/mapper');
 
 /**
@@ -97,9 +99,10 @@ async function createASTFromSource(code, language, options){
  * @param {String} scriptName (unique path name of the script)
  * @param {String} code (string of the code)
  * @param {String} language (options: js | nodejs)
+ * @param {Bool} preprocessing: whether to do code preprocessing and transformation before analysis
  * @returns {void}
  */
-async function initializeModelsFromSource(scriptName, code, language){
+async function initializeModelsFromSource(scriptName, code, language, preprocessing){
 	"use strict";
 	var lang = language || constantsModule.LANG.js;
 	var parser = await getParser(lang);
@@ -111,6 +114,28 @@ async function initializeModelsFromSource(scriptName, code, language){
 		console.log("[-] exiting CPG generation, as parser error occured.");
 		return scriptName;
 	}
+
+	if(typeof preprocessing === 'undefined'){
+		// do the code preprocessing by default
+		preprocessing = true;
+	}
+
+	if(preprocessing){
+		let inputScript = scriptName;
+		let outputScript = inputScript.replace(/\.js$/, "") + '.prep.js';
+		
+		let result = await codeProcessor.startPasses(inputScript, ast, outputScript);
+		
+		if(result && result.success){
+
+			// change the input to the new processed script
+			ast = result.ast;	
+			scriptName = outputScript;
+
+		}
+
+	}
+
 
 	if(ast && ast.type == "Program"){
 		ast.value = scriptName;

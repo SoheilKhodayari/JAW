@@ -38,7 +38,7 @@ SourceReader.prototype.getSourceFromFiles = function (files) {
     "use strict";
     var source = '';
     files.forEach(function (filename) {
-        var content = fs.readFileSync(filename);
+        var content = fs.readFileSync(filename, 'utf-8');
         source += '' + content;
     });
     return source;
@@ -52,7 +52,7 @@ SourceReader.prototype.getSourceFromFiles = function (files) {
  */
 SourceReader.prototype.getSourceFromFile = function (filename) {
     "use strict";
-    var content = fs.readFileSync(filename);
+    var content = fs.readFileSync(filename, 'utf-8');
     var source = '' + content;
     return source;
 };

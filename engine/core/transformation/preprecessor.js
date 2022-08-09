@@ -13,14 +13,18 @@
 */
 
 
-const argv = require("process.argv");
+const esmangle = require('esmangle');
+const escodegen = require('escodegen');
+const fs = require("fs");
+
+var passes = require('./passes').createPipeline;
 
 
 /**
- * CLI
+ * CodeProcessor
  * @constructor
  */
-function CLI() {
+function CodeProcessor() {
 }
 
 
@@ -28,42 +32,39 @@ function CLI() {
  * process argv input
  * @returns {Array} options array, i.e., {lang: '', input: '', output: ''}
  */
-CLI.prototype.readArgvInput = function () {
+CodeProcessor.prototype.startPasses = function (inputScript, ast, outputScript) {
     "use strict";
 
-    const defaultOptions = {
-        lang: 'js', 
-        input: '', 
-        output: '',
-        mode: 'csv',    
-        graphid: '',
-        preprocess: 'true' 
+    try{
+        ast = esmangle.optimize(ast, passes(), {
+            destructive: false
+      });
+    }
+    catch(e){
+        console.error("[Error] problem in mangling", e);
+        return {
+            success: false,
+            ast: null
+        };
+            
+    }
+
+    var processed_code = escodegen.generate(ast, {
+      comment: true
+    });
+
+    fs.writeFileSync(outputScript, processed_code);
+    return {
+        success: true,
+        ast: ast
     };
 
-    var processArgv = argv(process.argv.slice(2));
-    var config = processArgv({}) || {};
-
-    if(!config.lang) {
-        config.lang = defaultOptions.lang;
-    }
-    if(!config.input) {
-        config.input = defaultOptions.input;
-    }
-    if(!config.output) {
-        config.output = defaultOptions.output;
-    }
-    if(!config.mode){
-        config.mode = defaultOptions.mode;
-    }
-    if(!config.graphid){
-        config.graphid = defaultOptions.graphid;
-    }
-    if(!config.preprocess){
-        config.preprocess = defaultOptions.preprocess;
-    }
-
-    return config;
 };
 
-var instance = new CLI();
+var instance = new CodeProcessor();
 module.exports = instance;
+
+
+
+
+
