@@ -39,6 +39,7 @@ const BROWSER_LOG = false;
 
 
 // additional data that the crawler should store 
+const COLLECT_AND_CREATE_PAGE = true;
 const COLLECT_REQUESTS = true;
 const COLLECT_WEB_STORAGE = true;
 const COLLECT_COOKIES = true;
@@ -163,31 +164,40 @@ function savePageData(url, html, scripts, cookies, webStorageData, httpRequests,
 
 
 	DEBUG && console.log("[IO] started saving webpage.")
-	const webpageFolderName = hashURL(url);
-	const webpageFolder = pathModule.join(dataDirectory, webpageFolderName);
-	if(!fs.existsSync(webpageFolder)){
-		fs.mkdirSync(webpageFolder);
-	}
+
 
 	// append url in urls.out in the website-specific directory
 	fs.appendFileSync(pathModule.join(dataDirectory, "urls.out"), url + '\n');
 
-	// store url in url.out in the webpage-specific directory
-	fs.writeFileSync(pathModule.join(webpageFolder, "url.out"), url);
+	// collect the webpage data
+	if(COLLECT_AND_CREATE_PAGE){
 
-	COLLECT_DOM_SNAPSHOT && fs.writeFileSync(pathModule.join(webpageFolder, "index.html"), '' + html);
+		const webpageFolderName = hashURL(url);
+		const webpageFolder = pathModule.join(dataDirectory, webpageFolderName);
+		if(!fs.existsSync(webpageFolder)){
+			fs.mkdirSync(webpageFolder);
+		}
 
-	if(COLLECT_SCRIPTS){
-		scripts.forEach((s, i)=> {
-			fs.writeFileSync(pathModule.join(webpageFolder, `${i}.js`), '' + s.source);
-		});
+		// store url in url.out in the webpage-specific directory
+		fs.writeFileSync(pathModule.join(webpageFolder, "url.out"), url);
+
+
+		COLLECT_DOM_SNAPSHOT && fs.writeFileSync(pathModule.join(webpageFolder, "index.html"), '' + html);
+
+		if(COLLECT_SCRIPTS){
+			scripts.forEach((s, i)=> {
+				fs.writeFileSync(pathModule.join(webpageFolder, `${i}.js`), '' + s.source);
+			});
+		}
+
+		COLLECT_COOKIES     && fs.writeFileSync(pathModule.join(webpageFolder, "cookies.json"), JSON.stringify(cookies, null, 4));
+		COLLECT_WEB_STORAGE && fs.writeFileSync(pathModule.join(webpageFolder, "webstorage.json"), JSON.stringify(webStorageData, null, 4));
+		COLLECT_REQUESTS && fs.writeFileSync(pathModule.join(webpageFolder, "requests.json"), JSON.stringify(httpRequests, null, 4));
+
+		DEBUG && console.log("[IO] finished saving webpage.");
+
 	}
 
-	COLLECT_COOKIES     & fs.writeFileSync(pathModule.join(webpageFolder, "cookies.json"), JSON.stringify(cookies, null, 4));
-	COLLECT_WEB_STORAGE & fs.writeFileSync(pathModule.join(webpageFolder, "webstorage.json"), JSON.stringify(webStorageData, null, 4));
-	COLLECT_REQUESTS && fs.writeFileSync(pathModule.join(webpageFolder, "requests.json"), JSON.stringify(httpRequests, null, 4));
-
-	DEBUG && console.log("[IO] finished saving webpage.");
 
 	return webpageFolder;
 }
@@ -504,9 +514,3 @@ async function launch_puppeteer(headless_mode){
 
 
 })();
-
-
-
-
-
-
