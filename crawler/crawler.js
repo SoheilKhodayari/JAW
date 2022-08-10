@@ -165,6 +165,9 @@ function savePageData(url, html, scripts, cookies, webStorageData, httpRequests,
 
 	DEBUG && console.log("[IO] started saving webpage.")
 
+	const webpageFolderName = hashURL(url);
+	const webpageFolder = pathModule.join(dataDirectory, webpageFolderName);
+
 
 	// append url in urls.out in the website-specific directory
 	fs.appendFileSync(pathModule.join(dataDirectory, "urls.out"), url + '\n');
@@ -172,8 +175,7 @@ function savePageData(url, html, scripts, cookies, webStorageData, httpRequests,
 	// collect the webpage data
 	if(COLLECT_AND_CREATE_PAGE){
 
-		const webpageFolderName = hashURL(url);
-		const webpageFolder = pathModule.join(dataDirectory, webpageFolderName);
+
 		if(!fs.existsSync(webpageFolder)){
 			fs.mkdirSync(webpageFolder);
 		}
@@ -281,6 +283,7 @@ async function crawlWebsite(browser, url, domain, frontier, dataDirectory, debug
 	try{
 		DEBUG && console.log('[pageLoad] loading new URL: ' + url);
 		await page.goto(url, {waitUntil: 'networkidle0'}); // or waitUntil: load
+		// await page.waitForTimeout(10000); 
 		DEBUG && console.log('[pageLoadCompleted] new page loaded successfully (networkidle0)');
 
 		// redirect puppeteer console log in the browser to node js log
@@ -336,6 +339,8 @@ async function crawlWebsite(browser, url, domain, frontier, dataDirectory, debug
 		const webpageFolder = await savePageData(url, html, scripts, cookies, webStorageData, httpRequests, dataDirectory);
 
 
+
+
 		/** 
 		* @warning
 		* We need to prevent auto navigation / auto page refresh 
@@ -386,11 +391,13 @@ async function crawlWebsite(browser, url, domain, frontier, dataDirectory, debug
 		}catch{
 			// PASS
 		}
-		frontier.visited.push(url);
-		frontier.unvisited = frontier.unvisited.filter(e => e !== url); // remove visited url from unvisited list
 		browser = await launch_puppeteer(true);
 		closePage = false
 	}
+
+	frontier.visited.push(url);
+	frontier.unvisited = frontier.unvisited.filter(e => e !== url); // remove visited url from unvisited list
+
 	/*
 	*  ------------------------------------
 	*  Next URL and Termination Criteria 
