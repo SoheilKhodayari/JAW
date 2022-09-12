@@ -5,6 +5,11 @@ body {
   margin: 0;
   font-size: 16px;
   line-height: 24px;
+
+/*  background: #2D2E35 url('./../images/background.png') repeat-x center bottom / 250px;
+  background-attachment: fixed;
+  overflow-x: hidden;*/
+
 }
 
 body > * {
@@ -114,7 +119,6 @@ p code {
 }
 
 header {
-  /*background-color: #2e0801;*/
   background-color: #252525;
   padding: 15px 0;
   color: white;
@@ -134,7 +138,11 @@ div.sep {
   /*height: 1px;*/
   padding: 3px !important;
 }
-
+div.sepgray {
+  background-color: #F5F5F5;
+  /*height: 1px;*/
+  padding: 3px !important;
+}
 
 section.dark {
   background-color:  #252525;
@@ -150,9 +158,18 @@ section.darker {
 }
 
 
+.party-background {
+  background: #1F1F1F url('./../images/b2.png') repeat-x center bottom / 250px;
+  background-attachment: fixed;
+  overflow-x: hidden;
+  height: 100px;
+}
+
 footer {
-  background-color: #252525;
+  /*background-color: #252525;*/
+  background-color: #1F1F1F;
   color: white;
+
 }
 
 

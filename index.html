@@ -44,30 +44,7 @@
     })<-[:AST_parentOf {
       RelationType: 'property'
     }]-(parent)<-[:AST_parentOf*1..3]-(topsink)
-    WHERE v.Type = 'Identifier' OR v.Type = 'Literal'
-    AND n.Code =~ '.*(ajax|open|fetch|XMLHttpRequest|send).*' AND (topsink.Type = 'ExpressionStatement' OR topsink.Type = 'VariableDeclaration')
-    WITH v AS val, topsink AS si, topsource AS sc
-    MATCH (topsource)<-[:PDG_parentOf*1..100 {
-      Arguments: val.Code
-    }]-(vv {
-      Type: 'VariableDeclaration'
-    })-[:AST_parentOf]->(decl {
-      Type: 'VariableDeclarator'
-    })-[:AST_parentOf {
-      RelationType: 'init'
-    }]->(lit {
-      Type: 'Literal'
-    })
-    WHERE val.Type = 'Identifier'
-    RETURN
-    CASE EXISTS( (sc)-[:CFG_parentOf|:PDG_parentOf*1..100]->(si) )
-    WHEN true Then
-    CASE val.Type
-    WHEN 'Identifier' Then collect ( DISTINCT lit)
-    ELSE collect ( DISTINCT val)
-    END
-    WHEN false Then null
-    END AS res
+    
     </article>
     <h2 class="text-center text-logo animated hiding" data-animation="fadeInDown" data-delay="300">
       <b class="jaw-title-j">J</b>
@@ -155,7 +132,7 @@
   <div class="container main-content">
 
       <div class="row" style="z-index: 100;">
-         <h2 class="pink"><b>Publication</b></h2>
+         <h2 class="pink"><b>Publications</b></h2>
          This work is accepted at the <a href="https://www.usenix.org/conference/usenixsecurity21/">USENIX Security'21</a> conference. You can find a pre-print of our paper <a href="./Paper.pdf">here</a>.
         <br><br>
          Please consider supporting our work by citing our paper.
@@ -263,6 +240,7 @@
     </div>
   </div>
 
+
   <div class="section">
     <div class="container">
       <div class="row">
@@ -323,6 +301,7 @@
       </div>
     </div>
   </div>
+
 
   <footer>
     <div class="row">
