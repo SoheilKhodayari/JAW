@@ -42,8 +42,12 @@ h2 {
   margin-bottom: 20px;
 }
 
+.h2-webpage-title{
+  padding-left: 25px;
+  padding-right: 25px;
+}
+
 h3 {
-  letter-spacing: 2px;
   font-size: 15px;
   font-weight: bold;
   margin-bottom: 20px;
@@ -52,6 +56,11 @@ h3 {
 a, a:visited, a:active {
   color: #c4953a;
 }
+
+a:hover {
+  color: black;
+}
+
 
 /* a.button {
   padding: 10px 20px;
@@ -81,6 +90,7 @@ a.button {
   font-weight: 300;
   width: 100%;
   display: block;
+  min-width: 150px;
 }
 
 a.button:hover {
@@ -91,11 +101,11 @@ a.button:hover {
 
 
 pre {
-  background-color: white;
+  background-color: #f0f0f0;
   line-height: inherit;
   color: black;
   border: none;
-  border-radius: 0;
+  /*border-radius: 0;*/
 }
 
 pre span.k {
@@ -118,17 +128,6 @@ p code {
   background-color: #f6f2eb;
 }
 
-header {
-  background-color: #252525;
-  padding: 15px 0;
-  color: white;
-  letter-spacing: 1px;
-}
-
-header img {
-  width: 142px;
-}
-
 .container {
   padding: 25px 0;
 }
@@ -144,8 +143,49 @@ div.sepgray {
   padding: 3px !important;
 }
 
+
+.main-content {
+  padding-left: 20px;
+  padding-right: 20px;
+
+}
+
+.section-overview {
+  /*background-color: #F2DEDE;*/ /* pink */
+  background-color: white;
+}
+
+
+.bg-dark {
+  background-color: #252525;
+  /*background-color: #1E1E1E;*/
+  color: white;
+}
+
+.bg-yellow {
+
+  background-color: #C4953B;
+  color: white;
+}
+
+
+
+
+/* HEADING SECTION COLORS */
+header {
+  background-color: #252525;  /* the original gray color of the theme */
+  /*background-color: #1F1F1F;*/
+  padding: 15px 0;
+  color: white;
+  letter-spacing: 1px;
+}
+
+header img {
+  width: 142px;
+}
+
 section.dark {
-  background-color:  #252525;
+  background-color:  #252525; /* the original gray color of the theme */
 }
 
 section.lightgreen {
@@ -153,16 +193,18 @@ section.lightgreen {
   color: white;
 }
 
-section.darker {
+section.bg-light-gray {
   background-color: #f5f5f5;
 }
 
 
 .party-background {
-  background: #1F1F1F url('./../images/b2.png') repeat-x center bottom / 250px;
+  /*background: #1F1F1F url('./../images/b2.png') repeat-x center bottom / 250px;*/
+  /*background: #252525 url('./../images/b2.png') repeat-x center bottom / 250px;*/
+  background: #1E1E1E url('./../images/b2.png') repeat-x center bottom / 200px;
   background-attachment: fixed;
   overflow-x: hidden;
-  height: 100px;
+  color: white;
 }
 
 footer {
@@ -323,7 +365,7 @@ html, body {
 
 .text-container {
     text-align: justify;
-  text-justify: inter-word;
+    text-justify: inter-word;
 }
 
 .hljs {
@@ -364,3 +406,117 @@ html, body {
   height: 100%;
   width: auto;
 }
+
+
+/*
+ * Publication download links
+ */
+
+.paper {
+  color: #ea1d5d !important;
+}
+
+a.has-dark-bg:hover {
+  color: #C4953B;
+}
+
+.paper:hover {
+  color: #ea1d5d !important;
+}
+
+
+
+/*
+ * Copy to clipboard buttons
+ */
+
+.copy-btn {
+    background: white;
+    float: right;
+    right: 40px;
+    position: absolute;
+    top: 30px;
+    color: black;
+}
+
+.copy-btn:hover {
+  color: #ea1d5d;
+  cursor: pointer;
+}
+
+.bibtex-copy-btn-container {
+  position: relative;
+}
+.copied {
+  opacity: 1;
+  position: absolute;
+  right: 40px;
+  top: 30px;
+  color: gray;
+  display: none;
+}
+
+.bibtex {
+  color: #54C4DE;
+}
+
+
+li {
+  padding: 3px;
+}
+
+ul {
+  padding-bottom: 20px;
+}
+
+ul.normal {
+  padding-bottom: 2px;
+}
+li.normal {
+  padding-bottom: 1px;
+}
+
+
+
+.bg-jaw {
+  position: relative;
+}
+
+.bg-jaw::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  /*background: white url('./../images/jaw-v2.png') repeat-x center bottom / 897px;*/
+  background: white url('./../images/jaw-v2.png') no-repeat center bottom / 100%;
+  overflow-x: hidden;
+  /*filter: grayscale(80%);*/
+   /*-webkit-filter: grayscale(80%); */
+  /*background-attachment: fixed;*/
+ 
+  /*opacity: 0.2;*/
+  background-size: contain;
+  background-color: #024FA1;;
+}
+
+.bg-jaw-child {
+  position: relative;
+}
+
+
+.yellow {
+  color: #C4953B;
+}
+
+.neo4j-graph-img-container {
+  position: relative;
+  /*margin-bottom: -100px;*/
+}
+.neo4j-graph-img {
+  position: relative;
+  /*top: -78px;*/
+  width: 200px;
+  float: right;
+}
+
+
