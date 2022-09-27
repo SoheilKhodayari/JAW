@@ -416,6 +416,10 @@ html, body {
   color: #ea1d5d !important;
 }
 
+.website {
+  color: green !important;
+}
+
 a.has-dark-bg:hover {
   color: #C4953B;
 }
