@@ -14,7 +14,7 @@
 
 		Description:
 		------------
-		Lightweight module for Detecting DOM clobbering sources/sinks
+		Lightweight module for Detecting Client-side CSRF sources/sinks
 */
 
 const constantsModule = require('./../../engine/lib/jaw/constants');
