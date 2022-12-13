@@ -1,6 +1,6 @@
 # JAW GitHub Pages
 
-This branch contains the web site code (GitHub Pages) of JAW. This is an orphan `gh-pages` branch.
+This branch contains the website code of JAW. This is an orphan `gh-pages` branch for [GitHub Pages](https://pages.github.com/).
  
-The live website is accessible at https://soheilkhodayari.github.io/JAW/
+The live site is accessible at https://soheilkhodayari.github.io/JAW/
 
