@@ -20,10 +20,10 @@ const elapsed = require("elapsed-time-logger");
  *   				module imports
  * ------------------------------------------------
 **/
-const DOMClobberingSourceAnalyzerModule = require('./../static/domc_traversals.js');
+const DOMClobberingSourceAnalyzerModule = require('./../analyses/domclobbering/domc_traversals.js');
 const DOMClobberingSourceAnalyzer = DOMClobberingSourceAnalyzerModule.DOMClobberingSourceAnalyzer;
 
-const DOMClobberingPayloadGeneratorModule = require('./../static/domc_payload_generator.js');
+const DOMClobberingPayloadGeneratorModule = require('./../analyses/domclobbering/domc_payload_generator.js');
 const DOMClobberingPayloadGenerator = DOMClobberingPayloadGeneratorModule.DOMClobberingPayloadGenerator;
 
 
@@ -34,7 +34,7 @@ const DOMClobberingPayloadGenerator = DOMClobberingPayloadGeneratorModule.DOMClo
 **/
 
 // directory where the data of the crawling will be saved
-const dataStorageDirectory = pathModule.join('' + __dirname, 'data');
+const dataStorageDirectory = pathModule.join('' + __dirname, '../data');
 
 // maximum number of URLs to be tested per website by default
 // this default number can be overridden in the input config.yaml file
@@ -309,10 +309,11 @@ async function verify_clobbered_data_flows_of_website(browser, webpage_url, webp
 
 	var domcPayloads = [];
 	Object.keys(domcSources).forEach(clobberingSource => {
-		domcPayloads.push({
-			"code": clobberingSource,
-			"occurences": domcSources[clobberingSource]
-		})
+		var occurences = domcSources[clobberingSource];
+		occurences.forEach(obj =>{
+			obj["code"] = clobberingSource;
+			domcPayloads.push(obj);
+		});
 	});
 
 	for(let i=0; i<domcPayloads.length; i++){
@@ -450,15 +451,13 @@ async function verify_clobbered_data_flows_of_website(browser, webpage_url, webp
 			}
 		}
 
-
-
 		// 5: collect the results and store
 		DEBUG && console.log('[DynamicAnalysis] started saving analysis results.');
 		const pageClobberable = await page.evaluate(()=> {
 			return window.clobberable;
 		});
 		const pageClobberableWithUrl = {
-			"url": url,
+			"url": webpage_url,
 			"results": pageClobberable
 		}
 		const pageClobberableJson = JSON.stringify(pageClobberableWithUrl, null, 2);
@@ -467,7 +466,6 @@ async function verify_clobbered_data_flows_of_website(browser, webpage_url, webp
 		DEBUG && console.log('[DynamicAnalysis] finished saving analysis results.');
 
 	}
-
 
 }
 
@@ -481,7 +479,7 @@ async function verify_clobbered_data_flows_of_website(browser, webpage_url, webp
  * @param website_data_directory: base directory where the crawler stored the data for the target site
  * @description starts the dynamic analysis component for verifying DOM Clobbering data flows
 **/
-function start_dynamic_analysis(browser, webpage_path, website_url, website_data_directory){
+async function start_dynamic_analysis(browser, webpage_path, website_url, website_data_directory){
 
 
 	if(webpage_path && webpage_path.length > 10){
@@ -556,11 +554,10 @@ function start_dynamic_analysis(browser, webpage_path, website_url, website_data
     const website_url = config.website;  // when this parameter is present and `webpage_path` is not present, the tool tests ALL webpages of the website
 
     const browser_name = config.browser; 
-    const use_browserstack = (config.use_browserstack.toLowerCase() === 'false')? false: true;
+    const use_browserstack = (config.use_browserstack && config.use_browserstack.toLowerCase() === 'true')? true: false;
     const browserstack_username = config.browserstack_username;
     const browserstack_password = config.browserstack_password;
     const browserstack_access_key = config.browserstack_access_key;
-
 
     /*
     * input data directory
@@ -580,7 +577,7 @@ function start_dynamic_analysis(browser, webpage_path, website_url, website_data
 		const bsLocal = new BrowserStackLocal.Local();
 		const BS_LOCAL_ARGS = { 'key': browserstack_access_key };
 
-		bsLocal.start(BS_LOCAL_ARGS, ()=> {
+		bsLocal.start(BS_LOCAL_ARGS, async ()=> {
 
 
 		    DEBUG && console.log('Started BrowserStackLocal');
@@ -614,24 +611,24 @@ function start_dynamic_analysis(browser, webpage_path, website_url, website_data
 
     }else{ // OPTION 2: use local machine browsers
 
+		var args = puppeteer.defaultArgs();
+		args = puppeteer.defaultArgs().filter(arg => arg !== '--disable-dev-shm-usage')
+		args.push(
+				"--disable-setuid-sandbox",
+				'--no-sandbox',
+				"--shm-size=8gb",
+				"--disk-cache-size=0",
+				"--media-cache-size=0"
+		);
 		var browser = await puppeteer.launch({
-			headless: headless_mode,
-			// defaultViewport: null,
-			args: ["--disable-setuid-sandbox"],
+			headless: true,
+			args: args,
 			'ignoreHTTPSErrors': true
 		});
 
 		await start_dynamic_analysis(browser, webpage_path, website_url, website_data_directory);
-
 		await browser.close();
 
     }
 
 })();
-
-
-
-
-
-
-=
