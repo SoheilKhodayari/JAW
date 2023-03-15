@@ -43,7 +43,16 @@ function DOMClobberingPayloadGenerator() {
 DOMClobberingPayloadGenerator.prototype.create_dom_clobbering_html_payload = function (statement){
 
 	let output = {};
-	const taint_value = "TAINT_" + statement.code.replace(/\./g, '_') + '_' + statement.location.start.line + '_' + statement.location.end.line;
+
+	if(statement.location && statement.location.start){
+		var slug = statement.location.start.line + '_' + statement.location.end.line;
+	}else if (typeof statement.location === 'number' || typeof statement.location === 'string') {
+		var slug = statement.location;
+	}else{
+		var slug = 'unknown_loc';
+	}
+
+	const taint_value = "TAINT_" + statement.code.replace(/\./g, '_') + '_' + slug;
 	const code_targets = statement.code.split('.');
 	const clobbering_value = `clobbered:${taint_value}`;
 	output.taint_value = taint_value;

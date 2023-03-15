@@ -860,7 +860,7 @@ DOMClobberingSourceSinkAnalyzer.prototype.run_domc_source_traversals = async fun
 			}
 
 			let value = {
-						"location": location.start.line, 
+						"location": location, 
 						"id": id,
 						"script": script
 			};
