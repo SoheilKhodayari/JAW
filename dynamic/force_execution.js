@@ -173,16 +173,24 @@ function savePageData(url, html, scripts, dataDirectory){
  * @return returns the script content of a given script id in a CDP session.
 **/
 async function getSourceFromScriptId(session, scriptId) {
-	let res =  await session.send('Debugger.getScriptSource', {scriptId: scriptId});
-	let script_content = res.scriptSource;
-	
-	// note: we do not need the beautified version of scripts for force execution, only useful for debugging, thus comment out
-	// let beautified_script_content = js_beautify(script_content, { indent_size: 2, space_in_empty_paren: true });
-	// return beautified_script_content;
-	
-	return script_content
-}
 
+	try{
+		let res =  await session.send('Debugger.getScriptSource', {scriptId: scriptId});
+		let script_content = res.scriptSource;
+		
+		// note: we do not need the beautified version of scripts for force execution, only useful for debugging, thus comment out
+		// let beautified_script_content = js_beautify(script_content, { indent_size: 2, space_in_empty_paren: true });
+		// return beautified_script_content;
+		
+		return script_content;
+	}catch(e){
+		//// --- CDP ISSUE ---- //// 
+		//// capture the case where a script id returned by Debugger.scriptParsed method
+		//// of the CDP is NOT found by the Debugger.getScriptSource method
+		false && console.log('[CDP] requested unexpected script id from Debugger.getScriptSource!');
+	}
+
+}
 
 
 /**
