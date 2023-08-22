@@ -17,13 +17,20 @@
  * ModelBuilder module
  */
 var FlowNode = require('../../esgraph/flownode'),
-	Def = require('./../def-use/def'),
-	modelCtrl = require('./modelctrl'),
-	cfgBuilder = require('./../cfg/cfgbuilder'),
-	scopeCtrl = require('./../scope/scopectrl'),
+    Def = require('./../def-use/def'),
+    modelCtrl = require('./modelctrl'),
+    cfgBuilder = require('./../cfg/cfgbuilder'),
+    scopeCtrl = require('./../scope/scopectrl'),
     factoryFlowNode = require('../../esgraph/flownodefactory'),
-	factoryModel = require('./modelfactory');
-var	Map = require('core-js/es6/map'),
+    factoryModel = require('./modelfactory');
+
+var varDefFactory = require('./../def-use/vardeffactory');
+var defFactory = require('./../def-use/deffactory');
+var escodegen = require('escodegen');
+
+var esprimaParser = require('./../parser/jsparser');
+
+var Map = require('core-js/es6/map'),
     Set = require('../../analyses/set'),
     walkes = require('walkes');
 
@@ -37,13 +44,13 @@ function ModelBuilder() {
     /* start-test-block */
     this._testonly_ = {
         _connectCallerCalleeScopeRelatedModelsAtCallSite: connectCallerCalleeScopeRelatedModelsAtCallSite,
-		_getInterProceduralModelStartFromTheScope: getInterProceduralModelStartFromTheScope,
-		_connectLoopNodeToPageGraph: connectLoopNodeToPageGraph,
-		_connectPageAndEventHandlers: connectPageAndEventHandlers,
-		_getRegisteredEventHandlerCallback: getRegisteredEventHandlerCallback,
+        _getInterProceduralModelStartFromTheScope: getInterProceduralModelStartFromTheScope,
+        _connectLoopNodeToPageGraph: connectLoopNodeToPageGraph,
+        _connectPageAndEventHandlers: connectPageAndEventHandlers,
+        _getRegisteredEventHandlerCallback: getRegisteredEventHandlerCallback,
         _findEventHandlerModelsFromAModel: findEventHandlerModelsFromAModel,
-		_getNodesWhereDefiningLocalStorageObject: getNodesWhereDefiningLocalStorageObject,
-		_connectDomainScopeGraphToModelOfPages: connectDomainScopeGraphToModelOfPages,
+        _getNodesWhereDefiningLocalStorageObject: getNodesWhereDefiningLocalStorageObject,
+        _connectDomainScopeGraphToModelOfPages: connectDomainScopeGraphToModelOfPages,
         _setScopeOfGraphNodes: setScopeOfGraphNodes
     };
     /* end-test-block */
@@ -66,30 +73,55 @@ function setScopeOfGraphNodes(graph, scope) {
  */
 ModelBuilder.prototype.buildIntraProceduralModels = function () {
     "use strict";
-	scopeCtrl.pageScopeTrees.forEach(function (scopeTree) {
-		scopeTree.scopes.forEach(function (scope) {
-			var model = factoryModel.create();
-
+    scopeCtrl.pageScopeTrees.forEach(function (scopeTree) {
+        scopeTree.scopes.forEach(function (scope) {
+            var model = factoryModel.create();
             try{
-                if (scope.ast.type === 'FunctionDeclaration' || scope.ast.type === 'FunctionExpression') {
+                if (scope.ast.type === 'FunctionDeclaration' || scope.ast.type === 'FunctionExpression' || scope.ast.type === 'ArrowFunctionExpression') {
+                    
                     model.graph = cfgBuilder.getCFG(scope.ast.body);
+                    if(model.graph && model.graph.length){ // ensure CFG construction succeeds
+                        // generate definitions for the function nodes on the entry `BlockStatement`
+                        var generatedVarDef = new Set();
+                        let scopeEntryNode = model.graph[0]; // the entry `BlockStatement` node
+                        let node = scope.ast;
+                        if(node.params && node.params.length){
+                            for(var i=0; i< node.params.length; i++){
+                                var param = node.params[i];
+                                if(param && param.name){
+                                    var definedVar = scope.getVariable(param.name);
+                                    if(!!definedVar){
+                                        generatedVarDef.add(varDefFactory.create(definedVar, defFactory.createLiteralDef(scopeEntryNode, node.range)));
+                                    }
+                                }
+                            }
+                        }
+
+                        if(!scopeEntryNode.generate){
+                             scopeEntryNode.generate = generatedVarDef;
+                        }else{
+                             scopeEntryNode.generate = Set.union(scopeEntryNode.generate, generatedVarDef);
+                        }
+                    }
+
                 } else {
                     model.graph = cfgBuilder.getCFG(scope.ast);
                 }
-            }catch{
+            }catch(e){
+                console.log(e);
                 // PASS
                 // CFG Generation Error.
                 model.graph = null;
             }
-    		if(model.graph){
-    			setScopeOfGraphNodes(model.graph, scope);
+            if(model.graph){
+                setScopeOfGraphNodes(model.graph, scope);
             }
 
             model.addRelatedScope(scope);
             modelCtrl.addIntraProceduralModelToAPage(scopeTree, model);
 
-		});
-	});
+        });
+    });
 };
 
 /**
@@ -103,38 +135,38 @@ ModelBuilder.prototype.buildIntraProceduralModels = function () {
  */
 function connectCallerCalleeScopeRelatedModelsAtCallSite(callerModel, calleeModel, callSite) {
     "use strict";
-	var callerRelatedModelGraph = callerModel.graph,
-		calleeRelatedModelGraph = calleeModel.graph;
+    var callerRelatedModelGraph = callerModel.graph,
+        calleeRelatedModelGraph = calleeModel.graph;
     var connectedGraph = [],
-		connectedNodes = [],
-		connectedModel = null;
-    if (callerRelatedModelGraph[2].indexOf(callSite) !== -1 && FlowNode.isFlowNode(callSite)) {
+        connectedNodes = [],
+        connectedModel = null;
+    if (callerRelatedModelGraph && callerRelatedModelGraph.length > 0 && callerRelatedModelGraph[2].indexOf(callSite) !== -1 && FlowNode.isFlowNode(callSite)) {
 
         var nodesBeforeCall = callerRelatedModelGraph[2].slice(0, callerRelatedModelGraph[2].indexOf(callSite)+1),
             nodesAfterCall = callerRelatedModelGraph[2].slice(callerRelatedModelGraph[2].indexOf(callSite)+1),
             callReturnNode = factoryFlowNode.createCallReturnNode();
 
-		callReturnNode.scope = callerModel.mainlyRelatedScope;
+        callReturnNode.scope = callerModel.mainlyRelatedScope;
 
-		/// set entry and exit nodes of connected graph
+        /// set entry and exit nodes of connected graph
         connectedGraph.push(callerRelatedModelGraph[0]);
         connectedGraph.push(callerRelatedModelGraph[1]);
 
-		/// let call-site to be type of CALL NODE
+        /// let call-site to be type of CALL NODE
         callSite.type = FlowNode.CALL_NODE_TYPE;
 
-		/// move def-use analysis artifacts at call-site to CALL RETURN NODE, expect for the USE set
+        /// move def-use analysis artifacts at call-site to CALL RETURN NODE, expect for the USE set
         callReturnNode.generate = callSite.generate;
         callReturnNode.kill = callSite.kill;
-		callSite.clearGENSet();
-		callSite.clearKILLSet();
+        callSite.clearGENSet();
+        callSite.clearKILLSet();
 
-		/// set the line and column label of the CALL RETURN NODE to be same as call-site
-		callReturnNode.line = callSite.line;
+        /// set the line and column label of the CALL RETURN NODE to be same as call-site
+        callReturnNode.line = callSite.line;
         callReturnNode.col = callSite.col;
         callReturnNode.scope = callSite.scope;
 
-		/// disconnect call-site with its descending nodes, which to be connected with CALL RETURN NODE
+        /// disconnect call-site with its descending nodes, which to be connected with CALL RETURN NODE
         FlowNode.CONNECTION_TYPES.forEach(function (connection) {
             if (FlowNode.MULTI_CONNECTION_TYPE.indexOf(connection) !== -1) {
                 callSite[connection].forEach(function (node) {
@@ -147,30 +179,37 @@ function connectCallerCalleeScopeRelatedModelsAtCallSite(callerModel, calleeMode
                 callReturnNode.connect(node, connection);
             }
         });
-        callSite.connect(calleeRelatedModelGraph[0], FlowNode.CALL_CONNECTION_TYPE);
+        if(calleeRelatedModelGraph && calleeRelatedModelGraph.length > 0){
+              callSite.connect(calleeRelatedModelGraph[0], FlowNode.CALL_CONNECTION_TYPE);
+        }
+      
         connectedNodes = connectedNodes.concat(nodesBeforeCall);
-        calleeRelatedModelGraph[1].connect(callReturnNode, FlowNode.RETURN_CONNECTION_TYPE);
-        calleeRelatedModelGraph[2].forEach(function (node) {
-            if (connectedNodes.indexOf(node) === -1) {
-                connectedNodes.push(node);
-            }
-        });
+
+        if(calleeRelatedModelGraph && calleeRelatedModelGraph.length > 0){
+            calleeRelatedModelGraph[1].connect(callReturnNode, FlowNode.RETURN_CONNECTION_TYPE);
+            calleeRelatedModelGraph[2].forEach(function (node) {
+                if (connectedNodes.indexOf(node) === -1) {
+                    connectedNodes.push(node);
+                }
+            });
+        }
+
         connectedNodes.push(callReturnNode);
         connectedNodes = connectedNodes.concat(nodesAfterCall);
         connectedGraph.push(connectedNodes);
 
-		/// create the connected model
-		connectedModel = factoryModel.create();
-		connectedModel.addRelatedScope(callerModel.mainlyRelatedScope);
-		callerModel.relatedScopes.forEach(function (scope) {
-			connectedModel.addRelatedScope(scope);
-		});
-		calleeModel.relatedScopes.forEach(function (scope) {
-			connectedModel.addRelatedScope(scope);
-		});
-		connectedModel.graph = connectedGraph;
+        /// create the connected model
+        connectedModel = factoryModel.create();
+        connectedModel.addRelatedScope(callerModel.mainlyRelatedScope);
+        callerModel.relatedScopes.forEach(function (scope) {
+            connectedModel.addRelatedScope(scope);
+        });
+        calleeModel.relatedScopes.forEach(function (scope) {
+            connectedModel.addRelatedScope(scope);
+        });
+        connectedModel.graph = connectedGraph;
     }
-	return connectedModel;
+    return connectedModel;
 }
 
 /**
@@ -185,15 +224,15 @@ function findFunctionDefinitionFromReachInSet(reachIns, scope, calleeName, flag)
     var functionDef = new Set();
     reachIns.values().forEach(function (vardef) {
 
-    	if(flag){
-	        if (vardef.variable.name === calleeName && vardef.definition.type === Def.FUNCTION_TYPE) {
-	            functionDef = vardef.definition;
-	        }
-    	}else{
-	        if (vardef.variable === scope.getVariable(calleeName) && vardef.definition.type === Def.FUNCTION_TYPE) {
-	            functionDef = vardef.definition;
-	        }   		
-    	}
+        if(flag){
+            if (vardef.variable.name === calleeName && vardef.definition.type === Def.FUNCTION_TYPE) {
+                functionDef = vardef.definition;
+            }
+        }else{
+            if (vardef.variable === scope.getVariable(calleeName) && vardef.definition.type === Def.FUNCTION_TYPE) {
+                functionDef = vardef.definition;
+            }           
+        }
 
     });
     return functionDef;
@@ -209,33 +248,35 @@ function findFunctionDefinitionFromReachInSet(reachIns, scope, calleeName, flag)
  */
 function getInterProceduralModelStartFromTheScope(scope, scopeTree) {
     "use strict";
-	var scopeModel = modelCtrl.getIntraProceduralModelByMainlyRelatedScopeFromAPageModels(scopeTree, scope);
-	var resultModel = null;
-	var callSiteMapCalleeScope = new Map();
-	if (!!scopeModel && scopeModel.graph) {
-        scopeModel.graph[2].forEach(function (node) {
+    var scopeModel = modelCtrl.getIntraProceduralModelByMainlyRelatedScopeFromAPageModels(scopeTree, scope);
+    var resultModel = null;
+    var callSiteMapCalleeScope = new Map();
+    if (!!scopeModel && scopeModel.graph) {
+        for(let node of scopeModel.graph[2]){
 
-        	// inspect setTimeout function calls to enable hierarchical function argument to parameter binding 
-        	if(node.astNode && node.astNode.type === 'AssignmentExpression' && node.astNode.right.type === 'CallExpression'){
+            //// handle setTimeout function calls;
+            // this block of code addresses function argument to parameter binding for calls like setTimeout('functionName()', ms) c
+            if(node.astNode && node.astNode.type === 'AssignmentExpression' && node.astNode.right.type === 'CallExpression'){
 
-            	var n = node.astNode.right;
-            	var flag = false;
-            	var fn_name = '';
-            	if(n.callee && n.callee.type === 'MemberExpression' && n.callee.object.type === 'Identifier' && n.callee.object.name === "window" && n.callee.property.name == "setTimeout"){
-            		var fn_call = n.arguments[0];
-            		if(fn_call.type === 'Literal'){
-        				fn_name = fn_call.value;
+                var n = node.astNode.right;
+                var flag = false;
+                var fn_name = '';
+                // setTimeout() or window.setTimeout()
+                if((n.callee && n.callee.type === 'Identifier' && n.callee.name === "setTimeout") || (n.callee && n.callee.type === 'MemberExpression' && n.callee.object.type === 'Identifier' && n.callee.object.name === "window" && n.callee.property.name == "setTimeout")){
+                    var fn_call = n.arguments[0];
+                    if(fn_call.type === 'Literal'){
+                        fn_name = fn_call.value;
                         if(fn_name){
                             fn_name = '' + fn_name
-            				fn_name = fn_name.replace(/;/g, ' ');   // make sure that the setTimeout only contain a function call, no more.
-            				if(fn_name.includes(')') && !fn_name.includes(' ')){
+                            fn_name = fn_name.replace(/;/g, ' ');   // make sure that the setTimeout only contain a function call, no more.
+                            if(fn_name.includes(')') && !fn_name.includes(' ')){
 
-            					fn_name = fn_name.substring(0, fn_name.indexOf('('))
-            					flag = true;
-            				}
+                                fn_name = fn_name.substring(0, fn_name.indexOf('('))
+                                flag = true;
+                            }
                         }
-            		}
-            	}
+                    }
+                }
                 var reachIns = node.reachIns || new Set(),
                     calleeScope = null;
 
@@ -248,69 +289,77 @@ function getInterProceduralModelStartFromTheScope(scope, scopeTree) {
                     callSiteMapCalleeScope.set(node, calleeScope);
                 }
 
-        	}
-        	else if(node.astNode && node.astNode.type === 'VariableDeclaration' && node.astNode.declarations.length){
+            }
+            else if(node.astNode && node.astNode.type === 'VariableDeclaration' && node.astNode.declarations.length){
 
-        		for(var i=0; i< node.astNode.declarations.length; i++){
-        			var declaration = node.astNode.declarations[i];
-        			if(declaration && declaration.type === 'VariableDeclarator' && declaration.init && declaration.init.type === 'CallExpression'){
+                for(var i=0; i< node.astNode.declarations.length; i++){
+                    var declaration = node.astNode.declarations[i];
+                    if(declaration && declaration.type === 'VariableDeclarator' && declaration.init && declaration.init.type === 'CallExpression'){
 
 
-		            	var n = declaration.init;
-		            	var flag = false;
-		            	var fn_name = '';
-		            	if(n.callee.type === 'MemberExpression' && n.callee.object.type === 'Identifier' && n.callee.object.name === "window" && n.callee.property.name == "setTimeout"){
-		            		var fn_call = n.arguments[0];
-		            		if(fn_call.type === 'Literal'){
-		        				fn_name = fn_call.value;
+                        var n = declaration.init;
+                        var flag = false;
+                        var fn_name = '';
+                        if((n.callee && n.callee.type === 'Identifier' && n.callee.name === "setTimeout") || (n.callee && n.callee.type === 'MemberExpression' && n.callee.object.type === 'Identifier' && n.callee.object.name === "window" && n.callee.property.name == "setTimeout")){
+                            var fn_call = n.arguments[0];
+                            if(fn_call.type === 'Literal'){
+                                fn_name = fn_call.value;
                                 if(fn_name){
                                     fn_name = '' + fn_name
-    		        				fn_name = fn_name.replace(/;/g, ' ');   // make sure that the setTimeout only contain a function call, no more.
-    		        				if(fn_name.includes(')') && !fn_name.includes(' ')){
-    		        					fn_name = fn_name.substring(0, fn_name.indexOf('('))
-    		        					flag = true;
-    		        				}
+                                    fn_name = fn_name.replace(/;/g, ' ');   // make sure that the setTimeout only contain a function call, no more.
+                                    if(fn_name.includes(')') && !fn_name.includes(' ')){
+                                        fn_name = fn_name.substring(0, fn_name.indexOf('('))
+                                        flag = true;
+                                    }
                                 }
-		            		}
-		            	}
-		                var reachIns = node.reachIns || new Set(),
-		                    calleeScope = null;
-
-		                var callee_name = (flag)?  fn_name : declaration.init.callee.name;
-		                var calleeDefinition = findFunctionDefinitionFromReachInSet(reachIns, node.scope, callee_name, flag);
-		                if (!!calleeDefinition) {
-		                    calleeScope = scopeTree.getScopeByRange(calleeDefinition.range);
-		                }
-		                if (!!calleeScope) {
-		                    callSiteMapCalleeScope.set(node, calleeScope);
-		                }	
-        			}
-        		}
-        	}
-            else if (!!node.astNode && node.astNode.type === 'CallExpression') {
-            	var n = node.astNode;
-            	var flag = false;
-            	var fn_name = '';
-            	if(n.callee && n.callee.type === 'MemberExpression' && n.callee.object.type === 'Identifier' && n.callee.object.name === "window" && n.callee.property.name == "setTimeout"){
-            		var fn_call = n.arguments[0];
-            		if(fn_call.type === 'Literal'){
-        				fn_name = fn_call.value;
-                        if(fn_name){
-                            fn_name = '' + fn_name
-            				fn_name = fn_name.replace(/;/g, ' ');   // make sure that the setTimeout only contain a function call, no more.
-            				if(fn_name.includes(')') && !fn_name.includes(' ')){
-
-            					fn_name = fn_name.substring(0, fn_name.indexOf('('))
-            					flag = true;
-        				    }
+                            }
                         }
-            		}
-            	}
+                        var reachIns = node.reachIns || new Set(),
+                            calleeScope = null;
+
+                        var callee_name = (flag)?  fn_name : declaration.init.callee.name;
+                        var calleeDefinition = findFunctionDefinitionFromReachInSet(reachIns, node.scope, callee_name, flag);
+                        if (!!calleeDefinition) {
+                            calleeScope = scopeTree.getScopeByRange(calleeDefinition.range);
+                        }
+                        if (!!calleeScope) {
+                            callSiteMapCalleeScope.set(node, calleeScope);
+                        }   
+                    }
+                }
+            }
+            else if (!!node.astNode && node.astNode.type === 'CallExpression') {
+                // console.log("INTER", escodegen.generate(node.astNode));
+                var n = node.astNode;
+                var function_name_flag = false;
+                var function_name = '';
+
+                // setTimeout() or window.setTimeout()
+                if((n.callee && n.callee.type === 'Identifier' && n.callee.name === "setTimeout") || (n.callee && n.callee.type === 'MemberExpression' && n.callee.object.type === 'Identifier' && n.callee.object.name === "window" && n.callee.property.name == "setTimeout")){
+                    let function_call_string_node = n.arguments[0];
+                    if(function_call_string_node.type === 'Literal'){
+   
+                        let function_call_program_node = esprimaParser.parseAST(function_call_string_node.value);
+                        let expr_stmt_node = function_call_program_node.body && function_call_program_node.body.length >0? function_call_program_node.body[0]: null;
+                        if(expr_stmt_node && expr_stmt_node.expression && expr_stmt_node.expression.type === 'CallExpression'){
+                            let call_expression = expr_stmt_node.expression;
+                            function_name = call_expression.callee && call_expression.callee.type === 'Identifier'? call_expression.callee.name: escodegen.generate(call_expression.callee);
+                            function_name_flag = true;
+                        }
+                    }
+                }
+                // obj.call(optional_this_arg, arg1, arg2); OR obj.apply(optional_this_arg, list_args); 
+                else if(n.callee.type === "MemberExpression" && n.callee.property.type === "Identifier" && (n.callee.property.name === 'call' || n.callee.property.name === 'apply' )){                    
+                    function_name = escodegen.generate(n.callee.object);
+                    function_name_flag = true;
+                    
+                }
+
                 var reachIns = node.reachIns || new Set(),
                     calleeScope = null;
 
-                var callee_name = (flag)?  fn_name : node.astNode.callee.name;
-                var calleeDefinition = findFunctionDefinitionFromReachInSet(reachIns, node.scope, callee_name, flag);
+                var callee_name = (function_name_flag)?  function_name : node.astNode.callee.name;
+                var calleeDefinition = findFunctionDefinitionFromReachInSet(reachIns, node.scope, callee_name, function_name_flag);
                 if (!!calleeDefinition) {
                     calleeScope = scopeTree.getScopeByRange(calleeDefinition.range);
                 }
@@ -319,22 +368,24 @@ function getInterProceduralModelStartFromTheScope(scope, scopeTree) {
                 }
             } /// end else-if the node is a call-site
 
-        }); 
+        }; 
     } /// end for each node in the graph of scopeModel
-	if (callSiteMapCalleeScope.size > 0) {
-		callSiteMapCalleeScope.forEach(function (callee, callSite) {
-			var connectedModel =
-				modelCtrl.getInterProceduralModelByMainlyRelatedScopeFromAPageModels(scopeTree, callee) ||
-				getInterProceduralModelStartFromTheScope(callee, scopeTree);
-			resultModel = connectCallerCalleeScopeRelatedModelsAtCallSite(resultModel || scopeModel, connectedModel, callSite);
-		});
-	} else {
-		resultModel = scopeModel;
-	}
-	if (!!resultModel && resultModel.relatedScopes.length > 1) {
-		modelCtrl.addInterProceduralModelToAPage(scopeTree, resultModel);
-	}
-	return resultModel;
+
+
+    if (callSiteMapCalleeScope.size > 0) {
+        callSiteMapCalleeScope.forEach(function (callee, callSite) {
+            var connectedModel =
+                modelCtrl.getInterProceduralModelByMainlyRelatedScopeFromAPageModels(scopeTree, callee) ||
+                getInterProceduralModelStartFromTheScope(callee, scopeTree);
+            resultModel = connectCallerCalleeScopeRelatedModelsAtCallSite(resultModel || scopeModel, connectedModel, callSite);
+        });
+    } else {
+        resultModel = scopeModel;
+    }
+    if (!!resultModel && resultModel.relatedScopes.length > 1) {
+        modelCtrl.addInterProceduralModelToAPage(scopeTree, resultModel);
+    }
+    return resultModel;
 }
 
 /**
@@ -342,22 +393,23 @@ function getInterProceduralModelStartFromTheScope(scope, scopeTree) {
  */
 ModelBuilder.prototype.buildInterProceduralModels = function () {
     "use strict";
-	scopeCtrl.pageScopeTrees.forEach(function (scopeTree) {
-		var scopesToSearch = scopeTree.scopes, searchedScopes = new Set();
-		for (var searchIndex = 0; searchIndex < scopesToSearch.length; ++searchIndex) {
+
+    for(let scopeTree of scopeCtrl.pageScopeTrees){
+        var scopesToSearch = scopeTree.scopes, searchedScopes = new Set();
+        for (var searchIndex = 0; searchIndex < scopesToSearch.length; ++searchIndex) {
             if (searchedScopes.has(scopesToSearch[searchIndex])) {
                 continue;
             }
-			var currentScope = scopesToSearch[searchIndex];
-			var interProceduralModel = getInterProceduralModelStartFromTheScope(currentScope, scopeTree);
-			if (interProceduralModel.relatedScopes.length > 1) {
+            var currentScope = scopesToSearch[searchIndex];
+            var interProceduralModel = getInterProceduralModelStartFromTheScope(currentScope, scopeTree);
+            if (interProceduralModel.relatedScopes.length > 1) {
                 var relatedScopes = [].concat(interProceduralModel.relatedScopes);
                 while (relatedScopes.length > 0) {
                     searchedScopes.add(relatedScopes.pop());
                 }
-			}
-		}
-	});
+            }
+        }
+    };
 };
 
 /**
@@ -368,27 +420,27 @@ ModelBuilder.prototype.buildInterProceduralModels = function () {
  * @private
  */
 function connectLoopNodeToPageGraph(modelForPage) {
-	"use strict";
-	var loopNode = factoryFlowNode.createLoopNode();
-	loopNode.scope = modelForPage.mainlyRelatedScope;
-	var exitNode = modelForPage.graph[1];
-	var previousNodes = [].concat(exitNode.prev);
-	previousNodes.forEach(function (node) {
-		if (node.normal === exitNode) {
-			node.connect(loopNode);
-		} else if (node.exception === exitNode) {
-			node.connect(loopNode, FlowNode.EXCEPTION_CONNECTION_TYPE);
-		} else if (node.true === exitNode) {
-			node.connect(loopNode, FlowNode.TRUE_BRANCH_CONNECTION_TYPE);
-		} else if (node.false === exitNode) {
-			node.connect(loopNode, FlowNode.FALSE_BRANCH_CONNECTION_TYPE);
-		}
-		node.disconnect(exitNode);
-	});
-	loopNode.connect(exitNode);
-	var nodes = [].concat(modelForPage.graph[2]);
-	nodes.splice(nodes.indexOf(exitNode), 0, loopNode);
-	return [modelForPage.graph[0], exitNode, nodes];
+    "use strict";
+    var loopNode = factoryFlowNode.createLoopNode();
+    loopNode.scope = modelForPage.mainlyRelatedScope;
+    var exitNode = modelForPage.graph[1];
+    var previousNodes = [].concat(exitNode.prev);
+    previousNodes.forEach(function (node) {
+        if (node.normal === exitNode) {
+            node.connect(loopNode);
+        } else if (node.exception === exitNode) {
+            node.connect(loopNode, FlowNode.EXCEPTION_CONNECTION_TYPE);
+        } else if (node.true === exitNode) {
+            node.connect(loopNode, FlowNode.TRUE_BRANCH_CONNECTION_TYPE);
+        } else if (node.false === exitNode) {
+            node.connect(loopNode, FlowNode.FALSE_BRANCH_CONNECTION_TYPE);
+        }
+        node.disconnect(exitNode);
+    });
+    loopNode.connect(exitNode);
+    var nodes = [].concat(modelForPage.graph[2]);
+    nodes.splice(nodes.indexOf(exitNode), 0, loopNode);
+    return [modelForPage.graph[0], exitNode, nodes];
 }
 
 /**
@@ -399,11 +451,11 @@ function connectLoopNodeToPageGraph(modelForPage) {
  */
 function connectPageAndEventHandlers(pageModel, eventHandlerModels) {
     "use strict";
-	var pageModelGraph = connectLoopNodeToPageGraph(pageModel);
-	var pageLoopNode = pageModelGraph[1].prev[0];
-	var loopReturnNode = factoryFlowNode.createLoopReturnNode();
-	loopReturnNode.scope = pageModel.mainlyRelatedScope;
-	var resultGraphNodes = [].concat(pageModelGraph[2]);
+    var pageModelGraph = connectLoopNodeToPageGraph(pageModel);
+    var pageLoopNode = pageModelGraph[1].prev[0];
+    var loopReturnNode = factoryFlowNode.createLoopReturnNode();
+    loopReturnNode.scope = pageModel.mainlyRelatedScope;
+    var resultGraphNodes = [].concat(pageModelGraph[2]);
     loopReturnNode.connect(pageLoopNode, FlowNode.RETURN_CONNECTION_TYPE);
     if (eventHandlerModels.length > 0 ) {
         eventHandlerModels.forEach(function (model, index) {
@@ -418,12 +470,12 @@ function connectPageAndEventHandlers(pageModel, eventHandlerModels) {
         pageLoopNode.connect(loopReturnNode, FlowNode.ON_EVENT_CONNECTION_TYPE);
         resultGraphNodes.push(loopReturnNode);
     }
-	var resultModel = factoryModel.create();
-	resultModel.graph = [pageModelGraph[0], pageModelGraph[1], resultGraphNodes];
-	resultModel.addRelatedScope(pageModel.mainlyRelatedScope);
-	pageModel.relatedScopes.forEach(function (scope) {
-		resultModel.addRelatedScope(scope);
-	});
+    var resultModel = factoryModel.create();
+    resultModel.graph = [pageModelGraph[0], pageModelGraph[1], resultGraphNodes];
+    resultModel.addRelatedScope(pageModel.mainlyRelatedScope);
+    pageModel.relatedScopes.forEach(function (scope) {
+        resultModel.addRelatedScope(scope);
+    });
     return resultModel;
 }
 
@@ -434,28 +486,28 @@ function connectPageAndEventHandlers(pageModel, eventHandlerModels) {
  * @returns {null|Scope}
  */
 function getRegisteredEventHandlerCallback(graphNode, scopeTree) {
-	"use strict";
-	var foundHandlerScope = null;
-	if (graphNode.astNode.callee.type === 'MemberExpression' && graphNode.astNode.callee.property.name === 'addEventListener') {
-		walkes(graphNode.astNode["arguments"][1], {
-			FunctionDeclaration: function () {},
-			Identifier: function (node) {
-				var handler = graphNode.scope.getVariable(node.name);
-				graphNode.reachIns.some(function (vardef) {
-					if (vardef.variable === handler && vardef.definition.type === Def.FUNCTION_TYPE) {
-						foundHandlerScope = scopeTree.getScopeByRange(vardef.definition.range) || null;
-					}
-					if (!!foundHandlerScope) {
-						return true;
-					}
-				});
-			},
-			FunctionExpression: function (node) {
-				foundHandlerScope = scopeTree.getScopeByRange(node.range) || null;
-			}
-		});
-	}
-	return foundHandlerScope;
+    "use strict";
+    var foundHandlerScope = null;
+    if (graphNode.astNode.callee.type === 'MemberExpression' && graphNode.astNode.callee.property.name === 'addEventListener') {
+        walkes(graphNode.astNode["arguments"][1], {
+            FunctionDeclaration: function () {},
+            Identifier: function (node) {
+                var handler = graphNode.scope.getVariable(node.name);
+                graphNode.reachIns.some(function (vardef) {
+                    if (vardef.variable === handler && vardef.definition.type === Def.FUNCTION_TYPE) {
+                        foundHandlerScope = scopeTree.getScopeByRange(vardef.definition.range) || null;
+                    }
+                    if (!!foundHandlerScope) {
+                        return true;
+                    }
+                });
+            },
+            FunctionExpression: function (node) {
+                foundHandlerScope = scopeTree.getScopeByRange(node.range) || null;
+            }
+        });
+    }
+    return foundHandlerScope;
 }
 
 /**
@@ -465,11 +517,11 @@ function getRegisteredEventHandlerCallback(graphNode, scopeTree) {
  * @returns {Array} Models of event handlers
  */
 function findEventHandlerModelsFromAModel(model, scopeTree) {
-	"use strict";
-	var modelGraph = model.graph;
-	var eventHandlers = [];
-	modelGraph[2].forEach(function (graphNode) {
-		if (!!graphNode.astNode && graphNode.astNode.type === 'CallExpression') {
+    "use strict";
+    var modelGraph = model.graph;
+    var eventHandlers = [];
+    modelGraph[2].forEach(function (graphNode) {
+        if (!!graphNode.astNode && graphNode.astNode.type === 'CallExpression') {
             var handlerScope = getRegisteredEventHandlerCallback(graphNode, scopeTree);
             var handlerModel = null;
             if (!!handlerScope) {
@@ -482,8 +534,8 @@ function findEventHandlerModelsFromAModel(model, scopeTree) {
                 // console.log(handlerScope.ast); // to here
             }
         }
-	});
-	return eventHandlers;
+    });
+    return eventHandlers;
 }
 
 /**
@@ -491,26 +543,26 @@ function findEventHandlerModelsFromAModel(model, scopeTree) {
  */
 ModelBuilder.prototype.buildIntraPageModel = function () {
     "use strict";
-	scopeCtrl.pageScopeTrees.forEach(function (scopeTree) {
+    scopeCtrl.pageScopeTrees.forEach(function (scopeTree) {
 
-		var modelForPage = modelCtrl.getModelByMainlyRelatedScopeFromAPageModels(scopeTree, scopeTree.root);
-		var searchingEventHandlerModels = [];
-		var eventHandlerModels = [];
-		var intraPageModel = null;
-		if (!!modelForPage) {
-			searchingEventHandlerModels.push(modelForPage);
-			for (var index = 0; index < searchingEventHandlerModels.length; ++index) {
-				var searchingModel = searchingEventHandlerModels[index];
-				var foundEventHandlerModels = findEventHandlerModelsFromAModel(searchingModel, scopeTree);
-				eventHandlerModels = eventHandlerModels.concat(foundEventHandlerModels);
-				searchingEventHandlerModels = searchingEventHandlerModels.concat(foundEventHandlerModels);
-			}
-			intraPageModel = connectPageAndEventHandlers(modelForPage, eventHandlerModels);
+        var modelForPage = modelCtrl.getModelByMainlyRelatedScopeFromAPageModels(scopeTree, scopeTree.root);
+        var searchingEventHandlerModels = [];
+        var eventHandlerModels = [];
+        var intraPageModel = null;
+        if (!!modelForPage) {
+            searchingEventHandlerModels.push(modelForPage);
+            for (var index = 0; index < searchingEventHandlerModels.length; ++index) {
+                var searchingModel = searchingEventHandlerModels[index];
+                var foundEventHandlerModels = findEventHandlerModelsFromAModel(searchingModel, scopeTree);
+                eventHandlerModels = eventHandlerModels.concat(foundEventHandlerModels);
+                searchingEventHandlerModels = searchingEventHandlerModels.concat(foundEventHandlerModels);
+            }
+            intraPageModel = connectPageAndEventHandlers(modelForPage, eventHandlerModels);
         // end    
 
-		}
+        }
         modelCtrl.addIntraPageModelToAPage(scopeTree, intraPageModel);
-	});
+    });
 };
 
 /**
@@ -519,23 +571,23 @@ ModelBuilder.prototype.buildIntraPageModel = function () {
  * @returns {Array}
  */
 function getNodesWhereDefiningLocalStorageObject(model) {
-	"use strict";
-	var foundNodes = [];
-	var modelGraph = model.graph;
-	modelGraph[2].forEach(function (graphNode) {
-		walkes(graphNode.astNode, {
+    "use strict";
+    var foundNodes = [];
+    var modelGraph = model.graph;
+    modelGraph[2].forEach(function (graphNode) {
+        walkes(graphNode.astNode, {
             Program: function () {},
-			FunctionExpression: function () {},
-			FunctionDeclaration: function () {},
-			AssignmentExpression: function (node) {
-				if (node.left.type === 'MemberExpression' &&
-					graphNode.scope.getScopeWhereTheVariableDeclared(node.left.object.name) === scopeCtrl.domainScope) {
-					foundNodes.push(graphNode);
-				}
-			}
-		});
-	});
-	return foundNodes;
+            FunctionExpression: function () {},
+            FunctionDeclaration: function () {},
+            AssignmentExpression: function (node) {
+                if (node.left.type === 'MemberExpression' &&
+                    graphNode.scope.getScopeWhereTheVariableDeclared(node.left.object.name) === scopeCtrl.domainScope) {
+                    foundNodes.push(graphNode);
+                }
+            }
+        });
+    });
+    return foundNodes;
 }
 
 /**
@@ -544,21 +596,21 @@ function getNodesWhereDefiningLocalStorageObject(model) {
  * @returns {Array} Node of connected graph
  */
 function connectDomainScopeGraphToModelOfPages(modelOfPages) {
-	"use strict";
-	var domainScope = scopeCtrl.domainScope;
-	var domainScopeGraph = cfgBuilder.getDomainScopeGraph();
-	domainScopeGraph[0].scope = domainScope;
-	var nodes = [].concat(domainScopeGraph[2]);
-	modelOfPages.forEach(function (model) {
-		var modelGraph = model.graph;
-		domainScopeGraph[0].connect(modelGraph[0], FlowNode.LOAD_STROAGE_CONNECTION_TYPE);
-		var definingNode = getNodesWhereDefiningLocalStorageObject(model);
-		definingNode.forEach(function (defineNode) {
-			defineNode.connect(domainScopeGraph[0], FlowNode.SAVE_STORAGE_CONNECTION_TYPE);
-		});
+    "use strict";
+    var domainScope = scopeCtrl.domainScope;
+    var domainScopeGraph = cfgBuilder.getDomainScopeGraph();
+    domainScopeGraph[0].scope = domainScope;
+    var nodes = [].concat(domainScopeGraph[2]);
+    modelOfPages.forEach(function (model) {
+        var modelGraph = model.graph;
+        domainScopeGraph[0].connect(modelGraph[0], FlowNode.LOAD_STROAGE_CONNECTION_TYPE);
+        var definingNode = getNodesWhereDefiningLocalStorageObject(model);
+        definingNode.forEach(function (defineNode) {
+            defineNode.connect(domainScopeGraph[0], FlowNode.SAVE_STORAGE_CONNECTION_TYPE);
+        });
         nodes = nodes.concat(model.graph[2]);
-	});
-	return [domainScopeGraph[0], domainScopeGraph[1], nodes];
+    });
+    return [domainScopeGraph[0], domainScopeGraph[1], nodes];
 }
 
 /**
@@ -566,23 +618,23 @@ function connectDomainScopeGraphToModelOfPages(modelOfPages) {
  */
 ModelBuilder.prototype.buildInterPageModel = function () {
     "use strict";
-	var modelOfPages = [];
-	scopeCtrl.pageScopeTrees.forEach(function (scopeTree) {
-		var intraPageModel = modelCtrl.getIntraPageModelByMainlyRelatedScopeFromAPageModels(scopeTree, scopeTree.root);
-		if (!!intraPageModel) {
-			modelOfPages.push(intraPageModel);
-		}
-	});
-	var connectedGraph = connectDomainScopeGraphToModelOfPages(modelOfPages);
-	var interPageModel = factoryModel.create();
-	interPageModel.graph = connectedGraph;
-	interPageModel.addRelatedScope(scopeCtrl.domainScope);
-	modelOfPages.forEach(function (model) {
-		model.relatedScopes.forEach(function (scope) {
-			interPageModel.addRelatedScope(scope);
-		});
-	});
-	modelCtrl.interPageModel = interPageModel;
+    var modelOfPages = [];
+    scopeCtrl.pageScopeTrees.forEach(function (scopeTree) {
+        var intraPageModel = modelCtrl.getIntraPageModelByMainlyRelatedScopeFromAPageModels(scopeTree, scopeTree.root);
+        if (!!intraPageModel) {
+            modelOfPages.push(intraPageModel);
+        }
+    });
+    var connectedGraph = connectDomainScopeGraphToModelOfPages(modelOfPages);
+    var interPageModel = factoryModel.create();
+    interPageModel.graph = connectedGraph;
+    interPageModel.addRelatedScope(scopeCtrl.domainScope);
+    modelOfPages.forEach(function (model) {
+        model.relatedScopes.forEach(function (scope) {
+            interPageModel.addRelatedScope(scope);
+        });
+    });
+    modelCtrl.interPageModel = interPageModel;
 };
 
 var builder = new ModelBuilder();
