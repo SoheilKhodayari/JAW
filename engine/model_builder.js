@@ -115,10 +115,14 @@ async function initializeModelsFromSource(scriptName, code, language, preprocess
 		return scriptName;
 	}
 
-	if(typeof preprocessing === 'undefined'){
+	// esmangle passes break the pipeline [disabled]
+	preprocessing = false;
+
+	/* if(typeof preprocessing === 'undefined'){
 		// do the code preprocessing by default
 		preprocessing = true;
-	}
+	}*/
+
 
 	if(preprocessing){
 		let inputScript = scriptName;
