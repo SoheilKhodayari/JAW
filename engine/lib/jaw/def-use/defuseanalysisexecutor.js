@@ -27,6 +27,7 @@ var jsParser = require('../parser/jsparser'),
 
 const { performance } = require('perf_hooks');
 
+
 function DefUseAnalysisExecutor() {
 }
 
@@ -65,11 +66,6 @@ DefUseAnalysisExecutor.prototype.initialize = function (codeOfPages) {
 };
 
 
-
-// const { spawn } = require('child_process');
-// const { StaticPool } = require('node-worker-threads-pool');
-
-
 /**
  * Build model graphs for each intra-procedural model in every PageModels
  */
@@ -78,57 +74,39 @@ DefUseAnalysisExecutor.prototype.buildIntraProceduralModelsOfEachPageModels = fu
 
 	modelBuilder.buildIntraProceduralModels(); // CFG
 
-    constantsModule.staticModelPrintPhases && console.log('PDG start')
+    constantsModule.staticModelPrintPhases && console.log('PDG start');
     defuseAnalyzer.initiallyAnalyzeIntraProceduralModels();
     
-    modelCtrl.collectionOfPageModels.forEach(function (pageModels) {
-        pageModels.intraProceduralModels.forEach(function (model) {
-            defuseAnalyzer.doAnalysis(model);
-            defuseAnalyzer.findDUPairs(model);
 
-        });
-    });
-
-    // put a min timeout budget for PDG 
-    // var startTime = performance.now();
-    // var timeout = 10 * 1000; // minimum 10 secs
-    // for(let pageModels of Array.from(modelCtrl.collectionOfPageModels.values())){
-    //     for(let model of pageModels.intraProceduralModels){
-
+    // modelCtrl.collectionOfPageModels.forEach(function (pageModels) {
+    //     pageModels.intraProceduralModels.forEach(function (model) {
     //         defuseAnalyzer.doAnalysis(model);
     //         defuseAnalyzer.findDUPairs(model);
 
-    //         if(performance.now() - startTime > timeout){
-    //             constantsModule.staticModelPrintPhases && console.log('breaking loop');
-    //             return 1;
-    //         }
-    //     }          
-    // }
-
-
-    // const pool = new StaticPool({
-    //     size: 1,
-    //     task: (model) => {
-    //         defuseAnalyzer.doAnalysis(model);
-    //         defuseAnalyzer.findDUPairs(model);
-    //     }, 
+    //     });
     // });
 
-    // var startTime = performance.now();
-    // var timeout = 5 * 60 * 1000; // min 5 min
-    // for(let pageModels of Array.from(modelCtrl.collectionOfPageModels.values())){
-    //     for(let model of pageModels.intraProceduralModels){
-     
-    //         pool
-    //           .createExecutor()
-    //           .setTimeout(timeout) // set timeout for task.
-    //           .exec(model);
-    //     }          
-    // }
+    var startTime = performance.now();
+    var timeout = constantsModule.timeoutPDGGeneration;
 
+    let pageModelsCollection = modelCtrl.collectionOfPageModels; // map
+    let pageModelsIterator = pageModelsCollection.values();
+    for (let i=0; i< pageModelsCollection.size; i++){
+        let models = pageModelsIterator.next().value.intraProceduralModels; // array
+        for (let j=0; j< models.length; j++){
+            defuseAnalyzer.doAnalysis(models[j]);
+            defuseAnalyzer.findDUPairs(models[j]);
 
-    constantsModule.staticModelPrintPhases && console.log('PDG end')
-    return 1;
+            if(performance.now() - startTime > timeout){
+                constantsModule.staticModelPrintPhases && console.log('breaking loop');
+                return true;
+            }
+
+        } 
+    }
+
+    constantsModule.staticModelPrintPhases && console.log('PDG end');
+    return false;
 };
 
 DefUseAnalysisExecutor.prototype.buildInterProceduralModelsOfEachPageModels = function () {
@@ -137,14 +115,32 @@ DefUseAnalysisExecutor.prototype.buildInterProceduralModelsOfEachPageModels = fu
     
     modelBuilder.buildInterProceduralModels();  // CFG
 
-    modelCtrl.collectionOfPageModels.forEach(function (pageModels) {
-        pageModels.interProceduralModels.forEach(function (model) {
+    // modelCtrl.collectionOfPageModels.forEach(function (pageModels) {
+    //     pageModels.interProceduralModels.forEach(function (model) {
+    //         defuseAnalyzer.doAnalysis(model);
+    //         defuseAnalyzer.findDUPairs(model);
+    //     });
+    // });
 
-            defuseAnalyzer.doAnalysis(model);
-            defuseAnalyzer.findDUPairs(model);
-        });
-    });
-    
+    var startTime = performance.now();
+    var timeout = constantsModule.timeoutPDGGeneration;
+
+    let pageModelsCollection = modelCtrl.collectionOfPageModels; // map
+    let pageModelsIterator = pageModelsCollection.values();
+    for (let i=0; i< pageModelsCollection.size; i++){
+        let models = pageModelsIterator.next().value.interProceduralModels; // array
+        for (let j=0; j< models.length; j++){
+            defuseAnalyzer.doAnalysis(models[j]);
+            defuseAnalyzer.findDUPairs(models[j]);
+
+            if(performance.now() - startTime > timeout){
+                constantsModule.staticModelPrintPhases && console.log('breaking loop');
+                return true;
+            }
+        } 
+    }
+    return false;
+ 
 };
 
 

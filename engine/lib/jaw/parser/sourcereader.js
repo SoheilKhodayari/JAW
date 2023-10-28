@@ -33,10 +33,10 @@ function SourceReader() {
 SourceReader.prototype.getSourceFromFiles = function (files) {
     "use strict";
     var source = '';
-    files.forEach(function (filename) {
+    for(let filename of files){
         var content = fs.readFileSync(filename);
         source += '/// --- start ' + filename + ' ---\n' + content + '\n/// --- end ' + filename + ' ---\n';
-    });
+    };
     return source;
 };
 

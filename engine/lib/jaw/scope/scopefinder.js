@@ -40,12 +40,13 @@ ScopeFinder.prototype.findScopes = function (ast) {
 	walkes(ast, {
 		Program: function (node, recurse) {
 			scopes.push(node);
-			node.body.forEach(function (elem) {
+			for(let elem of node.body){
 				recurse(elem);
-			});
+			};
 		},
 		FunctionDeclaration: handleInnerFunction,
-		FunctionExpression: handleInnerFunction
+		FunctionExpression: handleInnerFunction,
+		ArrowFunctionExpression: handleInnerFunction,
 	});
 	return scopes;
 };

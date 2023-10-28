@@ -138,6 +138,15 @@ def _get_last_subpath(s):
 	return os.path.basename(os.path.normpath(s))
 
 	
+
+def getDirectoryNameFromURL(url):
+	"""
+	@param url: eTLD+1 domain name
+	@return converts the url to a string name suitable for a directory by removing the colon and slash symbols
+	"""
+	return url.replace(':', '-').replace('/', '')
+
+
 		
 # -------------------------------------------------------------------------- #
 #  		Other Utils
@@ -187,10 +196,13 @@ def list_contains(needle, haystack):
 def _hash(s):
 	"""
 	@param s :input string
-	@return the same hashed string across all process invocations
+	@return a SHA-256 hash of the given string
 	"""
 	return hashlib.sha256(s.encode('utf-8')).hexdigest()
 
+
+def sha256(string):
+	return _hash(string)
 
 # -------------------------------------------------------------------------- #
 #  		Uitlity Classes

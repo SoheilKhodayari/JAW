@@ -24,7 +24,7 @@ var Scope = require('./../scope/scope'),
 var Map = require('core-js/es6/map');
 
 /**
- * Model
+ * Model: the Program node and every function is a model 
  * @constructor
  */
 function Model() {

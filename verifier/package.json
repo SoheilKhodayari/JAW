@@ -1,0 +1,28 @@
+{
+  "name": "verifier",
+  "version": "1.0.0",
+  "description": "",
+  "main": "verify.js",
+  "dependencies": {
+    "crypto": "^1.0.1",
+    "elapsed-time-logger": "^1.1.7",
+    "esprima": "^4.0.1",
+    "fs": "0.0.1-security",
+    "js-beautify": "^1.14.0",
+    "js-beautify-sourcemap": "^0.1.0",
+    "jsdom": "^20.0.0",
+    "path": "^0.12.7",
+    "playwright": "^1.29.2",
+    "process": "^0.11.10",
+    "process.argv": "^0.6.0",
+    "psl": "^1.8.0",
+    "puppeteer": "^19.5.2",
+    "source-map": "^0.7.4",
+    "url": "^0.11.0"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Soheil Khodayari",
+  "license": "AGPL3"
+}

@@ -15,6 +15,7 @@ python-dotenv==0.14.0
 requests==2.24.0
 selenium==3.141.0
 urllib3==1.25.10
-pandas==1.1.5
+pandas
 pyvirtualdisplay
 tldextract
+tld

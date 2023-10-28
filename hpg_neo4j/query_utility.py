@@ -31,15 +31,50 @@
 #		Neo4j Utility Queries
 # -------------------------------------------------------------------------- #
 
+def get_node_by_id(tx, node_id):
+	"""
+	@param {neo4j-pointer} tx
+	@param {id} node id
+	@return node
+	"""
+
+	query = """
+	MATCH (n {Id: '%s'})
+	RETURN n
+	"""%(node_id)
+
+	results = tx.run(query)
+	for record in results:
+		n = record['n']
+		return n
+
+	return None
+
 
 def get_cfg_level_nodes_for_statements():
 
-	TOP_LEVEL_NODES = [
+	esprimaCFGLevelNodeTypes= [
+		"EmptyStatement",
+		"DebuggerStatement",
 		"ExpressionStatement",
 		"VariableDeclaration",
+		"ReturnStatement",
+		"LabeledStatement",
+	    "BreakStatement",
+	    "ContinueStatement",
+	    "IfStatement",
+	    "SwitchStatement",
+	    "WhileStatement",
+	    "DoWhileStatement",
+	    "ForStatement",
+	    "ForInStatemen",
+	    "ThrowStatement",
+	    "TryStatement",
+	    "WithStatement",
+	    # "FunctionDeclaration",
 	]
 
-	return TOP_LEVEL_NODES
+	return esprimaCFGLevelNodeTypes
 
 
 def get_ast_parent(tx, node):
@@ -70,23 +105,36 @@ def get_ast_topmost(tx, node):
 	@param {neo4j-node} node
 	@return topmost parent of an AST node
 	"""
-	parent = get_ast_parent(tx, node)
 
 	CFG_LEVEL_STATEMENTS = get_cfg_level_nodes_for_statements()
-	done = False
-	while not done:
-		grand_parent = get_ast_parent(tx, parent)
-		if grand_parent is None:
-			done = True
-			return parent
 
-		if grand_parent['Type'] in CFG_LEVEL_STATEMENTS:
+	if "Type" in node:
+		node_type = node["Type"]
+	else:
+		node = get_node_by_id(tx, node["Id"]) # re-assign the input parameter here
+		node_type = node["Type"]
+
+	if node_type in CFG_LEVEL_STATEMENTS:
+		return node
+
+	
+	done = False
+	iterator = node
+	while not done:
+		parent = get_ast_parent(tx, iterator)
+		if parent is None:
+			done = True
+			return iterator
+
+		if parent['Type'] in CFG_LEVEL_STATEMENTS:
 			done = True
 			break
 		else:
-			parent = grand_parent # loop
+			iterator = parent # loop
 
-	return grand_parent
+	return parent
+
+
 
 def get_code_expression(wrapper_node, is_argument = False, relation_type='', short_form=True):
 
@@ -193,16 +241,25 @@ def get_code_expression(wrapper_node, is_argument = False, relation_type='', sho
 		return [value, literals, idents]
 
 	elif ntype == 'NewExpression':
-		[callee, lits1, ids1] = get_code_expression(children[0])
-		literals.extend(lits1)
-		idents = {**idents, **ids1}
-		value = 'new '+ callee + '()'
+		args = [];
+		callee = ''
+		for j in range(len(children)):
+			ch = children[j]
+			[element, lits1, ids1] = get_code_expression(ch)
+			literals.extend(lits1)
+			idents = {**idents, **ids1}
+			if j == len(children) - 1:
+				callee = element
+			else:
+				args.append(element)
+
+		value = 'new '+ callee + '(' + ','.join(args[::-1])  + ')'
 		return [value, literals, idents]
 
 	elif ntype == "Property":
 		[key, lits1, ids1] = get_code_expression(children[1])
 		[value, lits2, ids2] = get_code_expression(children[0])
-		idents = {**idents, **ids1}
+		# idents = {**idents, **ids1} ### do not consider dictionary keys for taint tracking/ resolution
 		idents = {**idents, **ids2}
 		literals.extend(lits1)
 		literals.extend(lits2)
@@ -486,5 +543,6 @@ def getChildsOf(tx, node, relation_type=''):
 		for childNode in childNodes:
 			outNode['children'].append(getChildsOf(tx, childNode))
 	return outNode
+
 
 

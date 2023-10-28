@@ -51,9 +51,10 @@ function setParameters(scope) {
 	"use strict";
 	Scope.validateType(scope, 'Try to analyze parameter with non-Scope object');
 	function addParametersToScope(params, scope) {
-		params.forEach(function (param) {
-			scope.addParameter(param.name);
-		});
+		
+        for(let param of params){
+            scope.addParameter(param.name);
+        }
 	}
 
     if (scope.type === Scope.FUNCTION_TYPE || scope.type === Scope.ANONYMOUS_FUN_TYPE) {
@@ -86,9 +87,9 @@ VariableAnalyzer.prototype.setLocalVariables = function (scope) {
         FunctionDeclaration: function () {},
         FunctionExpression: function () {},
 		VariableDeclaration: function (node, recurse) {
-			node.declarations.forEach(function (declarator) {
-				recurse(declarator);
-			});
+            for(let declarator of node.declarations){
+                recurse(declarator);
+            }
 		},
 		VariableDeclarator: function (node) {
 			scope.addLocalVariable(node.id.name);

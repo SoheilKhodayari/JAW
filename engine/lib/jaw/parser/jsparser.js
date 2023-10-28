@@ -40,7 +40,6 @@ JSParser.prototype.parseAST = function (code, options) {
 		optionObj.loc = true;
 	}
 
-	let counterId = 1;
 	return esprima.parse(code, optionObj);
 };
 
@@ -53,9 +52,9 @@ JSParser.prototype.traverseAST = function traverse(node, func) {
             if (typeof child === 'object' && child !== null) { //4
 
                 if (Array.isArray(child)) {
-                    child.forEach(function(node) { //5
-                        traverse(node, func);
-                    });
+                    for(let node of child){ //5
+                      traverse(node, func);  
+                    }
                 } else {
                     traverse(child, func); //6
                 }

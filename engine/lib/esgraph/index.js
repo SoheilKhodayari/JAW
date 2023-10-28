@@ -54,6 +54,7 @@ function ControlFlowGraph(astNode) {
 			recurse(node.body);
 		},
 		ExpressionStatement: connectNext,
+		ClassDeclaration: function() {},
 		FunctionDeclaration: function () {},
 		FunctionExpression: function () {},
 		ForStatement: function (node, recurse) {
@@ -119,7 +120,9 @@ function ControlFlowGraph(astNode) {
 			node.consequent.forEach(recurse);
 		},
 		SwitchStatement: function (node, recurse) {
-			node.cfg.connect(node.cases[0].cfg);
+			if(node.cases[0]){ // FIX reading properties of undefined
+				node.cfg.connect(node.cases[0].cfg);
+			}
 			node.cases.forEach(recurse);
 		},
 		ThrowStatement: function (node) {
@@ -286,6 +289,8 @@ function ControlFlowGraph(astNode) {
 				return getSuccessor(astNode);
 			case 'ForStatement':
 				return astNode.init && astNode.init.cfg || astNode.test && astNode.test.cfg || getEntry(astNode.body);
+			case 'ClassDeclaration':
+				return getSuccessor(astNode);
 			case 'FunctionDeclaration':
 				return getSuccessor(astNode);
 			case 'IfStatement':
@@ -351,7 +356,7 @@ function ControlFlowGraph(astNode) {
 			var parent = parentStack.length ? parentStack[parentStack.length - 1] : undefined;
 			createNode(node, parent);
 			// do not recurse for FunctionDeclaration or any sub-expression
-			if (node.type === 'FunctionDeclaration' || node.type === 'FunctionExpression' || node.type.indexOf('Expression') !== -1) {
+			if (node.type === 'FunctionDeclaration' || node.type === 'FunctionExpression' || node.type === 'ClassDeclaration' || node.type.indexOf('Expression') !== -1) {
 				return;
 			}
 			parentStack.push(node);
@@ -395,6 +400,9 @@ function ControlFlowGraph(astNode) {
 				// backToFront(node.body, recurse);
 			}, /// Function Definitions not in the flow
 			FunctionExpression: function (node, recurse) {
+				// backToFront(node.body, recurse);
+			},
+			ClassDeclaration: function (node, recurse) {
 				// backToFront(node.body, recurse);
 			},
 			SwitchCase: function (node, recurse) {

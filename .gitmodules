@@ -1,0 +1,3 @@
+[submodule "crawler/foxhound/firefox"]
+	path = crawler/foxhound/firefox
+	url = https://github.com/SAP/project-foxhound/

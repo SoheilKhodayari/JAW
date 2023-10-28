@@ -1,0 +1,18 @@
+const {join} = require('path');
+const production = true;
+var cachedir = __dirname;
+
+// debug switch
+if(!production){
+  cachedir = '/home/soheil';
+}
+
+/**
+ * @type {import("puppeteer").Configuration}
+ */
+module.exports = {
+  // Changes the cache location for Puppeteer.
+  cacheDirectory: join(cachedir, '.cache', 'puppeteer'),
+};
+
+

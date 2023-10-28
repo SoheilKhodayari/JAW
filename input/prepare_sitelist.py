@@ -20,7 +20,7 @@
 
 	Run:
 	------------
-	python3 prepare_sitelist --input=tranco_Y3JG.csv
+	python3 prepare_sitelist.py --input=tranco_N7QWW.csv
 	
 """
 
@@ -35,8 +35,8 @@ import argparse
 import pandas as pd
 import tldextract
 from urllib.parse import urlparse
-
-
+import urllib.request
+import requests
 
 BASE_DIR= os.path.dirname(os.path.realpath(__file__))
 
@@ -92,10 +92,23 @@ def does_url_belong_to_host(url, host):
 	return False
 
 
+
+def is_website_up(uri):
+    try:
+        with requests.get(uri, stream=True) as response:
+            try:
+                response.raise_for_status()
+                return True
+            except requests.exceptions.HTTPError:
+                return False
+    except requests.exceptions.ConnectionError:
+        return False
+
+
 def main():
 
-	INPUT_FILE_NAME_DEFAULT = "tranco_Y3JG.csv"
-	OUTPUT_FILE_NAME_DEFAULT = "tranco_Y3JG_unique.csv"
+	INPUT_FILE_NAME_DEFAULT = "tranco_N7QWW.csv"
+	OUTPUT_FILE_NAME_DEFAULT = "tranco_N7QWW_unique.csv"
 
 
 	p = argparse.ArgumentParser(description='This script removes the duplicate entries with the same eTLD+1 from a top-site list.')
@@ -112,8 +125,8 @@ def main():
 					type=str)
 
 	p.add_argument('--from', "-F", type=int, default=0, help='consider entries from which row (default: %(default)s)')
-	p.add_argument('--to', "-T", type=int, default=10000, help='consider entries to which row  (default: %(default)s)')
-	p.add_argument('--top_n', "-N", type=int, default=5000, help='output file name (default: %(default)s)')
+	p.add_argument('--to', "-T", type=int, default=100000, help='consider entries to which row  (default: %(default)s)')
+	p.add_argument('--top_n', "-N", type=int, default=10000, help='top n sites (default: %(default)s)')
 
 	args= vars(p.parse_args())
 	from_row = args["from"]
@@ -157,17 +170,20 @@ def main():
 			if g_index >= from_row and g_index <= to_row:
 
 				rank = row[0]
-				url =row[1]
+				etld_url =row[1]
 				
-				etld_p1 = tld_extract(url).domain # .suffix = etld
-				if url not in duplicate_domains and etld_p1 in duplicate_domain_names:
+				etld_p1 = tld_extract(etld_url).domain # .suffix = etld
+				if etld_url not in duplicate_domains and etld_p1 in duplicate_domain_names:
 					# do not add duplicates
 					continue
 
-				out_rows.append("{0},{1}\n".format(rank, url))
+				# url = 'http://' + etld_url
+				out_rows.append("{0},{1}\n".format(rank, etld_url))
+
 			if g_index > to_row:
 				done = True
 				break
+
 
 	with open(output_file_name, "w+") as fd:
 		for i in range(len(out_rows)):

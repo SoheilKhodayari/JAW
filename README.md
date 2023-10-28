@@ -13,13 +13,14 @@
 	<a href="https://github.com/SoheilKhodayari/JAW/tree/master/docs">Docs</a> |
 	<a href="https://github.com/SoheilKhodayari/JAW/tree/master/docs/installation.md">Setup</a> |
 	<a href="https://github.com/SoheilKhodayari/JAW/tree/master/crawler">Crawler</a> |
-	<a href="https://github.com/SoheilKhodayari/JAW/blob/master/analyses/example/example_analysis.py"> Quick Start (Example)</a>
+    <a href="#quick-start"> Quick Start </a>
+	<a href="https://github.com/SoheilKhodayari/JAW/blob/master/analyses/example/example_analysis.py"> Docker (Example)</a>
 </p>
 
 # JAW
 
 
-[![Build Status](https://travis-ci.org/boennemann/badges.svg?branch=master)](https://travis-ci.org/boennemann/badges) [![Node](https://img.shields.io/badge/node%40latest-%3E%3D%206.0.0-brightgreen.svg)](https://img.shields.io/badge/node%40latest-%3E%3D%206.0.0-brightgreen.svg) [![Platform](https://img.shields.io/badge/platform-windows%20%7C%20macos%20%7C%20linux-lightgrey.svg)](https://img.shields.io/badge/platform-windows%20%7C%20macos%20%7C%20linux-lightgrey.svg) [![Open Source Love](https://badges.frapsoft.com/os/v1/open-source.svg?v=103)](https://github.com/ellerbrock/open-source-badges/) [![Tweet](https://img.shields.io/twitter/url/http/shields.io.svg?style=social)](https://twitter.com/intent/tweet?text=A%20Static-Dynamic%20Analysis%20Framework%20for%20Client-side%20JavaScript&url=https://github.com/SoheilKhodayari/JAW)
+[![Node](https://img.shields.io/badge/node%40latest-%3E%3D%206.0.0-brightgreen.svg)](https://img.shields.io/badge/node%40latest-%3E%3D%206.0.0-brightgreen.svg) [![Platform](https://img.shields.io/badge/platform-windows%20%7C%20macos%20%7C%20linux-lightgrey.svg)](https://img.shields.io/badge/platform-windows%20%7C%20macos%20%7C%20linux-lightgrey.svg) [![Open Source Love](https://badges.frapsoft.com/os/v1/open-source.svg?v=103)](https://github.com/ellerbrock/open-source-badges/) [![Tweet](https://img.shields.io/twitter/url/http/shields.io.svg?style=social)](https://twitter.com/intent/tweet?text=A%20Static-Dynamic%20Analysis%20Framework%20for%20Client-side%20JavaScript&url=https://github.com/SoheilKhodayari/JAW)
 
 
 
@@ -29,21 +30,27 @@ This project is licensed under `GNU AFFERO GENERAL PUBLIC LICENSE V3.0`. See [he
 
 JAW has a Github pages website available at <a href="https://soheilkhodayari.github.io/JAW/">https://soheilkhodayari.github.io/JAW/</a>.
 
-**Release Note:** On July 2022, JAW has been updated to its next major release with the ability to detect [DOM Clobbering](https://soheilkhodayari.github.io/DOMClobbering) vulnerabilities, including the code of [TheThing](https://github.com/SoheilKhodayari/TheThing). The previous version of JAW is available in the [`JAW-V1`](https://github.com/SoheilKhodayari/JAW/tree/JAW-v1) branch. 
+**Release Notes:** 
+
+- Oct 2023, JAW-v3 (Sheriff): JAW updated to detect [client-side request hijacking](#/) vulnerabilities. 
+- July 2022, JAW-v2 ([TheThing](https://github.com/SoheilKhodayari/TheThing)): JAW updated to its next major release with the ability to detect [DOM Clobbering](https://soheilkhodayari.github.io/DOMClobbering) vulnerabilities. See [`JAW-V2`](https://github.com/SoheilKhodayari/JAW/tree/JAW-v2) branch.
+- Dec 2020, JAW-v1 : first prototype version. See [`JAW-V1`](https://github.com/SoheilKhodayari/JAW/tree/JAW-v1) branch.
 
 
 # Content
 
 ### Overview of JAW
-1. [Inputs and Data Collection](#inputs-and-data-collection)
-2. [HPG Construction](#hpg-construction)
-3. [Analysis and Outputs](#analysis-and-outputs)
+1. [Test Inputs](#test-inputs)
+2. [Data Collection](#data-collection)
+3. [HPG Construction](#hpg-construction)
+4. [Analysis and Outputs](#analysis-and-outputs)
 ### Setup
 1. [Installation](#setup-1)
 ### Quick Start
 1. [Running the Pipeline](#running-the-pipeline)
 2. [Quick Example](#quick-example)
 3. [Crawling and Data Collection](#crawling-and-data-collection)
+  - [Playwright CLI with Foxhound](#playwright-cli-with-foxhound)
 	- [Puppeteer-based Crawler](#puppeteer-cli)
 	- [Selenium-based Crawler](#selenium-cli)
 2. [Graph Construction](#graph-construction)
@@ -52,6 +59,8 @@ JAW has a Github pages website available at <a href="https://soheilkhodayari.git
 3. [Security Analysis](#security-analysis)
 	- [Running Custom Graph traversals](#running-custom-graph-traversals)
 	- [Vulnerability Detection](#vulnerability-detection)
+4. [Test Web Application](#test-web-application)
+
 ### Further Information
 1. [Detailed Documentation](#detailed-documentation)
 2. [Contribution and Code of Conduct](#contribution-and-code-of-conduct)
@@ -61,44 +70,35 @@ JAW has a Github pages website available at <a href="https://soheilkhodayari.git
 The architecture of the JAW is shown below.
 
 <p align="center">
-  <img align="center" width="900" src="docs/assets/architecture.png">
+  <img align="center" width="900" src="docs/assets/architecture_v3.png">
 </p>
 
 
-## Inputs and Data Collection
+## Test Inputs
 
 JAW can be used in two distinct ways:
 
-**Option 1.** Modeling and analyzing an arbitrary JavaScript program using JAW. 
+1. **Arbitrary JavaScript Analysis:** Utilize JAW for modeling and analyzing any JavaScript program by specifying the program's file system `path`.
 
-In this case, the only input to the tool is the `path` of the target JavaScript program in the file system. 
+2. **Web Application Analysis:** Analyze a web application by providing a single seed URL.  
 
+## Data Collection
 
-**Option 2.** Analyzing a web application given a single `seed URL`. 
-
-JAW has a stand-alone, JavaScript-enabled web crawler (based on `chromium`) that can collect the application web resources, and use them for analysis.
-
-**Test Case Scripts.** Optionally, a so-called `test case` script or a `state` script can be provided together with the seed URL of the application in order for the crawler to reach a certain, pre-defined state (e.g., logged in state) before the crawling session starts. 
-For more information about how to create such `state` script, see [here](docs/crawler.md).
-
-**Crawler Output.** 
-The crawler outputs the `JavaScript` code as well as the `State Values` for each web page found.
-
-- `JavaScript Code`: for each web page found, JAW creates a single JavaScript file preseving the execution order of the program.
-- `State Values`: state values are a collection of concrete values observed during the execution of a web page. These include the snapshot of the initial and rendered HTML page, fired events, HTTP requests and responses, and cookies. Optionally, the crawler can collect any JavaScript property accessible within the web page. 
+- JAW features several JavaScript-enabled web crawlers for collecting web resources at scale. 
 
 ## HPG Construction
-JavaScript code and state values collected are next used to
-build a HPG. The built graph is imported into a [Neo4j](https://neo4j.com/)
-database.
 
-Alternatively, the graph is built for the (arbitrary) JavaScript program given as the input by the tester
+- Use the collected web resources to create a Hybrid Program Graph (HPG), which will be imported into a [Neo4j](https://neo4j.com/) database.
 
-**Optional Input:** the HPG construction module can optionally be provided with a mapping of semantic types to arbitrary, tester-defined JavaScript language tokens. For example, a semantic type `REQ` can be assigned to all low-level, JavaScript functions that send an HTTP request (e.g., the Fetch API, or XMLHttpRequest). 
+- Optionally, supply the HPG construction module with a mapping of semantic types to custom JavaScript language tokens, facilitating the categorization of JavaScript functions based on their purpose (e.g., HTTP request functions).
 
 ## Analysis and Outputs
-Finally, the constructed `Neo4j` graph database can be queried for analysis.
-JAW provides a series of utility traversals for data flow analysis, control flow and reachability analysis, or pattern matching, which can be leveraged for writing custom traversals for security analyses. Also, JAW includes traversals to detect client-side CSRF and [DOM Clobbering](http://domclob.xyz/) vulnerabilities.
+
+- Query the constructed `Neo4j` graph database for various analyses. JAW offers utility traversals for data flow analysis, control flow analysis, reachability analysis, and pattern matching. These traversals can be used to develop custom security analyses.
+
+- JAW also includes built-in traversals for detecting client-side CSRF, [DOM Clobbering](http://domclob.xyz/) and request hijacking vulnerabilities.
+
+- The outputs will be stored in the same folder as that of input. 
 
 
 # Setup
@@ -163,13 +163,29 @@ $ python3 -m analyses.example.example_analysis --input=$(pwd)/data/test_program/
 
 This module collects the data (i.e., JavaScript code and state values of web pages) needed for testing. If you want to test a specific JavaScipt file that you already have on your file system, you can **skip** this step. 
 
-JAW has a [Selenium](https://selenium-python.readthedocs.io/)-based and a [Puppeteer](https://github.com/puppeteer/puppeteer)-based crawler.
+JAW has crawlers based on [Selenium](https://selenium-python.readthedocs.io/) (JAW-v1),  [Puppeteer](https://github.com/puppeteer/puppeteer) (JAW-v2, v3) and [Playwright](https://playwright.dev/) (JAW-v3). For most up-to-date features, it is recommended to use the Puppeteer- or Playwright-based versions. 
+
+### Playwright CLI with Foxhound
+
+This web crawler employs [foxhound](https://github.com/SAP/project-foxhound/), an instrumented version of Firefox, to perform dynamic taint tracking as it navigates through webpages. To start the crawler, do:
+
+```bash
+$ cd crawler
+$ node crawler-taint.js --seedurl=https://google.com --maxurls=100 --headless=true --foxhoundpath=<optional-foxhound-executable-path>
+```
+
+The `foxhoundpath` is by default set to the following directory: `crawler/foxhound/firefox` which contains a binary named `firefox`.  
+
+
+**Note:** you need a build of [foxhound](https://github.com/SAP/project-foxhound/) to use this version. An ubuntu build is included in the JAW-v3 [release](). 
+
 
 ### Puppeteer CLI
 
 To start the crawler, do:
 
 ```bash
+$ cd crawler
 $ node crawler.js --seedurl=https://google.com --maxurls=100 --browser=chrome --headless=true
 ```
 
@@ -263,7 +279,7 @@ The constructed HPG can then be queried using [Cypher](https://neo4j.com/docs/cy
 ### Running Custom Graph traversals
 You should place and run your queries in `analyses/<ANALYSIS_NAME>`.
 
-#### Option 1: Using the NeoModel ORM
+#### Option 1: Using the NeoModel ORM (Deprecated)
 You can use the [NeoModel ORM](https://neomodel.readthedocs.io/en/latest/properties.html) to query the HPG. To write a query:
 
 - (1) Check out the [HPG data model](docs/hpg-nodes.md) and [syntax tree](docs/syntax-tree.md).
@@ -300,12 +316,16 @@ JAW contains, among others, self-contained queries for detecting client-side CSR
 **Step 1.** enable the analysis component for the vulnerability class in the input [config.yaml](config.yaml) file:
 
 ```yaml
+request_hijacking:
+  enabled: true 
+  # [...]
+  # 
 domclobbering:
   enabled: false
   # [...]
 
 cs_csrf:
-  enabled: true
+  enabled: false
   # [...]
 ```
 
@@ -344,6 +364,21 @@ An example output entry is shown below:
 This entry shows that on line 29, there is a `$.ajax` call expression, and this call expression triggers an `ajax` request with the url template value of `ajaxloc + "/bearer1234/`, where the parameter `ajaxloc` is a program slice reading its value at line 6 from `window.location.href`, thus forgeable through `['WIN.LOC']`.
 
 
+## Test Web Application
+
+In order to streamline the testing process for JAW and ensure that your setup is accurate, we provide a simple `node.js` web application which you can test JAW with. 
+
+First, install the dependencies via:
+
+```bash
+$ cd tests/test-webapp
+$ npm install
+```
+
+Then, run the application in a new screen: 
+```bash
+$ screen -dmS jawwebapp bash -c 'PORT=6789 npm run devstart; exec sh'
+```
 
 # Detailed Documentation.
 

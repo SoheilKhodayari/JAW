@@ -34,6 +34,7 @@ const elapsed = require("elapsed-time-logger");
  *   				module imports
  * ------------------------------------------------
 **/
+const constantsModule = require('./../../engine/lib/jaw/constants')
 const SourceSinkAnalyzerModule = require('./cs_csrf_traversals.js');
 const SourceSinkAnalyzer = SourceSinkAnalyzerModule.CSCSRFSourceSinkAnalyzer;
 
@@ -195,7 +196,7 @@ async function staticallyAnalyzeWebpage(url, webpageFolder){
 	let parsingErrors = [];
 	for(let [idx, script] of scripts.entries()){
 		let scriptName = script.name; // '' + idx + '.js';
-		let parsingError = await SourceSinkAnalyzerInstance.api.initializeModelsFromSource(scriptName, script.source)
+		let parsingError = await SourceSinkAnalyzerInstance.api.initializeModelsFromSource(scriptName, script.source, constantsModule.LANG.js, true)
 		if(parsingError && parsingError === scriptName){
 			parsingErrors.push(parsingError);
 		}
@@ -203,7 +204,7 @@ async function staticallyAnalyzeWebpage(url, webpageFolder){
 	}
 
 	DEBUG && console.log('[StaticAnalysis] HPG construction.');
-	await SourceSinkAnalyzerInstance.api.buildInitializedModels();
+	let timeoutPDG = await SourceSinkAnalyzerInstance.api.buildInitializedModels();
 	DEBUG && console.log('[StaticAnalysis] AST/CFG/PDG done.')
 
 	const basicHpgConstructionTime = hpgConstructionTimer.get(); // AST, CFG, PDG
@@ -229,7 +230,7 @@ async function staticallyAnalyzeWebpage(url, webpageFolder){
 
 
 	const pdgMarker =  pathModule.join(webpageFolder, "pdg.tmp");
-	await fs.writeFileSync(pdgMarker, JSON.stringify({"pdg": 0}));
+	await fs.writeFileSync(pdgMarker, JSON.stringify({"pdg": timeoutPDG? 1: 0}));
 
 
 	// store elapsed time to disk

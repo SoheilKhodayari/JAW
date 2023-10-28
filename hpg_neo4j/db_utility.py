@@ -42,6 +42,13 @@ from utils.io import run_os_command
 from neo4j import GraphDatabase
 from utils.logging import logger
 
+
+
+# ------------------------------------------------------------------------------------ #
+# 	Utils
+# ------------------------------------------------------------------------------------ #
+
+
 def _get_last_subpath(s):
 	"""
 	@param s :input string
@@ -58,6 +65,11 @@ def generate_uuid_for_graph():
 	return 'graph-' + str(uuid.uuid4())
 
 
+
+
+# ------------------------------------------------------------------------------------ #
+# 	Deprecated APIs
+# ------------------------------------------------------------------------------------ #
 
 def API_neo4j_prepare(csv_absolute_path, nodes_name=constantsModule.NODE_INPUT_FILE_NAME, relationships_name=constantsModule.RELS_INPUT_FILE_NAME, load_dom_tree_if_exists=True):
 	"""
@@ -179,7 +191,11 @@ def does_neo4j_db_exists(database_name):
 		return False
 
 
-def exec_fn_within_transaction(fn, *args):
+# ------------------------------------------------------------------------------------ #
+# 	Current APIs
+# ------------------------------------------------------------------------------------ #
+
+def exec_fn_within_transaction(fn, *args, conn=constantsModule.NEO4J_CONN_STRING, conn_timeout=None, keep_alive=True):
 	
 	"""
 	wraps a function within a neo4j transaction
@@ -187,17 +203,30 @@ def exec_fn_within_transaction(fn, *args):
 	@param {param-list} *args: positional arguments
 	@return fn output: execute fn with transaction and the list of passed args 
 	"""
-
+	logger.info('quering on connection: %s'%str(conn))
 	out = None
-	neo_driver = GraphDatabase.driver(constantsModule.NEO4J_CONN_STRING, auth=(constantsModule.NEO4J_USER, constantsModule.NEO4J_PASS))
-	with neo_driver.session() as session:
-		with session.begin_transaction() as tx:
-			out = fn(tx, *args)
 
-	return out
+	if conn_timeout is None:
+		neo_driver = GraphDatabase.driver(conn, auth=(constantsModule.NEO4J_USER, constantsModule.NEO4J_PASS))
+		with neo_driver.session() as session:
+			with session.begin_transaction() as tx:
+				out = fn(tx, *args)
+
+		return out
+	else:
+		max_connection_lifetime = int(conn_timeout) + 60 # in seconds
+		neo_driver = GraphDatabase.driver(conn, auth=(constantsModule.NEO4J_USER, constantsModule.NEO4J_PASS), max_connection_lifetime=max_connection_lifetime, keep_alive=keep_alive)
+		with neo_driver.session() as session:
+			with session.begin_transaction() as tx:
+				out = fn(tx, *args)
+
+		return out
 
 
-def wait_for_neo4j_bolt_connection(timeout=60):
+
+
+
+def wait_for_neo4j_bolt_connection(timeout=60, conn=constantsModule.NEO4J_CONN_HTTP_STRING):
 	"""
 	wait until neo4j access bolt/http connections
 	"""
@@ -207,7 +236,7 @@ def wait_for_neo4j_bolt_connection(timeout=60):
 
 	while True:
 		try:
-			r = requests.get(constantsModule.NEO4J_CONN_HTTP_STRING, verify=False, timeout=3) # 3 seconds timeout
+			r = requests.get(conn, verify=False, timeout=3) # 3 seconds timeout
 			s = str(r.status_code)
 			if s.startswith('2'):
 				logger.info('neo4j is now ready to accept bolt connections.')
@@ -222,4 +251,90 @@ def wait_for_neo4j_bolt_connection(timeout=60):
 				break
 
 	return RET
+
+
+def ineo_create_db_instance(db_name, port, neo4j_version='4.2.3'):
+
+	INEO_BIN = constantsModule.INEO_BIN
+	command = "INEO_BIN create -v {0} -p{1} {2}".format(neo4j_version, port, db_name)
+	command = command.replace("INEO_BIN", INEO_BIN)
+	run_os_command(command)
+
+	# remove the empty databases created by ineo and neo4j
+	EMPTY_DB_PATH_1 = os.path.join(os.path.join(os.path.join(os.path.join(os.path.join(os.path.join(constantsModule.BASE_DIR, "ineo"), "instances"), str(db_name)), "data"), "databases"), str(db_name))
+	EMPTY_DB_PATH_2 = os.path.join(os.path.join(os.path.join(os.path.join(os.path.join(os.path.join(constantsModule.BASE_DIR, "ineo"), "instances"), str(db_name)), "data"), "databases"), "neo4j")
+	command = "rm -rf %s"%EMPTY_DB_PATH_1
+	run_os_command(command)
+
+	command = "rm -rf %s"%EMPTY_DB_PATH_2
+	run_os_command(command)
+
+
+def ineo_start_db_instance(db_name):
+
+	INEO_BIN = constantsModule.INEO_BIN
+	command = "INEO_BIN start {0}".format(db_name)
+	command = command.replace("INEO_BIN", INEO_BIN)
+	run_os_command(command)
+
+def ineo_stop_db_instance(db_name):
+
+	INEO_BIN = constantsModule.INEO_BIN
+	command = "INEO_BIN stop {0}".format(db_name)
+	command = command.replace("INEO_BIN", INEO_BIN)
+	run_os_command(command)
+
+def neoadmin_import_db_instance(ineo_db_name, neo4j_db_name, nodes_file, rels_file, rels_dynamic_file=None):
+
+	# script: BASE_DIR/ineo/instances/DB_NAME/bin/neo4j-admin
+	NEO4j_ADMIN = os.path.join(os.path.join(os.path.join(os.path.join(os.path.join(constantsModule.BASE_DIR, "ineo"), "instances"), str(ineo_db_name)), "bin"), "neo4j-admin")
+	if rels_dynamic_file:
+		command = "NEO4j_ADMIN import --database={0} --nodes={1} --relationships={2},{3} --delimiter='¿' --skip-bad-relationships=true --skip-duplicate-nodes=true --bad-tolerance=100000 --ignore-extra-columns=true --skip-bad-entries-logging=true".format(neo4j_db_name, nodes_file, rels_file, rels_dynamic_file)
+	else:
+		command = "NEO4j_ADMIN import --database={0} --nodes={1} --relationships={2} --delimiter='¿' --skip-bad-relationships=true --skip-duplicate-nodes=true --bad-tolerance=100000 --ignore-extra-columns=true --skip-bad-entries-logging=true".format(neo4j_db_name, nodes_file, rels_file)
+	
+	command = command.replace("NEO4j_ADMIN", NEO4j_ADMIN)
+	run_os_command(command, print_stdout=True, log_command=True, prettify=True)
+
+
+def ineo_set_bolt_port_for_db_instance(db_name, port_string):
+
+	INEO_BIN = constantsModule.INEO_BIN
+	command = "INEO_BIN set-port -b {0} {1}".format(db_name, port_string)
+	command = command.replace("INEO_BIN", INEO_BIN)
+	run_os_command(command)
+
+
+def ineo_restart_neo4j(db_name):
+	
+	INEO_BIN = constantsModule.INEO_BIN
+	command = "INEO_BIN restart {0}".format(db_name)
+	command = command.replace("INEO_BIN", INEO_BIN)
+	run_os_command(command)
+
+
+def ineo_remove_db_instance(db_name):
+	
+	INEO_BIN = constantsModule.INEO_BIN
+	command = "INEO_BIN destroy -f {0}".format(db_name)
+	command = command.replace("INEO_BIN", INEO_BIN)
+	run_os_command(command)
+
+
+def ineo_set_initial_password_and_restart(db_name, password=constantsModule.NEO4J_PASS):
+
+	# script: BASE_DIR/ineo/instances/DB_NAME/bin/neo4j-admin
+	NEO4j_ADMIN = os.path.join(os.path.join(os.path.join(os.path.join(os.path.join(constantsModule.BASE_DIR, "ineo"), "instances"), str(db_name)), "bin"), "neo4j-admin")
+	command = "NEO4j_ADMIN set-initial-password {0}".format(password)
+	command = command.replace("NEO4j_ADMIN", NEO4j_ADMIN)
+	run_os_command(command)
+	time.sleep(2)
+	ineo_restart_neo4j(db_name)
+
+
+
+
+
+
+
 

@@ -28,11 +28,12 @@ var varDefFactory = require('./vardeffactory'),
 
 var Set = require('../../analyses/set'),
     walkes = require('walkes'),
+    // walkes = require('../../esgraph/walkes'),
     worklist = require('../../analyses'),
     Map = require('core-js/es6/map');
 
 const util = require('util');
-
+var escodegen = require('escodegen');
 
 /**
  * DefUseAnalyzer
@@ -88,25 +89,16 @@ function analyzeDefaultValueOfLocalVariables(model) {
     var scopeEntryNode = model.graph[0];
     var vardefOfLocalVars = new Set();
 
-
-    // scope.vars.forEach(function (variable, name) {
-    //     if (!scope.hasNamedFunction(name) && !scope.hasBuiltInObject(name)) {
-    //         vardefOfLocalVars.add(varDefFactory.createGlobalUndefinedVarDef(variable, scopeEntryNode));
-    //     }
-    // });
-
     var ast = (scopeEntryNode.astNode.type === 'Program')? scopeEntryNode.astNode : scopeEntryNode.astNode.body;
     walkes(ast, {
         VariableDeclaration: function (node) {
-            node.declarations.forEach(declarationNode => {
+            for(let declarationNode of node.declarations){
                 var varName = scope.vars.get(declarationNode.id.name);
                 if (!!varName && !scope.hasNamedFunction(varName) && !scope.hasBuiltInObject(varName)){
                     vardefOfLocalVars.add(varDefFactory.create(varName, defFactory.createUndefinedDef(scopeEntryNode, declarationNode.range, node)));
-                }
-            });
+                }         
+            }
         }
-
-
     });
 
     scopeEntryNode.generate = Set.union(scopeEntryNode.generate, vardefOfLocalVars);
@@ -121,9 +113,11 @@ function analyzeDefaultValueOfLocalVariables(model) {
 function analyzeFunctionDeclaration(model) {
     "use strict";
     if(!model.graph) return;
+
     var scope = model.mainlyRelatedScope;
     var scopeEntryNode = model.graph[0];
     var vardefOfNamedFunctions = new Set();
+
     var ast = (scopeEntryNode.astNode.type === 'Program')? scopeEntryNode.astNode : scopeEntryNode.astNode.body;
     walkes(ast, {
         FunctionDeclaration: function (node) {
@@ -131,9 +125,12 @@ function analyzeFunctionDeclaration(model) {
             if (!!funVar) {
                 vardefOfNamedFunctions.add(varDefFactory.create(funVar, defFactory.createFunctionDef(scopeEntryNode, node.range, node)));
             }
-        }
+        },
+
+
     });
     scopeEntryNode.generate = Set.union(scopeEntryNode.generate, vardefOfNamedFunctions);
+    // console.log("GEN", scopeEntryNode.astNode.type, scope.params)
 }
 
 
@@ -155,9 +152,10 @@ DefUseAnalyzer.prototype.initiallyAnalyzeIntraProceduralModels = function () {
              * we do not also need to store the ReachIn definitions in nodes.
              */
             // analyzeBuiltInObjects(model);  
-
             analyzeDefaultValueOfLocalVariables(model);
             analyzeFunctionDeclaration(model);
+            
+            
         });
     });
 };
@@ -246,54 +244,61 @@ DefUseAnalyzer.prototype.findDUPairs = function (model) {
     'use strict';
     if(!model.graph) return;
     var dupairs = new Map();
-    model.graph[2].forEach(function (node) {
+
+
+    for(let node of model.graph[2]){
+
         var nodeCUse = getUsedDefs(node.reachIns, node.cuse),
             nodePUse = getUsedDefs(node.reachIns, node.puse);
-        // console.log(nodePUse.values().toString());
+        
+        // console.log(nodeCUse.values().toString());
         // console.log(node.astNode);
         // console.log('---')
 
 
         // @Note: elem is an instance of VarDef object
         /// Initialization
-        
         if(node.reachIns){
-            node.reachIns.values().forEach(function (elem) {
+            for(let elem of  node.reachIns.values()){
                 var pairs = dupairs.get(elem.variable) || new Set();
-                dupairs.set(elem.variable, pairs);
-            });    
+                dupairs.set(elem.variable, pairs);         
+            }
+
+
         }
         /// add Def-Use pairs of c-use
-        nodeCUse.values().forEach(function (elem) {
-          
+        for(let elem of nodeCUse.values()){
             var pairs = dupairs.get(elem.variable);
             if(pairs){
                 /// Assume each id of CFG nodes will be different
                 pairs.add(dupairFactory.create(elem.definition.fromNode, node));
                 dupairs.set(elem.variable, pairs);         
-            }                                
-        });
+            }             
+        }
+
+
 
         /// add Def-Use pairs of p-use
-        nodePUse.values().forEach(function (elem) {
+        for(let elem of nodePUse.values()){
             var pairs = dupairs.get(elem.variable);
             /// Assume each id of CFG nodes will be different
             // pairs.add(dupairFactory.create(elem.definition.fromNode, pairFactory.create(node, node.true)));
             // pairs.add(dupairFactory.create(elem.definition.fromNode, pairFactory.create(node, node.false)));
             // pairs.add(dupairFactory.create(elem.definition.fromNode, [node, node.true, 'true']));
             // pairs.add(dupairFactory.create(elem.definition.fromNode, [node, node.false, 'false']));
-            // FIX for PDG control dependence edges
+            
+            // PDG control dependence edges
             var ifStatement = node.parent;
             if(ifStatement) { // not null
                 pairs.add(dupairFactory.create(elem.definition.fromNode, [ifStatement, ifStatement.consequent, ifStatement.alternate])); // node, true, false
             }
             dupairs.set(elem.variable, pairs);
-        
-        });
-    });
+        };
+    };
 
     model.dupairs = dupairs;
 }
+
 
 /**
  * Get used definitions by getting the intersection of RD and USE
@@ -307,13 +312,12 @@ function getUsedDefs(defs, used) {
     var usedDefs = new Set();
     if (defs instanceof Set && used instanceof Set) {
         defs.forEach(function (vardef) {
-            // console.log(vardef.toString());
             used.forEach(function (variable) {
                 if (vardef.variable === variable) {
                     usedDefs.add(vardef);
                 }
             });
-        });
+        });  
     }
     return usedDefs;
 }
@@ -328,6 +332,7 @@ DefUseAnalyzer.prototype.doAnalysis = function (model) {
     var reachDefinitions = worklist(
         model.graph,
         function (input) { /// input = ReachIn(n)
+
             var currentNode = this;
             
             if (!!currentNode.extraReachIns) {
@@ -340,8 +345,13 @@ DefUseAnalyzer.prototype.doAnalysis = function (model) {
 
             var kill = currentNode.kill || thisAnalyzer.findKILLSet(currentNode);
             var UseSet = thisAnalyzer.findUSESet(currentNode); // set c-use & p-use on flow node
+            
             var generate = currentNode.generate || thisAnalyzer.findGENSet(currentNode);   
           
+            // console.log('useset', UseSet.cuse.values().toString());
+            // console.log('generate', generate.values().toString());
+            // console.log('---')
+
             if (!!currentNode.scope) {
                 currentNode.scope.lastReachIns = new Set(input);
             }
@@ -359,6 +369,7 @@ DefUseAnalyzer.prototype.doAnalysis = function (model) {
         // await varDefSet.forEach(o => console.log(o.toString()));
         // console.log(util.inspect(varDefSet, false, null, true /* enable colors */))
         node.reachIns = new Set(varDefSet);
+        
   
     });
     reachDefinitions.outputs.forEach(function (varDefSet, node) {
@@ -426,7 +437,7 @@ function getNonReachableVarDefs(vardefSet, scope) {
 
 
 /**
- * Find set of variable and  corresponding definitions which should be killed
+ * Find set of variable and corresponding definitions which should be killed
  * @param {FlowNode} cfgNode
  * @returns {Set}
  */
@@ -442,6 +453,7 @@ DefUseAnalyzer.prototype.findKILLSet = function (cfgNode) {
         } else {
             walkes(cfgNode.astNode, {
                 Program: function () {},
+                ClassDeclaration: function () {},
                 FunctionDeclaration: function () {},
                 FunctionExpression: function () {},
                 AssignmentExpression: function (node, recurse) {
@@ -467,9 +479,9 @@ DefUseAnalyzer.prototype.findKILLSet = function (cfgNode) {
                 },
                 SwitchCase: function () {},
                 VariableDeclaration: function (node, recurse) {
-                    node.declarations.forEach(function (declarator) {
+                    for(let declarator of node.declarations){
                         recurse(declarator);
-                    });
+                    };
                 },
                 VariableDeclarator: function (node) {
                     killedVarDef = Set.union(
@@ -494,100 +506,101 @@ DefUseAnalyzer.prototype.findKILLSet = function (cfgNode) {
  * @param {FlowNode} cfgNode
  * @returns {Set}
  */
- // TODO: add a GEN RULE for IMPORT / Require commands??
 DefUseAnalyzer.prototype.findGENSet = function (cfgNode) {
     'use strict';
     var generatedVarDef = new Set();
     var currentScope = cfgNode.scope;
     var isFunctionArgument = false; // denotes if 'def' is function argument or a part of the function body 
+    
+    if(cfgNode.astNode){
+        walkes(cfgNode.astNode, {
+            // Program: function () {},
+            Program: function(node, recurse){
+                for(let n of node.body){
+                    recurse(n);
+                }
 
-    walkes(cfgNode.astNode, {
-        // Program: function () {},
-        Program: function(node, recurse){
-            console.log("DEFFUSE");
-            node.body.forEach(n=> recurse(n));
-        },
-        FunctionDeclaration: function (node) {
-            console.log("DEFFUSE");
-            if(node.params && node.params.length){
-                for(var i=0; i< node.params.length; i++){
-                    var param = node.params[i];
-                    if(param && param.name){
-                        var definedVar = currentScope.getVariable(param.name);
-                        console.log("DEFFUSE", definedVar);
-                        if(!!definedVar){
-                            generatedVarDef.add(varDefFactory.create(definedVar, defFactory.createLiteralDef(cfgNode, node.range)));
+            },
+            FunctionDeclaration: function (node) {
+                if(node.params && node.params.length){
+                    for(var i=0; i< node.params.length; i++){
+                        var param = node.params[i];
+                        if(param && param.name){
+                            var definedVar = currentScope.getVariable(param.name);
+                            if(!!definedVar){
+                                generatedVarDef.add(varDefFactory.create(definedVar, defFactory.createLiteralDef(cfgNode, node.range)));
+                            }
                         }
                     }
                 }
-            }
-        },
-        FunctionExpression: function (node) {
-            if(node.params && node.params.length){
-                for(var i=0; i< node.params.length; i++){
-                    var param = node.params[i];
-                    if(param && param.name){
-                        var definedVar = currentScope.getVariable(param.name);
-                        if(!!definedVar){
-                            generatedVarDef.add(varDefFactory.create(definedVar, defFactory.createLiteralDef(cfgNode, node.range)));
+            },
+            FunctionExpression: function (node) {
+                if(node.params && node.params.length){
+                    for(var i=0; i< node.params.length; i++){
+                        var param = node.params[i];
+                        if(param && param.name){
+                            var definedVar = currentScope.getVariable(param.name);
+                            if(!!definedVar){
+                                generatedVarDef.add(varDefFactory.create(definedVar, defFactory.createLiteralDef(cfgNode, node.range)));
+                            }
                         }
                     }
                 }
-            }
-        },
-        AssignmentExpression: function (node, recurse) {
-            var definedVar = (node.left.type === 'MemberExpression') ? currentScope.getVariable(node.left.object.name) : currentScope.getVariable(node.left.name);
-            if (!!definedVar) {
-                if (node.right.type === 'FunctionExpression') {
-                    generatedVarDef.add(varDefFactory.create(definedVar, defFactory.createFunctionDef(cfgNode, node.right.range)));
-                } else {
-                    generatedVarDef.add(varDefFactory.create(definedVar, defFactory.createLiteralDef(cfgNode, node.right.range)));
-                    if (node.right.type === 'AssignmentExpression' || node.right.type === 'UpdateExpression') {
-                        recurse(node.right);
-                    }
-                }
-            }
-        },
-        UpdateExpression: function (node) {
-            var definedVar = currentScope.getVariable(node.argument.name);
-            if (!!definedVar) {
-                generatedVarDef.add(varDefFactory.create(definedVar, defFactory.createLiteralDef(cfgNode, node.range)));
-            }
-        },
-        CallExpression: function (node) {
-            if(node.callee.type === 'MemberExpression' && node.callee.object.type == 'Identifier'){
-                var property_name = node.callee.property.name;
-                if(property_name && (property_name.includes('append') || property_name.includes('remove') || property_name === 'splice' ||
-                   property_name === 'push' || property_name === 'pop' || property_name === 'shift' || property_name === 'unshift')){
-                    var definedVar = currentScope.getVariable(node.callee.object.name);
-                    if (!!definedVar) {
-                        generatedVarDef.add(varDefFactory.create(definedVar, defFactory.createLiteralDef(cfgNode, node.range)));
-                    }   
-                }
-            }
-        },
-        VariableDeclaration: function (node, recurse) {
-            node.declarations.forEach(function (declarator) {
-                recurse(declarator);
-            });
-        },
-        VariableDeclarator: function (node, recurse) {
-            var definedVar = currentScope.getVariable(node.id.name);
-            if (!!definedVar) {
-                if (!!node.init) {
-                    if (node.init.type === 'FunctionExpression') {
-                        generatedVarDef.add(varDefFactory.create(definedVar, defFactory.createFunctionDef(cfgNode, node.init.range)));
+            },
+            AssignmentExpression: function (node, recurse) {
+                var definedVar = (node.left.type === 'MemberExpression') ? currentScope.getVariable(node.left.object.name) : currentScope.getVariable(node.left.name);
+                if (!!definedVar) {
+                    if (node.right.type === 'FunctionExpression') {
+                        generatedVarDef.add(varDefFactory.create(definedVar, defFactory.createFunctionDef(cfgNode, node.right.range)));
                     } else {
-                        generatedVarDef.add(varDefFactory.create(definedVar, defFactory.createLiteralDef(cfgNode, node.init.range)));
-                        recurse(node.init);
+                        generatedVarDef.add(varDefFactory.create(definedVar, defFactory.createLiteralDef(cfgNode, node.right.range)));
+                        if (node.right.type === 'AssignmentExpression' || node.right.type === 'UpdateExpression') {
+                            recurse(node.right);
+                        }
                     }
-                } else {
-                    generatedVarDef.add(varDefFactory.create(definedVar, defFactory.createUndefinedDef(cfgNode, node.range)));
                 }
-            }
-        },
-        SwitchCase: function () {}
-    });
+            },
+            UpdateExpression: function (node) {
+                var definedVar = currentScope.getVariable(node.argument.name);
+                if (!!definedVar) {
+                    generatedVarDef.add(varDefFactory.create(definedVar, defFactory.createLiteralDef(cfgNode, node.range)));
+                }
+            },
+            CallExpression: function (node) {
+                if(node.callee.type === 'MemberExpression' && node.callee.object.type == 'Identifier'){
+                    var property_name = node.callee.property.name;
+                    if(property_name && (property_name.includes('append') || property_name.includes('remove') || property_name === 'splice' ||
+                       property_name === 'push' || property_name === 'pop' || property_name === 'shift' || property_name === 'unshift')){
+                        var definedVar = currentScope.getVariable(node.callee.object.name);
+                        if (!!definedVar) {
+                            generatedVarDef.add(varDefFactory.create(definedVar, defFactory.createLiteralDef(cfgNode, node.range)));
+                        }   
+                    }
+                }
+            },
+            VariableDeclaration: function (node, recurse) {
+                for(let declarator of  node.declarations){
+                    recurse(declarator);
+                }
+            },
+            VariableDeclarator: function (node, recurse) {
+                var definedVar = currentScope.getVariable(node.id.name);
+                if (!!definedVar) {
+                    if (!!node.init) {
+                        if (node.init.type === 'FunctionExpression') {
+                            generatedVarDef.add(varDefFactory.create(definedVar, defFactory.createFunctionDef(cfgNode, node.init.range)));
+                        } else {
+                            generatedVarDef.add(varDefFactory.create(definedVar, defFactory.createLiteralDef(cfgNode, node.init.range)));
+                            recurse(node.init);
+                        }
+                    } else {
+                        generatedVarDef.add(varDefFactory.create(definedVar, defFactory.createUndefinedDef(cfgNode, node.range)));
+                    }
+                }
+            },
+            SwitchCase: function () {}
+        });
+    }
     cfgNode.generate = generatedVarDef;
     return generatedVarDef;
 };
@@ -603,8 +616,10 @@ DefUseAnalyzer.prototype.findUSESet = function (cfgNode) {
     'use strict';
     var cuseVars = new Set(), puseVars = new Set(),  isPUse = false;
     var currentScope = cfgNode.scope;
+
     walkes(cfgNode.astNode, {
         Program: function () {},
+        ClassDeclaration: function () {},
         FunctionDeclaration: function () {},
         FunctionExpression: function () {},
         AssignmentExpression: function (node, recurse) {
@@ -627,15 +642,22 @@ DefUseAnalyzer.prototype.findUSESet = function (cfgNode) {
             isPUse = false;
         },
         CallExpression: function (node, recurse) {
+            // console.log(node)
             if (!!cfgNode.true && !!cfgNode.false) {
                 isPUse = true;
             }
             recurse(node.callee);
             isPUse = false;
-            node["arguments"].forEach(recurse);
+            
+            for(let arg of node.arguments){
+                recurse(arg);
+            }
+
         },
         VariableDeclaration: function (node, recurse) {
-            node.declarations.forEach(recurse);
+            for(let decl of node.declarations){
+                recurse(decl);
+            }
         },
         VariableDeclarator: function (node, recurse) {
             if (!!node.init && node.init.type === 'AssignmentExpression') {
@@ -648,6 +670,9 @@ DefUseAnalyzer.prototype.findUSESet = function (cfgNode) {
         },
         NewExpression: function (node, recurse) {
             recurse(node.callee);
+            for(let arg of node.arguments){
+                recurse(arg);
+            }
         },
         UnaryExpression: function (node, recurse) {
             if (!!cfgNode.true && !!cfgNode.false) {

@@ -161,6 +161,11 @@ async function initializeModelsFromSource(scriptName, code, language, preprocess
 
 	console.log('[-] finished adding node ids to AST');
 
+	console.log('[-] indexing LoCs to nodes');
+	let scriptFileName = scriptName.split('/').pop();
+	await graphBuilder.generateLineToMapIndex(ast, scriptFileName);
+	console.log('[-] finished indexing LoCs');
+
 }
 
 
@@ -187,8 +192,13 @@ async function buildInitializedModels(){
 	});
 
 	// build CFG and PDG
-	await GraphAnalyzer.buildIntraProceduralModelsOfEachPageModels()
-	await GraphAnalyzer.buildInterProceduralModelsOfEachPageModels()
+	let timeoutPDG = false;
+	let timeoutTask1 = await GraphAnalyzer.buildIntraProceduralModelsOfEachPageModels();
+	let timeoutTask2 = await GraphAnalyzer.buildInterProceduralModelsOfEachPageModels();
+	if(timeoutTask1 || timeoutTask2){
+		timeoutPDG = true;
+	}
+	return timeoutPDG;
 
 }
 
@@ -197,6 +207,7 @@ async function buildInitializedModels(){
  * Builds the rest of the HGP models (ERDDG, IPCG, Semantic Types)
  * and returns a graph that is sutiable for exporting the node and relationship 
  * CSV files.
+ * @param {dict} options
  * @returns {dict} HPG nodes and edges
  */
 async function buildHPG(options){
@@ -208,7 +219,19 @@ async function buildHPG(options){
 	return graph;
 }
 
+/**
+ * Returns the dynamic edges to be added by foxhound tainflows and the set of node semantic types
+ * @param {dict} taintflows from Foxhound
+ * @param {dict} scripts_mapping json needed to map foxhound script names to the crawler-chosen names 
+ * @param {dict} sourcemaps 
+ * @returns {dict} HPG semantic types for nodes and dynamic edges
+ */
+async function getDynamicFoxhoundEdgesAndSemTypes(taintflows, scripts_mapping, sourcemaps){
 
+	// map dynamic foxhound taintflows to edges between nodes of the property graph and semantic types
+	var foxhound_data = await graphBuilder.mapFoxhoundTaintFlowsToGraph(taintflows, scripts_mapping, sourcemaps);
+	return foxhound_data;
+}
 
 
 module.exports = {
@@ -216,4 +239,5 @@ module.exports = {
   createASTFromSource: createASTFromSource,
   buildInitializedModels: buildInitializedModels,
   buildHPG: buildHPG,
+  getDynamicFoxhoundEdgesAndSemTypes:getDynamicFoxhoundEdgesAndSemTypes,
 };

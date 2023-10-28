@@ -212,7 +212,10 @@ function getRelsHeaderCSVLine(){
     return `FromId:START_ID${d}ToId:END_ID${d}RelationLabel:TYPE${d}RelationType${d}Arguments\n`
 }
 
-function getNodeCSVLine(node){
+const uniqueItems = (arr) => [...new Set(arr)];
+
+function getNodeCSVLine(node, foxhound_data_nodes){
+
     let d = constantsModule.outputCSVDelimiter;
 
     let id = JSON.stringify(node._id);
@@ -265,7 +268,15 @@ function getNodeCSVLine(node){
         nodeLabel = nodeLabel+ ';CFGNode'
     }
     if(semanticType && semanticType.length > 0){
-        nodeLabel = nodeLabel + ";" + semanticType.join(";") // store semantic types as labels too for indexing in neo4j
+        nodeLabel = nodeLabel + ";" + semanticType.join(";"); // store semantic types as labels too for indexing in neo4j
+    }
+
+    var dyanmicSemTypes = [];
+    if(node._id in foxhound_data_nodes){
+        dyanmicSemTypes = uniqueItems(foxhound_data_nodes[node._id]);
+    }
+    if(dyanmicSemTypes && dyanmicSemTypes.length > 0){
+        nodeLabel = nodeLabel + ";" + dyanmicSemTypes.join(";");
     }
 
     let line =  "" + id + `${d}` +
@@ -305,6 +316,41 @@ function getRelsCSVLine(rel){
  * @param {string} graphId
  * @param {string} outputFolder
  */
+GraphExporter.prototype.exportToCSVDynamic= function (graph, dynamic_graph, graphId, outputFolder) {
+    "use strict";
+
+    const nodesFile = pathModule.join(outputFolder, constantsModule.ASTnodesFile);
+    const relsFile = pathModule.join(outputFolder, constantsModule.ASTrelationsFile);
+    const relsFileDynamic = pathModule.join(outputFolder, constantsModule.ASTrelationsFileDynamic);
+
+    var fpNodes = fs.openSync(nodesFile, 'w'); 
+    var fpEdges = fs.openSync(relsFile, 'w'); 
+    var fpEdgesDynamic = fs.openSync(relsFileDynamic, 'w'); 
+
+
+    fs.writeSync(fpNodes, getNodesHeaderCSVLine());
+    for(let n_i of graph.nodes){
+         fs.writeSync(fpNodes, getNodeCSVLine(n_i, dynamic_graph.nodes)); 
+    }
+
+    fs.writeSync(fpEdges, getRelsHeaderCSVLine());
+    for(let e_i of graph.edges){
+         fs.writeSync(fpEdges, getRelsCSVLine(e_i)); 
+    }
+
+    fs.writeSync(fpEdgesDynamic, getRelsHeaderCSVLine());
+    for(let e_i of dynamic_graph.edges){
+         fs.writeSync(fpEdgesDynamic, getRelsCSVLine(e_i)); 
+    }
+
+};
+
+/**
+ * Export property graph to the CSV format (nodes.csv, rels.csv)
+ * @param {dict} graph
+ * @param {string} graphId
+ * @param {string} outputFolder
+ */
 GraphExporter.prototype.exportToCSV= function (graph, graphId, outputFolder) {
     "use strict";
 
@@ -316,14 +362,14 @@ GraphExporter.prototype.exportToCSV= function (graph, graphId, outputFolder) {
 
 
     fs.writeSync(fpNodes, getNodesHeaderCSVLine());
-    graph.nodes.forEach(n_i => {
-         fs.writeSync(fpNodes, getNodeCSVLine(n_i)); 
-    })
+    for(let n_i of graph.nodes){
+         fs.writeSync(fpNodes, getNodeCSVLine(n_i, [])); 
+    }
 
     fs.writeSync(fpEdges, getRelsHeaderCSVLine());
-    graph.edges.forEach( e_i => {
+    for(let e_i of graph.edges){
          fs.writeSync(fpEdges, getRelsCSVLine(e_i)); 
-    })
+    }
 
 };
 
@@ -331,25 +377,47 @@ GraphExporter.prototype.exportToCSV= function (graph, graphId, outputFolder) {
 GraphExporter.prototype.compressGraph = function (webpageFolder){
 
     const nodesFile = pathModule.join(webpageFolder, constantsModule.ASTnodesFile);
-    const relsFile = pathModule.join(webpageFolder, constantsModule.ASTrelationsFile)
+    const relsFile = pathModule.join(webpageFolder, constantsModule.ASTrelationsFile);
+    const relsFileDynamic = pathModule.join(webpageFolder, constantsModule.ASTrelationsFileDynamic);
 
+
+    // remove if a compressed version exists already
+    if(fs.existsSync(nodesFile) && fs.existsSync(nodesFile + '.gz')){
+        fs.rmSync(nodesFile + '.gz', { force: true, });
+    }
+    if(fs.existsSync(relsFile) && fs.existsSync(relsFile + '.gz')){
+        fs.rmSync(relsFile + '.gz', { force: true, });
+    }
+    if(fs.existsSync(relsFileDynamic) && fs.existsSync(relsFileDynamic + '.gz')){
+        fs.rmSync(relsFileDynamic + '.gz', { force: true, });
+    }
+    
+    // recompress the files
     let cmd = `pigz ${nodesFile}`;
     execSync(cmd);
 
     cmd = `pigz ${relsFile}`;
+    execSync(cmd);
+
+    cmd = `pigz ${relsFileDynamic}`;
     execSync(cmd);
 }
 
 GraphExporter.prototype.decompressGraph = function (webpageFolder){
 
     const nodesFile = pathModule.join(webpageFolder, constantsModule.ASTnodesFile);
-    const relsFile = pathModule.join(webpageFolder, constantsModule.ASTrelationsFile)
+    const relsFile = pathModule.join(webpageFolder, constantsModule.ASTrelationsFile);
+    const relsFileDynamic = pathModule.join(webpageFolder, constantsModule.ASTrelationsFileDynamic);
 
     let cmd = `pigz -d ${nodesFile}`;
     execSync(cmd);
 
     cmd = `pigz -d ${relsFile}`;
     execSync(cmd);
+
+    cmd = `pigz -d ${relsFileDynamic}`;
+    execSync(cmd);
+
 }
 
 

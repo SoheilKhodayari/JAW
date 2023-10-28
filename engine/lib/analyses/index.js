@@ -27,8 +27,10 @@ exports.examples = require('./examples');
  */
 function worklist(cfg, transferFunction, options) {
 	'use strict';
-	if(!(cfg && cfg.length)) return;
-
+	if(!(cfg && cfg.length)) {
+		console.log('[warning] worklist algorithm did not found a valid cfg!')
+		return;
+	}
 	options = options || {};
 	var direction = options.direction || 'forward';
 	var merge = options.merge || worklist.merge(Set.union);

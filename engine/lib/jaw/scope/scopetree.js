@@ -57,9 +57,9 @@ function recursivelyGetScopeText(currentScope, level) {
 	if (Scope.isScope(currentScope)) {
 		representation += (currentLevel === 0)? '' : '\n';
 		representation += getScopeRepresentation(currentScope, currentLevel);
-		currentScope.children.forEach(function (val) {
+		for(let val of currentScope.children){
 			representation += recursivelyGetScopeText(val, currentLevel + 1);
-		});
+		}
 	}
 	return representation;
 }
@@ -150,36 +150,45 @@ ScopeTree.prototype.buildScopeTree = function (ast) {
 	var currentScope = internal(theScopeTree)._root;
 
 	function astProgramHandler(node, recurse) {
-		node.body.forEach(function (elem) {
+		for(let elem of node.body){
 			currentScope = internal(theScopeTree)._root;
-			recurse(elem);
-		});
+			recurse(elem);	
+		}
 	}
 
 	function astFunctionDeclarationHandler(node, recurse) {
 		var functionScope = factoryScope.createFunctionScope(node, node.id.name);
 		currentScope.addChild(functionScope);
 		addScope(theScopeTree, functionScope);
-		node.body.body.forEach(function (astNode) {
+		
+		for(let astNode of node.body.body){
 			currentScope = functionScope;
 			recurse(astNode);
-		});
+		}
+
 	}
 
 	function astFunctionExpressionHandler(node, recurse) {
-		var anonymousFunctionScope = factoryScope.createAnonymousFunctionScope(node);
-		currentScope.addChild(anonymousFunctionScope);
-		addScope(theScopeTree, anonymousFunctionScope);
-		node.body.body.forEach(function (astNode) {
-			currentScope = anonymousFunctionScope;
-			recurse(astNode);
-		});
+
+		if(node.body.body && node.body.body.length){
+
+			var anonymousFunctionScope = factoryScope.createAnonymousFunctionScope(node);
+			currentScope.addChild(anonymousFunctionScope);
+			addScope(theScopeTree, anonymousFunctionScope);
+		
+			for(let astNode of node.body.body){
+				currentScope = anonymousFunctionScope;
+				recurse(astNode);
+			};
+
+		}
 	}
 
     walkes(ast, {
         Program: astProgramHandler,
         FunctionDeclaration: astFunctionDeclarationHandler,
-        FunctionExpression: astFunctionExpressionHandler
+        FunctionExpression: astFunctionExpressionHandler,
+        ArrowFunctionExpression: astFunctionExpressionHandler,
     });
 };
 

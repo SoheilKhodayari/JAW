@@ -27,14 +27,17 @@ import os, sys
 
 BASE_DIR= os.path.dirname(os.path.realpath(__file__))
 DATA_DIR = os.path.join(BASE_DIR, "data")
-
+INPUT_DIR = os.path.join(BASE_DIR, "input")
+OUTPUTS_DIR = os.path.join(BASE_DIR, "outputs")
+PATTERN_DIR = os.path.join(OUTPUTS_DIR, "patterns")
+DATA_DIR_UNREPONSIVE_DOMAINS = os.path.join(DATA_DIR, "unresponsive") 
 
 
 # ------------------------------------------------------------------------------------------ #
-# 		Neo4j-related Config
+# 		Neo4j Config
 # ------------------------------------------------------------------------------------------ #
 
-# neo4j credential
+# neo4j credentials
 NEO4J_USER = "neo4j"
 if os.getenv('NEO4J_PASS') is not None:
 	NEO4J_PASS = os.getenv('NEO4J_PASS')
@@ -49,20 +52,27 @@ if os.getenv('NEO4J_VERSION') is not None:
 else:
 	NEO4J_VERSION = NEOJ_VERSION_4X
 
+# ports
+NEO4J_HTTP_PORT = '7474'
+NEO4J_BOLT_PORT = '7687'
 
-# browser view on port 7474 with HTTP!
-NEO4J_CONN_HTTP_STRING = "http://127.0.0.1:7474"
-# bolt connections
-NEO4J_CONN_STRING = "bolt://127.0.0.1:7687"
+# http connection string
+NEO4J_CONN_HTTP_STRING = "http://127.0.0.1:%s"%str(NEO4J_HTTP_PORT)
+# bolt connection string
+NEO4J_CONN_STRING = "bolt://127.0.0.1:%s"%str(NEO4J_BOLT_PORT)
 # NeoModel connection string
-NEOMODEL_NEO4J_CONN_STRING = "bolt://%s:%s@127.0.0.1:7687"%(NEO4J_USER, NEO4J_PASS)
-# settings for state scripts
-STATES_SCRIPT_FILE_NAME = "Auth"
+NEOMODEL_NEO4J_CONN_STRING = "bolt://%s:%s@127.0.0.1:%s"%(NEO4J_USER, NEO4J_PASS, NEO4J_BOLT_PORT)
+
+# use docker for neo4j 
+NEO4J_USE_DOCKER = True
+
 # neo4j graph csv file names
 NODE_INPUT_FILE_NAME = 'nodes.csv'
 RELS_INPUT_FILE_NAME = 'rels.csv'
+RELS_DYNAMIC_INPUT_FILE_NAME = 'rels_dynamic.csv'
 
-
+# ineo neo4j manager bin
+INEO_BIN = os.path.join(os.path.join(os.path.join(BASE_DIR, "ineo"), "bin"), "ineo")
 
 
 # PLATFORMS = {
@@ -85,6 +95,14 @@ RELS_INPUT_FILE_NAME = 'rels.csv'
 
 
 # ------------------------------------------------------------------------------------------ #
+# 		CRAWLER
+# ------------------------------------------------------------------------------------------ #
+
+# settings for state scripts
+STATES_SCRIPT_FILE_NAME = "Auth"
+
+
+# ------------------------------------------------------------------------------------------ #
 # 		CLI
 # ------------------------------------------------------------------------------------------ #
 
@@ -96,7 +114,7 @@ STATIC_ANALYZER_CLI_DRIVER_PATH = os.path.join(os.path.join(BASE_DIR, "engine"),
 # ------------------------------------------------------------------------------------------ #
 
 # local arguments tag for functions
-LOCAL_ARGUMENT_TAG_FOR_FUNC = 'LOCAL_FUNCTION_ARGUMENT'
+LOCAL_ARGUMENT_TAG_FOR_FUNC = 'FUNCTION_ARGUMENT'
 FUNCTION_CALL_DEFINITION_BODY = '<< FUNCTION_CALL_DEFINITION >>'
 # esprima program node
 PROGRAM_NODE_INDEX = '1'
@@ -207,6 +225,7 @@ JS_EVENT_NAMES = [
 JS_DEFINED_VARS = list(set([
 	'window',
 	'document',
+	'location',
 	'localStorage',
 	'sessionStorage',
 	'indexOf',
@@ -216,6 +235,7 @@ JS_DEFINED_VARS = list(set([
 	'jQuery',
 	'hasOwnProperty',
 	'push',
+	'then',
 	
 	# Value Properties
 	"Infinity",

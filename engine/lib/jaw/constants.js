@@ -189,6 +189,11 @@ constantsModule.eventExists = eventExists;
 constantsModule.esprimaCFGLevelNodeTypes = esprimaCFGLevelNodeTypes;
 
 
+/* PDG generation timeout budget in mili-seconds (default: 10 mins) */
+const timeoutPDGGeneration = 10 * 60 * 1000; 
+constantsModule.timeoutPDGGeneration = timeoutPDGGeneration;
+
+
 /**
  * Sets 'MemberExpression' request-sending function identifiers that gets a URL as parameter
  * @Note fetch is not MemberExpression, hence handled separately
@@ -211,6 +216,7 @@ constantsModule.outputCSVDelimiter = '¿';
  */
 constantsModule.ASTnodesFile = "nodes.csv";
 constantsModule.ASTrelationsFile = "rels.csv";
+constantsModule.ASTrelationsFileDynamic = "rels_dynamic.csv";
 
 /**
  * Set debug mode
@@ -221,7 +227,7 @@ constantsModule.DEBUG = false;
 constantsModule.devDEBUG = false
 
 
-constantsModule.staticModelPrintPhases = false;
+constantsModule.staticModelPrintPhases = true;
 
 // tolerant mode: experimental
 constantsModule.tolerantMode = false;

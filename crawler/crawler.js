@@ -41,6 +41,7 @@ const BROWSER_LOG = false;
 // additional data that the crawler should store 
 const COLLECT_AND_CREATE_PAGE = true;
 const COLLECT_REQUESTS = true;
+const COLLECT_RESPONSE_HEADERS = true; 
 const COLLECT_WEB_STORAGE = true;
 const COLLECT_COOKIES = true;
 const COLLECT_DOM_SNAPSHOT = true;
@@ -160,7 +161,7 @@ function directoryExists(url){
  * @param dataDirectory: string of the base directory to store the data for the current website.
  * @return stores the input webpage data and returns the absolute folder name where the data is saved.
 **/
-function savePageData(url, html, scripts, cookies, webStorageData, httpRequests, dataDirectory){
+function savePageData(url, html, scripts, cookies, webStorageData, httpRequests, httpResponses, dataDirectory){
 
 
 	DEBUG && console.log("[IO] started saving webpage.")
@@ -195,7 +196,7 @@ function savePageData(url, html, scripts, cookies, webStorageData, httpRequests,
 		COLLECT_COOKIES     && fs.writeFileSync(pathModule.join(webpageFolder, "cookies.json"), JSON.stringify(cookies, null, 4));
 		COLLECT_WEB_STORAGE && fs.writeFileSync(pathModule.join(webpageFolder, "webstorage.json"), JSON.stringify(webStorageData, null, 4));
 		COLLECT_REQUESTS && fs.writeFileSync(pathModule.join(webpageFolder, "requests.json"), JSON.stringify(httpRequests, null, 4));
-
+		COLLECT_RESPONSE_HEADERS  && fs.writeFileSync(pathModule.join(webpageFolder, "responses.json"), JSON.stringify(httpResponses, null, 4));
 		DEBUG && console.log("[IO] finished saving webpage.");
 
 	}
@@ -267,9 +268,20 @@ async function crawlWebsite(browser, url, domain, frontier, dataDirectory, debug
 	});
 
 
-	// set the request interception to true and collect the HTTP requests
-	let httpRequests = [];
+	// set the request interception to true and collect the HTTP requests (puppeteer only)
 	await page.setRequestInterception(true);
+
+
+
+	let httpResponses = {};
+    page.on('response', async response => {
+        const url = response.url();
+        httpResponses[''+url] = await response.headers();
+    });
+
+
+	let httpRequests = [];
+
 	page.on('request', (request) => {
 
 		let requestUrl = request.url();
@@ -336,7 +348,7 @@ async function crawlWebsite(browser, url, domain, frontier, dataDirectory, debug
 
 
 		// save the collected data 
-		const webpageFolder = await savePageData(url, html, scripts, cookies, webStorageData, httpRequests, dataDirectory);
+		const webpageFolder = await savePageData(url, html, scripts, cookies, webStorageData, httpRequests, httpResponses, dataDirectory);
 
 
 
@@ -457,6 +469,7 @@ async function launch_puppeteer(headless_mode){
     const processArgv = argv(process.argv.slice(2));
     const config = processArgv({}) || {};
     const url = config.seedurl;
+    const overwrite_results = (config.overwrite && config.overwrite.toLowerCase() === 'true')? true: false;
 
     if(config.maxurls){
     	maxVisitedUrls = config.maxurls;
@@ -466,7 +479,7 @@ async function launch_puppeteer(headless_mode){
 	const wait_before_next_url = 0; // 5 * 60000; // wait 5 minutes
 
 
-	if(directoryExists(url)){
+	if(!overwrite_results && directoryExists(url)){
 		DEBUG && console.log('site already crawled: '+ url);
 		return 1;
 	}

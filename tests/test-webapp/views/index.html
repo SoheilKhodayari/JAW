@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>test webapp</title>
+</head>
+<body>
+
+
+<h2> JAW: Express Test Webapp</h2>
+<div id=x> </div>
+<!-- <script src="https://code.jquery.com/jquery-3.6.0.min.js" type="text/javascript"></script> -->
+<script> document.getElementById('x').innerHTML = '<form>\n<input name=y>\n<input name=z>\n</form>'; </script>
+<script type="text/javascript">
+
+
+	const DEBUG = true;
+	
+	/* test names */
+	const TEST_XSS = "XSS";
+	const TEST_WEBSOCK = "websocket";
+	const TEST_FETCH = "fetch";
+	const TEST_XMLHTTP = "XMLHttpRequest";
+	const TEST_HTTPPUSH = "push";
+	const TEST_SSE = "server-side-events";
+	const TEST_AJAX = "ajax";
+	const TEST_WIN_OPEN = "window-open";
+
+	/* test enable or not by default */
+	var IS_TEST_ENABLED = {
+		[TEST_XSS]: false,
+		[TEST_WEBSOCK]: true,
+		[TEST_FETCH]: true,
+		[TEST_XMLHTTP]: true,
+		[TEST_HTTPPUSH]: true,
+		[TEST_SSE]: true,
+		[TEST_AJAX]: false,
+		[TEST_WIN_OPEN]: false,
+	}
+
+	function is_test_enabled(test_name){
+
+		if(test_name in IS_TEST_ENABLED){
+				return IS_TEST_ENABLED[test_name];
+		}
+
+		return false;
+	}
+
+	if (is_test_enabled(TEST_XSS)) {
+		location.hash = "hello";
+		document.write(location.hash.slice(1));
+	}
+
+	// ------------------------------------------------------------ //
+	// 	websocket
+	// ------------------------------------------------------------ //
+
+	if(is_test_enabled(TEST_WEBSOCK)){
+
+		/* test URL from https://www.piesocket.com/websocket-tester */
+		window.location.hash = 'wss://demo.piesocket.com/v3/channel_1?api_key=VCXCEuvhGcBDP7XhiJJUDvR1e1D3eiVjgZ9VRiaV&notify_self';
+		var source = window.location.hash.slice(1);
+
+
+
+		DEBUG && console.log('opening websocket connection...');
+		// Taint Fails: The sink WebSocket(URL) is not currently instrumented in Foxhound
+		let socket = new WebSocket(source); 
+
+		socket.onopen = function(e){ 
+			DEBUG && console.log('web socket onopen event fired successfully.');
+			// Taint Passes: WebSocketInstance.send(string)
+			socket.send(source);
+		}
+	}
+	
+
+	// ------------------------------------------------------------ //
+	// 	fetch()
+	// ------------------------------------------------------------ //
+	
+	if(is_test_enabled(TEST_FETCH)){
+
+		window.location.hash = 'http://127.0.0.1:6789';
+		source = window.location.hash.slice(1);
+
+
+		DEBUG && console.log('sending async request with the fetch() API.');
+		// Taint Passes: Fetch(URL)
+				fetch(source).then(resp => console.log(resp));
+				// Taint check request body taint source
+			fetch("http://127.0.0.1:6789", { method: 'POST', body: source }).then(resp => console.log(resp));
+	}
+
+
+	// ------------------------------------------------------------ //
+	// 	XMLHttpRequest()
+	// ------------------------------------------------------------ //
+
+
+	if(is_test_enabled(TEST_XMLHTTP)){
+
+		window.location.hash = 'http://127.0.0.1:6789';
+		source = window.location.hash.slice(1);
+
+		function reqListener () {
+			console.log(this.responseText);
+		}
+
+		const req = new XMLHttpRequest();
+		req.addEventListener("load", reqListener);
+
+		// Taint Passes: XMLHttpRequest.open(url)
+		req.open("GET", source);
+
+		req.send(source);
+
+	}
+
+	// ------------------------------------------------------------ //
+	// 	.ajax()
+	// ------------------------------------------------------------ //
+	if(is_test_enabled(TEST_AJAX)){
+	
+		window.location.hash = 'http://127.0.0.1:6789';
+		source = window.location.hash.slice(1);
+
+		$.ajax({
+		    url : source, // attacker-controlled
+		    type: "POST",
+		    data : {},
+		    success: function(data, textStatus, jqXHR){ /* ...*/ },
+		    error: function (jqXHR, textStatus, errorThrown){ /* ...*/ }
+		});
+
+	}
+	// ------------------------------------------------------------ //
+	// 	window.open)_
+	// ------------------------------------------------------------ //
+	if(is_test_enabled(TEST_WIN_OPEN)){
+	
+		window.location.hash = 'http://127.0.0.1:6789';
+		source = window.location.hash.slice(1);
+		var win = window.open(source);
+	}
+
+
+
+</script>
+
+<script type="text/javascript">
+	// ------------------------------------------------------------ //
+	// 	Server-side Events source and sink
+	// ------------------------------------------------------------ //
+	if(is_test_enabled(TEST_SSE)){
+		
+		// https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events/Using_server-sent_events	
+		window.location.hash = '//127.0.0.1:6789';
+		source = window.location.hash.slice(1);
+
+		DEBUG && console.log('opening SSE connection...');
+
+		// Taint Passes: new EventSource(source)
+		const evtSource = new EventSource(source, { withCredentials: true } );
+		evtSource.onmessage = (event) => {
+			console.log('SSE message', event.data);
+		}
+
+	}
+
+	// ------------------------------------------------------------ //
+	// 	HTTP Push API
+	// ------------------------------------------------------------ //
+	if(is_test_enabled(TEST_HTTPPUSH)){
+		window.location.hash = 'register';
+		var source = './' + window.location.hash.slice(1);
+	  	console.log('SW url:', source);
+		// First get permission from user to send notifications
+		if (!("Notification" in window)) {
+			// Check if the browser supports notifications
+			alert("This browser does not support desktop notification");
+		} else if (Notification.permission === "granted") {
+			// Check whether notification permissions have already been granted;
+			// if so, create a notification
+			const notification = new Notification("Hi there!");
+			// …
+		} else if (Notification.permission !== "denied") {
+			// We need to ask the user for permission
+			Notification.requestPermission().then((permission) => {
+				// If the user accepts, let's create a notification
+				if (permission === "granted") {
+				const notification = new Notification("Hi there!");
+				}
+			});
+		}
+
+
+		console.log("Registering service worker");
+		navigator.serviceWorker.register('js/service-worker.js')
+		.then(reg => {
+			console.log("Service worker registered", reg);
+			reg.pushManager.getSubscription()
+			.then(subscription => {
+				let isSubscribed = !(subscription === null);
+				if (isSubscribed) {
+				console.log('User IS subscribed.');
+				} else {
+				console.log('User is NOT subscribed.');
+				reg.pushManager.subscribe()
+					.then(subscription => {
+					console.log("Got subscription");
+					// Send the subscription details to the server using the Fetch API.
+					fetch(source, {
+						method: 'post',
+						headers: {
+						'Content-type': 'application/json'
+						},
+						body: JSON.stringify({
+						subscription: subscription
+						}),
+					});
+					})
+				}
+			});
+		});
+	}
+
+
+</script>
+
+
+</body>
+</html>

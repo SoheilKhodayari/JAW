@@ -33,6 +33,8 @@ import hpg_neo4j.db_utility as DU
 import constants as constantsModule
 import neomodel
 import jsbeautifier
+import functools
+import json
 
 ## ------------------------------------------------------------------------------- ## 
 ## Utility Functions
@@ -332,6 +334,59 @@ def get_this_pointer_resolution(tx, this_node):
 	return out
 
 
+def is_variable_a_function_argument_in_current_scope(tx, varname, varname_nid):
+	"""
+	@DEPRECATED
+	@param {pointer} tx: neo4j transaction pointer
+	@param {string} varname
+	@param {string} varname_nid: node id of varname
+	@return {tuple<bool,list>} boolean + the top function if true + function_name
+	"""
+
+	# Case 1: Function Expression as Variable Decleration, e.g., var f = function(varname) { ... }
+	query1 = """
+	MATCH (fname {Type: 'Identifier'})<-[:AST_parentOf {RelationType: 'id'}]-(vd {Type: 'VariableDeclarator'})-[:AST_parentOf {RelationType: 'init'}]->(n {Type:'FunctionExpression'})-[:AST_parentOf {RelationType: 'params'}]-(arg { Type:'Identifier', Code: '%s'}),
+	(n)-[:AST_parentOf {RelationType: 'body'}]->(block {Type: 'BlockStatement'})-[:AST_parentOf|:CFG_parentOf*]->(variable { Id:'%s', Type:'Identifier', Code: '%s'}) 
+	RETURN distinct(n) as top, fname
+	"""%(varname, varname_nid, varname)
+
+	# Case 2: Function Expression as Dictionary Key, e.g., f: function(varname) { ... }
+	query2 = """
+	MATCH (fname {Type: 'Identifier'})<-[:AST_parentOf {RelationType: 'key'}]-(vd {Type: 'Property'})-[:AST_parentOf {RelationType: 'value'}]->(n {Type:'FunctionExpression'})-[:AST_parentOf {RelationType: 'params'}]-(arg { Type:'Identifier', Code: '%s'}),
+	(n)-[:AST_parentOf {RelationType: 'body'}]->(block {Type: 'BlockStatement'})-[:AST_parentOf|:CFG_parentOf*]->(variable { Id:'%s', Type:'Identifier', Code: '%s'}) 
+	RETURN distinct(n) as top, fname
+	"""%(varname, varname_nid, varname)
+
+	# Case 3: Function Declaration, e.g., function f(varname) { ...}
+	query3 = """
+	MATCH (fname {Type: 'Identifier'})<-[:AST_parentOf {RelationType: 'id'}]-(n {Type:'FunctionDeclaration'})-[:AST_parentOf {RelationType: 'params'}]-(arg { Type:'Identifier', Code: '%s'}),
+	(n)-[:AST_parentOf {RelationType: 'body'}]->(block {Type: 'BlockStatement'})-[:AST_parentOf|:CFG_parentOf*]->(variable { Id:'%s', Type:'Identifier', Code: '%s'}) 
+	RETURN distinct(n) as top, fname
+	"""%(varname, varname_nid, varname)
+
+
+	res = tx.run(query1)   # queries should only find one function!
+	for item in res:
+		fn1 = item['top']
+		func_name_node = item['fname']
+		return [True, fn1, func_name_node]
+
+	res = tx.run(query2)
+	for item in res:
+		fn2 = item['top']
+		func_name_node = item['fname']
+		return [True, fn2, func_name_node]
+
+	res = tx.run(query3)
+	for item in res:
+		fn3 = item['top']
+		func_name_node = item['fname']
+		return [True, fn3, func_name_node]
+
+	return [False, None, None]
+
+
+
 ## ------------------------------------------------------------------------------- ## 
 ## General Functions
 ## ------------------------------------------------------------------------------- ## 
@@ -365,13 +420,13 @@ def get_function_call_values_of_function_definitions(tx, function_def_node):
 	navigates the call graph to find the bindings between 'function-call arguments' & 'function definition params'
 
 	@param {pointer} tx: neo4j transaction pointer
-	@param {node} function_def_node: a 'FunctionExpression' or 'FunctionDeclaration' node of esprima AST
+	@param {node} function_def_node: a 'FunctionExpression', 'FunctionDeclaration', or 'ArrowFunctionExpression' node of esprima AST
 	@return {dictionary} { call_line: {p1: val1, p2:val2}, call_line: {p1: val1, p2: val2}, ... }
 	"""
 
 	out = {}
 	query = """
-	MATCH (param)<-[:AST_parentOf {RelationType: 'params'}]-(functionDef { Id: '%s' })<-[:CG_parentOf]-(caller {Type: 'CallExpression'})-[:AST_parentOf {RelationType: 'arguments'}]-> (arg) RETURN collect(distinct param) as params, caller, collect(distinct arg) AS args
+	MATCH (param)<-[:AST_parentOf {RelationType: 'params'}]-(functionDef { Id: '%s' })<-[r:CG_parentOf]-(caller {Type: 'CallExpression'})-[:AST_parentOf {RelationType: 'arguments'}]-> (arg) RETURN collect(distinct param) as params, caller, collect(distinct arg) AS args, collect(distinct r.Arguments) as arguments
 	"""%(function_def_node['Id'])
 
 
@@ -380,42 +435,66 @@ def get_function_call_values_of_function_definitions(tx, function_def_node):
 		call_expression = each_binding['caller']
 		args = each_binding['args']
 		params = each_binding['params']
-		if len(args) < len(params):
-			params = params[::-1] # must reverse this list to match in case of call with lower number of arguments than definition
+
 
 		call_location_line = call_expression['Location']
 		call_nid = call_expression['Id']
 		key = call_nid + '__Loc=' + call_location_line
 		out[key] = {}
 
-		for i in range(len(params)):
-		
-			if i <= len(args)-1: # handle the case the function is called with lesser arguments than its definition
-				[param, param_type] = get_value_of_identifer_or_literal(params[i])
-				argument_type = args[i]['Type']
-				if argument_type== 'MemberExpression':
-					tree = QU.getChildsOf(tx, args[i])
-					ce = QU.get_code_expression(tree)
-					identifiers =  ce[2]
-					arg = ce[0]
-					arg_type = 'MemberExpression'
-				elif argument_type== 'ObjectExpression':
-					tree = QU.getChildsOf(tx, args[i])
-					ce = QU.get_code_expression(tree)
-					identifiers =  ce[2]
-					arg = ce[0]
-					arg_type = 'ObjectExpression'
-				elif argument_type== 'Literal' or argument_type== 'Identifier':
-					[arg, arg_type] = get_value_of_identifer_or_literal(args[i])
-					identifiers = None
-				else:
-					tree = QU.getChildsOf(tx, args[i])
-					ce = QU.get_code_expression(tree)
-					identifiers =  ce[2]
-					arg = ce[0]
-					arg_type = argument_type
+		if function_def_node['Type'] == 'ArrowFunctionExpression':
 
-				out[key][param] = {'Value': arg, 'Type':arg_type, 'ResolveIdentifiers': identifiers}
+			try:
+				arguments = list(json.loads(each_binding['arguments'][0]).values())
+			except:
+				arguments = []
+
+			for i in range(len(params)):
+			
+				if i <= len(arguments)-1: 
+					[param, param_type] = get_value_of_identifer_or_literal(params[i])
+					
+					arg = arguments[i]
+					if '.' in arg:
+						arg_type = 'MemberExpression'
+					else:
+						arg_type = 'Identifier'
+
+					identifiers = [arg.split('.')[0]]
+					out[key][param] = {'Value': arg, 'Type':arg_type, 'ResolveIdentifiers': identifiers}
+
+		else:
+			if len(args) < len(params):
+				params = params[::-1] # must reverse this list to match in case of call with lower number of arguments than definition
+
+			for i in range(len(params)):
+			
+				if i <= len(args)-1: # handle the case the function is called with lesser arguments than its definition
+					[param, param_type] = get_value_of_identifer_or_literal(params[i])
+					argument_type = args[i]['Type']
+					if argument_type== 'MemberExpression':
+						tree = QU.getChildsOf(tx, args[i])
+						ce = QU.get_code_expression(tree)
+						identifiers =  ce[2]
+						arg = ce[0]
+						arg_type = 'MemberExpression'
+					elif argument_type== 'ObjectExpression':
+						tree = QU.getChildsOf(tx, args[i])
+						ce = QU.get_code_expression(tree)
+						identifiers =  ce[2]
+						arg = ce[0]
+						arg_type = 'ObjectExpression'
+					elif argument_type== 'Literal' or argument_type== 'Identifier':
+						[arg, arg_type] = get_value_of_identifer_or_literal(args[i])
+						identifiers = None
+					else:
+						tree = QU.getChildsOf(tx, args[i])
+						ce = QU.get_code_expression(tree)
+						identifiers =  ce[2]
+						arg = ce[0]
+						arg_type = argument_type
+
+					out[key][param] = {'Value': arg, 'Type':arg_type, 'ResolveIdentifiers': identifiers}
 
 	return out
 
@@ -457,7 +536,7 @@ def get_function_def_of_block_stmt(tx, block_stmt_node):
 	gets the function definition of a block statement node
 	"""
 	query = """
-	MATCH (funcDef)-[:AST_parentOf]->(blockSt { Id: '%s', Type: 'BlockStatement'}) RETURN funcDef
+	MATCH (funcDef)-[:AST_parentOf {RelationType: 'body'}]->(blockSt { Id: '%s', Type: 'BlockStatement'}) RETURN funcDef
 	"""%(block_stmt_node['Id'])
 	results = tx.run(query)
 	for record in results:
@@ -466,10 +545,13 @@ def get_function_def_of_block_stmt(tx, block_stmt_node):
 	return None
 
 
+
+
 ## ------------------------------------------------------------------------------- ## 
 ## Internal Functions
 ## ------------------------------------------------------------------------------- ## 
 
+@functools.lru_cache(maxsize=512)
 def _get_varname_value_from_context(tx, varname, context_node, PDG_on_variable_declarations_only=False, context_scope=''):
 	"""
 	Description:
@@ -533,12 +615,15 @@ def _get_varname_value_from_context(tx, varname, context_node, PDG_on_variable_d
 	results = tx.run(query)
 	for item in results: 
 		currentNodes = item['resultset'] 
+		
 		for iteratorNode in currentNodes:
+			if iteratorNode['Type'] == 'Program': continue
+
 			if iteratorNode['Type'] == 'BlockStatement': 
 				# the parameter 'varname' is a function argument
 
 				func_def_node = get_function_def_of_block_stmt(tx, iteratorNode) # check if func def has a varname parameter 
-				if func_def_node['Type'] == 'FunctionExpression' or func_def_node['Type'] == 'FunctionDeclaration':
+				if func_def_node['Type'] in ['FunctionExpression', 'FunctionDeclaration', 'ArrowFunctionExpression']:
 
 					match_signature = check_if_function_has_param(tx, varname, func_def_node)
 					if match_signature:
@@ -594,7 +679,8 @@ def _get_varname_value_from_context(tx, varname, context_node, PDG_on_variable_d
 								out_values.append(out)
 
 								
-								top_level_of_call_expr = get_non_anonymous_call_expr_top_node(tx, {'Id': call_expr_id})
+								# top_level_of_call_expr = get_non_anonymous_call_expr_top_node(tx, {'Id': call_expr_id})
+								top_level_of_call_expr = QU.get_ast_topmost(tx, {'Id': call_expr_id})
 								recurse= _get_varname_value_from_context(tx, each_argument['Value'], top_level_of_call_expr, context_scope=context_id_of_call_scope)
 								out_values.extend(recurse)
 
@@ -618,7 +704,8 @@ def _get_varname_value_from_context(tx, varname, context_node, PDG_on_variable_d
 								# PDG on member expressions-> do PDG on the top most parent of it!
 								top_most = each_argument['Value'].split('.')[0]
 								call_expr_id = _get_node_id_part(nid)
-								top_level_of_call_expr = get_non_anonymous_call_expr_top_node(tx, {'Id': call_expr_id})
+								# top_level_of_call_expr = get_non_anonymous_call_expr_top_node(tx, {'Id': call_expr_id})
+								top_level_of_call_expr = QU.get_ast_topmost(tx, {'Id': call_expr_id})
 								recurse= _get_varname_value_from_context(tx, top_most, top_level_of_call_expr, context_scope=context_id_of_call_scope)
 								out_values.extend(recurse)
 
@@ -643,12 +730,10 @@ def _get_varname_value_from_context(tx, varname, context_node, PDG_on_variable_d
 								additional_identifiers = each_argument['ResolveIdentifiers']
 								if additional_identifiers is not None:
 									for each_additional_identifier in additional_identifiers:
-										
-										top_level_of_call_expr = get_non_anonymous_call_expr_top_node(tx, {'Id': call_expr_id})
+										# top_level_of_call_expr = get_non_anonymous_call_expr_top_node(tx, {'Id': call_expr_id})
+										top_level_of_call_expr = QU.get_ast_topmost(tx, {'Id': call_expr_id})
 										recurse= _get_varname_value_from_context(tx, each_additional_identifier, top_level_of_call_expr, context_scope=context_id_of_call_scope)
 										out_values.extend(recurse)	
-
-
 							else: 
 								# expression statements, call expressions (window.location.replace(), etc)
 								if context_scope == '':
@@ -733,6 +818,10 @@ def _get_varname_value_from_context(tx, varname, context_node, PDG_on_variable_d
 			contextNode = tree['node']
 			if contextNode['Id'] == constantsModule.PROGRAM_NODE_INDEX: 
 				continue
+
+			if contextNode['Type'] == "Program":
+				continue
+
 			ex = QU.get_code_expression(tree)
 			loc = iteratorNode['Location']
 			[code_expr, literals, idents] = ex

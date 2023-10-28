@@ -21,11 +21,63 @@ docker/neo4j/volume/*
 input/tldcache/*
 !input/tldcache/.gitkeep
 
+# configs for parallel runs
+input/configs/*
+!input/configs/.gitkeep
+
+# outputs and exports
+outputs/*
+!outputs/.gitkeep
+exports/*.db
+exports/*.csv
+
+# auto generated sh file
+run_all.sh
+stop_all.sh
+run_hpgconst.sh
+stop_hpgconst.sh
+
+# logs
 logs/*
 !logs/.gitkeep
-
+notes.out
 
 browser
 
-
+# utility scripts
 scripts/outputs/*
+
+# foxhound binary
+crawler/foxhound/firefox-internal
+
+# local configuration file
+local.config.yaml
+package-lock.json
+
+# auto generated files
+webpage_clusters_count.csv
+webpage_clusters.json
+webpages_clusters_stat.json
+taintflows_count.json
+sitelist_unreachable.csv
+sitelist_final.csv
+sitelist_crawled.csv
+webpages_final.json
+webpages_clusters_with_taint_count.json
+taintflows_count_source_filter.json
+webpages_hpg_const_failed.csv
+webpages_hpg_const_failed.json
+import.report
+JAW.db
+
+# ineo
+ineo/neo4j/*
+!ineo/neo4j/.gitkeep
+!ineo/neo4j/neo4j-community-4.2.3-unix.tar.gz
+ineo/instances/*
+!ineo/instances/.gitkeep
+ineo/cache/*
+!ineo/cache/.gitkeep
+
+run_taintflow_sink_filters.sh
+stop_taintflow_sink_filters.sh

@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "js-beautify-sourcemap": "^1.0.1"
+  }
+}
