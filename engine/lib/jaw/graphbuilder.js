@@ -153,17 +153,25 @@ var checkFunctionMapForPartialAliasing = function(pairs){
     for(var i=0; i< pairs.length; i++){
         var partialActualName = pairs[i][0];
         var partialAliasName = pairs[i][1];
-        for(var functionName in functionMap){
-            if(functionName.includes(partialActualName)){
 
-                // @note: the RegExp is too slow when the number of iterations is a lot
-                // Instead, we can just use the .replace() function for more speed!
+        if(partialActualName !== undefined && partialAliasName !== undefined){
+            for(var functionName in functionMap){
+                if (functionName !== undefined) {
+                    let len = partialActualName.length;
+                    let idx = functionName.indexOf(partialActualName);
 
-                // var pattern = new RegExp(partialActualName, "g");
-                // var newName = functionName.replace(pattern, partialAliasName);
+                    if(idx == -1){
+                        continue;
+                    }
 
-                var newName = functionName.replace(partialActualName, partialAliasName);
-                functionMap[newName] = functionMap[functionName]         
+                    if((partialActualName[0] == '.' || idx == 0 || functionName[idx-1] == '.' ) && (partialActualName[len-1] == '.' || idx+len == functionName.length || functionName[idx+len] == '.') ){
+                        var newName = functionName.replace(partialActualName, partialAliasName);
+                        let reference = functionMap[functionName];
+                        if (reference !== null && reference !== undefined){
+                            functionMap[newName] = functionMap[functionName];
+                        }
+                    }
+                }
             }
         }
     }
