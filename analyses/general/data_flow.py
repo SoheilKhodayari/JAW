@@ -133,6 +133,16 @@ def _get_node_id_part(nid_string):
 	end_index = nid_string.index('__Loc=')
 	return nid_string[start_index:end_index]
 
+param_stack = list()
+
+def param_stack_has(varname):
+	return varname in param_stack
+
+def param_stack_push(varname):
+	param_stack.append(varname)
+
+def param_stack_pop():
+	param_stack.pop()
 
 	
 ## ------------------------------------------------------------------------------- ## 
@@ -579,6 +589,11 @@ def _get_varname_value_from_context(tx, varname, context_node, PDG_on_variable_d
 	# context node identifer
 	node_id = context_node['Id']
 
+	if param_stack_has(varname):
+		return []
+
+	param_stack_push(varname)
+
 	def _get_all_call_values_of(varname, func_def_node):
 		
 		key = func_def_node['Id']
@@ -924,7 +939,7 @@ def _get_varname_value_from_context(tx, varname, context_node, PDG_on_variable_d
 				out_values.extend(v)	
 
 
-
+	param_stack_pop()
 	return out_values
 
 
