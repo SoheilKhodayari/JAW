@@ -39,10 +39,20 @@ CFGBuilder.prototype.getCFG = function (ast) {
 	for(var index = 0; index < cfg[2].length; ++index) {
 		/// specify line number and column offset for nodes beside the entry and exit nodes
 		if (cfg[2][index].type !== FlowNode.EXIT_NODE_TYPE) {
-			(cfg[2][index]).line = cfg[2][index].astNode.loc.start.line;
-			(cfg[2][index]).col = cfg[2][index].astNode.loc.start.column;
+
+			try {
+				(cfg[2][index]).line = cfg[2][index].astNode.loc.start.line;
+				(cfg[2][index]).col = cfg[2][index].astNode.loc.start.column;
+			} catch {
+				(cfg[2][index]).line = 1
+				(cfg[2][index]).col = 1
+			}
+
 			maxLine = (cfg[2][index].line > maxLine)? cfg[2][index].line : maxLine;
 			maxCol = (cfg[2][index].col > maxCol)? cfg[2][index].col : maxCol;
+
+
+
 		}
 	}
 	/// specify the value of line number and column offset for the exit node
