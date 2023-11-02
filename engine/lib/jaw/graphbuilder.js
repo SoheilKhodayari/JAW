@@ -1,4 +1,3 @@
-
 /*
     Copyright (C) 2022  Soheil Khodayari, CISPA
     This program is free software: you can redistribute it and/or modify
@@ -35,9 +34,6 @@ var constantsModule = require('./constants.js');
 var flowNodeFactory = require('./../esgraph/flownodefactory');
 
 
-
-
-
  /*
  * Flag to show console messages indicating
  * the different stages of the static analyis
@@ -45,6 +41,7 @@ var flowNodeFactory = require('./../esgraph/flownodefactory');
 const DEBUG = false;
 const WARNING_LOCS = false;
 const DEBUG_FOXHOUND_TAINT_LOGS = false;
+const CALL_GRAPH_PARTIAL_ALIASING_CUTOFF = true;
 
 /**
  * GraphBuilder
@@ -150,12 +147,21 @@ var getCallGraphFieldsForASTNode = function(node){
  * this will then create an alias entry for such key pairs with the PartialAliasName replaced
  */
 var checkFunctionMapForPartialAliasing = function(pairs){
+    
+    false && DEBUG & console.log('pairs: ', pairs)
+    false && DEBUG & console.log('functionMap: ', Object.keys(functionMap))
+
+    // the size of functionMap may grow exponentially
+    // this comparison will be a bit slow (trade-off between precision and performance)
     for(var i=0; i< pairs.length; i++){
         var partialActualName = pairs[i][0];
         var partialAliasName = pairs[i][1];
 
+        // fix the 2nd iteration keys, as functionMap will grow dynamically when there is an alias match
+        var functionMapKeys  = new Set(Object.keys(functionMap));
+
         if(partialActualName !== undefined && partialAliasName !== undefined){
-            for(var functionName in functionMap){
+            for(var functionName of functionMapKeys){
                 if (functionName !== undefined) {
                     let len = partialActualName.length;
                     let idx = functionName.indexOf(partialActualName);
@@ -175,8 +181,8 @@ var checkFunctionMapForPartialAliasing = function(pairs){
             }
         }
     }
+    false && DEBUG & console.log('functionMap: ', Object.keys(functionMap))
 }
-
 
 
 /**
@@ -1576,14 +1582,18 @@ GraphBuilder.prototype.getInterProceduralModelNodesAndEdges = async function(sem
                 *  - Check function name aliasing: create entries in the functionMap for alias names
                 *  - Handle the cases where a function verbatim or alias call site is before the position of the function definition in the code (i.e., hoisting function variable names)
                 */
-                let cutoff = 5000;
-                if(call_graph_alias_check.length < cutoff){  // for performance trade-off
-                    await checkFunctionMapForPartialAliasing(call_graph_alias_check);    
+                if(CALL_GRAPH_PARTIAL_ALIASING_CUTOFF){ // for performance trade-off
+                    let cutoff = 5000;
+                    if(call_graph_alias_check.length < cutoff){  
+                        await checkFunctionMapForPartialAliasing(call_graph_alias_check);    
+                    }else{
+                        await checkFunctionMapForPartialAliasing(call_graph_alias_check.slice(1, cutoff + 1));    
+                    }
                 }else{
-                    await checkFunctionMapForPartialAliasing(call_graph_alias_check.slice(1, cutoff + 1));    
+                    await checkFunctionMapForPartialAliasing(call_graph_alias_check);   
                 }
+
                 false && console.log(Object.keys(functionMap));
-                
                 DEBUG && console.log("finished IPCG checks for alias functions");
             }
         
