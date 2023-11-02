@@ -81,3 +81,4 @@ ineo/cache/*
 
 run_taintflow_sink_filters.sh
 stop_taintflow_sink_filters.sh
+neo4j-community-4.2.3-unix.tar.gz
