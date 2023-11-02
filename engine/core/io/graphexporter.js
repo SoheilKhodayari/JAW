@@ -328,19 +328,34 @@ GraphExporter.prototype.exportToCSVDynamic= function (graph, dynamic_graph, grap
     var fpEdgesDynamic = fs.openSync(relsFileDynamic, 'w'); 
 
 
-    fs.writeSync(fpNodes, getNodesHeaderCSVLine());
-    for(let n_i of graph.nodes){
-         fs.writeSync(fpNodes, getNodeCSVLine(n_i, dynamic_graph.nodes)); 
-    }
+    if(dynamic_graph && dynamic_graph.nodes && dynamic_graph.edges){
 
-    fs.writeSync(fpEdges, getRelsHeaderCSVLine());
-    for(let e_i of graph.edges){
-         fs.writeSync(fpEdges, getRelsCSVLine(e_i)); 
-    }
+        fs.writeSync(fpNodes, getNodesHeaderCSVLine());
+        for(let n_i of graph.nodes){
+             fs.writeSync(fpNodes, getNodeCSVLine(n_i, dynamic_graph.nodes)); 
+        }
 
-    fs.writeSync(fpEdgesDynamic, getRelsHeaderCSVLine());
-    for(let e_i of dynamic_graph.edges){
-         fs.writeSync(fpEdgesDynamic, getRelsCSVLine(e_i)); 
+        fs.writeSync(fpEdges, getRelsHeaderCSVLine());
+        for(let e_i of graph.edges){
+             fs.writeSync(fpEdges, getRelsCSVLine(e_i)); 
+        }
+
+        fs.writeSync(fpEdgesDynamic, getRelsHeaderCSVLine());
+        for(let e_i of dynamic_graph.edges){
+             fs.writeSync(fpEdgesDynamic, getRelsCSVLine(e_i)); 
+        }
+
+    }else{
+
+        fs.writeSync(fpNodes, getNodesHeaderCSVLine());
+        for(let n_i of graph.nodes){
+             fs.writeSync(fpNodes, getNodeCSVLine(n_i, [])); 
+        }
+
+        fs.writeSync(fpEdges, getRelsHeaderCSVLine());
+        for(let e_i of graph.edges){
+             fs.writeSync(fpEdges, getRelsCSVLine(e_i)); 
+        }
     }
 
 };
