@@ -419,15 +419,14 @@ If you use the JAW for academic research, we encourage you to cite the following
   year = {2021},
   address = {Vancouver, B.C.},
   publisher = {{USENIX} Association},
-}
-    
+}   
 ```
 
 ## Acknowledgements
 
 JAW has come a long way and we want to give our contributors a well-deserved shoutout here!
 
-@gianlucadest, @jndre, Sepehr Mirzaei
+[@tmbrbr](https://github.com/tmbrbr), [@c01gide](https://cispa.de/en/people/c01gide), [@jndre](https://github.com/jndre), and Sepehr Mirzaei.
 
 
 
