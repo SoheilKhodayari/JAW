@@ -50,7 +50,7 @@ JAW has a Github pages website available at <a href="https://soheilkhodayari.git
 1. [Running the Pipeline](#running-the-pipeline)
 2. [Quick Example](#quick-example)
 3. [Crawling and Data Collection](#crawling-and-data-collection)
-  - [Playwright CLI with Foxhound](#playwright-cli-with-foxhound)
+  	- [Playwright CLI with Foxhound](#playwright-cli-with-foxhound)
 	- [Puppeteer-based Crawler](#puppeteer-cli)
 	- [Selenium-based Crawler](#selenium-cli)
 2. [Graph Construction](#graph-construction)
