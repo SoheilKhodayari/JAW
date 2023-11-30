@@ -148,8 +148,8 @@ var getCallGraphFieldsForASTNode = function(node){
  */
 var checkFunctionMapForPartialAliasing = async function(pairs){
     
-    false && DEBUG & console.log('pairs: ', pairs)
-    false && DEBUG & console.log('functionMap: ', Object.keys(functionMap))
+    DEBUG & console.log('pairs: ', pairs)
+    DEBUG & console.log('functionMap: ', Object.keys(functionMap))
 
     /**
      * searches for aliases using the native executable in engine/lib/jaw/aliasing in a subprocess
@@ -198,6 +198,8 @@ var checkFunctionMapForPartialAliasing = async function(pairs){
     try {
         // get new pairs 
         let newPairs = await(checkForAliasingNative(pairs,functionMap));
+
+        false && DEBUG & console.log('newPairs: ', newPairs);
 
         // update the functionMap
         for(const pair of newPairs){
