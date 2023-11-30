@@ -16,6 +16,7 @@ sudo apt install -y chromium-browser
 (cd engine/lib/jaw/dom-points-to && npm install)
 (cd engine/lib/jaw/normalization && npm install)
 (cd dynamic && npm install)
+(cd engine/lib/jaw/aliasing && make)
 
 (cd verifier && npm install)
 (cd verifier/service && npm install)

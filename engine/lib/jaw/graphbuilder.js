@@ -32,7 +32,7 @@ var sourceMapLibrary = require('source-map');
 
 var constantsModule = require('./constants.js');
 var flowNodeFactory = require('./../esgraph/flownodefactory');
-
+const { spawn } = require('child_process');
 
  /*
  * Flag to show console messages indicating
@@ -146,11 +146,72 @@ var getCallGraphFieldsForASTNode = function(node){
  * considers the case where partialActualName is part of a key in the functionMap
  * this will then create an alias entry for such key pairs with the PartialAliasName replaced
  */
-var checkFunctionMapForPartialAliasing = function(pairs){
+var checkFunctionMapForPartialAliasing = async function(pairs){
     
     false && DEBUG & console.log('pairs: ', pairs)
     false && DEBUG & console.log('functionMap: ', Object.keys(functionMap))
 
+    /**
+     * searches for aliases using the native executable in engine/lib/jaw/aliasing in a subprocess
+     * writes the two parameter structures to stdin of the executable, serialized in JSON
+     */
+    function checkForAliasingNative(aliasPairs, functionMap) {
+        return new Promise((resolve, reject) => {
+            const nativeExecutable = '../../engine/lib/jaw/aliasing/aliasing';
+            const nativeProcess = spawn(nativeExecutable);
+    
+            let output = '';
+            let errorOutput = '';
+    
+            nativeProcess.stdout.on('data', (data) => {
+                output += data.toString();
+            });
+    
+            nativeProcess.stderr.on('data', (data) => {
+                errorOutput += data.toString();
+            });
+    
+            nativeProcess.on('error', (error) => {
+                reject(error);
+            });
+    
+            nativeProcess.on('close', (code) => {
+                if (code === 0) {
+                    try {
+                        const outputJson = JSON.parse(output);
+                        resolve(outputJson);
+                    } catch (parseError) {
+                        reject(parseError);
+                    }
+                } else {
+                    reject(new Error(`Process exited with code ${code}: ${errorOutput}`));
+                }
+            });
+    
+            // Serialize the input data and write to the stdin of the native process
+            nativeProcess.stdin.write(JSON.stringify(aliasPairs) + "\n");
+            nativeProcess.stdin.write(JSON.stringify(functionMap) + "\n");
+            nativeProcess.stdin.end();
+        });
+    }
+
+    try {
+        // get new pairs 
+        let newPairs = await(checkForAliasingNative(pairs,functionMap));
+
+        // update the functionMap
+        for(const pair of newPairs){
+            let aliasReference = functionMap[pair[1]];
+            if(aliasReference !== null && aliasReference !== undefined){
+                functionMap[pair[0]] = aliasReference;
+            }
+        }   
+    } catch (error){
+        console.error(error);
+    }
+    
+
+    /*
     // the size of functionMap may grow exponentially
     // this comparison will be a bit slow (trade-off between precision and performance)
     for(var i=0; i< pairs.length; i++){
@@ -181,6 +242,7 @@ var checkFunctionMapForPartialAliasing = function(pairs){
             }
         }
     }
+    */
     false && DEBUG & console.log('functionMap: ', Object.keys(functionMap))
 }
 
