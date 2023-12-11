@@ -38,7 +38,7 @@ const { spawn } = require('child_process');
  * Flag to show console messages indicating
  * the different stages of the static analyis
  */
-const DEBUG = true;
+const DEBUG = false;
 const WARNING_LOCS = false;
 const DEBUG_FOXHOUND_TAINT_LOGS = false;
 const CALL_GRAPH_PARTIAL_ALIASING_CUTOFF = true;
@@ -153,22 +153,22 @@ function checkForAliasingNative(aliasPairs, functionMap) {
         let errorOutput = '';
 
         nativeProcess.stdout.on('data', (data) => {
-            console.log('stdout: ' + data);
+            false && DEBUG && console.log('stdout: ' + data);
             output += data.toString();
         });
 
         nativeProcess.stderr.on('data', (data) => {
-            console.log('stderr: ' + data);
+            false && DEBUG && console.log('stderr: ' + data);
             errorOutput += data.toString();
         });
 
         nativeProcess.on('error', (error) => {
-            console.log('error: ' + error);
+            false && DEBUG && console.log('error: ' + error);
             reject(error);
         });
 
         nativeProcess.on('close', (code) => {
-            console.log('close: ' + code);
+            false && DEBUG && console.log('close: ' + code);
             if (code === 0) {
                 try {
                     const outputJson = JSON.parse(output);
@@ -194,8 +194,8 @@ function checkForAliasingNative(aliasPairs, functionMap) {
  */
 async function checkFunctionMapForPartialAliasing(pairs) {
     
-    DEBUG & console.log('pairs: ', pairs)
-    DEBUG & console.log('functionMap before: ', Object.keys(functionMap))
+    false && DEBUG && console.log('pairs: ', pairs)
+    false && DEBUG && console.log('functionMap before: ', Object.keys(functionMap))
 
     /**
      * searches for aliases using the native executable in engine/lib/jaw/aliasing in a subprocess
@@ -205,10 +205,9 @@ async function checkFunctionMapForPartialAliasing(pairs) {
     try {
         // get new pairs 
         let promise = checkForAliasingNative(pairs,functionMap);
-        console.log(promise);
         let newPairs = await promise;
 
-        DEBUG & console.log('newPairs: ', newPairs);
+        false && DEBUG && console.log('newPairs: ', newPairs);
 
         // update the functionMap
         for(const pair of newPairs){
@@ -218,8 +217,7 @@ async function checkFunctionMapForPartialAliasing(pairs) {
             }
         }   
     } catch (error){
-        console.log(error);
-        console.error(error);
+        DEBUG && console.log(error);
     }
     
 
@@ -255,7 +253,7 @@ async function checkFunctionMapForPartialAliasing(pairs) {
     //     }
     // }
     
-    DEBUG & console.log('functionMap after: ', Object.keys(functionMap))
+    false && DEBUG && console.log('functionMap after: ', Object.keys(functionMap))
 }
 
 
