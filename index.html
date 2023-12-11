@@ -172,14 +172,14 @@
                            <li>Declarative <a href="https://neo4j.com/developer/cypher/">Cypher</a> queries</li>
                            <li>ORM support with Python</li>
                         </ul>
-                        <li> Self-contained, built-in queries to detect <a href="https://www.facebook.com/notes/facebook-bug-bounty/client-side-csrf/2056804174333798/">client-side CSRF</a> and <a href="https://domclob.xyz">DOM Clobbering</a> vulnerabilities. </li>
+                        <li> Self-contained, built-in queries to detect <a href="https://www.facebook.com/notes/facebook-bug-bounty/client-side-csrf/2056804174333798/">client-side CSRF</a>, Request Hijacking and <a href="https://domclob.xyz">DOM Clobbering</a> vulnerabilities. </li>
                         <li>
                            Design and perform custom security-related program analyses:
                            <ul>
                               <li> Data flow analysis between pre-defined JavaScript sources and sinks </li>
                               <li> Control flow and reachability analysis </li>
                               <li> Resolution of DOM query selectors leveraging DOM snapshots</li>
-                              <li> Pattern matching via the abstract syntax tree</li>
+                              <li> Pattern matching via the Abstract Syntax Tree (AST)</li>
                            </ul>
                         </li>
                      </ul>
@@ -212,7 +212,7 @@
                <div class="col-md-8">
                   <ul class="text-container normal">
                      <li class="normal">JAW is based on property graphs and the <a href="https://neo4j.com/">neo4j</a> graph database. </li>
-                     <li class="normal">It creates a graph database for the input program, and queries it for security analysis.</li>
+                     <li class="normal">It creates a graph database for the input program, and queries it for security testing.</li>
                       <li class="normal">JAW can test both full-fledged web applications and individual JavaScript programs.</li>
                   </ul>
                </div>
@@ -326,8 +326,8 @@ optional arguments:
                   <div class="bibtex-copy-btn-container"> 
                      <pre><code>@inproceedings {SKhodayariSP23TheThing,
   author = {Soheil Khodayari and Giancarlo Pellegrino},
-  title = {It's (DOM) Clobbering Time: Attack Techniques, Prevalence, and Defenses,
-  booktitle = {To appear at proceedings of the 44rd IEEE Symposium on Security and Privacy},
+  title = {It's (DOM) Clobbering Time: Attack Techniques, Prevalence, and Defenses},
+  booktitle = {Proceedings of the 44th IEEE Symposium on Security and Privacy},
   year = {2023},
 }</code></pre>
 
@@ -337,6 +337,35 @@ optional arguments:
 
                </div>   
             </div>
+
+
+            <!-- BEGIN publication -->
+            <div class="row" style="z-index: 100;">
+               <div class="col-md-12">
+               
+                  <p> 3. Request Hijacking <a class="has-dark-bg" href="https://www.ieee-security.org/TC/SP2024/">@IEEE SP'24</a>
+                  <a href="https://scnps.co/papers/sp24_request_hijacking.pdf" class="paper">[ <i class="fa fa-file-pdf-o" aria-hidden="true"></i> Paper ]</a>
+
+                  <!-- <a href="https://domclob.xyz" class="website">[ <i class="fa fa-globe" aria-hidden="true"></i> Website ]</a> -->
+
+                  </p>
+                  <b class="bibtex"> BibTex</b>
+                  
+                  <div class="bibtex-copy-btn-container"> 
+                     <pre><code>@inproceedings {SKhodayariSP24Sheriff,
+  author = {Soheil Khodayari, Thomas Barber, and Giancarlo Pellegrino},
+  title = {The Great Request Robbery: An Empirical Study of Client-side Request Hijacking Vulnerabilities on the Web},
+  booktitle = {To appear at proceedings of the 45th IEEE Symposium on Security and Privacy},
+  year = {2024},
+}</code></pre>
+
+                     <span class="btn copy-btn" title="Click to copy"><i class="fa fa-clipboard" aria-hidden="true"></i></span>
+                     <span class="copied">Copied!</span>
+                  </div>
+
+               </div>   
+            </div>
+
 
          </div>
       </section>
