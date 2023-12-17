@@ -78,6 +78,8 @@ staticpass:
   sitetimeout: 86400 # 24 hrs
   # enforce a max per webpage timeout when `sitetimeout` is not used (in seconds)
   pagetimeout: 10800 # 3 hours
+  # iteratively write the graph output to disk (useful in case of timeouts for partial results)
+  iterativeoutput: false
   # max amount of available memory for static analysis per process
   memory: 32000
   # compress the property graph or not

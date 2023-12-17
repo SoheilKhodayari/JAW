@@ -202,12 +202,15 @@ async function buildInitializedModels(){
 
 }
 
-
 /**
  * Builds the rest of the HGP models (ERDDG, IPCG, Semantic Types)
  * and returns a graph that is sutiable for exporting the node and relationship 
  * CSV files.
  * @param {dict} options
+ * - options.ipcg: whether or not to create the inter-procedural call edges
+ * - options.erddg: whether or not to create the event-based edges
+ * - options.iterativeOutput: whether or not to write the output to disk iteratively
+ * - options.output: in case of iterative output, the output directory in disk
  * @returns {dict} HPG nodes and edges
  */
 async function buildHPG(options){

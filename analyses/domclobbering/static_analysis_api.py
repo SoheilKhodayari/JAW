@@ -16,7 +16,7 @@
 
 	Description:
 	------------
-	API for running the request_hijacing preliminary analyses (i.e., property graph construction and identifying sinks)
+	API for running the DOM Clobbering preliminary analyses (i.e., property graph construction and identifying sinks)
 
 
 	Usage:
@@ -49,11 +49,11 @@ def start_model_construction(website_url, iterative_output='false', memory=None,
 		static_analysis_per_webpage_timeout = timeout
 
 
-	request_hijacking_analyses_command_cwd = os.path.join(constantsModule.BASE_DIR, "analyses/request_hijacking")
-	request_hijacking_static_analysis_driver_program = os.path.join(request_hijacking_analyses_command_cwd, "static_analysis.js")
+	domclobbering_analyses_command_cwd = os.path.join(constantsModule.BASE_DIR, "analyses/domclobbering")
+	domclobbering_static_analysis_driver_program = os.path.join(domclobbering_analyses_command_cwd, "static_analysis.js")
 
-	request_hijacking_static_analysis_command = "node --max-old-space-size=%s DRIVER_ENTRY --singlefolder=SINGLE_FOLDER --compresshpg=%s --overwritehpg=%s --iterativeoutput=%s"%(static_analysis_memory, compress_hpg, overwrite_hpg, iterative_output)
-	request_hijacking_static_analysis_command = request_hijacking_static_analysis_command.replace("DRIVER_ENTRY", request_hijacking_static_analysis_driver_program)
+	domclobbering_static_analysis_command = "node --max-old-space-size=%s DRIVER_ENTRY --singlefolder=SINGLE_FOLDER --compresshpg=%s --overwritehpg=%s --iterativeoutput=%s"%(static_analysis_memory, compress_hpg, overwrite_hpg, iterative_output)
+	domclobbering_static_analysis_command = domclobbering_static_analysis_command.replace("DRIVER_ENTRY", domclobbering_static_analysis_driver_program)
 
 
 	website_folder_name = utilityModule.getDirectoryNameFromURL(website_url)
@@ -66,8 +66,8 @@ def start_model_construction(website_url, iterative_output='false', memory=None,
 	if specific_webpage is not None:
 		webpage_folder = os.path.join(constantsModule.DATA_DIR, specific_webpage)
 		if os.path.exists(webpage_folder):
-			node_command= request_hijacking_static_analysis_command.replace('SINGLE_FOLDER', webpage_folder)
-			IOModule.run_os_command(node_command, cwd=request_hijacking_analyses_command_cwd, timeout=static_analysis_per_webpage_timeout, print_stdout=True, log_command=True)
+			node_command= domclobbering_static_analysis_command.replace('SINGLE_FOLDER', webpage_folder)
+			IOModule.run_os_command(node_command, cwd=domclobbering_analyses_command_cwd, timeout=static_analysis_per_webpage_timeout, print_stdout=True, log_command=True)
 
 	elif os.path.exists(webpages_json_file):
 
@@ -79,8 +79,8 @@ def start_model_construction(website_url, iterative_output='false', memory=None,
 			webpage_folder = os.path.join(website_folder, webpage)
 			if os.path.exists(webpage_folder):
 				
-				node_command= request_hijacking_static_analysis_command.replace('SINGLE_FOLDER', webpage_folder)
-				IOModule.run_os_command(node_command, cwd=request_hijacking_analyses_command_cwd, timeout=static_analysis_per_webpage_timeout, print_stdout=True, log_command=True)
+				node_command= domclobbering_static_analysis_command.replace('SINGLE_FOLDER', webpage_folder)
+				IOModule.run_os_command(node_command, cwd=domclobbering_analyses_command_cwd, timeout=static_analysis_per_webpage_timeout, print_stdout=True, log_command=True)
 
 
 
@@ -103,8 +103,8 @@ def start_model_construction(website_url, iterative_output='false', memory=None,
 			webpage_folder_name = utilityModule.sha256(url)
 			webpage_folder = os.path.join(website_folder, webpage_folder_name)
 			if os.path.exists(webpage_folder):
-				node_command= request_hijacking_static_analysis_command.replace('SINGLE_FOLDER', webpage_folder)
-				IOModule.run_os_command(node_command, cwd=request_hijacking_analyses_command_cwd, timeout=static_analysis_per_webpage_timeout, print_stdout=True, log_command=True)
+				node_command= domclobbering_static_analysis_command.replace('SINGLE_FOLDER', webpage_folder)
+				IOModule.run_os_command(node_command, cwd=domclobbering_analyses_command_cwd, timeout=static_analysis_per_webpage_timeout, print_stdout=True, log_command=True)
 
 	else:
 		message = 'no webpages.json or urls.out file exists in the webapp directory; skipping analysis...'

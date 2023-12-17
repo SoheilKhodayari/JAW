@@ -40,6 +40,7 @@ const DOMClobberingSourceSinkAnalyzer = DOMClobberingSourceSinkAnalyzerModule.DO
 const DOMClobberingPayloadGeneratorModule = require('./domc_payload_generator.js');
 const DOMClobberingPayloadGenerator = DOMClobberingPayloadGeneratorModule.DOMClobberingPayloadGenerator;
 
+const constantsModule = require('./../../engine/lib/jaw/constants');
 const GraphExporter = require('./../../engine/core/io/graphexporter');
 
 /**
@@ -55,8 +56,11 @@ const dataStorageDirectory = pathModule.join(BASE_DIR, 'data');
 // when true, nodejs will log the current step for each webpage to the console 
 const DEBUG = true; 		
 
+const do_ast_preprocessing_passes = false;
+var do_compress_graphs = true;
+var overwrite_hpg = false;
+var iterative_output = false;
 
-var libraryHeuristics = []
 
 
 /**
@@ -65,6 +69,7 @@ var libraryHeuristics = []
  * ------------------------------------------------
 **/
 
+var libraryHeuristics = []
 
 function isLibraryScript(scriptContent){
 	let flag = false;
@@ -151,7 +156,7 @@ function getOrCreateDataDirectoryForWebsite(url){
 async function staticallyAnalyzeWebpage(url, webpageFolder){
 
 	let results_timing_file = pathModule.join(webpageFolder, "time.static_analysis.out");
-	if(fs.existsSync(results_timing_file)){
+	if(!overwrite_hpg && fs.existsSync(results_timing_file)){
 		DEBUG && console.log('[skipping] results already exists for: '+ webpageFolder)
 		return 1;
 	}
@@ -196,7 +201,7 @@ async function staticallyAnalyzeWebpage(url, webpageFolder){
 	let parsingErrors = [];
 	for(let [idx, script] of scripts.entries()){
 		let scriptName = script.name; // '' + idx + '.js';
-		let parsingError = await domcSourceSinkAnalyzer.domcModelBuilder.initializeModelsFromSource(scriptName, script.source)
+		let parsingError = await domcSourceSinkAnalyzer.domcModelBuilder.initializeModelsFromSource(scriptName, script.source, constantsModule.LANG.js, do_ast_preprocessing_passes);
 		if(parsingError && parsingError === scriptName){
 			parsingErrors.push(parsingError);
 		}
@@ -273,13 +278,20 @@ async function staticallyAnalyzeWebpage(url, webpageFolder){
 
 	const CsvHpgConstructionTimer = elapsed.start('csv_hpg_construction_timer');
 	DEBUG && console.log('[StaticAnalysis] started HPG export: IPCG/ERDDG/SemTypes.')
-	const graph = await domcSourceSinkAnalyzer.domcModelBuilder.buildHPG({ 'ipcg': true, 'erddg': true }); // IPCG, ERDDG + SemanticTypes + node/edge format
+	
+	var graphBuilderOptions= { 'ipcg': true, 'erddg': true, 'output': webpageFolder, 'iterativeOutput': iterative_output };
+	const graph = await domcSourceSinkAnalyzer.domcModelBuilder.buildHPG(graphBuilderOptions); // IPCG, ERDDG + SemanticTypes + node/edge format
 	const graphid = hashURL(url);
 	GraphExporter.exportToCSV(graph, graphid, webpageFolder);
 	DEBUG && console.log('[StaticAnalysis] finished HPG export: IPCG/ERDDG/SemTypes.')
-	DEBUG && console.log('[StaticAnalysis] started compressing HPG.')
-	GraphExporter.compressGraph(webpageFolder);
-	DEBUG && console.log('[StaticAnalysis] finished compressing HPG.')
+	
+
+	if(do_compress_graphs){
+		DEBUG && console.log('[StaticAnalysis] started compressing HPG.');
+		GraphExporter.compressGraph(webpageFolder);
+		DEBUG && console.log('[StaticAnalysis] finished compressing HPG.');
+	}
+
 	const CsvHpgConstructionTime = CsvHpgConstructionTimer.get();
 	CsvHpgConstructionTimer.end();
 
@@ -315,6 +327,10 @@ async function staticallyAnalyzeWebpage(url, webpageFolder){
     var config = processArgv({}) || {};
     const seedurl = config.seedurl;
     const singleFolder = config.singlefolder;
+
+    overwrite_hpg = (config.overwritehpg && config.overwritehpg.toLowerCase() === 'true')? true: false; 
+    do_compress_graphs = (config.compresshpg && config.compresshpg.toLowerCase() === 'false')? false: true; 
+  	iterative_output = (config.iterativeoutput && config.iterativeoutput.toLowerCase() === 'true')? true: false;
 
 
 	if(singleFolder && singleFolder.length > 10){

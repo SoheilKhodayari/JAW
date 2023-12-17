@@ -207,10 +207,13 @@ function getNodesHeaderCSVLine(){
     return `Id:ID${d}Type${d}Kind${d}Code${d}Range${d}Location${d}Value${d}Raw${d}Async${d}Label:LABEL${d}SemanticType\n`
 }
 
+
+
 function getRelsHeaderCSVLine(){
     let d = constantsModule.outputCSVDelimiter;
     return `FromId:START_ID${d}ToId:END_ID${d}RelationLabel:TYPE${d}RelationType${d}Arguments\n`
 }
+
 
 const uniqueItems = (arr) => [...new Set(arr)];
 
@@ -370,7 +373,7 @@ GraphExporter.prototype.exportToCSV= function (graph, graphId, outputFolder) {
     "use strict";
 
     const nodesFile = pathModule.join(outputFolder, constantsModule.ASTnodesFile);
-    const relsFile = pathModule.join(outputFolder, constantsModule.ASTrelationsFile)
+    const relsFile = pathModule.join(outputFolder, constantsModule.ASTrelationsFile);
 
     var fpNodes = fs.openSync(nodesFile, 'w'); 
     var fpEdges = fs.openSync(relsFile, 'w'); 
@@ -435,6 +438,10 @@ GraphExporter.prototype.decompressGraph = function (webpageFolder){
 
 }
 
+GraphExporter.prototype.getNodesHeaderCSVLine = getNodesHeaderCSVLine;
+GraphExporter.prototype.getRelsHeaderCSVLine = getRelsHeaderCSVLine;
+GraphExporter.prototype.getRelsCSVLine = getRelsCSVLine;
+GraphExporter.prototype.getNodeCSVLine = getNodeCSVLine;
 
 var g_exporter = new GraphExporter();
 module.exports = g_exporter;

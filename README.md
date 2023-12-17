@@ -341,6 +341,7 @@ $ screen -dmS s2 bash -c 'python3 -m run_pipeline --conf=conf2.yaml; exec sh'
 $ # [...]
 ```
 
+To generate parallel configuration files automatically, you may use the [`generate_config.py`](https://github.com/SoheilKhodayari/JAW/blob/master/input/generate_config.py) script.
 
 
 #### How to Interpret the Output of the Analysis?

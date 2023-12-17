@@ -29,10 +29,14 @@ var scopeCtrl = require('./scope/scopectrl'),
 var esprimaParser = require('./parser/jsparser');
 var escodegen = require('escodegen');  // API: escodegen.generate(node);
 var sourceMapLibrary = require('source-map');
+var fs = require('fs');
+var pathModule = require('path');
 
 var constantsModule = require('./constants.js');
 var flowNodeFactory = require('./../esgraph/flownodefactory');
 const { spawn } = require('child_process');
+
+const graphExporter = require('./../../core/io/graphexporter');
 
  /*
  * Flag to show console messages indicating
@@ -52,8 +56,8 @@ function GraphBuilder() {
     /* start-test-block */
     this._testonly_ = {
     };
-    /* end-test-block */
 }
+
 
 /**
  * stores a mapping between code line to top-level nodes for each script
@@ -1132,13 +1136,32 @@ GraphBuilder.prototype.generateLineToMapIndex = async function(ast, script_name)
 
 }
 
-
 GraphBuilder.prototype.getInterProceduralModelNodesAndEdges = async function(semantic_types, options){
-
 
     "use strict";
     var theGraphBuilder = this;
     var pageScopeTrees = scopeCtrl.pageScopeTrees;
+
+    // iteratively write the output to disk
+    // useful in case of timeouts for graph construction
+    var iterativeOutput = options.iterativeOutput; 
+    var outputFolder = options.output;
+    
+    if(iterativeOutput){
+        const nodesFile = pathModule.join(outputFolder, constantsModule.ASTnodesFile);
+        const relsFile = pathModule.join(outputFolder, constantsModule.ASTrelationsFile);
+        var fpNodes = fs.openSync(nodesFile, 'w'); 
+        var fpEdges = fs.openSync(relsFile, 'w'); 
+        fs.writeSync(fpNodes, graphExporter.getNodesHeaderCSVLine());
+        fs.writeSync(fpEdges, graphExporter.getRelsHeaderCSVLine());
+    }
+
+    function appendNodeDisk(node){
+        fs.writeSync(fpNodes, graphExporter.getNodeCSVLine(node, []));
+    }
+    function appendEdgeDisk(edge){
+        fs.writeSync(fpEdges, graphExporter.getRelsCSVLine(edge)); 
+    }
 
     // Add CFG "exit" nodes. 
     // TODO: check if really needed as the exit can be implicity inferred from the ast too
@@ -1155,6 +1178,7 @@ GraphBuilder.prototype.getInterProceduralModelNodesAndEdges = async function(sem
     function appendEdge(edge){
         g_edges.push(edge);
     }
+
 
     // IPCG
     var call_graph_alias_check = [];
@@ -1460,9 +1484,11 @@ GraphBuilder.prototype.getInterProceduralModelNodesAndEdges = async function(sem
 
         for(var w = 0; w< astNodes.length; w++){
             appendNode(astNodes[w]);
+            iterativeOutput && appendNodeDisk(astNodes[w]);
         }
         for(var w = 0; w< astRels.length; w++){
             appendEdge(astRels[w]);
+            iterativeOutput && appendEdge(astRels[w]);
         }
         DEBUG && console.log("finished AST unrolling");
         
@@ -1499,6 +1525,7 @@ GraphBuilder.prototype.getInterProceduralModelNodesAndEdges = async function(sem
                             args: cfgNode.true.type
                        };
                        appendEdge(record);
+                       iterativeOutput && appendEdgeDisk(record);
 
                    } if(cfgNode.false){
                         normal_flow = true;
@@ -1510,6 +1537,7 @@ GraphBuilder.prototype.getInterProceduralModelNodesAndEdges = async function(sem
                             args: cfgNode.false.type
                        };
                         appendEdge(record);
+                        iterativeOutput && appendEdgeDisk(record);
                    }
                     if(cfgNode.normal) {
                        /* normal flow */
@@ -1523,6 +1551,7 @@ GraphBuilder.prototype.getInterProceduralModelNodesAndEdges = async function(sem
                                args: cfgNode.normal.type
                            };
                            appendEdge(record);
+                           iterativeOutput && appendEdgeDisk(record);
                        }
                    }
                     else if(cfgNode.exception && !normal_flow){
@@ -1535,6 +1564,7 @@ GraphBuilder.prototype.getInterProceduralModelNodesAndEdges = async function(sem
                              args: cfgNode.exception.type // can be entry, exit or normal
                         };
                         appendEdge(record);
+                        iterativeOutput && appendEdgeDisk(record);
                     }
                 }
                 DEBUG && console.log("CFG unrolling finished");
@@ -1561,7 +1591,8 @@ GraphBuilder.prototype.getInterProceduralModelNodesAndEdges = async function(sem
                                     relationType: "DataFlow",
                                     args: key.toString()
                                 };
-                                appendEdge(record);  
+                                appendEdge(record); 
+                                iterativeOutput && appendEdgeDisk(record); 
 
                                 // connect the PDG edges also to inner CFG-level nodes
                                 if(pair.second.astNode && pair.second.astNode.type === "CallExpression"){
@@ -1578,7 +1609,8 @@ GraphBuilder.prototype.getInterProceduralModelNodesAndEdges = async function(sem
                                             relationType: "DataFlow",
                                             args: key.toString()
                                         };
-                                        appendEdge(record); 
+                                        appendEdge(record);
+                                        iterativeOutput && appendEdgeDisk(record); 
                                     }
                                 }
 
@@ -1594,7 +1626,8 @@ GraphBuilder.prototype.getInterProceduralModelNodesAndEdges = async function(sem
                                     relationType: "DataFlow",
                                     args: key.toString()
                                 };
-                                appendEdge(record);     
+                                appendEdge(record);
+                                iterativeOutput && appendEdgeDisk(record);     
                                 if(pair.second[1] && pair.second[1]._id){
                                     // CASE 3: for PDG control edges, if consequent of ifstmt is not null
                                     let recordConsequent= {
@@ -1604,7 +1637,8 @@ GraphBuilder.prototype.getInterProceduralModelNodesAndEdges = async function(sem
                                         relationType: 'true', // predicate condition: true for ifStatement.consequent
                                         args: key.toString()
                                     };
-                                    appendEdge(recordConsequent);   
+                                    appendEdge(recordConsequent);
+                                    iterativeOutput && appendEdgeDisk(recordConsequent);   
                                 }
                                 if(pair.second[2] && pair.second[2]._id){
                                     // CASE 4: for PDG control edges, if alternate of ifstmt is not null
@@ -1615,7 +1649,8 @@ GraphBuilder.prototype.getInterProceduralModelNodesAndEdges = async function(sem
                                         relationType: 'false', // predicate condition: false for ifStatement.alternate
                                         args: key.toString()
                                     };
-                                    appendEdge(recordAlternate);   
+                                    appendEdge(recordAlternate);
+                                    iterativeOutput && appendEdgeDisk(recordAlternate);    
 
                                 }
                             }
@@ -1731,11 +1766,13 @@ GraphBuilder.prototype.getInterProceduralModelNodesAndEdges = async function(sem
                                             args: 'register_listener_on___' + calleeVariable+ '___' + calleeVariableId
                                         };
                                         appendEdge(record);
+                                        iterativeOutput && appendEdgeDisk(record); 
 
                                         /* add the respective ERDDG dependency Edges */
                                         var dependencyEdges = createEventDependencyEdges(handlerScope.ast, eventName, record.args);
                                         dependencyEdges.forEach((record)=> {
                                             appendEdge(record);
+                                            iterativeOutput && appendEdgeDisk(record); 
                                         });
 
                                     }
@@ -1768,7 +1805,7 @@ GraphBuilder.prototype.getInterProceduralModelNodesAndEdges = async function(sem
                             var calleeVariableId = (node.expression.left.object)? node.expression.left.object._id: 'xx';
                             if(node.expression.right && node.expression.right.type == "FunctionExpression"){
                                 var eventHandlerNode = node.expression.right;
-                                appendNode({
+                                var n0 = {
                                      fromId: ''+ node._id,
                                      toId: ''+ eventHandlerNode._id,
                                      fromNode: node,
@@ -1776,7 +1813,9 @@ GraphBuilder.prototype.getInterProceduralModelNodesAndEdges = async function(sem
                                      relationLabel: "ERDDG_Registration",
                                      relationType: eventName,
                                      args: 'register_listener_on___' + calleeVariable+ '___' + calleeVariableId  /* e.g., window.onerror = function(e){...} */
-                                });  
+                                };
+                                appendNode(n0);
+                                iterativeOutput && appendNodeDisk(n0);  
                             }
                         } 
 
@@ -1793,7 +1832,7 @@ GraphBuilder.prototype.getInterProceduralModelNodesAndEdges = async function(sem
                             if(eventRegistrationKey in eventRegistrationStatements){
                                 var registered_handlers_list = eventRegistrationStatements[eventRegistrationKey];
                                 registered_handlers_list.forEach(handler_node => {
-                                    appendNode({
+                                    var n1 = {
                                          fromId: ''+ node._id,
                                          toId: ''+ handler_node._id,
                                          fromNode: node,
@@ -1801,7 +1840,9 @@ GraphBuilder.prototype.getInterProceduralModelNodesAndEdges = async function(sem
                                          relationLabel: "ERDDG_Dispatch",
                                          relationType: eventName,
                                          args: 'dispatch_event_on___' + calleeVariable+ '___' + calleeVariableId  /* e.g., button.dispatchEvent('click') */
-                                    });
+                                    };
+                                    appendNode(n1);
+                                    iterativeOutput && appendNodeDisk(n0);
 
                                 });
                             }
@@ -1817,7 +1858,7 @@ GraphBuilder.prototype.getInterProceduralModelNodesAndEdges = async function(sem
                                     if(key.startsWith(calleeVariable)){
                                         var registered_handlers_list = eventRegistrationStatements[key];
                                         registered_handlers_list.forEach(handler_node => {
-                                            appendNode({
+                                            var n2 = {
                                                  fromId: ''+ node._id,
                                                  toId: ''+ handler_node._id,
                                                  fromNode: node,
@@ -1825,7 +1866,9 @@ GraphBuilder.prototype.getInterProceduralModelNodesAndEdges = async function(sem
                                                  relationLabel: "ERDDG_Dispatch",
                                                  relationType: eventName,
                                                  args: 'dispatch_event_on___' + calleeVariable+ '___' + calleeVariableId  /* e.g., button.dispatchEvent('click') */
-                                            });
+                                            };
+                                            appendNode(n2);
+                                            iterativeOutput && appendNodeDisk(n1)
 
                                         })
                                     }// end if key.startsWith;
@@ -1851,7 +1894,7 @@ GraphBuilder.prototype.getInterProceduralModelNodesAndEdges = async function(sem
                             if(eventRegistrationKey in eventRegistrationStatements){
                                 var registered_handlers_list = eventRegistrationStatements[eventRegistrationKey];
                                 registered_handlers_list.forEach(handler_node => {
-                                    appendNode({
+                                    var n3 = {
                                          fromId: ''+ node._id,
                                          toId: ''+ handler_node._id,
                                          fromNode: node,
@@ -1859,7 +1902,9 @@ GraphBuilder.prototype.getInterProceduralModelNodesAndEdges = async function(sem
                                          relationLabel: "ERDDG_Dispatch",
                                          relationType: eventName,
                                          args: 'dispatch_event_on___' + calleeVariable+ '___' + calleeVariableId  /* e.g., button.click(), xhrInstance.open() */
-                                    });
+                                    };
+                                    appendNode(n3);
+                                    iterativeOutput && appendNodeDisk(n2);
                                 });
                             }
                             
@@ -1894,6 +1939,7 @@ GraphBuilder.prototype.getInterProceduralModelNodesAndEdges = async function(sem
                                 args: (node.arguments.length)? args: ''
                             };
                             appendEdge(edge);
+                            iterativeOutput && appendEdgeDisk(edge); 
                         }
                         // CASE 2: function_argument_promise.then((param) => {  });
                         else if(node.callee.type === "MemberExpression" && node.callee.property && node.callee.property.type === "Identifier" && node.callee.property.name === 'then'){
@@ -1914,6 +1960,7 @@ GraphBuilder.prototype.getInterProceduralModelNodesAndEdges = async function(sem
                                     args: (Object.keys(args).length > 0)? args: ''
                                 };
                                 appendEdge(edge);
+                                iterativeOutput && appendEdgeDisk(edge); 
                             }
                         }
                         // CASE 3: optional_window.setTimeout('func()')
@@ -1947,6 +1994,7 @@ GraphBuilder.prototype.getInterProceduralModelNodesAndEdges = async function(sem
                                                 args: (Object.keys(args).length > 0)? args: ''
                                             };
                                             appendEdge(edge);
+                                            iterativeOutput && appendEdgeDisk(edge); 
                                         }
                                     }
                                 }catch{
@@ -1982,6 +2030,7 @@ GraphBuilder.prototype.getInterProceduralModelNodesAndEdges = async function(sem
                                     args: (Object.keys(args).length > 0)? args: ''
                                 };
                                 appendEdge(edge);
+                                iterativeOutput && appendEdgeDisk(edge); 
                             }
                         } // END call branch
                         // CASE 5: obj.apply(optional_this_arg, list_args); 
@@ -2011,6 +2060,7 @@ GraphBuilder.prototype.getInterProceduralModelNodesAndEdges = async function(sem
                                             args: (Object.keys(args).length > 0)? args: ''
                                         };
                                         appendEdge(edge);
+                                        iterativeOutput && appendEdgeDisk(edge); 
                                     }
 
                                 }
@@ -2061,6 +2111,7 @@ GraphBuilder.prototype.getInterProceduralModelNodesAndEdges = async function(sem
                             args: cfgNode.true.type
                        };
                        appendEdge(record);
+                       iterativeOutput && appendEdgeDisk(record); 
 
                    } if(cfgNode.false){
                         normal_flow = true;
@@ -2072,6 +2123,7 @@ GraphBuilder.prototype.getInterProceduralModelNodesAndEdges = async function(sem
                             args: cfgNode.false.type
                        };
                         appendEdge(record);
+                        iterativeOutput && appendEdgeDisk(record); 
                    }
                     if(cfgNode.normal) {
                        /* normal flow */
@@ -2085,6 +2137,7 @@ GraphBuilder.prototype.getInterProceduralModelNodesAndEdges = async function(sem
                                args: cfgNode.normal.type
                            };
                            appendEdge(record);
+                           iterativeOutput && appendEdgeDisk(record); 
                        }
                    }
                     else if(cfgNode.exception && !normal_flow){
@@ -2097,6 +2150,7 @@ GraphBuilder.prototype.getInterProceduralModelNodesAndEdges = async function(sem
                              args: cfgNode.exception.type // can be entry, exit or normal
                         };
                         appendEdge(record);
+                        iterativeOutput && appendEdgeDisk(record); 
                     }
                 }
 
@@ -2124,7 +2178,8 @@ GraphBuilder.prototype.getInterProceduralModelNodesAndEdges = async function(sem
                                     relationType: "DataFlow",
                                     args: key.toString()
                                 };
-                                appendEdge(record); 
+                                appendEdge(record);
+                                iterativeOutput && appendEdgeDisk(record);  
 
                                 // connect the PDG edges also to inner CFG-level nodes
                                 if(pair.second.astNode && pair.second.astNode.type === "CallExpression"){
@@ -2138,7 +2193,8 @@ GraphBuilder.prototype.getInterProceduralModelNodesAndEdges = async function(sem
                                             relationType: "DataFlow",
                                             args: key.toString()
                                         };
-                                        appendEdge(record);                                         
+                                        appendEdge(record);
+                                        iterativeOutput && appendEdgeDisk(record);                                          
                                     } 
 
                                 }
@@ -2155,7 +2211,8 @@ GraphBuilder.prototype.getInterProceduralModelNodesAndEdges = async function(sem
                                     relationType: "DataFlow",
                                     args: key.toString()
                                 };
-                                appendEdge(record);     
+                                appendEdge(record);
+                                iterativeOutput && appendEdgeDisk(record);      
                                 if(pair.second[1] && pair.second[1]._id){
                                     // CASE 3: for PDG control edges, if consequent of ifstmt is not null
                                     let recordConsequent= {
@@ -2165,7 +2222,8 @@ GraphBuilder.prototype.getInterProceduralModelNodesAndEdges = async function(sem
                                         relationType: 'true', // predicate condition: true for ifStatement.consequent
                                         args: key.toString()
                                     };
-                                    appendEdge(recordConsequent);   
+                                    appendEdge(recordConsequent);
+                                    iterativeOutput && appendEdgeDisk(recordConsequent);    
                                 }
                                 if(pair.second[2] && pair.second[2]._id){
                                     // CASE 4: for PDG control edges, if alternate of ifstmt is not null
@@ -2176,7 +2234,8 @@ GraphBuilder.prototype.getInterProceduralModelNodesAndEdges = async function(sem
                                         relationType: 'false', // predicate condition: false for ifStatement.alternate
                                         args: key.toString()
                                     };
-                                    appendEdge(recordAlternate);   
+                                    appendEdge(recordAlternate);
+                                    iterativeOutput && appendEdgeDisk(recordAlternate);    
 
                                 }
                             }
@@ -2192,6 +2251,11 @@ GraphBuilder.prototype.getInterProceduralModelNodesAndEdges = async function(sem
     }
     for (const pageScopeTree of pageScopeTrees) {
         await processPageScopeTree(pageScopeTree);
+    }
+
+    if(iterativeOutput){
+        await fs.closeSync(fpNodes);
+        await fs.closeSync(fpEdges);
     }
 
     return {'nodes': g_nodes, 'edges': g_edges };

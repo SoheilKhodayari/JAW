@@ -35,8 +35,12 @@ from utils.logging import logger as LOGGER
 import utils.utility as utilityModule
 import constants as constantsModule
 import analyses.domclobbering.domc_neo4j_traversals as DOMCTraversalsModule
+import analyses.domclobbering.static_analysis_api as domc_sast_model_construction_api
+
 import analyses.cs_csrf.cs_csrf_neo4j_traversals as CSRFTraversalsModule
-import analyses.request_hijacking.static_analysis_api as sast_model_construction_api
+import analyses.cs_csrf.static_analysis_api as csrf_sast_model_construction_api
+
+import analyses.request_hijacking.static_analysis_api as rh_sast_model_construction_api
 import analyses.request_hijacking.static_analysis_py_api as request_hijacking_neo4j_analysis_api
 import analyses.request_hijacking.verification_api as request_hijacking_verification_api
 
@@ -118,6 +122,13 @@ def main():
 
 	LOGGER.info("loading config: %s"%str(config))
 
+	# iteratively write the HPG construction output to disk
+	# useful in case of timeouts for partial results
+	iterative_output = 'false'
+	if "staticpass" in config:
+		if "iterativeoutput" in config["staticpass"]:
+			iterative_output = str(config["staticpass"]["iterativeoutput"]).lower()
+	
 
 	crawler_command_cwd = os.path.join(BASE_DIR, "crawler")
 	force_execution_command_cwd = os.path.join(BASE_DIR, "dynamic")
@@ -189,20 +200,18 @@ def main():
 		constantsModule.NEO4J_USE_DOCKER = config["staticpass"]["neo4j_use_docker"] 
 
 
-	# dom clobbering
-	domc_analyses_command_cwd = os.path.join(BASE_DIR, "analyses/domclobbering")
-	domc_static_analysis_command = "node --max-old-space-size=%s DRIVER_ENTRY --seedurl=SEED_URL"%static_analysis_memory
-	domc_static_analysis_driver_program = os.path.join(domc_analyses_command_cwd, "static_analysis.js")
-	domc_static_analysis_command = domc_static_analysis_command.replace("DRIVER_ENTRY", domc_static_analysis_driver_program)
+	## dom clobbering
+	# domc_analyses_command_cwd = os.path.join(BASE_DIR, "analyses/domclobbering")
+	# domc_static_analysis_command = "node --max-old-space-size=%s DRIVER_ENTRY --seedurl=SEED_URL --iterativeoutput=%s"%(static_analysis_memory, iterative_output)
+	# domc_static_analysis_driver_program = os.path.join(domc_analyses_command_cwd, "static_analysis.js")
+	# domc_static_analysis_command = domc_static_analysis_command.replace("DRIVER_ENTRY", domc_static_analysis_driver_program)
 	
-
-	# client-side csrf
-	cs_csrf_analyses_command_cwd = os.path.join(BASE_DIR, "analyses/cs_csrf")
-	cs_csrf_static_analysis_command = "node --max-old-space-size=%s DRIVER_ENTRY --seedurl=SEED_URL"%static_analysis_memory
-	cs_csrf_static_analysis_driver_program = os.path.join(cs_csrf_analyses_command_cwd, "static_analysis.js")
-	cs_csrf_static_analysis_command = cs_csrf_static_analysis_command.replace("DRIVER_ENTRY", cs_csrf_static_analysis_driver_program)
+	## client-side csrf
+	# cs_csrf_analyses_command_cwd = os.path.join(BASE_DIR, "analyses/cs_csrf")
+	# cs_csrf_static_analysis_command = "node --max-old-space-size=%s DRIVER_ENTRY --seedurl=SEED_URL --iterativeoutput=%s"%(static_analysis_memory, iterative_output)
+	# cs_csrf_static_analysis_driver_program = os.path.join(cs_csrf_analyses_command_cwd, "static_analysis.js")
+	# cs_csrf_static_analysis_command = cs_csrf_static_analysis_command.replace("DRIVER_ENTRY", cs_csrf_static_analysis_driver_program)
 	
-
 
 	## dom clobbering dynamic verifier
 	force_execution_timeout = int(config["dynamicpass"]["sitetimeout"])
@@ -264,8 +273,9 @@ def main():
 			# static analysis
 			if config['domclobbering']["passes"]["static"]:
 				LOGGER.info("static analysis for site %s."%(website_url))
-				cmd = domc_static_analysis_command.replace('SEED_URL', website_url)
-				IOModule.run_os_command(cmd, cwd=domc_analyses_command_cwd, timeout= static_analysis_timeout)
+				# cmd = domc_static_analysis_command.replace('SEED_URL', website_url)
+				# IOModule.run_os_command(cmd, cwd=domc_analyses_command_cwd, timeout= static_analysis_timeout)
+				domc_sast_model_construction_api.start_model_construction(website_url, iterative_output=iterative_output, memory=static_analysis_memory, timeout=static_analysis_per_webpage_timeout, compress_hpg=static_analysis_compress_hpg, overwrite_hpg=static_analysis_overwrite_hpg)
 				LOGGER.info("successfully finished static analysis for site %s."%(website_url)) 
 
 			# static analysis over neo4j
@@ -287,8 +297,9 @@ def main():
 			# static analysis
 			if config['cs_csrf']["passes"]["static"]:
 				LOGGER.info("static analysis for site %s."%(website_url))
-				cmd = cs_csrf_static_analysis_command.replace('SEED_URL', website_url)
-				IOModule.run_os_command(cmd, cwd=cs_csrf_analyses_command_cwd, timeout= static_analysis_timeout)
+				# cmd = cs_csrf_static_analysis_command.replace('SEED_URL', website_url)
+				# IOModule.run_os_command(cmd, cwd=cs_csrf_analyses_command_cwd, timeout= static_analysis_timeout)
+				csrf_sast_model_construction_api.start_model_construction(website_url, iterative_output=iterative_output, memory=static_analysis_memory, timeout=static_analysis_per_webpage_timeout, compress_hpg=static_analysis_compress_hpg, overwrite_hpg=static_analysis_overwrite_hpg)
 				LOGGER.info("successfully finished static analysis for site %s."%(website_url)) 
 
 			# static analysis over neo4j
@@ -303,7 +314,7 @@ def main():
 			# static analysis
 			if config['request_hijacking']["passes"]["static"]:
 				LOGGER.info("static analysis for site %s."%(website_url))
-				sast_model_construction_api.start_model_construction(website_url, memory=static_analysis_memory, timeout=static_analysis_per_webpage_timeout, compress_hpg=static_analysis_compress_hpg, overwrite_hpg=static_analysis_overwrite_hpg)
+				rh_sast_model_construction_api.start_model_construction(website_url, iterative_output=iterative_output, memory=static_analysis_memory, timeout=static_analysis_per_webpage_timeout, compress_hpg=static_analysis_compress_hpg, overwrite_hpg=static_analysis_overwrite_hpg)
 				LOGGER.info("successfully finished static analysis for site %s."%(website_url)) 
 
 			# static analysis over neo4j
@@ -376,8 +387,9 @@ def main():
 						# static analysis
 						if  config['domclobbering']["passes"]["static"]:
 							LOGGER.info("static analysis for site at row %s - rank %s - %s"%(g_index, website_rank, website_url)) 
-							cmd = domc_static_analysis_command.replace('SEED_URL', website_url)
-							IOModule.run_os_command(cmd, print_stdout=False, cwd=domc_analyses_command_cwd, timeout= static_analysis_timeout)
+							# cmd = domc_static_analysis_command.replace('SEED_URL', website_url)
+							# IOModule.run_os_command(cmd, print_stdout=False, cwd=domc_analyses_command_cwd, timeout= static_analysis_timeout)
+							domc_sast_model_construction_api.start_model_construction(website_url, iterative_output=iterative_output, memory=static_analysis_memory, timeout=static_analysis_per_webpage_timeout, compress_hpg=static_analysis_compress_hpg, overwrite_hpg=static_analysis_overwrite_hpg)
 							LOGGER.info("successfully finished static analysis for site at row %s - rank %s - %s"%(g_index, website_rank, website_url)) 
 						
 						if  config['domclobbering']["passes"]["static_neo4j"]:
@@ -398,8 +410,9 @@ def main():
 						# static analysis
 						if config['cs_csrf']["passes"]["static"]:
 							LOGGER.info("static analysis for site at row %s - rank %s - %s"%(g_index, website_rank, website_url)) 
-							cmd = cs_csrf_static_analysis_command.replace('SEED_URL', website_url)
-							IOModule.run_os_command(cmd, print_stdout=False, cwd=cs_csrf_analyses_command_cwd, timeout= static_analysis_timeout)
+							# cmd = cs_csrf_static_analysis_command.replace('SEED_URL', website_url)
+							# IOModule.run_os_command(cmd, print_stdout=False, cwd=cs_csrf_analyses_command_cwd, timeout= static_analysis_timeout)
+							csrf_sast_model_construction_api.start_model_construction(website_url, iterative_output=iterative_output, memory=static_analysis_memory, timeout=static_analysis_per_webpage_timeout, compress_hpg=static_analysis_compress_hpg, overwrite_hpg=static_analysis_overwrite_hpg)
 							LOGGER.info("successfully finished static analysis for site at row %s - rank %s - %s"%(g_index, website_rank, website_url)) 
 						
 						if config['cs_csrf']["passes"]["static_neo4j"]:
@@ -414,7 +427,7 @@ def main():
 						# static analysis
 						if config['request_hijacking']["passes"]["static"]:
 							LOGGER.info("static analysis for site at row %s - rank %s - %s"%(g_index, website_rank, website_url)) 
-							sast_model_construction_api.start_model_construction(website_url, memory=static_analysis_memory, timeout=static_analysis_per_webpage_timeout, compress_hpg=static_analysis_compress_hpg, overwrite_hpg=static_analysis_overwrite_hpg)
+							rh_sast_model_construction_api.start_model_construction(website_url, iterative_output=iterative_output, memory=static_analysis_memory, timeout=static_analysis_per_webpage_timeout, compress_hpg=static_analysis_compress_hpg, overwrite_hpg=static_analysis_overwrite_hpg)
 							LOGGER.info("successfully finished static analysis for site at row %s - rank %s - %s"%(g_index, website_rank, website_url)) 
 						
 						if config['request_hijacking']["passes"]["static_neo4j"]:

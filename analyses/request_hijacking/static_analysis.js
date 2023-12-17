@@ -39,7 +39,6 @@ const globalsModule = require('./globals.js');
 const SourceSinkAnalyzerModule = require('./traversals.js');
 const SourceSinkAnalyzer = SourceSinkAnalyzerModule.REQHijackSourceSinkAnalyzer;
 
-
 const GraphExporter = require('./../../engine/core/io/graphexporter');
 
 /**
@@ -59,6 +58,8 @@ const DEBUG = true;
 const do_ast_preprocessing_passes = false;
 var do_compress_graphs = true;
 var overwrite_hpg = false;
+var iterative_output = false;
+
 /**
  * ------------------------------------------------
  *  			utility functions
@@ -287,8 +288,11 @@ async function staticallyAnalyzeWebpage(url, webpageFolder){
 
 
 	const CsvHpgConstructionTimer = elapsed.start('csv_hpg_construction_timer');
-	DEBUG && console.log('[StaticAnalysis] constructing IPCG/ERDDG/SemTypes.')
-	const graph = await SourceSinkAnalyzerInstance.api.buildHPG({ 'ipcg': true, 'erddg': true }); // IPCG, ERDDG + SemanticTypes + node/edge format
+	DEBUG && console.log('[StaticAnalysis] constructing IPCG/ERDDG/SemTypes.');
+
+
+	var graphBuilderOptions= { 'ipcg': true, 'erddg': true, 'output': webpageFolder, 'iterativeOutput': iterative_output };
+	const graph = await SourceSinkAnalyzerInstance.api.buildHPG(graphBuilderOptions); // IPCG, ERDDG + SemanticTypes + node/edge format
 	const graphid = hashURL(url);
 	DEBUG && console.log('[StaticAnalysis] finished constructing IPCG/ERDDG/SemTypes.');
 
@@ -374,7 +378,7 @@ async function staticallyAnalyzeWebpage(url, webpageFolder){
     
     overwrite_hpg = (config.overwritehpg && config.overwritehpg.toLowerCase() === 'true')? true: false; 
     do_compress_graphs = (config.compresshpg && config.compresshpg.toLowerCase() === 'false')? false: true; 
-  	
+  	iterative_output = (config.iterativeoutput && config.iterativeoutput.toLowerCase() === 'true')? true: false;
 
 	if(single_folder && single_folder.length > 10){
 
