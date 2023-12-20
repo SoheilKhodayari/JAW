@@ -2,8 +2,17 @@
 
 This folder contains the web crawlers of JAW. Currently, the tool supports the following crawlers:
 
+- [x] a playwright-based crawler based on [Foxhound](https://github.com/SAP/project-foxhound/) (taint-aware)
 - [x] a puppetter-based crawler enhanced with ChromeDevTools Protocol (CDP) 
 - [x] a selenium based crawler enhanced with custom Chrome extensions 
+
+## CLI Usage (Playwright)
+
+To start the crawler, do:
+
+```bash
+$ node crawler-taint.js --seedurl=https://google.com --maxurls=100 --headless=true --foxhoundpath=<foxhound-firefox-executable-path>
+```
 
 
 ## CLI Usage (Puppeteer)
