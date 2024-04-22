@@ -281,13 +281,13 @@ def main():
 			# static analysis over neo4j
 			if config['domclobbering']["passes"]["static_neo4j"]:
 				LOGGER.info("HPG construction and analysis over neo4j for site %s."%(website_url))
-				DOMCTraversalsModule.build_and_analyze_hpg(website_url)
+				DOMCTraversalsModule.build_and_analyze_hpg_local(website_url)
 				LOGGER.info("finished HPG construction and analysis over neo4j for site %s."%(website_url))
 
 			# dynamic verification
 			if config['domclobbering']["passes"]["dynamic"]:
 				LOGGER.info("Running dynamic verifier for site %s."%(website_url))
-				cmd = node_force_execution.replace('SEED_URL', website_url)
+				cmd = node_force_execution.replace('SITE_URL', website_url)
 				IOModule.run_os_command(cmd, cwd=force_execution_command_cwd, timeout= force_execution_timeout)
 				LOGGER.info("Dynamic verification completed for site %s."%(website_url))
 
@@ -326,7 +326,7 @@ def main():
 			# dynamic verification
 			if config['request_hijacking']['passes']['verification']:
 				LOGGER.info("dynamic data flow verification for site %s."%(website_url))
-				cmd = node_dynamic_verifier.replace("SITE_URL", website_url)
+				cmd = node_dynamic_verifier.replace("SEED_URL", website_url)
 				request_hijacking_verification_api.start_verification_for_site(cmd, website_url, cwd=dynamic_verifier_command_cwd, timeout=verification_pass_timeout, overwrite=False)
 				LOGGER.info("sucessfully finished dynamic data flow verification for site %s."%(website_url))
 
@@ -394,13 +394,13 @@ def main():
 						
 						if  config['domclobbering']["passes"]["static_neo4j"]:
 							LOGGER.info("HPG construction and analysis over neo4j for site %s - %s"%(website_rank, website_url)) 
-							DOMCTraversalsModule.build_and_analyze_hpg(website_url)
+							DOMCTraversalsModule.build_and_analyze_hpg_local(website_url)
 							LOGGER.info("finished HPG construction and analysis over neo4j for site %s - %s"%(website_rank, website_url)) 
 
 						# dynamic verification
 						if  config['domclobbering']["passes"]["dynamic"]:
 							LOGGER.info("Running dynamic verifier for site %s - %s"%(website_rank, website_url)) 
-							cmd = node_force_execution.replace('SEED_URL', website_url)
+							cmd = node_force_execution.replace('SITE_URL', website_url)
 							IOModule.run_os_command(cmd, cwd=force_execution_command_cwd, timeout= force_execution_timeout)
 							LOGGER.info("Dynamic verification completed for site %s - %s"%(website_rank, website_url)) 
 

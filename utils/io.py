@@ -165,20 +165,24 @@ def compress_graph(webpage_folder_path, node_file=constantsModule.NODE_INPUT_FIL
 
 	cmd1="pigz %s"%(os.path.join(webpage_folder_path, node_file))
 	cmd2="pigz %s"%(os.path.join(webpage_folder_path, edge_file))
-	cmd3="pigz %s"%(os.path.join(webpage_folder_path, edges_file_dynamic))
 
 	bash_command(cmd1)
 	bash_command(cmd2)
-	bash_command(cmd3)
+
+	if os.path.exists(os.path.join(webpage_folder_path, edges_file_dynamic)):
+		cmd3="pigz %s"%(os.path.join(webpage_folder_path, edges_file_dynamic))
+		bash_command(cmd3)
 
 def decompress_graph(webpage_folder_path, node_file=constantsModule.NODE_INPUT_FILE_NAME, edge_file=constantsModule.RELS_INPUT_FILE_NAME, edges_file_dynamic=constantsModule.RELS_DYNAMIC_INPUT_FILE_NAME):
 
 	cmd1="pigz -d %s"%(os.path.join(webpage_folder_path, node_file))
 	cmd2="pigz -d %s"%(os.path.join(webpage_folder_path, edge_file))
-	cmd3="pigz -d %s"%(os.path.join(webpage_folder_path, edges_file_dynamic))
-
+	
 	bash_command(cmd1)
 	bash_command(cmd2)
-	bash_command(cmd3)
+
+	if os.path.exists(os.path.join(webpage_folder_path, edges_file_dynamic)):
+		cmd3="pigz %s"%(os.path.join(webpage_folder_path, edges_file_dynamic))
+		bash_command(cmd3)
 
 

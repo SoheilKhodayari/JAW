@@ -417,8 +417,10 @@ GraphExporter.prototype.compressGraph = function (webpageFolder){
     cmd = `pigz ${relsFile}`;
     execSync(cmd);
 
-    cmd = `pigz ${relsFileDynamic}`;
-    execSync(cmd);
+    if (fs.existsSync(relsFileDynamic)){
+        cmd = `pigz ${relsFileDynamic}`;
+        execSync(cmd);
+    }
 }
 
 GraphExporter.prototype.decompressGraph = function (webpageFolder){
@@ -433,8 +435,10 @@ GraphExporter.prototype.decompressGraph = function (webpageFolder){
     cmd = `pigz -d ${relsFile}`;
     execSync(cmd);
 
-    cmd = `pigz -d ${relsFileDynamic}`;
-    execSync(cmd);
+    if (fs.existsSync(relsFileDynamic)){
+        cmd = `pigz -d ${relsFileDynamic}`;
+        execSync(cmd);
+    }
 
 }
 
