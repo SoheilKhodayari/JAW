@@ -32,6 +32,8 @@ OUTPUTS_DIR = os.path.join(BASE_DIR, "outputs")
 PATTERN_DIR = os.path.join(OUTPUTS_DIR, "patterns")
 DATA_DIR_UNREPONSIVE_DOMAINS = os.path.join(DATA_DIR, "unresponsive") 
 
+INEO_HOME= os.path.join(BASE_DIR, "ineo")
+
 
 # ------------------------------------------------------------------------------------------ #
 # 		Neo4j Config
@@ -54,7 +56,7 @@ else:
 
 # ports
 NEO4J_HTTP_PORT = '7474'
-NEO4J_BOLT_PORT = '7687'
+NEO4J_BOLT_PORT = '7476'
 
 # http connection string
 NEO4J_CONN_HTTP_STRING = "http://127.0.0.1:%s"%str(NEO4J_HTTP_PORT)

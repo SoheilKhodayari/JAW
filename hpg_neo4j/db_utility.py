@@ -256,7 +256,8 @@ def wait_for_neo4j_bolt_connection(timeout=60, conn=constantsModule.NEO4J_CONN_H
 def ineo_create_db_instance(db_name, port, neo4j_version='4.2.3'):
 
 	INEO_BIN = constantsModule.INEO_BIN
-	command = "INEO_BIN create -v {0} -p{1} {2}".format(neo4j_version, port, db_name)
+
+	command = "export INEO_HOME='{3}' && INEO_BIN create -v {0} -p{1} {2}".format(neo4j_version, port, db_name, constantsModule.INEO_HOME)
 	command = command.replace("INEO_BIN", INEO_BIN)
 	run_os_command(command)
 
@@ -300,7 +301,7 @@ def neoadmin_import_db_instance(ineo_db_name, neo4j_db_name, nodes_file, rels_fi
 def ineo_set_bolt_port_for_db_instance(db_name, port_string):
 
 	INEO_BIN = constantsModule.INEO_BIN
-	command = "INEO_BIN set-port -b {0} {1}".format(db_name, port_string)
+	command = "export INEO_HOME='{2}' && INEO_BIN set-port -b {0} {1}".format(db_name, port_string, constantsModule.INEO_HOME)
 	command = command.replace("INEO_BIN", INEO_BIN)
 	run_os_command(command)
 
@@ -308,7 +309,7 @@ def ineo_set_bolt_port_for_db_instance(db_name, port_string):
 def ineo_restart_neo4j(db_name):
 	
 	INEO_BIN = constantsModule.INEO_BIN
-	command = "INEO_BIN restart {0}".format(db_name)
+	command = "export INEO_HOME='{1}' && INEO_BIN restart {0}".format(db_name, constantsModule.INEO_HOME)
 	command = command.replace("INEO_BIN", INEO_BIN)
 	run_os_command(command)
 
