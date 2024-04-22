@@ -263,7 +263,7 @@ def build_and_analyze_hpg_local(seed_url, overwrite=False, conn_timeout=None, co
 			logger.info('[TR] starting to run the queries.')
 			webpage_url = get_url_for_webpage(webpage_folder)
 			try:
-				DU.exec_fn_within_transaction(DOMCTraversalsModule.run_traversals, webpage_folder)
+				DU.exec_fn_within_transaction(DOMCTraversalsModule.run_traversals, webpage_url, webpage_folder, webpage, conn=constantsModule.NEO4J_CONN_STRING, conn_timeout=conn_timeout)
 			except Exception as e:
 				logger.error(e)
 				logger.error('[TR] neo4j connection error.')

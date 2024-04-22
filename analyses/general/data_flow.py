@@ -31,7 +31,6 @@
 import hpg_neo4j.query_utility as QU
 import hpg_neo4j.db_utility as DU
 import constants as constantsModule
-import neomodel
 import jsbeautifier
 import functools
 import json

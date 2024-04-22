@@ -86,3 +86,6 @@ neo4j-community-4.2.3-unix.tar.gz
 # c++ binary
 engine/lib/jaw/aliasing/aliasing
 engine/lib/jaw/aliasing/aliasing.o
+
+# venv
+venv
