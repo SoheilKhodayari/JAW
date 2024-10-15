@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+# make sure the package index is up-to-date
+sudo apt update
+
 # chromimum
 sudo apt install -y chromium-browser
 
