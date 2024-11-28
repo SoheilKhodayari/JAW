@@ -1814,8 +1814,8 @@ GraphBuilder.prototype.getInterProceduralModelNodesAndEdges = async function(sem
                                      relationType: eventName,
                                      args: 'register_listener_on___' + calleeVariable+ '___' + calleeVariableId  /* e.g., window.onerror = function(e){...} */
                                 };
-                                appendNode(n0);
-                                iterativeOutput && appendNodeDisk(n0);  
+                                appendEdge(n0);
+                                iterativeOutput && appendEdgeDisk(n0);  
                             }
                         } 
 
@@ -1841,8 +1841,8 @@ GraphBuilder.prototype.getInterProceduralModelNodesAndEdges = async function(sem
                                          relationType: eventName,
                                          args: 'dispatch_event_on___' + calleeVariable+ '___' + calleeVariableId  /* e.g., button.dispatchEvent('click') */
                                     };
-                                    appendNode(n1);
-                                    iterativeOutput && appendNodeDisk(n0);
+                                    appendEdge(n1);
+                                    iterativeOutput && appendEdgeDisk(n1);
 
                                 });
                             }
@@ -1867,8 +1867,8 @@ GraphBuilder.prototype.getInterProceduralModelNodesAndEdges = async function(sem
                                                  relationType: eventName,
                                                  args: 'dispatch_event_on___' + calleeVariable+ '___' + calleeVariableId  /* e.g., button.dispatchEvent('click') */
                                             };
-                                            appendNode(n2);
-                                            iterativeOutput && appendNodeDisk(n1)
+                                            appendEdge(n2);
+                                            iterativeOutput && appendEdgeDisk(n2)
 
                                         })
                                     }// end if key.startsWith;
@@ -1903,8 +1903,8 @@ GraphBuilder.prototype.getInterProceduralModelNodesAndEdges = async function(sem
                                          relationType: eventName,
                                          args: 'dispatch_event_on___' + calleeVariable+ '___' + calleeVariableId  /* e.g., button.click(), xhrInstance.open() */
                                     };
-                                    appendNode(n3);
-                                    iterativeOutput && appendNodeDisk(n2);
+                                    appendEdge(n3);
+                                    iterativeOutput && appendEdgeDisk(n3);
                                 });
                             }
                             
