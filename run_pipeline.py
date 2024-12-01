@@ -44,6 +44,10 @@ import analyses.request_hijacking.static_analysis_api as rh_sast_model_construct
 import analyses.request_hijacking.static_analysis_py_api as request_hijacking_neo4j_analysis_api
 import analyses.request_hijacking.verification_api as request_hijacking_verification_api
 
+import analyses.open_redirect.static_analysis_api as or_sast_model_construction_api
+import analyses.open_redirect.static_analysis_py_api as or_neo4j_analysis_api
+
+
 def is_website_up(uri):
 	try:
 		response = requests.head(uri, timeout=20)
@@ -246,6 +250,7 @@ def main():
 		# crawling
 		if (config['domclobbering']['enabled'] and config['domclobbering']["passes"]["crawling"]) or \
 			(config['cs_csrf']['enabled'] and config['cs_csrf']["passes"]["crawling"]) or \
+			(config['open_redirect']['enabled'] and config['open_redirect']["passes"]["crawling"]) or \
 			(config['request_hijacking']['enabled'] and config['request_hijacking']["passes"]["crawling"]):
 
 
@@ -308,6 +313,19 @@ def main():
 				CSRFTraversalsModule.build_and_analyze_hpg(website_url)
 				LOGGER.info("finished HPG construction and analysis over neo4j for site %s."%(website_url))
 	
+		# open redirects
+		if config['open_redirect']['enabled']:
+			# static analysis
+			if config['open_redirect']["passes"]["static"]:
+				LOGGER.info("static analysis for site %s."%(website_url))
+				or_sast_model_construction_api.start_model_construction(website_url, iterative_output=iterative_output, memory=static_analysis_memory, timeout=static_analysis_per_webpage_timeout, compress_hpg=static_analysis_compress_hpg, overwrite_hpg=static_analysis_overwrite_hpg)
+				LOGGER.info("successfully finished static analysis for site %s."%(website_url)) 
+
+			# static analysis over neo4j
+			if config['open_redirect']["passes"]["static_neo4j"]:
+				LOGGER.info("HPG construction and analysis over neo4j for site %s."%(website_url))
+				or_neo4j_analysis_api.build_and_analyze_hpg(website_url, timeout=static_analysis_per_webpage_timeout, compress_hpg=static_analysis_compress_hpg, overwrite=static_analysis_overwrite_hpg)
+				LOGGER.info("finished HPG construction and analysis over neo4j for site %s."%(website_url))
 
 		# request hijacking
 		if config['request_hijacking']['enabled']:
@@ -375,6 +393,7 @@ def main():
 					# crawling
 					if (config['domclobbering']['enabled'] and config['domclobbering']["passes"]["crawling"]) or \
 						(config['cs_csrf']['enabled'] and config['cs_csrf']["passes"]["crawling"]) or \
+						(config['open_redirect']['enabled'] and config['open_redirect']["passes"]["crawling"]) or \
 						(config['request_hijacking']['enabled'] and config['request_hijacking']["passes"]["crawling"]):
 
 						LOGGER.info("crawling site at row %s - rank %s - %s"%(g_index, website_rank, website_url)) 
@@ -420,6 +439,18 @@ def main():
 							CSRFTraversalsModule.build_and_analyze_hpg(website_url)
 							LOGGER.info("finished HPG construction and analysis over neo4j for site %s - %s"%(website_rank, website_url)) 
 
+					# open redirect
+					if config['open_redirect']['enabled']:
+						# static analysis
+						if config['open_redirect']["passes"]["static"]:
+							LOGGER.info("static analysis for site at row %s - rank %s - %s"%(g_index, website_rank, website_url)) 
+							or_sast_model_construction_api.start_model_construction(website_url, iterative_output=iterative_output, memory=static_analysis_memory, timeout=static_analysis_per_webpage_timeout, compress_hpg=static_analysis_compress_hpg, overwrite_hpg=static_analysis_overwrite_hpg)
+							LOGGER.info("successfully finished static analysis for site at row %s - rank %s - %s"%(g_index, website_rank, website_url)) 
+						
+						if config['open_redirect']["passes"]["static_neo4j"]:
+							LOGGER.info("HPG construction and analysis over neo4j for site %s - %s"%(website_rank, website_url)) 
+							or_neo4j_analysis_api.build_and_analyze_hpg(website_url, timeout=static_analysis_per_webpage_timeout, overwrite=static_analysis_overwrite_hpg, compress_hpg=static_analysis_compress_hpg)
+							LOGGER.info("finished HPG construction and analysis over neo4j for site %s - %s"%(website_rank, website_url)) 
 
 
 					# request hijacking

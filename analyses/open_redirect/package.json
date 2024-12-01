@@ -1,0 +1,47 @@
+{
+  "name": "cs_csrf",
+  "version": "1.0.0",
+  "description": "",
+  "main": "static_analysis.js",
+  "dependencies": {
+    "crypto": "^1.0.1",
+    "elapsed-time-logger": "^1.1.7",
+    "fs": "0.0.1-security",
+    "js-beautify": "^1.15.1",
+    "path": "^0.12.7",
+    "process": "^0.11.10",
+    "puppeteer": "^23.9.0",
+    "core-js": "^3.39.0",
+    "csv-writer": "^1.6.0",
+    "domino": "^2.1.6",
+    "escodegen": "^2.1.0",
+    "esgraph": "*",
+    "espree": "^10.3.0",
+    "esprima": "^4.0.1",
+    "filbert": "^0.1.20",
+    "latest": "^0.2.0",
+    "open": "10.1.0",
+    "php-parser": "^3.2.1",
+    "process.argv": "^0.6.1",
+    "util": "^0.12.5",
+    "walkes": "*"
+  },
+  "devDependencies": {
+    "async": "^3.2.6",
+    "blanket": "^1.2.3",
+    "grunt": "^1.6.1",
+    "grunt-jsdoc": "^2.4.1",
+    "grunt-mocha-istanbul": "^5.0.2",
+    "grunt-mocha-test": "^0.13.3",
+    "grunt-strip-code": "^1.0.12",
+    "istanbul": "*",
+    "jsdoc": "^4.0.4",
+    "mocha": "*",
+    "should": "*"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Soheil Khodayari",
+  "license": "AGPL3"
+}

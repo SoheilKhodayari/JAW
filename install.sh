@@ -14,6 +14,7 @@ sudo apt install -y chromium-browser
 (cd analyses/domclobbering && npm install)
 (cd analyses/cs_csrf && npm install)
 (cd analyses/request_hijacking && npm install)
+(cd analyses/open_redirect && npm install)
 
 (cd engine && npm install)
 (cd engine/lib/jaw/dom-points-to && npm install)

@@ -94,6 +94,12 @@ cs_csrf:
     static: false
     static_neo4j: false
 
+open_redirect:
+  enabled: false
+  passes:
+    crawling: false
+    static: false
+    static_neo4j: false
 
 request_hijacking:
   enabled: true

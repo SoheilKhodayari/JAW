@@ -32,6 +32,7 @@ JAW has a Github pages website available at <a href="https://soheilkhodayari.git
 
 **Release Notes:** 
 
+- Dec 2024, JAW-v4: JAW updated with open redirect detection queries.
 - Oct 2023, JAW-v3 (Sheriff): JAW updated to detect [client-side request hijacking](#/) vulnerabilities. 
 - July 2022, JAW-v2 ([TheThing](https://github.com/SoheilKhodayari/TheThing)): JAW updated to its next major release with the ability to detect [DOM Clobbering](https://soheilkhodayari.github.io/DOMClobbering) vulnerabilities. See [`JAW-V2`](https://github.com/SoheilKhodayari/JAW/tree/JAW-v2) branch.
 - Dec 2020, JAW-v1 : first prototype version. See [`JAW-V1`](https://github.com/SoheilKhodayari/JAW/tree/JAW-v1) branch.
@@ -319,7 +320,11 @@ JAW contains, among others, self-contained queries for detecting client-side CSR
 request_hijacking:
   enabled: true 
   # [...]
-  # 
+
+open_redirect:
+  enabled: false 
+  # [...]
+  
 domclobbering:
   enabled: false
   # [...]
