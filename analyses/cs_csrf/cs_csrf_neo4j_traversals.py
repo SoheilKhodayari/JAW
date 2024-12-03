@@ -32,11 +32,14 @@ import time
 import json
 import constants as constantsModule
 import utils.io as IOModule
-import docker.neo4j.manage_container as dockerModule
-import hpg_neo4j.db_utility as neo4jDatabaseUtilityModule
-import hpg_neo4j.query_utility as neo4jQueryUtilityModule
-import analyses.cs_csrf.cs_csrf_cypher_queries as CSRFTraversalsModule
 from utils.logging import logger
+
+import analyses.cs_csrf.cs_csrf_cypher_queries as CSRFTraversalsModule
+# import hpg_neo4j.db_utility as neo4jDatabaseUtilityModule
+# import hpg_neo4j.query_utility as neo4jQueryUtilityModule
+import hpg_neo4j.db_utility as DU
+import hpg_neo4j.query_utility as QU
+import docker.neo4j.manage_container as dockerModule
  
 
 
@@ -137,13 +140,13 @@ def build_and_analyze_hpg_docker(seed_url, conn_timeout=None):
 			logger.info('importing data inside container.')
 			dockerModule.import_data_inside_container(container_name, database_name, relative_import_path, 'CSV')
 			logger.info('waiting for the tcp port 7474 of the neo4j container to be ready...')
-			connection_success = neo4jDatabaseUtilityModule.wait_for_neo4j_bolt_connection(timeout=150)
+			connection_success = DU.wait_for_neo4j_bolt_connection(timeout=150)
 			if not connection_success:
 				sys.exit(1)
 		else:
 			dockerModule.start_neo4j_container(container_name)
 			logger.info('waiting for the tcp port 7474 of the neo4j container to be ready...')
-			connection_success = neo4jDatabaseUtilityModule.wait_for_neo4j_bolt_connection(timeout=150)
+			connection_success = DU.wait_for_neo4j_bolt_connection(timeout=150)
 			if not connection_success:
 				sys.exit(1)
 
@@ -153,7 +156,7 @@ def build_and_analyze_hpg_docker(seed_url, conn_timeout=None):
 		# step3: run the vulnerability detection queries
 		if query:
 			navigation_url = get_url_for_webpage(webpage)
-			neo4jDatabaseUtilityModule.exec_fn_within_transaction(CSRFTraversalsModule.run_traversals, navigation_url, webpage, each_webpage, conn_timeout=conn_timeout)
+			DU.exec_fn_within_transaction(CSRFTraversalsModule.run_traversals, navigation_url, webpage, each_webpage, conn_timeout=conn_timeout)
 
 
 		# stop the neo4j docker container
