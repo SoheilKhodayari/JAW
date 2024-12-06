@@ -181,8 +181,8 @@ def decompress_graph(webpage_folder_path, node_file=constantsModule.NODE_INPUT_F
 	bash_command(cmd1)
 	bash_command(cmd2)
 
-	if os.path.exists(os.path.join(webpage_folder_path, edges_file_dynamic)):
-		cmd3="pigz %s"%(os.path.join(webpage_folder_path, edges_file_dynamic))
+	if os.path.exists(os.path.join(webpage_folder_path, f"{edges_file_dynamic}.gz")):
+		cmd3="pigz -d %s"%(os.path.join(webpage_folder_path, edges_file_dynamic))
 		bash_command(cmd3)
 
 

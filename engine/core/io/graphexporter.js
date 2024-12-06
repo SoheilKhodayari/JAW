@@ -435,7 +435,7 @@ GraphExporter.prototype.decompressGraph = function (webpageFolder){
     cmd = `pigz -d ${relsFile}`;
     execSync(cmd);
 
-    if (fs.existsSync(relsFileDynamic)){
+    if (fs.existsSync(`${relsFileDynamic}.gz`)){
         cmd = `pigz -d ${relsFileDynamic}`;
         execSync(cmd);
     }

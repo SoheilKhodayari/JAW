@@ -344,7 +344,7 @@ def main():
 			# dynamic verification
 			if config['request_hijacking']['passes']['verification']:
 				LOGGER.info("dynamic data flow verification for site %s."%(website_url))
-				cmd = node_dynamic_verifier.replace("SEED_URL", website_url)
+				cmd = node_dynamic_verifier.replace("SITE_URL", website_url)
 				request_hijacking_verification_api.start_verification_for_site(cmd, website_url, cwd=dynamic_verifier_command_cwd, timeout=verification_pass_timeout, overwrite=False)
 				LOGGER.info("sucessfully finished dynamic data flow verification for site %s."%(website_url))
 
