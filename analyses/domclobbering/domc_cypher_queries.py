@@ -29,6 +29,7 @@ import os
 import sys
 import time
 import json
+import jsbeautifier
 import constants as constantsModule
 from utils.logging import logger as LOGGER
 from datetime import datetime
