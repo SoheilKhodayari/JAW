@@ -294,9 +294,10 @@ async function crawlWebsite(browser, url, domain, frontier, dataDirectory, debug
 
 	try{
 		DEBUG && console.log('[pageLoad] loading new URL: ' + url);
-		await page.goto(url, {waitUntil: 'networkidle0'}); // or waitUntil: load
+		const waitUntil = 'networkidle0' // or 'load', see https://pptr.dev/api/puppeteer.puppeteerlifecycleevent
+		await page.goto(url, {waitUntil});
 		// await page.waitForTimeout(10000); 
-		DEBUG && console.log('[pageLoadCompleted] new page loaded successfully (networkidle0)');
+		DEBUG && console.log(`[pageLoadCompleted] new page loaded successfully (${waitUntil})`);
 
 		// redirect puppeteer console log in the browser to node js log
 		BROWSER_LOG && page.on('console', consoleObj => console.log('[BrowserConsole] ' + consoleObj.text()));
