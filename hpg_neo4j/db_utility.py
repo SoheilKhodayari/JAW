@@ -274,14 +274,14 @@ def ineo_create_db_instance(db_name, port, neo4j_version='4.2.3'):
 def ineo_start_db_instance(db_name):
 
 	INEO_BIN = constantsModule.INEO_BIN
-	command = "INEO_BIN start {0}".format(db_name)
+	command = "export INEO_HOME='{1}' && INEO_BIN start {0}".format(db_name, constantsModule.INEO_HOME)
 	command = command.replace("INEO_BIN", INEO_BIN)
 	run_os_command(command)
 
 def ineo_stop_db_instance(db_name):
 
 	INEO_BIN = constantsModule.INEO_BIN
-	command = "INEO_BIN stop {0}".format(db_name)
+	command = "export INEO_HOME='{1}' && INEO_BIN stop {0}".format(db_name, constantsModule.INEO_HOME)
 	command = command.replace("INEO_BIN", INEO_BIN)
 	run_os_command(command)
 
@@ -317,7 +317,7 @@ def ineo_restart_neo4j(db_name):
 def ineo_remove_db_instance(db_name):
 	
 	INEO_BIN = constantsModule.INEO_BIN
-	command = "INEO_BIN destroy -f {0}".format(db_name)
+	command = "export INEO_HOME='{1}' && INEO_BIN destroy -f {0}".format(db_name, constantsModule.INEO_HOME)
 	command = command.replace("INEO_BIN", INEO_BIN)
 	run_os_command(command)
 
