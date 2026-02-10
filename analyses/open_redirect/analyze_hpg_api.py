@@ -110,10 +110,10 @@ def main():
 	rels_file_gz =  os.path.join(webpage_folder, constantsModule.RELS_INPUT_FILE_NAME  +'.gz')
 	rels_dynamic_file_gz = os.path.join(webpage_folder, constantsModule.RELS_DYNAMIC_INPUT_FILE_NAME  +'.gz')
 
-	if os.path.exists(nodes_file) and os.path.exists(rels_file) and os.path.exists(rels_dynamic_file):
+	if os.path.exists(nodes_file) and os.path.exists(rels_file) and (os.path.exists(rels_dynamic_file) or not os.path.exists(rels_dynamic_file_gz)):
 		LOGGER.info('[TR] hpg files exist in decompressed format, skipping de-compression.')
 
-	elif os.path.exists(nodes_file_gz) and os.path.exists(rels_file_gz) and os.path.exists(rels_dynamic_file_gz):
+	elif os.path.exists(nodes_file_gz) and os.path.exists(rels_file_gz) :
 		LOGGER.info('[TR] de-compressing hpg.')
 		# de-compress the hpg 
 		IOModule.decompress_graph(webpage_folder)

@@ -320,7 +320,10 @@ async function staticallyAnalyzeWebpage(url, webpageFolder){
 		DEBUG && console.log('[StaticAnalysis] started HPG export to CSV.');
 		GraphExporter.exportToCSVDynamic(graph, foxhound_data, graphid, webpageFolder);
 		DEBUG && console.log('[StaticAnalysis] finished HPG export to CSV.');
-	
+	} else {
+		DEBUG && console.log('[StaticAnalysis] started HPG export to CSV (without foxhound edges).');
+		GraphExporter.exportToCSV(graph, graphid, webpageFolder);
+		DEBUG && console.log('[StaticAnalysis] finished HPG export to CSV.');
 	}
 
 	const pdgMarker =  pathModule.join(webpageFolder, "pdg.tmp");
